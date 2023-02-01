@@ -1,0 +1,932 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 5,
+    "identityHash": "93decadfc20e8fc1be961b8f6b43fb25",
+    "entities": [
+      {
+        "tableName": "FmMessage",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`FmMessageId` INTEGER, `CCustomerIdSend` INTEGER, `RecieverId` INTEGER, `AnonymosType` INTEGER, `CCustomerNameSend` TEXT, `RecType` INTEGER, `FmMessageType` INTEGER, `OpenAction` INTEGER, `ActionParam` TEXT, `SendDate` TEXT, `Text1` TEXT, `HasTextAttach` INTEGER, `HasAttach` INTEGER, `Status` INTEGER, `ReplyId` INTEGER, `FwdId` INTEGER, `EditDate` TEXT, `ContentType` INTEGER, `ContentCat` INTEGER, `AlarmPriority` INTEGER, `ExtMessageId` INTEGER, PRIMARY KEY(`FmMessageId`))",
+        "fields": [
+          {
+            "fieldPath": "FmMessageId",
+            "columnName": "FmMessageId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "CCustomerIdSend",
+            "columnName": "CCustomerIdSend",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "RecieverId",
+            "columnName": "RecieverId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "AnonymosType",
+            "columnName": "AnonymosType",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "CCustomerNameSend",
+            "columnName": "CCustomerNameSend",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "RecType",
+            "columnName": "RecType",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "FmMessageType",
+            "columnName": "FmMessageType",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "OpenAction",
+            "columnName": "OpenAction",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ActionParam",
+            "columnName": "ActionParam",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "SendDate",
+            "columnName": "SendDate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Text1",
+            "columnName": "Text1",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "HasTextAttach",
+            "columnName": "HasTextAttach",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "HasAttach",
+            "columnName": "HasAttach",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Status",
+            "columnName": "Status",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ReplyId",
+            "columnName": "ReplyId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "FwdId",
+            "columnName": "FwdId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "EditDate",
+            "columnName": "EditDate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ContentType",
+            "columnName": "ContentType",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ContentCat",
+            "columnName": "ContentCat",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "AlarmPriority",
+            "columnName": "AlarmPriority",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ExtMessageId",
+            "columnName": "ExtMessageId",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "FmMessageId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_FmMessage_FmMessageId",
+            "unique": false,
+            "columnNames": [
+              "FmMessageId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_FmMessage_FmMessageId` ON `${TABLE_NAME}` (`FmMessageId`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "FmSides",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`IdLocal` INTEGER, `Name` TEXT, `Avatar` TEXT, `Username` TEXT, `UserType` INTEGER, `FmSidesId` INTEGER NOT NULL, `UserSide1` INTEGER NOT NULL, `UserSide2` INTEGER NOT NULL, `FmChanalId` INTEGER NOT NULL, `AnonymosType` INTEGER NOT NULL, `FmMessageIdLast` INTEGER NOT NULL, `Text1` TEXT, `LastDate` TEXT, `LastSenderSide` INTEGER NOT NULL, `UnreadCount` INTEGER NOT NULL, `LastContentType` INTEGER NOT NULL, PRIMARY KEY(`IdLocal`))",
+        "fields": [
+          {
+            "fieldPath": "IdLocal",
+            "columnName": "IdLocal",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Name",
+            "columnName": "Name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Avatar",
+            "columnName": "Avatar",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Username",
+            "columnName": "Username",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "UserType",
+            "columnName": "UserType",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "FmSidesId",
+            "columnName": "FmSidesId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "UserSide1",
+            "columnName": "UserSide1",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "UserSide2",
+            "columnName": "UserSide2",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "FmChanalId",
+            "columnName": "FmChanalId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "AnonymosType",
+            "columnName": "AnonymosType",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "FmMessageIdLast",
+            "columnName": "FmMessageIdLast",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "Text1",
+            "columnName": "Text1",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "LastDate",
+            "columnName": "LastDate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "LastSenderSide",
+            "columnName": "LastSenderSide",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "UnreadCount",
+            "columnName": "UnreadCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "LastContentType",
+            "columnName": "LastContentType",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "IdLocal"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_FmSides_IdLocal",
+            "unique": false,
+            "columnNames": [
+              "IdLocal"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_FmSides_IdLocal` ON `${TABLE_NAME}` (`IdLocal`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "TTClubTourCategoryDTO",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`TTClubTourCategoryId` INTEGER, `Title` TEXT, `Color` TEXT, `DescUser` TEXT, `PhotoAddress` TEXT, `UpdateStatus` INTEGER, PRIMARY KEY(`TTClubTourCategoryId`))",
+        "fields": [
+          {
+            "fieldPath": "TTClubTourCategoryId",
+            "columnName": "TTClubTourCategoryId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Title",
+            "columnName": "Title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Color",
+            "columnName": "Color",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "DescUser",
+            "columnName": "DescUser",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "PhotoAddress",
+            "columnName": "PhotoAddress",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "UpdateStatus",
+            "columnName": "UpdateStatus",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "TTClubTourCategoryId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_TTClubTourCategoryDTO_TTClubTourCategoryId",
+            "unique": false,
+            "columnNames": [
+              "TTClubTourCategoryId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_TTClubTourCategoryDTO_TTClubTourCategoryId` ON `${TABLE_NAME}` (`TTClubTourCategoryId`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "CityDTO",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`CityId` INTEGER, `Name` TEXT, `ProvinceId` INTEGER, `Latitude` REAL, `Longtitude` REAL, `UpdateStatus` INTEGER, `ProvinceName` TEXT, PRIMARY KEY(`CityId`))",
+        "fields": [
+          {
+            "fieldPath": "CityId",
+            "columnName": "CityId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Name",
+            "columnName": "Name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ProvinceId",
+            "columnName": "ProvinceId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Latitude",
+            "columnName": "Latitude",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Longtitude",
+            "columnName": "Longtitude",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "UpdateStatus",
+            "columnName": "UpdateStatus",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ProvinceName",
+            "columnName": "ProvinceName",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "CityId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_CityDTO_CityId",
+            "unique": false,
+            "columnNames": [
+              "CityId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_CityDTO_CityId` ON `${TABLE_NAME}` (`CityId`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "TTClubNameDTO",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`TTClubNameId` INTEGER, `MojServiceId` INTEGER, `Name` TEXT, `CCustomerIdRelated` INTEGER, `ExtSiteId` INTEGER, `Logo` TEXT, `WebsiteAddress` TEXT, `Address` TEXT, `Telephone` TEXT, `Desc` TEXT, `ManagerName` TEXT, `CityId` INTEGER, `CityName` TEXT, `UpdateStatus` INTEGER, PRIMARY KEY(`TTClubNameId`))",
+        "fields": [
+          {
+            "fieldPath": "TTClubNameId",
+            "columnName": "TTClubNameId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "MojServiceId",
+            "columnName": "MojServiceId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Name",
+            "columnName": "Name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "CCustomerIdRelated",
+            "columnName": "CCustomerIdRelated",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ExtSiteId",
+            "columnName": "ExtSiteId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Logo",
+            "columnName": "Logo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "WebsiteAddress",
+            "columnName": "WebsiteAddress",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Address",
+            "columnName": "Address",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Telephone",
+            "columnName": "Telephone",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Desc",
+            "columnName": "Desc",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ManagerName",
+            "columnName": "ManagerName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "CityId",
+            "columnName": "CityId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "CityName",
+            "columnName": "CityName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "UpdateStatus",
+            "columnName": "UpdateStatus",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "TTClubNameId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_TTClubNameDTO_TTClubNameId",
+            "unique": false,
+            "columnNames": [
+              "TTClubNameId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_TTClubNameDTO_TTClubNameId` ON `${TABLE_NAME}` (`TTClubNameId`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "TTClubTour",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`TTClubTourIdLocal` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `TTClubTourId` INTEGER NOT NULL, `TTClubNameId` INTEGER, `ExtClubTourId` INTEGER, `Name` TEXT, `PlaceOfTour` TEXT, `StartDate` TEXT, `EndDate` TEXT, `RegStartDate` TEXT, `RegEndDate` TEXT, `TourFinalPrice` REAL, `ClubTourCategoryId` INTEGER, `TourLength` REAL, `TourLengthUnit` INTEGER, `CCustomerIdLeader` INTEGER, `CityId` INTEGER, `ImageLink` TEXT, `OpenType` INTEGER, `Status` INTEGER, `ShowInPublic` INTEGER, `RegDesc` TEXT, `TourHadnesssLevel` INTEGER, `Desc_Short` TEXT, `TimeTable` TEXT, `BeginLocation` TEXT, `Prerequisites` TEXT, `NecessaryTools` TEXT, `SpecialProperty` TEXT, `ParticipantLimit` INTEGER, `AllowOverflowSignUp` INTEGER, `ParticipantCount` INTEGER, `ExtRegLink` TEXT, `PublishDate` TEXT, `SiteId` INTEGER, `LeaderCustomerIdFullName` TEXT, `CityName` TEXT, `ClubTourCategoryIdView` TEXT, `ClubName` TEXT, `WebsiteAddress` TEXT, `UrlProtocol` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "TTClubTourIdLocal",
+            "columnName": "TTClubTourIdLocal",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "TTClubTourId",
+            "columnName": "TTClubTourId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "TTClubNameId",
+            "columnName": "TTClubNameId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ExtClubTourId",
+            "columnName": "ExtClubTourId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Name",
+            "columnName": "Name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "PlaceOfTour",
+            "columnName": "PlaceOfTour",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "StartDate",
+            "columnName": "StartDate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "EndDate",
+            "columnName": "EndDate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "RegStartDate",
+            "columnName": "RegStartDate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "RegEndDate",
+            "columnName": "RegEndDate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "TourFinalPrice",
+            "columnName": "TourFinalPrice",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ClubTourCategoryId",
+            "columnName": "ClubTourCategoryId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "TourLength",
+            "columnName": "TourLength",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "TourLengthUnit",
+            "columnName": "TourLengthUnit",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "CCustomerIdLeader",
+            "columnName": "CCustomerIdLeader",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "CityId",
+            "columnName": "CityId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ImageLink",
+            "columnName": "ImageLink",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "OpenType",
+            "columnName": "OpenType",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Status",
+            "columnName": "Status",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ShowInPublic",
+            "columnName": "ShowInPublic",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "RegDesc",
+            "columnName": "RegDesc",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "TourHadnesssLevel",
+            "columnName": "TourHadnesssLevel",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Desc_Short",
+            "columnName": "Desc_Short",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "TimeTable",
+            "columnName": "TimeTable",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "BeginLocation",
+            "columnName": "BeginLocation",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Prerequisites",
+            "columnName": "Prerequisites",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "NecessaryTools",
+            "columnName": "NecessaryTools",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "SpecialProperty",
+            "columnName": "SpecialProperty",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ParticipantLimit",
+            "columnName": "ParticipantLimit",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "AllowOverflowSignUp",
+            "columnName": "AllowOverflowSignUp",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ParticipantCount",
+            "columnName": "ParticipantCount",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ExtRegLink",
+            "columnName": "ExtRegLink",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "PublishDate",
+            "columnName": "PublishDate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "SiteId",
+            "columnName": "SiteId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "LeaderCustomerIdFullName",
+            "columnName": "LeaderCustomerIdFullName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "CityName",
+            "columnName": "CityName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ClubTourCategoryIdView",
+            "columnName": "ClubTourCategoryIdView",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ClubName",
+            "columnName": "ClubName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "WebsiteAddress",
+            "columnName": "WebsiteAddress",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "UrlProtocol",
+            "columnName": "UrlProtocol",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "TTClubTourIdLocal"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_TTClubTour_TTClubTourIdLocal",
+            "unique": false,
+            "columnNames": [
+              "TTClubTourIdLocal"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_TTClubTour_TTClubTourIdLocal` ON `${TABLE_NAME}` (`TTClubTourIdLocal`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "NbAdv",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`NbAdvIdLocal` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `LocalAddress` TEXT, `NbAdvId` INTEGER NOT NULL, `CCustomerId` INTEGER NOT NULL, `AdvContentType` INTEGER NOT NULL, `AdvShowType` INTEGER NOT NULL, `ExternalId` INTEGER NOT NULL, `PhotoAddress` TEXT, `Link` TEXT, `Text1` TEXT, `Text2` TEXT, `Text3` TEXT, `NbFilterId` INTEGER NOT NULL, `Status` INTEGER NOT NULL, `ShowDateFrom` TEXT, `ShowDateTo` TEXT, `AdvBoxNo` INTEGER NOT NULL, `BuyStatus` INTEGER NOT NULL, `AdvVersion` INTEGER NOT NULL, `PriorityInBox` INTEGER NOT NULL, `RecUpdateDate` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "NbAdvIdLocal",
+            "columnName": "NbAdvIdLocal",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "LocalAddress",
+            "columnName": "LocalAddress",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "NbAdvId",
+            "columnName": "NbAdvId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "CCustomerId",
+            "columnName": "CCustomerId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "AdvContentType",
+            "columnName": "AdvContentType",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "AdvShowType",
+            "columnName": "AdvShowType",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ExternalId",
+            "columnName": "ExternalId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "PhotoAddress",
+            "columnName": "PhotoAddress",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Link",
+            "columnName": "Link",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Text1",
+            "columnName": "Text1",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Text2",
+            "columnName": "Text2",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Text3",
+            "columnName": "Text3",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "NbFilterId",
+            "columnName": "NbFilterId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "Status",
+            "columnName": "Status",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ShowDateFrom",
+            "columnName": "ShowDateFrom",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ShowDateTo",
+            "columnName": "ShowDateTo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "AdvBoxNo",
+            "columnName": "AdvBoxNo",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "BuyStatus",
+            "columnName": "BuyStatus",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "AdvVersion",
+            "columnName": "AdvVersion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "PriorityInBox",
+            "columnName": "PriorityInBox",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "RecUpdateDate",
+            "columnName": "RecUpdateDate",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "NbAdvIdLocal"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_NbAdv_NbAdvIdLocal",
+            "unique": false,
+            "columnNames": [
+              "NbAdvIdLocal"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_NbAdv_NbAdvIdLocal` ON `${TABLE_NAME}` (`NbAdvIdLocal`)"
+          }
+        ],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '93decadfc20e8fc1be961b8f6b43fb25')"
+    ]
+  }
+}

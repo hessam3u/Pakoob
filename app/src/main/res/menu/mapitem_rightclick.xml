@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:id="@+id/menu_createZoom100"
+        android:title="@string/menuCreateZoomLevel1"/>
+    <item
+        android:id="@+id/menu_creatZoom50"
+        android:title="@string/menuCreateZoomLevel2"/>
+    <item
+        android:id="@+id/menu_reCreate"
+        android:title="@string/reCreateMap"/>
+    <item
+        android:id="@+id/menu_deleteMapTiles"
+        android:title="@string/menu_deleteMapTiles"/>
+    <item
+        android:id="@+id/menu_deleteMapTilesAndDownload"
+        android:title="@string/menu_deleteMapTilesAndDownload"/>
+</menu>

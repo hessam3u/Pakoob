@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:layoutDirection="rtl">
+
+
+<!--    <ScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <androidx.appcompat.widget.Toolbar-->
+<!--                android:id="@+id/toolbarOfPage"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:contentInsetStart="0dp"-->
+<!--                android:contentInsetLeft="0dp"-->
+<!--                android:contentInsetEnd="0dp"-->
+<!--                android:contentInsetRight="0dp"-->
+<!--                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
+<!--                app:contentInsetEnd="0dp"-->
+<!--                app:contentInsetLeft="0dp"-->
+<!--                app:contentInsetRight="0dp"-->
+<!--                app:contentInsetStart="0dp"-->
+<!--                app:elevation="0dp"-->
+<!--                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">-->
+
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/toolbarNormal"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layoutDirection="rtl"-->
+<!--                    android:orientation="vertical">-->
+<!--                    <TextView-->
+<!--                        android:id="@+id/txtPageTitle"-->
+<!--                        style="@style/ToolbarPageTitle"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_gravity="center_horizontal"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:gravity="center_horizontal"-->
+<!--                        android:text="@string/app_name"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:textSize="24dp" />-->
+<!--                    <TextView-->
+<!--                        android:id="@+id/txtPageTitle_Footer"-->
+<!--                        style="@style/label"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_gravity="center_horizontal"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:gravity="center_horizontal"-->
+<!--                        android:text="@string/app_name_desc"-->
+<!--                        android:textColor="@color/black"/>-->
+<!--                </LinearLayout>-->
+
+<!--            </androidx.appcompat.widget.Toolbar>-->
+<!--            <LinearLayout style="@style/home_panels"-->
+<!--                android:layout_marginTop="@dimen/leftrightMargin">-->
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/btnGotoMap"-->
+<!--                    style="@style/home_iconContainer">-->
+<!--                    <TextView-->
+<!--                        style="@style/home_icon"-->
+<!--                        android:text="&#xF278;"-->
+<!--                        android:textColor="@color/green"></TextView>-->
+<!--                    <TextView-->
+<!--                        style="@style/label_l"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:gravity="center"-->
+<!--                        android:text="@string/MapAndRouting"></TextView>-->
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/btnGotoTours"-->
+<!--                    style="@style/home_iconContainer">-->
+
+<!--                    <TextView-->
+<!--                        style="@style/home_icon"-->
+<!--                        android:text="&#xE80F;"-->
+<!--                        android:textColor="#0D7785"></TextView>-->
+
+<!--                    <TextView-->
+<!--                        style="@style/label_l"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center_horizontal"-->
+<!--                        android:gravity="center"-->
+<!--                        android:text="@string/ToursAndClasses"></TextView>-->
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/btnGotoMyClub"-->
+<!--                    style="@style/home_iconContainer">-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/imgMyClubLogo_Empty"-->
+<!--                        style="@style/home_icon"-->
+<!--                        android:text="&#xE813;"-->
+<!--                        android:textColor="#F44336"></TextView>-->
+<!--                    <ImageView-->
+<!--                        android:visibility="gone"-->
+<!--                        android:id="@+id/imgMyClubLogo"-->
+<!--                        style="@style/home_icon"-->
+<!--                        android:src="@mipmap/ic_launcher"></ImageView>-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/lblMyClubName"-->
+<!--                        style="@style/label_l"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center_horizontal"-->
+<!--                        android:gravity="center"-->
+<!--                        android:text="@string/MyClub"></TextView>-->
+<!--                </LinearLayout>-->
+<!--            </LinearLayout>-->
+
+<!--            <LinearLayout style="@style/home_panels">-->
+
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/btnHome_Profile"-->
+<!--                    style="@style/home_iconContainer">-->
+
+<!--                    <TextView-->
+<!--                        style="@style/home_icon.small"-->
+<!--                        android:text="&#xF2BE;"-->
+<!--                        android:textColor="#526698"></TextView>-->
+
+<!--                    <TextView-->
+<!--                        style="@style/label_l"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center_horizontal"-->
+<!--                        android:text="@string/profile"></TextView>-->
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/btnHome_Clubs"-->
+<!--                    style="@style/home_iconContainer">-->
+
+<!--                    <TextView-->
+<!--                        style="@style/home_icon.small"-->
+<!--                        android:text="&#xE825;"-->
+<!--                        android:textColor="#9C1A80"></TextView>-->
+
+<!--                    <TextView-->
+<!--                        style="@style/label_l"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center_horizontal"-->
+<!--                        android:text="@string/clubs"></TextView>-->
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/btnHome_messages"-->
+<!--                    style="@style/home_iconContainer">-->
+
+<!--                    <TextView-->
+<!--                        style="@style/home_icon.small"-->
+<!--                        android:text="&#xF0E5;"-->
+<!--                        android:textColor="#FF9800"></TextView>-->
+
+<!--                    <TextView-->
+<!--                        style="@style/label_l"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center_horizontal"-->
+<!--                        android:text="@string/messages"></TextView>-->
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/btnHome_settings"-->
+<!--                    style="@style/home_iconContainer">-->
+
+<!--                    <TextView-->
+<!--                        style="@style/home_icon.small"-->
+<!--                        android:text="&#xE81E;"-->
+<!--                        android:textColor="#BC3827"></TextView>-->
+
+<!--                    <TextView-->
+<!--                        style="@style/label_l"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center_horizontal"-->
+<!--                        android:text="@string/title_settings"></TextView>-->
+<!--                </LinearLayout>-->
+<!--            </LinearLayout>-->
+
+<!--            <LinearLayout-->
+<!--                style="@style/home_panels"-->
+<!--                android:paddingTop="@dimen/leftrightMargin">-->
+
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/btnHome_StartRecording"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="55dp"-->
+<!--                    android:layout_marginLeft="@dimen/leftrightMarginMul2"-->
+<!--                    android:layout_marginRight="@dimen/leftrightMarginMul2"-->
+<!--                    android:background="@drawable/bg_roundcorner_greenfill_veryround"-->
+<!--                    android:gravity="center_horizontal|center_vertical"-->
+<!--                    android:orientation="horizontal">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginLeft="@dimen/leftrightMarginMul2"-->
+<!--                        android:fontFamily="@font/fontello"-->
+<!--                        android:text="&#xE832;"-->
+<!--                        android:textColor="@color/red"-->
+<!--                        android:textSize="45dp"></TextView>-->
+
+<!--                    <TextView-->
+<!--                        style="@style/label_xxxl"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="@string/startRecording"-->
+<!--                        android:textColor="@color/colorWhite"-->
+<!--                        android:textStyle="bold"></TextView>-->
+
+<!--                </LinearLayout>-->
+<!--            </LinearLayout>-->
+
+
+<!--            <LinearLayout style="@style/home_panels">-->
+<!--                <androidx.appcompat.widget.LinearLayoutCompat-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="vertical">-->
+<!--                    <LinearLayout-->
+<!--                        android:layout_marginTop="0dp"-->
+<!--                        style="@style/home_TextIconButton"-->
+<!--                        android:id="@+id/btnMapSelect">-->
+<!--                        <ImageView-->
+<!--                            android:id="@+id/btnMapSelect_img"-->
+<!--                            android:src="@drawable/ic_map_black_48dp"-->
+<!--                            style="@style/ToolbarTextButtons"-->
+<!--                            android:layout_height="30dp"/>-->
+<!--                        <TextView-->
+<!--                            style="@style/home_TextIconButton_TextView"-->
+<!--                            android:text="@string/title_maps"/>-->
+<!--                    </LinearLayout>-->
+<!--                    <LinearLayout-->
+<!--                        style="@style/home_TextIconButton"-->
+<!--                        android:id="@+id/btnMyTracks">-->
+<!--                        <ImageView-->
+<!--                            android:id="@+id/btnMyTracks_img"-->
+<!--                            android:src="@drawable/ic__track_icon48"-->
+<!--                            style="@style/ToolbarTextButtons"-->
+<!--                            android:layout_height="30dp"/>-->
+<!--                        <TextView-->
+<!--                            style="@style/home_TextIconButton_TextView"-->
+<!--                            android:text="@string/title_mytracks"/>-->
+<!--                    </LinearLayout>-->
+
+<!--                    <LinearLayout-->
+<!--                        style="@style/home_TextIconButton"-->
+<!--                        android:id="@+id/btnHelp">-->
+<!--                        <ImageView-->
+<!--                            android:id="@+id/btnHelp_img"-->
+<!--                            android:src="@drawable/ic_help_outline_black_48dp"-->
+<!--                            style="@style/ToolbarTextButtons"-->
+<!--                            android:layout_height="30dp"/>-->
+<!--                        <TextView-->
+<!--                            style="@style/home_TextIconButton_TextView"-->
+<!--                            android:text="@string/menu_help"/>-->
+<!--                    </LinearLayout>-->
+<!--                    <LinearLayout-->
+<!--                        style="@style/home_TextIconButton"-->
+<!--                        android:id="@+id/btnContactUs">-->
+<!--                        <ImageView-->
+<!--                            android:id="@+id/btnContactUs_img"-->
+<!--                            android:src="@drawable/ic_call_black_48dp"-->
+<!--                            style="@style/ToolbarTextButtons"-->
+<!--                            android:layout_height="30dp"/>-->
+<!--                        <TextView-->
+<!--                            style="@style/home_TextIconButton_TextView"-->
+<!--                            android:text="@string/title_contactus"/>-->
+<!--                    </LinearLayout>-->
+<!--                </androidx.appcompat.widget.LinearLayoutCompat>-->
+<!--            </LinearLayout>-->
+<!--        </LinearLayout>-->
+<!--    </ScrollView>-->
+</com.google.android.material.appbar.AppBarLayout>

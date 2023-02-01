@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/itemMainPart"
+    android:clickable="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="75dp"
+    android:orientation="horizontal"
+    android:padding="4dp"
+    android:layoutDirection="rtl">
+
+    <ImageView
+        android:id="@+id/txtImage"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txt_ct_Name"
+            style="@style/label"
+            android:lineSpacingMultiplier=".8"
+            android:layout_width="match_parent"
+            android:layout_height="39dp"
+            android:layout_gravity="top"
+            android:fontFamily="@font/iransansweb"
+            android:text="قله شاه جهان (طرح سیمرغ)"
+            android:textColor="@color/red"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="21dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txt_ct_ClubName"
+                style="@style/label_s"
+                android:paddingLeft="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="باشگاه آزادگان"/>
+            <TextView
+                style="@style/label_s"
+                android:id="@+id/Dar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="در " />
+            <TextView
+                style="@style/label_s"
+                android:id="@+id/txt_ct_CityName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="در مشهد" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/label_s"
+                android:paddingLeft="2dp"
+                android:id="@+id/txt_ct_TourLengthView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1 روزه" />
+
+            <TextView
+                style="@style/label_s"
+                android:paddingLeft="2dp"
+                android:id="@+id/txt_ct_StartDateViewMonthText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="در 22 بهمن"/>
+
+            <TextView
+                style="@style/label_s"
+                android:id="@+id/txt_ct_ClubTourCategoryIdView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="دسته بندی آموزشی"
+                android:textColor="@color/green" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

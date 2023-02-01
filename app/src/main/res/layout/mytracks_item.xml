@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layoutDirection="rtl">
+
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/imgSelected"
+        android:padding="3dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:elevation="10dp"
+        android:scaleType="centerCrop"
+        />
+<LinearLayout
+    android:minHeight="50dp"
+    android:id="@+id/movies_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+    <TextView
+        android:id="@+id/txtIcon"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textColor="#ffba08"
+        android:textSize="25dp"
+        android:fontFamily="@font/fontello"
+        android:text="&#xF114;"
+        android:gravity="center_vertical"
+        >
+    </TextView>
+    <TextView
+        style="@style/label"
+        android:id="@+id/txtName"
+        android:paddingLeft="2dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical|right"
+        android:text="بلوک بجنورد"
+        tools:ignore="RtlCompat" />
+    <TextView
+        android:clickable="true"
+        android:id="@+id/btnShowHide"
+        android:background="@drawable/bg_roundcorner_black"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:layout_margin="1dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:textColor="#ffba08"
+        android:textSize="25dp"
+        android:fontFamily="@font/fontello"
+        android:text="&#xE81B;"
+        android:gravity="center_vertical"
+        />
+    <TextView
+        android:clickable="true"
+android:layout_marginRight="5dp"
+        android:id="@+id/btnViewOnMap"
+        android:background="@drawable/bg_roundcorner_black"
+        android:paddingLeft="7dp"
+        android:paddingRight="5dp"
+        android:layout_margin="1dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:textColor="#ffba08"
+        android:textSize="20dp"
+        android:fontFamily="@font/fontello"
+        android:text="&#xF279;"
+        android:gravity="center_vertical"
+        />
+
+</LinearLayout>
+<!--    <ProgressBar-->
+<!--        android:id="@+id/itemprogressbarDet"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="10dp"-->
+<!--        android:max="100"-->
+<!--        android:progress="0"-->
+<!--        android:indeterminate="false"-->
+<!--        android:visibility="gone"-->
+<!--        style="?android:attr/progressBarStyleHorizontal"-->
+<!--        />-->
+<!--    <ProgressBar-->
+<!--        android:id="@+id/itemprogressbarIndet"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="10dp"-->
+<!--        android:max="100"-->
+<!--        android:progress="0"-->
+<!--        android:indeterminate="true"-->
+<!--        android:visibility="gone"-->
+<!--        style="?android:attr/progressBarStyleHorizontal"-->
+<!--        />-->
+</RelativeLayout>

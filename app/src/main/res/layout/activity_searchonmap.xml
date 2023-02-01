@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/coordinator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+<RelativeLayout
+    android:id="@+id/mainLinearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+
+    <LinearLayout style="@style/ToolbarOuter"
+        android:layout_marginTop="@dimen/leftrightMarginMul2"
+        android:layout_marginLeft="@dimen/leftrightMargin"
+        android:layout_marginRight="@dimen/leftrightMargin"
+        android:padding="5dp"
+        android:elevation="20dp"
+        android:background="@drawable/bg_roundcorner_gray_backwhite10"
+        >
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarOfPage"
+            app:contentInsetLeft="0dp" app:contentInsetStart="0dp" app:contentInsetRight="0dp" app:contentInsetEnd="0dp"
+            style="@style/ToolbarStyle">
+
+            <LinearLayout
+                android:id="@+id/toolbarNormal"
+                style="@style/ToolbarContainer">
+                <TextView
+                    android:id="@+id/btnBack"
+                    style="@style/ToolbarBackButton"/>
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextboxNormal_Container_s"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+                    <EditText
+                        android:imeOptions="actionSearch"
+                        android:padding="0dp"
+                        android:inputType="text"
+                        style="@style/TextboxNormal_Child"
+                        android:id="@+id/txtSearch"
+                        android:layout_height="50dp"
+                        android:hint="@string/SearchHearOrPressMap"/>
+                </com.google.android.material.textfield.TextInputLayout>
+<!--                <TextView
+                    android:id="@+id/btnSearch"
+                    style="@style/ToolbarTextButtons"
+                    android:textSize="24dp"
+                    android:text="&#xE800;"/>-->
+                <!--                <TextView-->
+                <!--                    android:id="@+id/btnFindByLocation"-->
+                <!--                    style="@style/ToolbarTextButtons"-->
+                <!--                    android:text="&#xE810;"/>-->
+
+
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+        <View style="@style/ToolbarBottomShadow"/>
+    </LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        >
+
+        <fragment
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".MainActivity" />
+
+        <maptools.MapCenterPointer
+            android:id="@+id/viewCenterPointer"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center_vertical|center_horizontal">
+        </maptools.MapCenterPointer>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|left"
+            android:gravity="left"
+            android:layout_marginTop="?actionBarSize"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+        <RelativeLayout
+            android:elevation="10dp"
+            android:layout_width = "match_parent"
+            android:layout_height = "match_parent">
+
+            <maptools.MapMyLocationIcon
+                android:id="@+id/mapMyLocationIcon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="100px"
+                android:layout_marginTop="100px"
+                android:elevation="10000dp">
+
+            </maptools.MapMyLocationIcon>
+        </RelativeLayout>
+        <hmapscaleview.MapScaleView
+            android:id="@+id/scaleView"
+            android:layout_width="wrap_content"
+            android:layout_height="250dp"
+            android:layout_gravity="center_vertical|left"
+            android:layout_marginLeft="40dp"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnAdd"
+            app:fabCustomSize="50dp"
+            android:layout_gravity="bottom|start"
+            app:elevation="16dp"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="5dp"
+            app:backgroundTint="#33000000"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnSelectMap"
+            app:fabCustomSize="50dp"
+            android:layout_gravity="bottom|start"
+            app:elevation="16dp"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="65dp"
+            app:rippleColor="@color/red"
+            app:backgroundTint="#33000000"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnSelectLayer"
+            app:fabCustomSize="50dp"
+            android:layout_gravity="bottom|start"
+            app:elevation="16dp"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="9dp"
+            android:layout_marginBottom="125dp"
+            app:rippleColor="@color/red"
+            app:backgroundTint="#33000000"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnShowCustomMaps"
+            app:fabCustomSize="50dp"
+            android:layout_gravity="bottom|start"
+            app:elevation="16dp"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="9dp"
+            android:layout_marginBottom="185dp"
+            app:rippleColor="@color/red"
+            app:backgroundTint="#33000000"/>
+
+        <LinearLayout
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="0dp"
+            android:layout_marginRight="0dp"
+
+            android:background="@android:color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layoutDirection="rtl">
+            <RelativeLayout
+                android:background="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/btnZoomOut"
+                    style="@style/homeZoomButtons"
+                    android:layout_toRightOf="@+id/btnGotoCurrentLocation"
+                    android:text="&#xE82D;"></TextView>
+                <TextView
+                    android:id="@+id/btnGotoCurrentLocation"
+                    style="@style/homeZoomButtons"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_centerInParent="true"
+                    android:text="&#xE82E;"
+                    android:textSize="45dp"
+                    >
+                </TextView>
+                <TextView
+                    android:id="@+id/btnZoomIn"
+                    style="@style/homeZoomButtons"
+                    android:text="&#xE82C;"
+                    android:layout_toLeftOf="@+id/btnGotoCurrentLocation"
+                    >
+                </TextView>
+            </RelativeLayout>
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <ScrollView
+        android:visibility="gone"
+        android:background="@color/colorWhite"
+        android:id="@+id/scrollSearchMode"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_marginTop="90dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="60dp"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/divSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <View style="@style/ToolbarBottomShadow"/>
+                <TextView
+                    style="@style/label_s"
+                    android:id="@+id/txtSearchResult"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_gravity="center"
+                    android:text="نتیجه جستجو"/>
+                <Button
+                    android:layout_marginRight="@dimen/leftrightMarginMul2"
+                    android:id="@+id/btnShowResultOnMap"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/showResultOnMap"
+                    style="@style/btnLinkNew"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvSearchResult"
+                    android:padding="4dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>

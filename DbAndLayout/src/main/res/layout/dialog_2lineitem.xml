@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/itemMainPart"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="2dp"
+    android:paddingRight="2dp"
+    android:paddingBottom="2dp"
+    android:orientation="vertical"
+    android:layoutDirection="rtl"
+    android:minHeight="60dp">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="55dp"
+    android:orientation="horizontal">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="4dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtLine1"
+                style="@style/label"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:fontFamily="@font/iransansweb"
+                android:paddingLeft="10dp"
+                android:text="آزادگان مشهد"
+                android:textColor="@color/red" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/label_s"
+                android:id="@+id/txtLine2"
+                android:paddingLeft="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="استان تهران" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!--    <Button-->
+<!--        android:id="@+id/btnOrder"-->
+<!--        android:layout_marginEnd="0dp"-->
+<!--        android:layout_width="95dp"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:text="در انتظار"-->
+<!--        style="@style/button"-->
+<!--        android:fontFamily="@font/iransansweb"/>-->
+
+</LinearLayout>
+    <ProgressBar
+        android:id="@+id/itemprogressbarIndet"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:max="100"
+        android:progress="0"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        style="?android:attr/progressBarStyleHorizontal"
+        />
+</LinearLayout>

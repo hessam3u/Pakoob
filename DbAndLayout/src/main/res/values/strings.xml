@@ -1,0 +1,568 @@
+<resources>
+    <string name="app_name">پاکوب</string>
+    <string name="title_activity_maps">پاکوب</string>
+    <string name="NOTIF_CHANAL_PrivateMessage">پیام‌های شخصی</string>
+    <string name="NOTIF_CHANAL_PrivateMessage_Desc">پیام‌های شخصی دریافتی به گوشی شما</string>
+    <string name="NOTIF_CHANAL_PublicMessage">پیام‌های عمومی</string>
+    <string name="NOTIF_CHANAL_PublicMessage_Desc">پیام‌های عمومی دریافتی به گوشی شما</string>
+
+
+
+    <string name="nav_header_subtitle">http://www.pakoob24.ir</string>
+    <string name="menu_help">راهنما/سوالات متداول</string>
+    <string name="title_maps">نقشه‌ها</string>
+    <string name="timeout_error">به نظر می‌رسد ارتباط شما با سرور قطع می‌باشد یا مشکلی در این بین وجود دارد</string>
+
+    <string name="q_ClubTitle">سوالات درباره برنامه ها و باشگاه ها</string>
+    <string name="q_Club_Limited">آیا پاکوب مخصوص شهر یا منطقه ای خاص است؟</string>
+    <string name="q_Club_Limited_ans">پاکوب متعلق به تمام کوهنوردان و طبیعت گردان ایران در هر سطح فعالیت است. بنابراین منحصر به هیچ منطقه خاصی نمی شود. اگر نام منطقه یا شهر خاصی در پاکوب بیشتر به چشم می خورد، به علت فعالیت بیشتر افراد در آن منطقه هست.</string>
+
+    <string name="q_CantFindMyClub">باشگاه من در لیست باشگاه ها نیست. چه کاری باید انجام دهم؟</string>
+    <string name="q_CantFindMyClub_ans">در صورتی که شما مالک باشگاه هستید، برای درج شدن نام باشگاهتان با بخش پشتیبانی تماس حاصل فرمایید. در صورتی که عضوی از باشگاه هستید، از مدیر باشگاه بخواهید تا با بخش پشتیبانی تماس حاصل نماید.</string>
+
+    <string name="q_Club_HasPrice">آیا اعلام برنامه های باشگاه ها یا ثبت نام افراد در پاکوب مستلزم پرداخت هزینه است؟</string>
+    <string name="q_Club_HasPrice_ans">خیر
+    \n
+    سیاست کاری ما این است که باشگاه ها و افراد برای حضور در اپلکیشن پاکوب، هیچ هزینه مستقیمی پرداخت نکنند
+    </string>
+
+    <string name="q_ClubCantSendMessage">من یک باشگاه دار/فروشنده هستم، آیا امکان ارسال پیام تبلیغاتی به همه کاربران یا کاربرانی خاص از اپلکیشن وجود دارد؟</string>
+    <string name="q_ClubCantSendMessage_ans">بله
+    \n
+    برای انجام این موضوع، با بخش پشتیبانی تماس حاصل فرمایید</string>
+
+
+    <string name="q_NavigationPageTitle">سوالات درباره بخش مسیریابی و طراحی مسیر</string>
+    <string name="q_MainPartOfMap">بخش های اصلی صفحه نقشه و مسیریابی</string>
+    <string name="q_NavigationHowToDoIt">چگونه از اپلکیشن برای مسیریابی استفاده کنم؟</string>
+    <string name="q_NavigationHowToDoIt_Ans">پس از ورود به بخش نقشه و مسیریابی، از طریق چند روش می توانید اقدام به مسیریابی کنید.
+        \n
+    1 - در صورتی که از قبل مسیر یا Track برنامه را داشته باشید، می توانید آن را از صفحه "نقاط و Trackهای من" وارد نرم افزار کرده، با رنگ دلخواه روی نقشه نمایش دهید و با هدایت مثلث مکان نمای حرکت به سمت آن، اقدام به مسیریابی کنید.
+        \n
+        2 - می توانید با کمک دانلود نقشه های تخصصی، روی آن ها اقدام به طراحی مسیر و پیمایش کنید.
+    </string>
+    <string name="q_NavigationCanTrack">آیا امکان ذخیره مسیری که در حال عبور از آن هستم وجود دارد؟</string>
+    <string name="q_NavigationCanTrack_Ans">بله
+        \n
+        در صفحه نقشه و مسیریابی، دکمه بعلاوه را لمس کرده، گزینه ذخیره Track را انتخاب کنید تا فرآیند ثبت مسیر آغاز شود.
+        \n
+        دقت داشته باشید که ثبت مسیر در صورتی کار می کند که مکان دستگاه شما فعال شده و موقعیت فعلی شما را به نمایش بگذارد.
+        \n
+        پس از پایان کار، در صورتی که قصد ذخیره مسیر پیموده شده را دارید، در صفحه نقشه و مسیریابی روی دکمه ای که با علامت پرچم مشخص شده است ضربه بزنید.
+    </string>
+    <string name="q_NavigationCanSavePoint">آیا امکان ثبت یک نقطه در اپ وجود دارد؟</string>
+    <string name="q_NavigationCanSavePoint_Ans">بله
+        \n
+        در صفحه نقشه و مسیریابی، دکمه بعلاوه را لمس کرده، گزینه اضافه کردن نقطه را انتخاب کنید.
+        \n
+در قسمت پایین صفحه می توانید برای نقطه نام مورد نظرتان را انتخاب کنید.
+        \n
+        همچنین در این بخش می توانید مختصات جدیدی را برای آن تنظیم کنید. این حالت برای زمانی کاربرد دارد که یک مختصات دارید و قصد دارید که مکان آن را روی نقشه بیابید.
+    </string>
+    <string name="q_NavigationCanNavigate">آیا امکان ناوبری (رفتن) به سمت یک نقطه وجود دارد؟</string>
+    <string name="q_NavigationCanNavigate_Ans">بله
+        \n
+        برای این کار چند روش وجود دارد. اما روش معمول آن به این صورت است که نخست می بایست نقطه مورد نظر را در حالت ویرایش باز کنید (از صفحه نقاط و Trackهای من و همچنین در زمان ثبت نقطه)
+        \n
+        سپس روی دکمه "برو" ضربه بزنید تا ناوبری آغاز شود و اپ شما را به سمت هدف هدایت کند.
+        \n
+        در هنگام ناوبری، یک فلش و یک مسافت در صفحه نمایش داده می شود که جهت هدف و فاصله آن از نقطه فعلی شماست.
+    </string>
+    <string name="q_MapPageTitle">سوالات درباره نقشه‌های تخصصی</string>
+    <string name="q_searchMap">چگونه نقشه مورد نظرمان را پیدا کنیم؟</string>
+    <string name="q_searchMap_a">با استفاده از آیکون نقشه یا از صفحه نقشه‌ها و کادر جستجوی موجود در بالای این صفحه، می‌توانید نقشه مورد نظر را جستجو کنید.
+        \n
+        عبارت جستجو می‌تواند شامل نام منطقه یا رشته کوه یا قله مورد نظر یا بخشی از شماره اندیس نقشه باشد.
+        \n
+        همچنین می‌توانید در حالت صفحه کلید انگلیسی، با وارد کردن عرض و طول جغرافیایی که با یک ویرگول از هم جدا شده اند نیز نقشه‌هایی که آن نقطه را شامل می‌شوند پیدا کنید.</string>
+    <string name="q_searchMap_resultType">نتیجه جستجوی نقشه: تفاوت عبارت سفارش با خرید چیست؟</string>
+    <string name="q_searchMap_resultType_a">کلمه خرید برای زمانی است که نقشه آماده دانلود می‌باشد و به محض پرداخت هزینه احتمالی، می‌توانید آن را دانلود کنید. \n کلمه سفارش برای زمانی است که نقشه آماده سازی نشده و پس از انجام پرداخت، روال آماده سازی آن آغاز می‌شود پس از آماده سازی، آماده دانلود می‌باشد. به طور معمول یک تا سه روز عمل آماده سازی زمان می‌برد و خواهشمند است در این بازه زمانی از تماس با پشتیبانی خودداری فرمایید.</string>
+    <string name="q_mapfile">فایل نقشه را چگونه می‌توانم داشته باشم؟</string>
+    <string name="q_mapfile_a">جهت تهیه فایل نقشه (عکس یا فایل منبع) می‌توانید به سازمان نقشه برداری کشور مراجعه کرده، از واحد ارائه محصولات، فایل نقشه مورد نظر را جهت پرینت تهیه کنید. مرجع رسمی تولیدکننده نقشه در کشور ایران، سازمان نقشه برداری می‌باشد.</string>
+    <string name="q_estefadeHamzaman">آیا می‌توانم با یک کاربری در بیش از یک دستگاه از نقشه‌هایی که خریده‌ام استفاده کنم؟</string>
+    <string name="q_estefadeHamzaman_a">خیر، شما می‌بایست در هر دستگاه به طور مجزا نقشه را خریداری کرده باشید</string>
+    <string name="q_hazfeNasb_a">بله، تاریخچه خرید شما در سرور ذخیره شده و در هر زمان که بخواهید می‌توانید نرم افزار را دوباره نصب کرده و نقشه‌های سابق خود را دانلود و سپس استفاده کنید.</string>
+    <string name="q_hazfeNasb">آیا در صورت حذف نصب نرم افزار و سپس نصب مجدد آن، به نقشه‌هایی که خریداری کرده‌ام دسترسی خواهم داشت؟</string>
+    <string name="q_ghofl">کاربرد دکمه قفل در صفحه اصلی چیست؟</string>
+    <string name="q_ghofl_a">در حالت قفل شده، شما در مرکز تصویر قرار دارید و زاویه نگاهتان نیز به طور مرتب به روز رسانی می‌شود (نقشه توجیه شده‌است) اما در حالت قفل باز، کنترلِ زاویه دوربین به طور کامل برعهده شماست</string>
+    <string name="q_emptyMaps">نرم افزار را نصب کرده‌ام اما صفحه نقشه فقط گوگل مپ را نشان می‌دهد. پس نقشه‌های تخصصی کجاست؟</string>
+    <string name="q_emptyMaps_a">نقشه پایه نرم افزار، نقشه گوگل است. حال آن که با خرید هر کدام از نقشه‌های نقاط مختلف ایران می‌توانید نقشه آن منطقه را در لایه ای بالای گوگل مپ مشاهده کنید
+        \n
+        برای خرید نقشه، در صفحه اصلی روی آیکون نقشه کلیک کنید تا صفحه نقشه‌ها باز شود
+    </string>
+    <string name="q_isOffline">آیا پس از خرید و دانلود نقشه، می‌توانم به طور کاملا آفلاین از آن استفاده کنم؟</string>
+    <string name="q_isOffline_a">بله، نرم افزار به گونه ای طراحی شده‌است که بدون نیاز به اینترنت بتوانید از نقشه‌هایی که قبلا دانلود کرده اید استفاده نمایید.</string>
+    <string name="q_searchByLocation">چگونه نقشه‌های مربوط به یک نقطه خاص را پیدا کنم؟</string>
+    <string name="q_searchByLocation_a">به صفحه نقشه‌ها - قسمت بالایی صفحه بروید. در کنار علامت جستجو، علامت انتخاب نقطه وجود دارد که با فشار دادن آن، صفحه انتخاب نقطه باز می‌شود.</string>
+    <string name="q_contactByEmail">لطفا برای رفع هر گونه اشکال و ابهام، با تلفن 09151037928 با ایمیل زیر تماس حاصل فرمایید،
+    \n
+        نظرات ارزشمند شما، ما را در پیشبرد پروژه یاری خواهد کرد.
+    </string>
+    <string name="q_contactByEmail_a">app.pakoob@gmail.com</string>
+    <string name="q_hajmeNaghshe">حجم نقشه‌های قابل دانلود چقدر است؟</string>
+    <string name="q_hajmeNaghshe_a">هر نقشه در حدود 3 تا 6 مگابایت برای دانلود نیاز دارد.
+            \n
+        همچنین پس از دانلود، هر نقشه حدود 15 تا 20 مگابایت فضای حافظه دستگاه را اشغال خواهد کرد
+        \n
+        در صورتی که نقشه‌ها با زوم خیلی بالا تولید شوند، 30 مگابایت دیگر نیز حافظه اشغال خواهند کرد. این قابلیت به طور پیش فرض غیر فعال است.
+    </string>
+    <string name="dialog_readyToGoBank_title">در حال انتقال به بانک جهت پرداخت</string>
+    <string name="dialog_readyToGoBank_paydesc"> مبلغ قابل پرداخت  </string>
+    <string name="dialog_readyToGoBank_discountCop">در صورتی که کد تخفیف دارید، در کادر زیر وارد نمایید.</string>
+    <string name="dialog_readyToGoBank_paydesc1">"در صورت استفاده از مرورگرهایی مانند کروم، پس از پرداخت در بانک، می بایست گزینه را انتخاب کنید که به شکل صحیحی پرداخت را تکمیل نماید (معمولا با انتخاب گزینه Send Anyway پس از پرداخت). در صورتی که کیف پول شما از قبل مانده داشته باشد از آن مبلغ نیز استفاده خواهد شد."</string>
+    <string name="dialog_readyToGoBank_paydesc_fel"> می‌باشد.</string>
+
+    <string name="dialog_ertebatBaServer_Title">"ارتباط با سرور"</string>
+    <string name="dialog_ertebatBaServer_Desc">"متاسفانه در ارتباط با سرور مشکلی به وجود آمده‌است. لطفا مجددا تلاش نمایید"</string>
+
+    <string name="ok">"قبول"</string>
+    <string name="afterBuyGPX_title">خرید مسیر</string>
+    <string name="afterBuyGPX_desc">مسیر با موفقیت خریداری شد. شما مجددا به صفحه مربوط به آن هدایت شده و می توانید در بازه یک ماه آینده، آن را دانلود نمایید.</string>
+
+    <string name="afterBuyMap_title">خرید نقشه</string>
+    <string name="afterBuyMap_desc">نقشه مورد نظر خریداری شد. وضعیت آن را می‌توانید از صفحه نقشه‌ها دنبال کرده و در صورت آماده سازی آن را دانلود کنید</string>
+    <string name="updateAvailable">نسخه جدید منتشر شد</string>
+    <string name="deleteTiles">پاک کردن حافظه نقشه‌ها</string>
+    <string name="deleteTiles_desc">اگر مشکل کمبود حافظه دارید از این گزینه استفاده کنید. برای تولید مجدد نقشه، به صفحه نقشه‌ها رفته گزینه استخراج را بزنید و نیاز به دانلود مجدد نقشه نیز نمی‌باشد.</string>
+    <string name="deleteMaps">پاک کردن حافظه دانلودها</string>
+    <string name="deleteMaps_desc">در صورت پاک نکردن حافظه نقشه‌ها، همچنان می‌توانید به کار خود ادامه دهید.</string>
+    <string name="AreYouSureToDeleteFiles">آیا از پاک کردن فایل‌ها اطمینان دارید؟</string>
+    <string name="DeleteConfirm">تایید حذف</string>
+    <string name="deleteHighZoom">پاک کردن حافظه زوم‌های بالا</string>
+    <string name="deleteHighZoom_desc">برای تولید مجدد، به صفحه نقشه‌ها رفته و با کمک دکمه سه نقطه در کنار نقشه، این زوم را مجددا فعال کنید. با این دکمه زوم‌های 100 متر و پایین تر حذف خواهد شد.</string>
+    <string name="showHelpTitle">نمایش راهنما</string>
+    <string name="GotoHelpLarge">راهنمای نرم افزار</string>
+    <string name="showHelpTitle_desc">راهنمای نرم افزار را مطالعه کنید تا بتوانید از امکانات آن به بهترین شکل استفاده نمایید</string>
+    <string name="showSpotlightAtHomeNextTime">راهنمای صفحه نخست در بازدید بعدی</string>
+    <string name="showSpotlightAtMapNextTime">راهنمای صفحه نقشه در بازدید بعدی</string>
+
+
+    <string name="q_posibleHighZoom">آیا امکان استفاده نقشه در زوم کم تر از 100 متر وجود دارد؟</string>
+    <string name="q_q_posibleHighZoom_a">بله. پس از دانلود نقشه، در کنار نام آن در صفحه نقشه‌ها، یک دکمه سه نقطه نمایش داده می‌شود که با کلیک روی آن می‌توانید نقشه را در زوم‌های کم تر نیز ایجاد کنید. توجه نمایید که این زوم‌ها حافظه زیادی در تلفن شما اشغال می‌کنند. در صورتی که به آن‌ها نیاز نداشتید با کمک منوی تنظیمات، آن‌ها را با خیال راحت پاک کنید.</string>
+
+
+    <string name="pp_welcome">بسیار خرسندیم که اپلیکیشن پاکوب را برای استفاده انتخاب کرده اید. در ادامه سیاست‌های ما را در زمینه حفظ حریم خصوصی شما را مطالعه خواهید کرد</string>
+    <string name="pp_accept">پذیرش</string>
+    <string name="pp_acceptanswer">مطالعه این مطلب و استفاده از اپلیکیشن، به منزله موافقت شما با تبعیت و التزام به سیاست حفظ حریم خصوصی به شرح زیر است که بر رابطه ما با شما در خصوص این وب اپلیکیشن حاکم است.</string>
+    <string name="pp_title01">اطلاعاتی که توسط اپلیکیشن ما ذخیره می‌گردد و هدف ما از ذخیره سازی این اطلاعات</string>
+    <string name="pp_answer01">اطلاعاتی که از شما در اپلیکیشن ما ذخیره می‌شود تنها شامل اطلاعات شناسایی تلفن شما و به دلیل انجام احراز هویت است. سایر اطلاعات نظیر کد ملی یا تاریخ تولد و امثال آن اختیاری است و پر کردن آن‌ها، دامنه خدمات قابل ارائه اپلیکیشن به شما را افزایش خواهد داد.</string>
+    <string name="pp_title02">اطلاعات مکانی</string>
+    <string name="pp_answer02">این اپلیکیشن در ابتدای شروع به کار به اطلاعات مکان فعلی شما دسترسی پیدا می‌کند. این اطلاعات مکانی جهت ثبت موقعیت فعلی (Track) و نمایش شما روی نقشه مورد استفاده قرار می‌گید. هیچ داده مربوط به اطلاعات مکانی از دستگاه شما خارج نشده یا به مکانی دیگر ارسال نمی‌شود. در صورتی که قصد ارسال موقعیت مکانی خود را داشته باشید این موضوع به طور صریح از شما پرسیده خواهد شد. همچنین اپلیکیشن موقعیت حدودی و نه دقیق شما را جهت ارائه بهترین پیشنهادات مرتبط با محدوده حضور شما، در هنگام ورود برداشت می‌کند</string>
+    <string name="pp_title03">افشای اطلاعات کاربران</string>
+    <string name="pp_answer03">        پاکوب به هیچ عنوان اطلاعات شما را اجاره نمی‌دهد، نمی‌فروشد و به اشتراک نمی‌گذارد، جز در موارد زیر:
+        در صورت تخطی شما از قوانین شرایط و ضوابط سرویس‌ها و در صورت وجود شاکی خصوصی نسبت به عملکرد شما، اطلاعات شما در اختیار مراجع قانونی قرار می‌گیرد.
+
+در صورتی که مراجع قضایی اطلاعات شما را به هر دلیلی از ما بخواهند این اطلاعات در اختیار ایشان قرار می‌گیرد.
+    </string>
+    <string name="title_privacypolicy">سیاست حفظ حریم ‌خصوصی</string>
+    <string name="title_mytracks">نقاط و Trackهای من</string>
+    <string name="fileChooser_myTracks_title">انتخاب فایل نقطه یا Track</string>
+    <string name="fileChooser_SelectPathToSave">انتخاب مسیر ذخیره سازی</string>
+    <string name="fileChooser_myTracks_btnSelect">انتخاب</string>
+    <string name="fileChooser_myTracks_btnCancel">انصراف</string>
+    <string name="dialog_invalidGpxFile">فایل انتخاب شده حاوی خطا می‌باشد و امکان باز کردن آن وجود ندارد. لطفا موضوع را به پشتیبانی گزارش نمایید</string>
+    <string name="dialog_invalidGpxFile_title">خطا در باز کردن فایل</string>
+    <string name="dialog_emptyGpxfile_title">فایل خالی می‌باشد</string>
+    <string name="dialog_emptyGpxfile_desc">فایل انتخاب شده محتوی اطلاعات مسیر یا نقطه نمی‌باشد و در نتیجه امکان دریافت آن وجود ندارد</string>
+    <string name="dialog_FileImported_title">دریافت موفق فایل</string>
+    <string name="dialog_fileImported">فایل با موفقیت دریافت و در لیست نقطه‌ها و Trackها قرار گرفت.</string>
+    <string name="dialog_File_NOT_Imported_title">مشکل در دریافت فایل</string>
+    <string name="dialog_file_NOT_Imported">متاسفانه فایل مورد نظر در حین دریافت و استخراج با مشکل مواجه شد. لطفا این مورد را به اطلاع پشتیبانی برسانید</string>
+    <string name="dialog_FileNotSupported_Title">عدم سازگاری نوع فایل</string>
+    <string name="dialog_FileNotSupported_Desc">فایل دریافتی با این نسخه از پاکوب سازگاری ندارد. لطفا از نسخه های جدیدتر پاکوب استفاده نمایید</string>
+
+    <string name="Up_Text">شاخه بالا ...</string>
+    <string name="Up_Text_EmptyForMyTracks">لیست نقطه‌ها، و Trackها و Routeهای شما</string>
+    <string name="title_ReadyToDownloadOfPakoob">آماده دانلود از پاکوب</string>
+    <string name="title_RequestTrackFromPakoob">درخواست این مسیر از پاکوب</string>
+    <string name="title_RequestTrackFromPakoob_Similar">درخواست یک مسیر دیگر برای این منطقه از پاکوب</string>
+    <string name="title_SearchSafeGpx_MyTracks">جستجو و دانلود مسیرها از پاکوب</string>
+    <string name="SearchHearForTracks">نام قله یا مسیر یا مختصات را جستجو کنید</string>
+    <string name="btnUpdate">به روز رسانی</string>
+    <string name="btnBuyAndDownload">خرید و دانلود</string>
+    <string name="btnRequestTrackToPakoob">ارسال درخواست</string>
+    <string name="title_NoTrackToDownload">هیچ مسیری را برای دانلود آماده نکرده اید</string>
+    <string name="title_PleaseFillTrackRequestForm">لطفا اطلاعات مسیر مورد نظر خود را وارد کنید:</string>
+    <string name="lblTitleOfTrack">عنوان مسیر</string>
+    <string name="lblTitleOfTrackHint">نام قله یا منطقه یا هر عنوانی که به ذهنتان می رسد</string>
+    <string name="lblDescOfTrack">توضیحات مسیر</string>
+    <string name="lblDescOfTrackHint">تاریخ مورد نظر برای اجرای برنامه یا هر توضیحی که برای این مسیر مورد نیاز است</string>
+
+    <string name="title_NoSafeGpxToDownload">برای عبارت انتخابی، هیچ مسیری موجود نیست</string>
+    <string name="bearingFromCurrentTextAtMainActivity">"گرا از نقطه فعلی: "</string>
+    <string name="distanceFromCurrentTextAtMainActivity">"فاصله از نقطه فعلی: "</string>
+    <string name="CountItemsSelected">آیتم انتخاب شده</string>
+    <string name="TrackWithNameOf">مسیر با نام</string>
+    <string name="numberOfPoints">تعداد نقطه‌ها:</string>
+    <string name="distance">مسافت:</string>
+    <string name="distance2">مسافت</string>
+    <string name="YouAreDesigningRoute">در حال طراحی مسیر</string>
+    <string name="save">ذخیره</string>
+    <string name="statistics">آمار\nسفر</string>
+    <string name="startSaveTrack">آغاز\nمسیر</string>
+    <string name="currentTrackIsTooShortToSave">به دلیل عدم برداشت مختصاتی، هیچ مسیری ذخیره نگردید</string>
+    <string name="endSaveTrack">اتمام\nمسیر</string>
+    <string name="discard">انصراف</string>
+    <string name="lblTrack_Title">عنوان:</string>
+    <string name="lblColor">رنگ:</string>
+    <string name="btnViewPoints">نمایش جدول نقاط</string>
+    <string name="btnTrackInfo">جزئیات و آنالیز مسیر</string>
+    <string name="btnDelete">حذف</string>
+    <string name="btnEditOnMap">ویرایش روی نقشه</string>
+    <string name="Route">مسیر</string>
+    <string name="SearchingSatellite">در حال محاسبه موقعیت</string>
+    <string name="vali_GeneralError_Title">خطای اعتبارسنجی</string>
+    <string name="vali_PleaseEnterName">لطفا نام را وارد کنید</string>
+    <string name="lblPlotRouteTitle">طراحی مسیر</string>
+    <string name="lblPlotRouteDesc">مسیری که قصد رفتن به آن را دارید طراحی کنید.</string>
+    <string name="lblAddWaypoint">اضافه کردن نقطه</string>
+    <string name="lblAddWaypointDesc">یک نقطه در محل مکان نما اضافه کنید</string>
+    <string name="YouAreAddingWaypoint">ثبت نقطه (روی نقشه کلیک کنید یا در کادر زیر وارد نمایید)</string>
+    <string name="nameOfWaypoint">نام نقطه</string>
+    <string name="LocationOfWaypoint">مختصات نقطه</string>
+    <string name="Waypoint">نقطه</string>
+    <string name="lblEnterPosition">وارد کردن مختصات</string>
+    <string name="lblPositionSystem">سیستم مختصات</string>
+    <string name="btnAccept">تایید</string>
+    <string name="btnCancel">انصراف</string>
+    <string name="vali_RouteMustHavePoints">مسیر نیازمند حداقل دو نقطه می‌باشد.</string>
+    <string name="Elevation">ارتفاع</string>
+    <string name="Position">مختصات</string>
+    <string name="WeatherOf">هوای</string>
+    <string name="PositionOfCenter">مختصات مرکز نقشه</string>
+    <string name="PositionOfCenter_Copied">مختصات مرکز نقشه کپی شد</string>
+    <string name="Date">تاریخ</string>
+    <string name="Duration">مدت</string>
+    <string name="Speed">سرعت</string>
+    <string name="CourseAndDistance">گرا \n فاصله</string>
+    <string name="SpeedAndTime">سرعت \n مدت</string>
+    <string name="lblBasicInfo">اطلاعات اولیه</string>
+    <string name="lblPointsCount">تعداد نقطه</string>
+    <string name="DurationMoving">مدت حرکت</string>
+    <string name="DurationStopped">مدت توقف</string>
+    <string name="AvgSpeed">م. سرعت</string>
+    <string name="MaxSpeed">بیشترین سرعت</string>
+    <string name="AvgSpeedMoving">م. سرعت حرکت</string>
+    <string name="AscentTotal">افزایش ارتفاع</string>
+    <string name="DescentTotal">کاهش ارتفاع</string>
+    <string name="MinElevation">کمترین ارتفاع</string>
+    <string name="MaxElevation">بیشترین ارتفاع</string>
+    <string name="Delination">انحراف مغناطیسی</string>
+    <string name="Heading">زاویه قطب نما</string>
+    <string name="Bearing">پارامتر Bearing</string>
+    <string name="SNR">پارامتر SNR</string>
+    <string name="verticalAccuracy">خطای ارتفاع GPS</string>
+    <string name="Accuracy">خطای GPS</string>
+    <string name="lblSlopeInfo">اطلاعات شیب</string>
+    <string name="lblUphill">سربالایی:</string>
+    <string name="lblDownhill">سرپایینی:</string>
+    <string name="lblValue">میزان</string>
+    <string name="Slope">شیب</string>
+    <string name="AvgPace">میانگین گام</string>
+    <string name="MaxPace">گام بیشینه</string>
+    <string name="StartTrackRecordingToShowDistance">لطفا ذخیره مسیر را آغاز کنید</string>
+    <string name="NorthRefrence">مرجع شمال</string>
+    <string name="NorthRefrence_desc">از کدام شمال به عنوان مرجع استفاده شود. در صورتی که شمال مغناطیسی را انتخاب کنید، میزان انحراف آن در هر منطقه به طور خودکار محاسبه و اعمال خواهد شد.</string>
+    <string name="PositionFormat">سیستم مختصاتی اپلیکیشن</string>
+    <string name="PositionFormat_desc">در کل اپلکیشن، از صفحه نقشه گرفته تا نمایش لیست نقاط یک مسیر، سیستم مختصاتی را تغییر دهید.</string>
+    <string name="btnExportGPX">خروجی GPX</string>
+    <string name="btnMoveToFolder">انتقال به شاخه</string>
+    <string name="CurrentVersion">شماره نسخه در حال استفاده:</string>
+    <string name="StartTime">شروع</string>
+    <string name="EndTime">پایان</string>
+    <string name="SaveCompleted">ذخیره سازی انجام شد</string>
+    <string name="NoFolderExistsForTransfer_Title">انتخاب شاخه</string>
+    <string name="NoFolderExistsForTransfer">هیچ شاخه ای برای انتقال وجود ندارد. لطفا یک شاخه جدید ایجاد کنید</string>
+    <string name="SaveCompleted_Desc">فایل خروجی در آدرس
+        \n
+        000
+        \n
+        و با نام
+        \n
+        111
+        \n
+        ذخیره گردید.
+    </string>
+    <string name="Warning">هشدار</string>
+    <string name="TooManyPointsToEditOnMap">تعداد نقطه‌های این مسیر زیاد بوده و امکان ویرایش آن روی نقشه در نسخه فعلی میسر نخواهد بود.</string>
+    <string name="ErrorInSave">خطای ذخیره سازی</string>
+    <string name="ErrorInSave_Desc">متاسفانه خطایی ناشناخته در هنگام ذخیره سازی به وجود آمده است.</string>
+    <string name="ErrorInSaveMimeType_Desc">شاخه ای که انتخاب کرده اید برای ذخیره فایل مناسب نیست. لطفا شاخه دیگری مانند شاخه دانلودها را انتخاب کنید</string>
+    <string name="ErrorInSavePermissionDenied">پاکوب دسترسی لازم برای ذخیره فایل ها را ندارد. لطفا این دسترسی را فعال نمایید</string>
+    <string name="btnAddToRoute">اضافه نقطه</string>
+    <string name="distanceFronPrev">فاصله از نقطه قبل:</string>
+    <string name="btnRemoveRoutePoint">حذف نقطه</string>
+    <string name="EnterName_Title">انتخاب نام</string>
+    <string name="EnterName_Message">لطفا نام شاخه جدید را وارد نمایید:</string>
+    <string name="btnRename">تغییر نام</string>
+    <string name="btnAddFolderInToolbar">ایجاد شاخه جدید</string>
+    <string name="btnImportTrackFile">وارد کردن فایل GPX</string>
+    <string name="btnSelectAll">انتخاب همه</string>
+    <string name="EnterNewName_Message">لطفا نام جدید را وارد نمایید:</string>
+    <string name="lblAddSightNGo">خط جهت نگاه</string>
+    <string name="lblAddSightNGoDesc">ثبت خط جهت نگاه و راستای دید</string>
+    <string name="vali_NoCurrectLocation">در انتظار موقعیت</string>
+    <string name="vali_NoCurrectLocation_Desc">موقعیت فعلی شما هنوز تثبیت نشده و امکان استفاده از این قابلیت وجود ندارد</string>
+    <string name="btnGo">برو</string>
+    <string name="AreYouSureToExit_Title">اطمینان از خروج</string>
+    <string name="AreYouSureToExit_Desc">آیا از خروج اطمینان دارید؟</string>
+    <string name="StopNavigation_Title">توقف ناوبری</string>
+    <string name="StopNavigation_Desc">آیا از توقف ناوبری و رفتن به سمت هدف اطمینان دارید؟</string>
+    <string name="YouAreSightNGo">در حال ثبت خط دید</string>
+    <string name="btnSaveSightNGo">ذخیره خط دید</string>
+    <string name="btnCaptureSightNGo">ترسیم خط دید</string>
+    <string name="btnReset">از نو</string>
+    <string name="EnterNewDistance_Title">دریافت فاصله</string>
+    <string name="EnterNewDistance_Desc">لطفا فاصله مد نظر را وارد نمایید</string>
+    <string name="menuCreateZoomLevel1">ایجاد یک سطح زوم بیشتر</string>
+    <string name="menuCreateZoomLevel2">ایجاد دو سطح زوم بیشتر</string>
+    <string name="SightNGo">خط دید</string>
+    <string name="reCreateMap">استخراج مجدد</string>
+    <string name="menu_deleteMapTiles">پاک کردن حافظه این نقشه</string>
+    <string name="menu_deleteMapTilesAndDownload">پاک کردن حافظه این نقشه و دانلودهایش</string>
+    <string name="dialog_UnknownError">خطای پیش بینی نشده</string>
+    <string name="dialog_UnknownErrorRepeatAndDesc">متاسفانه خطایی پیش بینی نشده رخ داده‌است. لطفا کمی بعد مجددا تلاش کنید یا در صورت عدم رفع مشکل، با پشتیبانی ارتباط برقرار کنید.</string>
+    <string name="dialog_UnknownErrorDesc">متاسفانه خطایی پیش بینی نشده رخ داده‌است. لطفا با پشتیبانی ارتباط برقرار کنید.</string>
+    <string name="dialog_UnknownErrorDescForOpenSearchOnMap">متاسفانه هنوز نقشه در حال دانلود است. لطفا چند لحظه بعد دوباره امتحان کنید یا اپ را بسته و دوباره باز کنید.</string>
+    <string name="close">بستن</string>
+    <string name="selectMap">انتخاب نقشه</string>
+    <string name="ImportFile">دریافت فایل</string>
+    <string name="AreYouSureToImportFile">آیا از دریافت فایل XXX اطمینان دارید؟</string>
+    <string name="lblRecordTrack">ثبت Track</string>
+    <string name="lblRecordTrack_Desc">شروع ثبت مسیر حرکتتان و دریافت آمار حرکت</string>
+    <string name="MsgRecordingStarted">ثبت مسیر آغاز شد</string>
+    <string name="MsgRecordingStartedAgain">ثبت مسیر از سر گرفته شد</string>
+    <string name="MsgRecordingPaused">ثبت مسیر موقتا متوقف شد</string>
+    <string name="isProcessing_Title">درخواست انتظار</string>
+    <string name="isProcessing_Desc">لطفا تا انتهای عملیات فعلی صبر کنید</string>
+    <string name="vali_SaveInFileError">خطا در ذخیره فایل</string>
+    <string name="vali_SaveInFileError_Desc">لطفا خطای زیر را به اطلاع پشتیبان اپلیکیشن برسانید. </string>
+    <string name="New">جدید</string>
+    <string name="dialog_fileImportedWithXXXName">فایل با نام XXX دریافت و در لیست قرار گرفت</string>
+    <string name="RecordTrack_NotificationTitle">ثبت مسیر</string>
+    <string name="RecordTrack_NotificationTitle_Desc">ثبت مسیر حرکت شما در حال انجام‌است. لطفا برای مدیریت آن، روی این پیام ضربه بزنید</string>
+    <string name="RequestBackgroundLocationInAndroid29_Title">درخواست مجوز دسترسی</string>
+    <string name="RequestBackgroundLocationInAndroid29_Title_Desc">برای دسترسی به موقعیت مکانی شما در پس زمینه، می‌بایست با رفتن به تنظیمات مربوط به برنامه و در قسمت مجوزهای دسترسی به مکان (Location)، این مجوز (گزینه همه زمان‌ها یا Allow all the time) را برای پاکوب فعال نمایید.\n در غیر این صورت ممکن است زمانی که برنامه را برای چند دقیقه استفاده نمی‌کنید، مسیر شما را موقتا ذخیره نکند.</string>
+    <string name="locationPermission_Denied">مجوز دسترسی به موقعیت مکانی</string>
+    <string name="locationPermission_Denied_Desc">شما قبلا مجوز دسترسی به موقعیت مکانی برای این اپلکیشن را رد کرده اید. لطفا برای ادامه کار، از تنظیمات دستگاه، بخش برنامه‌ها، این برنامه را پیدا کرده و به آن مجوز (Permission) دسترسی به مکان را بدهید.</string>
+    <string name="StoragePermission_Denied">مجوزدسترسی به فایل‌ها</string>
+    <string name="StoragePermission_Denied_Desc">شما قبلا مجوز دسترسی به فایل‌ها را رد کرده اید. لطفا در صفحه ای که باز می‌شود در بخش مجوزها (Permission) مجوز دسترسی به حافظه را به این اپلیکیشن بدهید</string>
+    <string name="FineLocationDenied_Title">مجوز دسترسی</string>
+    <string name="FineLocationDenied_Desc">شما مجوز دسترسی به موقعیت مکان در این اپ را ارائه نداده اید و در نتیجه امکان ثبت ترک با دقت بالا وجود ندارد. لطفا از طریق تنظیمات-برنامه ها-پاکوب-مجوز دسترسی به موقعیت مکانی دقیق را به پاکوب بدهید</string>
+
+
+    <string name="locationIsOff">روشن کردن مکان</string>
+    <string name="locationIsOff_Desc">لطفا برای ادامه، مکان دستگاه خود را روشن کنید.</string>
+    <string name="NoInternet">عدم اتصال به اینترنت</string>
+    <string name="NoInternet_Desc">لطفا برای ادامه عملیات، به اینترنت متصل شوید</string>
+
+
+    <!--    old home-->
+    <string name="ToursAndClasses">برنامه‌ها و کلاس‌ها</string>
+    <!--    home-->
+    <string name="Masirha">مسیرها</string>
+    <string name="Masirhay">مسیرهای</string>
+    <string name="Map">نقشه</string>
+    <string name="Classes">کلاس‌ها</string>
+    <string name="Tours">برنامه‌ها</string>
+    <string name="MapAndRouting">نقشه و مسیریابی</string>
+    <string name="MyClub">باشگاه خود را انتخاب کنید</string>
+    <string name="profile">پروفایل</string>
+    <string name="clubs">باشگاه‌ها</string>
+    <string name="weatherAndTracks">هواشناسی نقطه ای و دانلود ترک ها</string>
+    <string name="messages">پیام‌ها</string>
+    <string name="startRecording">شروع ثبت مسیر</string>
+
+    <string-array name="PositionFormats">
+        <item>درجه، دقیقه، ثانیه اعشاری</item>
+        <item>درجه، دقیقه اعشار</item>
+        <item>درجه اعشاری</item>
+        <item>UTM</item>
+    </string-array>
+    <string-array name="NorthRefrences">
+        <item>شمال حقیقی یا True North</item>
+        <item>شمال مغناطیسی یا Magnetic North</item>
+    </string-array>
+
+    <string name="CompeleteProfile">تکمیل اطلاعات کاربری</string>
+    <string name="welcomeback">خوش آمدید</string>
+    <string name="welcomeback_desc">شما به سیستم وارد شده، می‌توانید با حساب کاربری خود از امکانات نرم افزار بهره ببرید. </string>
+
+    <string name="welcomeInFirstLogin">خوش آمدید</string>
+    <string name="welcomeInFirstLogin_desc">لطفا در صفحه بعد اطلاعات کاربری خود را وارد کنید. پر کردن این اطلاعات اجباری نیست اما با این کار امکانات بیشتری از اپلکیشن برای شما قابل استفاده خواهد بود</string>
+
+
+    <string name="follow">دنبال کردن</string>
+    <string name="following">دنبال می‌کنید</string>
+
+    <string name="title_ClubHome">اطلاعات باشگاه</string>
+    <string name="title_FmSides">پیام ها</string>
+    <string name="need_loginOrRegister">نیاز به ثبت نام</string>
+    <string name="need_loginOrRegister_Desc">برای ادامه این عملیات نیاز به ورود/ثبت نام در سامانه دارید.</string>
+
+    <string name="NoTourToShow">هیچ برنامه‌ای برای نمایش وجود ندارد</string>
+
+    <string name="NoMessageToShow">هیچ پیامی برای نمایش وجود ندارد</string>
+    <string name="NothingToShow">هیچ اطلاعاتی برای نمایش وجود ندارد</string>
+
+    <string name="letsGo">بزن بریم!</string>
+    <string name="view">نمایش</string>
+    <string name="IsLoading">در حال دریافت اطلاعات</string>
+
+    <string name="NotGettingSMS">عدم دریافت پیامک</string>
+    <string name="NotGettingSMS_Desc">آیا پس از گذشت مدت مقرر، پیامک تایید به دست شما نرسیده است؟ در این صورت این موضوع را از طریق دکمه زیر به پشتیبانی اطلاع دهید تا مشکل شما را حل نمایند. ضمنا این اتفاق ممکن است به دلیل قطع موقت سامانه پیامک رخ داده باشد، بنابراین پیشنهاد می شود در ساعت های آتی، دوباره برای دریافت پیامک تایید اقدام کنید</string>
+    <string name="SendRequest">ارسال درخواست</string>
+    <string name="SendRequest_Completed">درخواست شما با موفقیت ارسال گردید</string>
+
+
+    <string name="SelectClub_Title">انتخاب باشگاه</string>
+    <string name="SelectClub_Favorate_Desc">لطفا تمام یا بخشی از نام باشگاه اصلی خود را وارد کنید.</string>
+    <string name="NoItemFoundInSearch">هیچ موردی پیدا نشد</string>
+    <string name="ClubSelected">انتخاب باشگاه</string>
+    <string name="ClubSelected_Desc">باشگاه @@@ به عنوان باشگاه اصلی شما انتخاب گردید. برای تغییر این باشگاه، کافیست در صفحه نخست روی علامت باشگاه انگشت خود را نگه دارید.</string>
+
+    <string name="Continue">ادامه</string>
+    <string name="SelectCity_Title">انتخاب شهر</string>
+    <string name="SelectCity_Desc"></string>
+
+    <string name="Filter_SelectCity">فیلتر شهر:</string>
+    <string name="Filter_NoFilter">بدون فیلتر</string>
+
+
+    <string name="CantLoadTrackToEdit">مشکل در باز کردن مسیر</string>
+    <string name="CantLoadTrackToEdit_Desc">متاسفانه باز کردن این فایل برای ویرایش میسر نشد. این موضوع احتمالا به دلیل تعدد زیاد نقاط موجود در آن یا حافظه پایین گوشی است. لطفا دوباره تلاش کنید و در صورت تکرار، موضوع را به پشتیبانی اطلاع دهید.</string>
+
+    <string name="ProblemInSearch">مشکل در جستجو</string>
+    <string name="ProblemInSearch_DESC">متاسفانه در عبارت مورد جستجو، خطا وجود دارد. لطفا عنوان مورد جستجو را تغییر دهید</string>
+    <!--    تنظیمات-->
+    <string name="ProblemInGettingConfirmationCode">مشکل در دریافت؟</string>
+
+    <string name="ShowHelpAtHome_Title">آشنایی با این صفحه</string>
+    <string name="ShowHelpAtHome_Desc">دوست داری خیلی کوتاه، بخش های این صفحه رو بهت معرفی کنیم؟</string>
+    <string name="ShowHelpAtMap_Title">معرفی صفحه نقشه</string>
+    <string name="ShowHelpAtMap_Desc">دوست داری خیلی کوتاه، بخش های این صفحه رو بهت معرفی کنیم؟</string>
+    <string name="YouCanReadHelp_Title">راهنمای نرم افزار</string>
+    <string name="YouCanReadHelp_Desc">راهنمای دقیق تر کار با نرم افزار رو هر زمان خواستی، می تونی از پایین صفحه، قسمت تنظیمات و سپس راهنما مطالعه کنی.</string>
+    <string name="WaitUntilSatelliteFound_Title">در جستجوی ماهواره های GPS</string>
+    <string name="WaitUntilSatelliteFound_Desc">لطفا تا تثبیت موقعیت مکانی خود صبر کنید. به محض تثبیت موقعیت، شکلک پایین صفحه تغییر شکل خواهد داد.\n در صورتی که مکان دستگاه خاموش است، آن را روشن نمایید.</string>
+    <string name="CheckSavingPowerMode_Title">هشدار حالت ذخیره انرژی</string>
+    <string name="CheckSavingPowerMode_Desc">حالت ذخیره انرژی فعال است و این حالت باعث می شود مسیر به شکل تکه تکه و ناپیوسته ذخیره گردد. لطفا این حالت را غیر فعال نمایید</string>
+
+
+    <string name="Home_WeatherAndTracks_Title">هواشناسی نقطه ای و دانلود ترک</string>
+    <string name="Home_WeatherAndTracks_Desc">در ادامه به صفحه نقشه هدایت خواهید شد و در آن جا با جستجوی نقطه مورد نظر خود، یا نگه داشتن انگشت روی نقشه، به هواشناسی یا ترک های مطمئن مربوط به آن نقطه دست خواهید یافت</string>
+
+    <string name="Yes">بله</string>
+    <string name="Later">بعدا</string>
+
+    <string name="title_all_tours">برنامه های آتی</string>
+    <string name="title_all_tours_Classes">کلاس های آتی</string>
+    <string name="title_tour_show_one">نمایش برنامه</string>
+    <string name="title_myclub">باشگاه من</string>
+    <string name="title_notifications">پیام ها</string>
+    <string name="title_settings">تنظیمات</string>
+    <string name="title_profile">پروفایل</string>
+    <string name="title_register">ثبت نام</string>
+    <string name="title_club_list">لیست باشگاه ها</string>
+    <string name="title_contactus">ارتباط با پشتیبانی</string>
+    <string name="title_safegpxSearch">جستجوی مسیرها و نقشه ها</string>
+    <string name="title_SafeGpx_View">مسیر و گزارش پیمایش</string>
+    <string name="title_TripComputer">آمار سفر</string>
+
+    <string name="ico_fontawesome_ok" translatable="false">&#xe80b;</string>
+    <string name="ico_fontawesome_city" translatable="false">&#xF0F7;</string>
+    <string name="ico_fontawesome_club" translatable="false">&#xF2BC;</string>
+    <string name="ico_fontawesome_type" translatable="false">&#xE80A;</string>
+    <string name="ico_fontawesome_dur" translatable="false">&#xF252;</string>
+    <string name="title_activity_test_right_button">TestRightButtonActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+
+    <string name="nav_header_desc">اپلیکیشن کوهنوردان ایران</string>
+    <string name="nav_header_title">پاکوب</string>
+
+
+    <string name="menu_exit_user">خروج از حساب کاربری</string>
+    <string name="menu_exit_app">خروج از برنامه</string>
+    <string name="navigation_drawer_open">باز کردن منو</string>
+    <string name="navigation_drawer_close">بستن منو</string>
+
+
+    <string name="please_select_tour_sort">لطفا ترتیب مورد نظرتان را انتخاب نمایید</string>
+    <string name="cancel">انصراف</string>
+    <string name="accept">تایید</string>
+
+    <string name="NOTIF_CHANAL_SYSTEM">پیام های مهم پاکوب</string>
+    <string name="NOTIF_CHANAL_SYSTEM_Desc">پیام های مهم اپلیکیشن پاکوب</string>
+    <string name="NOTIF_CHANAL_SYSTEM_Desc_ForSettings">اعلان برای پیام های مهم اپلیکیشن پاکوب</string>
+    <string name="NOTIF_CHANAL_GlobalTours">اعلام برنامه جدید</string>
+    <string name="NOTIF_CHANAL_GlobalTours_Desc">اعلام جدیدترین برنامه ها بر اساس تنظیمات تعیین شده</string>
+    <string name="NOTIF_CHANAL_GlobalTours_ForSettings">اعلان برای جدیدترین برنامه ها بر اساس تنظیمات تعیین شده</string>
+    <string name="NOTIF_CHANAL_MyTours">اعلام برنامه باشگاه شما</string>
+    <string name="NOTIF_CHANAL_MyTours_Desc">پیام اعلام برنامه های جدید از باشگاه شما</string>
+    <string name="NOTIF_CHANAL_MyTours_ForSettings">اعلان برای برنامه های جدید از باشگاه شما</string>
+    <string name="NOTIF_CHANAL_MyClubs">پیام های خصوصی و عمومی از طرف باشگاه شما</string>
+    <string name="NOTIF_CHANAL_MyClubs_Desc">پیام هایی از طرف باشگاه هایی که عضو آن ها هستید</string>
+    <string name="NOTIF_CHANAL_MyClubs_ForSettings">اعلان پیام های خصوصی و عمومی از طرف باشگاه های شما</string>
+    <string name="NOTIF_CHANAL_Adv">پیشنهادات مخصوص برای شما</string>
+    <string name="NOTIF_CHANAL_Adv_Desc">پیام های شامل پیشنهاد برنامه، آگهی و... سفارشی شده برای شما</string>
+    <string name="NOTIF_CHANAL_Adv_ForSettings">اعلان پیشنهادات ویژه اپلیکیشن برای شما</string>
+    <string name="NOTIF_CHANAL_Chat">چت پاکوب</string>
+    <string name="NOTIF_CHANAL_Chat_Desc">پیام های ارسالی در چت پاکوب برای شما</string>
+    <string name="NOTIF_CHANAL_Chat_ForSettings">اعلان های مربوط به چت پاکوب برای شما</string>
+    <string name="IamFan">طرفدار هستم</string>
+
+
+    <string name="SearchHearOrPressMap">جستجو کنید یا روی نقشه نگه دارید</string>
+    <string name="showResultOnMap">نمایش نتایج روی نقشه</string>
+    <string name="OpenForecast">پیش بینی هوا</string>
+    <string name="btnSaveOrEdit_Save">ذخیره نقطه</string>
+    <string name="btnSaveOrEdit_Edit">ویرایش نقطه</string>
+    <string name="OpenRoadRooting">مسیریابی جاده ای</string>
+    <string name="AddMissingPlace">معرفی این مکان به پاکوب</string>
+    <string name="DownloadTracks">دانلود ترک مسیرها</string>
+    <string name="ActivityType">نوع مسیر</string>
+    <string name="HardnessLevel">درجه سختی</string>
+    <string name="Validity">درجه اعتبار از نظر پاکوب</string>
+    <string name="SafeGpxDesc">گزارش مسیر</string>
+    <string name="ImportantNotes">نکات مهم مسیر</string>
+    <string name="Price">قیمت</string>
+    <string name="RequestSentMessage">درخواست مورد نظر به پاکوب ارسال گردید. نتیجه این درخواست به شما اطلاع داده خواهد شد</string>
+    <string name="RequestSentMessageError">متاسفانه در حال حاضر امکان ارسال درخواست شما وجود ندارد. لطفا کمی بعد مجددا تلاش نمایید</string>
+
+    <string name="InWait">در انتظار</string>
+    <string name="Download">دانلود</string>
+    <string name="Extract">استخراج</string>
+    <string name="Order">سفارش</string>
+    <string name="free">رایگان</string>
+    <string name="Buy">خرید</string>
+    <string name="Unavailable">ناموجود</string>
+    <string name="CantExtractTheMap">امکان استخراج نقشه وجود ندارد</string>
+
+    <string name="infoForClickToShowDetailedWeather">برای مشاهده پیش بینی جزئی، روی تاریخ مورد نظر ضربه بزنید</string>
+
+    <string name="Validity10">فایل مسیر توسط پاکوب بررسی شده و کاملا مورد تایید می باشد</string>
+    <string name="Validity8">فایل مسیر توسط پاکوب بررسی شده و مورد تایید می باشد</string>
+    <string name="Validity6">فایل مسیر در اکثر قسمت ها قابل قبول می باشد</string>
+    <string name="Validity4">فایل مسیر دارای اطمینان متوسط می باشد و ترجیحا قبل از شروع حرکت، بررسی شود</string>
+    <string name="Validity2">فایل مسیر ممکن است در مکان هایی دارای اشکال باشد</string>
+
+    <string name="msgMapIsReadyToDownload_Title">نقشه آماده دانلود</string>
+    <string name="msgMapIsReadyToDownload_DescForSafeGpx">نقشه آماده استفاده است و می توانید در صفحه لیست نقشه ها به آن دسترسی پیدا کنید.</string>
+    <string name="msgMapIsReadyToDownload_DescForMapPage">نقشه آماده استفاده است و می توانید آن را دانلود و استفاده نمایید</string>
+ <string name="msgMapIsInProcess_Title">در حال پردازش</string>
+    <string name="msgMapIsInProcess_Desc">نقشه توسط شما سفارش داده شده و هم اکنون در حال پردازش است. لطفا منتظر دریافت پیام آماده سازی بمانید</string>
+ <string name="msgMapIsUnavailable_Title">نقشه ناموجود</string>
+    <string name="msgMapIsUnavailable_Desc">این نقشه در حال حاضر در سامانه ناموجود است. در صورتی که نیاز مبرم به این نقشه دارید، با پشتیبانی تماس حاصل فرمایید.</string>
+    <string name="pleaseEnterTitle">عنوان مورد نیاز است</string>
+    <string name="pleaseEnterTitle_Desc">لطفا عنوان مسیر یا قله مورد نظر را وارد نمایید</string>
+
+
+</resources>

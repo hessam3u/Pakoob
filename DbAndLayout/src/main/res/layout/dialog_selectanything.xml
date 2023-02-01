@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:textDirection="rtl"
+    android:orientation="vertical">
+    <LinearLayout
+        android:padding="@dimen/leftrightMargin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/lblTitle"
+        style="@style/label_xl"
+        android:gravity="center_vertical"
+        android:text="@string/SelectClub_Title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+    </TextView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/leftrightMargin"
+        android:background="@color/colorWhite"
+        android:orientation="vertical">
+    <TextView
+        android:id="@+id/lblDesc"
+        style="@style/label"
+        android:layout_marginBottom="@dimen/leftrightMargin"
+        android:gravity="center_vertical"
+        android:text="@string/SelectClub_Favorate_Desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+    </TextView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="@dimen/leftrightMargin"
+        android:background="@drawable/bg_roundcorner_gray"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/toolbarNormal"
+            style="@style/ToolbarContainer">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/lay_txtName"
+                style="@style/TextboxNormal_Container"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                app:boxBackgroundColor="@color/colorTextboxBack"
+                app:hintEnabled="false"
+                android:layout_weight="1">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtSearch"
+                    android:hint="اینجا جستجو کنید"
+                    android:imeOptions="actionSearch"
+                    style="@style/textbox_filled_mat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:textSize="@dimen/login_textSizeNormal"
+                    android:singleLine="true"
+                    android:maxLength="25"
+                    android:inputType="text"
+                    android:gravity="right"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:visibility="gone"
+                android:clickable="true"
+                android:id="@+id/btnSearch"
+                style="@style/ToolbarTextButtons"
+                android:textSize="24dp"
+                android:text="&#xE800;"/>
+
+        </LinearLayout>
+        <ProgressBar
+            android:id="@+id/pageProgressBarIndet"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:max="100"
+            android:progress="0"
+            android:indeterminate="true"
+            android:visibility="invisible"
+            style="?android:attr/progressBarStyleHorizontal"
+            />
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/txtSearchResult"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/NoItemFoundInSearch"
+            style="@style/label">
+
+        </TextView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSearchResult"
+            android:padding="4dp"
+            android:layout_marginTop="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+
+    </LinearLayout>
+        <LinearLayout
+            android:layoutDirection="rtl"
+            android:textDirection="rtl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/btnAccept"
+                android:layout_marginTop="@dimen/leftrightMargin"
+                android:layout_marginLeft="@dimen/leftrightMargin"
+                style="@style/label"
+                android:text="@string/btnAccept"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:textColor="@color/colorWhite"
+                android:background="@drawable/bg_roundcorner_greenfill"
+                >
+            </TextView>
+            <TextView
+                android:id="@+id/btnCancel"
+                android:layout_marginTop="@dimen/leftrightMargin"
+                android:layout_marginLeft="@dimen/leftrightMargin"
+                style="@style/label"
+                android:text="@string/btnCancel"
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:textColor="@color/colorGrey"
+                >
+            </TextView>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
+
+</ScrollView>

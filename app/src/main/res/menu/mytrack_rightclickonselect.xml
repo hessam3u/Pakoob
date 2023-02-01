@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+<!--    <item-->
+<!--        android:id="@+id/btnMoveToFolder"-->
+<!--        android:title="@string/btnMoveToFolder"/>-->
+    <item
+        android:id="@+id/btnRename"
+        android:title="@string/btnRename"/>
+    <item
+        android:icon="@drawable/ic_export"
+        android:id="@+id/btnExportGPX"
+        android:title="@string/btnExportGPX"/>
+</menu>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layoutDirection="rtl"
+    android:layout_gravity="bottom">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="10px"
+        android:background="#cccccc"
+        >
+    </TextView>
+<!--    end splitor-->
+    <TextView
+        android:layout_marginRight="@dimen/leftrightMargin"
+        android:layout_marginLeft="@dimen/leftrightMargin"
+        style="@style/label"
+        android:id="@+id/txtYouAreDesigningRoute"
+        android:text="@string/YouAreSightNGo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+    </TextView>
+    <!--    end title-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginRight="@dimen/leftrightMargin"
+            android:layout_marginLeft="@dimen/leftrightMargin"
+            android:gravity="right"
+            android:textDirection="rtl"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/label"
+                android:id="@+id/btnCaptureSightNGo"
+
+                android:layout_marginRight="@dimen/leftrightMargin"
+                android:layout_marginLeft="@dimen/leftrightMargin"
+
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/iransansweb"
+                android:textSize="20dp"
+                android:text="@string/btnCaptureSightNGo"
+                android:textAlignment="center"
+                android:background="@drawable/bg_roundcorner_greenfill"
+                android:gravity="center_vertical"
+                tools:ignore="RtlCompat">
+            </TextView>
+
+            <TextView
+                style="@style/label"
+                android:id="@+id/btnSaveSightNGo"
+
+                android:layout_marginLeft="@dimen/leftrightMargin"
+
+                android:layout_width="wrap_content"
+                android:paddingRight="12dp"
+                android:paddingLeft="12dp"
+                android:layout_height="40dp"
+                android:textColor="@color/green"
+                android:fontFamily="@font/iransansweb"
+                android:textSize="20dp"
+                android:text="@string/btnSaveSightNGo"
+                android:textAlignment="center"
+                android:background="@drawable/bg_roundcorner_greenborder"
+                android:gravity="center_horizontal|center_vertical"
+                tools:ignore="RtlCompat">
+            </TextView>
+            <TextView
+                android:layout_marginTop="3dp"
+                style="@style/label"
+                android:id="@+id/btnSightNGoSettings"
+
+                android:layout_marginLeft="@dimen/leftrightMargin"
+
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:textColor="@color/green"
+                android:fontFamily="@font/fontello"
+                android:textSize="25dp"
+                android:text="&#xE81E;"
+                android:textAlignment="center"
+                android:background="@drawable/bg_roundcorner_greenborder"
+                android:gravity="center_vertical"
+                tools:ignore="RtlCompat">
+            </TextView>
+            <TextView
+                android:layout_marginTop="3dp"
+                android:background="@drawable/bg_roundcorner_gray"
+
+                android:layout_marginLeft="@dimen/leftrightMargin"
+
+                style="@style/label"
+                android:id="@+id/btnDiscardSightNGo"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:textColor="#777777"
+                android:fontFamily="@font/fontello"
+                android:textSize="25dp"
+                android:text="&#xE803;"
+                android:textAlignment="center"
+                android:gravity="center_vertical"
+                tools:ignore="RtlCompat">
+            </TextView>
+        </LinearLayout>
+
+    </LinearLayout>

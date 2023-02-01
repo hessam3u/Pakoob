@@ -1,0 +1,7 @@
+include ':HControls'
+include ':Tara'
+include ':HUtilities'
+include ':DbAndLayout'
+include ':maptools'
+rootProject.name='Map Builder'
+include ':app'

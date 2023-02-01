@@ -1,0 +1,136 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layoutDirection="rtl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout style="@style/ToolbarOuter">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarOfPage"
+            app:contentInsetLeft="0dp" app:contentInsetStart="0dp" app:contentInsetRight="0dp" app:contentInsetEnd="0dp"
+            style="@style/ToolbarStyle">
+
+            <LinearLayout
+                android:id="@+id/toolbarNormal"
+                style="@style/ToolbarContainer">
+                <TextView
+                    android:id="@+id/btnBack"
+                    style="@style/ToolbarBackButton"/>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/lay_txtName"
+                    style="@style/TextboxNormal_Container"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    app:boxBackgroundColor="@color/colorTextboxBack"
+                    app:hintEnabled="false"
+                    android:layout_weight="1">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txtSearch"
+                            android:hint="اینجا جستجو کنید"
+                            android:imeOptions="actionSearch"
+                            style="@style/textbox_filled_mat"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="0dp"
+                            android:textSize="@dimen/login_textSizeNormal"
+                            android:singleLine="true"
+                            android:maxLength="25"
+                            android:inputType="text"
+                            android:gravity="right"
+                            />
+                </com.google.android.material.textfield.TextInputLayout>
+                <TextView
+                    android:clickable="true"
+                    android:id="@+id/btnSearch"
+                    style="@style/ToolbarTextButtons"
+                    android:textSize="24dp"
+                    android:text="&#xE800;"/>
+
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+        <View style="@style/ToolbarBottomShadow"/>
+    </LinearLayout>
+
+
+    <ScrollView
+        android:layout_marginTop="@dimen/myMinActionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="60dp"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/divSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/linFilterCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:minHeight="@dimen/clubSearchItem_MinHeight">
+                <TextView
+                    style="@style/label"
+                    android:id="@+id/lblFilterCityTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/leftrightMargin"
+                    android:layout_gravity="right|center_vertical"
+                    android:text="@string/Filter_SelectCity"/>
+                <TextView
+                style="@style/labelB"
+                android:id="@+id/lblFilterCity"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/leftrightMargin"
+                android:layout_gravity="right|center_vertical"
+                android:text="@string/Filter_NoFilter"/>
+                <TextView
+                    style="@style/label"
+                    android:id="@+id/btnFilterCity"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="@dimen/leftrightMargin"
+                    android:layout_gravity="end|center_vertical"
+                    android:gravity="end|center_vertical"
+                    android:textColor="#878787"
+                    android:fontFamily="@font/fontello"
+                    android:textSize="25dp"
+                    android:text="&#xF0B0;"
+                    android:textAlignment="center">
+                </TextView>
+            </LinearLayout>
+            <View style="@style/ToolbarBottomShadow"/>
+            <TextView
+                style="@style/label_s"
+                android:id="@+id/txtSearchResult"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_gravity="center"
+                android:text="نتیجه جستجو"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSearchResult"
+                android:padding="4dp"
+                android:layout_marginTop="0dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+    </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

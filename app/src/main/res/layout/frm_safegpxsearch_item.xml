@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/itemMainPart"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="2dp"
+    android:paddingRight="2dp"
+    android:paddingBottom="1dp"
+    android:paddingTop="1dp"
+    android:orientation="vertical"
+    android:layoutDirection="rtl">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="@dimen/clubSearchSubItem_MinHeight"
+    android:orientation="horizontal">
+    <LinearLayout
+        android:layout_marginStart="4dp"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ImageView
+            android:tint="#D5349500"
+            android:background="@drawable/circle_grayverylight"
+            android:src="@drawable/ac_mountaineering"
+            android:id="@+id/imgIcon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="fitXY" />
+        <TextView
+            android:layout_marginTop="@dimen/leftrightMarginHalf"
+            android:id="@+id/lblDistance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/label_s"
+            android:gravity="center"
+            android:textColor="@color/colorGrey"
+            android:text="250km">
+
+        </TextView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="4dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtTitle"
+                style="@style/label_l"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/iransansweb"
+                android:paddingLeft="10dp"
+                android:text="صعود زمستانه قله بینالود از مسسیر فریزی با عبور از تیغه ها"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/leftrightMarginHalf"
+        android:padding="3dp"
+        android:background="@drawable/bg_roundcorner_gray_backwhite5"
+        android:src="@drawable/ac_hiking"
+        android:id="@+id/imgScreen"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="fitXY" />
+
+</LinearLayout>
+    <ProgressBar
+        android:id="@+id/itemprogressbarIndet"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:max="100"
+        android:progress="0"
+        android:indeterminate="true"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyleHorizontal"
+        />
+<!--    splitor-->
+<!--    <LinearLayout android:layout_width="match_parent" android:background="@color/colorGreyVeryLight" android:layout_height="1dp" android:orientation="horizontal" android:id="@+id/liSplitorDate"></LinearLayout>-->
+
+</LinearLayout>

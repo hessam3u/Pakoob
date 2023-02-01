@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layoutDirection="rtl"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/toolbar_generic"/>
+
+    <ScrollView
+        android:layout_marginTop="@dimen/myMinActionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+<LinearLayout
+    android:padding="15dp"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                style="@style/rich_title"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/CurrentVersion"
+                >
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtCurrentVersion"
+                style="@style/rich_title"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="23424"
+                android:layoutDirection="ltr"
+                android:textAlignment="textStart"
+                >
+
+            </TextView>
+        </LinearLayout>
+
+    <!--    <TextView style="@style/rich_title" android:text="آدرس: مشهد، بلوار وکیل آباد، وکیل آباد 9، مدرس 4، پلاک 36 - تلفن تماس 05138239575">-->
+<!--    </TextView>-->
+
+    <TextView style="@style/rich_title" android:text="@string/q_contactByEmail">
+    </TextView>
+    <TextView style="@style/rich_text" android:text="@string/q_contactByEmail_a">
+    </TextView>
+    <TextView style="@style/rich_text" android:text="با تشکر از آقایان هادی باختری، علی اسلام  خراسانی، محمد چراغی، فرامرز قنبری، نوید نکودل و خانم صالحه سلطانی که ما را در پایدار سازی این نسخه یاری نموده اند.">
+    </TextView>
+
+
+</LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

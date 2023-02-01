@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config>
+        <domain includeSubdomains="true">pakoob24.ir</domain>
+        <trust-anchors>
+            <certificates src="@raw/pakoob_certificate"/>
+        </trust-anchors>
+    </domain-config>
+
+</network-security-config>

@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layoutDirection="rtl">
+
+    <include layout="@layout/toolbar_generic"/>
+    <ScrollView
+        android:layout_marginTop="@dimen/myMinActionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layoutDirection="rtl"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/login_bg">
+
+    <RelativeLayout
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/divFields"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight=".5"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/lblName"
+                        style="@style/label_s"
+                        android:text="نام"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/lay_txtName"
+                        style="@style/textbox_filled_mat_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:boxBackgroundColor="@color/colorTextboxBack"
+                        >
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txtName"
+                            style="@style/textbox_filled_mat"
+                            android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:textSize="@dimen/login_textSizeNormal"
+                            android:imeOptions="actionNext"
+                        android:singleLine="true"
+                        android:maxLength="25"
+                        android:inputType="text"
+                        android:gravity="right"
+                        />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+                <View android:layout_width="10dp" android:layout_height="1dp"/>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight=".5"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/lblFamily"
+                        style="@style/label_s"
+                        android:text="نام خانوادگی"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/lay_txtFamily"
+                        style="@style/textbox_filled_mat_container"
+                        app:boxBackgroundColor="@color/colorTextboxBack"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        >
+                        <com.google.android.material.textfield.TextInputEditText
+                            style="@style/textbox_filled_mat"
+                        android:id="@+id/txtFamily"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:textSize="@dimen/login_textSizeNormal"
+                            android:imeOptions="actionNext"
+                        android:singleLine="true"
+                        android:maxLength="25"
+                        android:inputType="text"
+                        android:gravity="right"
+                        />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight=".5"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/lblCityName"
+                        android:text="شهر"
+                        style="@style/label_s"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/lay_txtCityId"
+                        style="@style/textbox_filled_mat_container"
+                        app:boxBackgroundColor="@color/colorTextboxBack"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        >
+                        <AutoCompleteTextView
+                            android:id="@+id/txtCityId"
+                            style="@style/textbox_filled_mat"
+                            android:inputType="text"
+                            android:singleLine="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLength="30"
+                            android:gravity="right"
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+                <View android:layout_width="10dp" android:layout_height="1dp"/>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight=".5"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/lblSex"
+                        android:text="جنسیت"
+                        style="@style/label_s"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+                    <RadioGroup
+                        android:id="@+id/radioGroup"
+                        android:orientation="horizontal"
+                        android:checkedButton="@+id/rbSexIsMan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <RadioButton
+                            android:id="@+id/rbSexIsMan"
+                            style="@style/label"
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:text="آقا"/>
+                        <RadioButton
+                            android:id="@+id/rbSexIsWoman"
+                            style="@style/label"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:text="خانم"/>
+                    </RadioGroup>
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/liMoreInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight=".5"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/lblBirthDate"
+                        android:text="تاریخ تولد"
+                        style="@style/label_s"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/textbox_filled_mat_container"
+                        app:boxBackgroundColor="@color/colorTextboxBack"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:helperTextEnabled="true"
+                        app:helperText="اختیاری">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            style="@style/textbox_filled_mat"
+                            android:id="@+id/txtBirthDate"
+                            android:inputType="number"
+                            android:singleLine="true"
+                            android:maxLength="10"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!--                    <com.google.android.material.textfield.TextInputLayout-->
+                    <!--                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"-->
+                    <!--                        android:layout_width="match_parent"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        >-->
+                    <!--                        <AutoCompleteTextView-->
+                    <!--                            style="@style/textbox_filled_mat"-->
+                    <!--                            android:id="@+id/txtMonth"-->
+                    <!--                            android:layout_width="60dp"-->
+                    <!--                            android:layout_height="wrap_content"-->
+                    <!--                            android:inputType="none"-->
+                    <!--                            />-->
+                    <!--                    </com.google.android.material.textfield.TextInputLayout>-->
+
+                </LinearLayout>
+                <View android:layout_width="10dp" android:layout_height="1dp"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight=".5"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/lblNationalCode"
+                        android:text="کد ملی"
+                        style="@style/label_s"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/lay_txtNationalCode"
+                        style="@style/textbox_filled_mat_container"
+                        app:boxBackgroundColor="@color/colorTextboxBack"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:helperTextEnabled="true"
+                        app:helperText="اختیاری و برای امور باشگاه">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            style="@style/textbox_filled_mat"
+                            android:id="@+id/txtNationalCode"
+                            android:inputType="number"
+                            android:singleLine="true"
+                            android:maxLength="10"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+
+
+<!--            <EditText-->
+<!--                android:id="@+id/txtInput"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textSize="@dimen/login_textSizeNormal"-->
+<!--                android:hint="اختیاری - مورد استفاده در هنگام ثبت نام برنامه ها"-->
+<!--                android:singleLine="true"-->
+<!--                android:maxLength="10"-->
+<!--                android:inputType="phone"-->
+<!--                android:gravity="right"-->
+<!--                />-->
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/divMainButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/divFields"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp">
+
+            <Button
+                android:id="@+id/btnSave"
+                style="@style/btnAccept"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/viewSplit1"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:text="بزن بریم!"></Button>
+
+            <View
+                android:id="@+id/viewSplit1"
+                android:layout_width="30dp"
+                android:layout_height="1dp"
+                android:layout_centerHorizontal="true" />
+
+            <Button
+                android:id="@+id/btnSkip"
+                style="@style/btnCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/viewSplit1"
+                android:text="الان نه!"></Button>
+        </RelativeLayout>
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/divOtherButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/divMainButtons"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btnSignOut"
+                android:text="@string/menu_exit_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/leftrightMargin"
+                android:paddingRight="@dimen/leftrightMargin"
+                style="@style/btnCancel"
+                android:textColor="@color/colorGrey"
+                >
+            </Button>
+        </LinearLayout>
+        <ProgressBar
+            android:id="@+id/loadingForDialog"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="invisible"/>
+
+    </RelativeLayout>
+</RelativeLayout>
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:gravity="center_horizontal"-->
+<!--        android:padding="10dp"-->
+<!--        android:orientation="vertical">-->
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:text="لطفا اطلاعات اولیه زیر را وارد نمایید"-->
+<!--            android:textColor="@android:color/white"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textSize="@dimen/login_textSizeNormal"-->
+<!--            android:textAlignment="center"-->
+<!--            android:layout_marginBottom="20dp"/>-->
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="right"-->
+<!--            android:text="نام باشگاه را وارد کنید. در صورتی که نام باشگاه شما در لیست وجود دارد، حتما آن را انتخاب کنید."-->
+<!--            android:textColor="@android:color/white"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textSize="@dimen/login_textSizeNormal"-->
+<!--            android:layout_marginBottom="20dp"/>-->
+
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:boxStrokeColor="@color/login_textcolor"-->
+<!--            android:textColorHint="@color/login_hintcolor"-->
+<!--            app:hintTextColor="@color/login_hintcolor"-->
+<!--            -->
+<!--            android:hint="نام باشگاه">-->
+<!--            <AutoCompleteTextView-->
+<!--                android:id="@+id/txtClubName"-->
+<!--                android:inputType="none"-->
+<!--                android:singleLine="true"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textColor="@color/login_textcolor"-->
+<!--                android:maxLength="50"-->
+<!--                />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_weight=".5"-->
+<!--                android:layout_marginLeft="2dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:boxStrokeColor="@color/login_textcolor"-->
+<!--                android:textColorHint="@color/login_hintcolor"-->
+<!--                app:hintTextColor="@color/login_hintcolor"-->
+<!--                android:hint="نام موسس">-->
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:id="@+id/txtOwnerName"-->
+<!--                    android:singleLine="true"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:textColor="@color/login_textcolor"-->
+<!--                    android:maxLength="25"-->
+<!--                    />-->
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_weight=".5"-->
+<!--                android:layout_marginRight="2dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:boxStrokeColor="@color/login_textcolor"-->
+<!--                android:textColorHint="@color/login_hintcolor"-->
+<!--                app:hintTextColor="@color/login_hintcolor"-->
+<!--                android:hint="نام خانوادگی موسس">-->
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:id="@+id/txtOwnerFamily"-->
+<!--                    android:singleLine="true"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:textColor="@color/login_textcolor"-->
+<!--                    android:maxLength="25"-->
+<!--                    />-->
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+<!--        </LinearLayout>-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal">-->
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_weight=".5"-->
+<!--            android:layout_marginLeft="2dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:boxStrokeColor="@color/login_textcolor"-->
+<!--            android:textColorHint="@color/login_hintcolor"-->
+<!--            app:hintTextColor="@color/login_hintcolor"-->
+<!--            android:hint="تلفن همراه موسس">-->
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/txtMobileMoases"-->
+<!--                android:inputType="phone"-->
+<!--                android:singleLine="true"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textColor="@color/login_textcolor"-->
+<!--                android:maxLength="11"-->
+<!--                />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_weight=".5"-->
+<!--            android:layout_marginRight="2dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:boxStrokeColor="@color/login_textcolor"-->
+<!--            android:textColorHint="@color/login_hintcolor"-->
+<!--            app:hintTextColor="@color/login_hintcolor"-->
+<!--            android:hint="کد ملی موسس">-->
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/txtNationalCodeMoases"-->
+<!--                android:singleLine="true"-->
+<!--                android:inputType="numberSigned"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textColor="@color/login_textcolor"-->
+<!--                android:maxLength="10"-->
+<!--                />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+<!--    </LinearLayout>-->
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:boxStrokeColor="@color/login_textcolor"-->
+<!--            android:textColorHint="@color/login_hintcolor"-->
+<!--            app:hintTextColor="@color/login_hintcolor"-->
+<!--            -->
+<!--            android:hint="شهر">-->
+<!--            <AutoCompleteTextView-->
+<!--                android:id="@+id/txtCityId"-->
+<!--                android:inputType="none"-->
+<!--                android:singleLine="true"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textColor="@color/login_textcolor"-->
+<!--                android:maxLength="30"-->
+<!--                />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/btnRegister"-->
+<!--            style="@style/Widget.MaterialComponents.Button"-->
+<!--            android:layout_width="200dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:text="ثبت نام"-->
+<!--            android:textSize="@dimen/login_textSizeBig"-->
+<!--            app:backgroundTint="@color/login_bg_forbtnContinue"-->
+<!--            app:elevation="5dp" />-->
+<!--        <ProgressBar-->
+<!--            android:id="@+id/loading"-->
+<!--            style="?android:attr/progressBarStyleHorizontal"-->
+<!--            android:layout_width="fill_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:indeterminate="true"-->
+<!--            android:max="100"-->
+<!--            android:visibility="invisible"-->
+<!--            android:backgroundTint="@color/green"-->
+<!--            android:layout_below="@+id/btnRegister"-->
+<!--            android:indeterminateTint="#1a09d6"-->
+<!--            android:layout_marginTop="-7dp"/>-->
+<!--        <Button-->
+<!--            android:id="@+id/btnGotoLogin"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textSize="@dimen/login_textSizeSmall"-->
+<!--            android:text="شناره و پسورد دارم، ورود به سامانه"-->
+<!--            android:textColor="@android:color/white"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:textAlignment="center"-->
+<!--            android:paddingTop="0dp"-->
+<!--            android:paddingBottom="0dp"-->
+<!--            style="@style/Widget.MaterialComponents.Button.TextButton"-->
+<!--            />-->
+
+<!--        <Button-->
+<!--            android:id="@+id/btnForgetPassword"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textSize="@dimen/login_textSizeSmall"-->
+<!--            android:text="پسوردم را فراموش کرده ام"-->
+<!--            android:textColor="@android:color/white"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:textAlignment="center"-->
+<!--            style="@style/Widget.MaterialComponents.Button.TextButton"-->
+<!--            />-->
+
+        <!--    </LinearLayout>-->
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

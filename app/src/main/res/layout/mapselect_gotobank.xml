@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        style="@style/label_xl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_readyToGoBank_title"
+        android:layout_marginBottom="50dp"
+        android:layout_marginTop="50dp"
+        />
+    <LinearLayout
+        android:layoutDirection="rtl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
+        >
+
+        <TextView
+            style="@style/label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_readyToGoBank_paydesc"/>
+        <TextView
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:id="@+id/lblPrice"
+            style="@style/label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="65986 ریال"/>
+        <TextView
+            style="@style/label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_readyToGoBank_paydesc_fel"/>
+
+    </LinearLayout>
+
+    <TextView
+        style="@style/label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_readyToGoBank_paydesc1"
+        android:layout_marginBottom="10dp"/>
+    <TextView
+        style="@style/label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_readyToGoBank_discountCop"/>
+
+    <EditText
+        style="@style/textbox_filled_mat"
+    android:id="@+id/txtDiscountCode"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:layoutDirection="ltr"
+        android:textSize="20dp"
+        android:layout_marginBottom="10dp"/>
+
+    <RelativeLayout
+        android:id="@+id/divMainButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtInput"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp">
+        <Button
+            android:id="@+id/btnGotoPayment"
+            android:text="پرداخت"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/btnAccept"
+            android:layout_toRightOf="@+id/viewSplit1"
+            >
+        </Button>
+        <View
+            android:id="@+id/viewSplit1"
+            android:layout_height="1dp"
+            android:layout_width="30dp"
+            android:layout_centerHorizontal="true"
+            />
+        <Button
+            android:id="@+id/btnSkip"
+            android:text="انصراف"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/btnLink"
+            android:layout_toLeftOf="@+id/viewSplit1"
+            >
+        </Button>
+    </RelativeLayout>
+</LinearLayout>

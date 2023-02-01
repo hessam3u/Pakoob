@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layoutDirection="rtl"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+    <LinearLayout style="@style/ToolbarOuter">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarOfPage"
+            app:contentInsetLeft="0dp" app:contentInsetStart="0dp" app:contentInsetRight="0dp" app:contentInsetEnd="0dp"
+            style="@style/ToolbarStyle">
+            <LinearLayout
+                android:id="@+id/toolbarNormal"
+                style="@style/ToolbarContainer">
+                <TextView
+                    android:id="@+id/btnBack"
+                    style="@style/ToolbarBackButton" />
+                <TextView
+                    android:id="@+id/txtPageTitle"
+                    style="@style/ToolbarPageTitle"
+                    android:textSize="@dimen/textsize_pageTitle_s"
+                    android:text="@string/title_tour_show_one"/>
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+        <View style="@style/ToolbarBottomShadow"/>
+    </LinearLayout>
+
+
+    <ScrollView
+        android:layout_marginTop="@dimen/myMinActionBarSize"
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <!--Loading Container-->
+            <LinearLayout
+                android:id="@+id/linLoadingContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ProgressBar
+                    android:id="@+id/progressBarPage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="60dp"
+                    android:visibility="visible" />
+
+                <TextView
+                    style="@style/label_s"
+                    android:id="@+id/txtSearchResult"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:text="@string/IsLoading"/>
+            </LinearLayout>
+            <!--Header Container-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/linHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgOneTour"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    app:layout_constrainedHeight="true"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHeight_min="280dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <!--Body Container-->
+            <LinearLayout
+                android:id="@+id/linBody"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:paddingTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    style="@style/itemContainer_at_one_tour">
+                    <TextView
+                        style="@style/icon_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".1"
+                        android:text="&#xF2BC;" />
+
+                    <TextView
+                        style="@style/label_text_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".25"
+                        android:text="اجرا توسط" />
+
+                    <TextView
+                        android:layout_marginLeft="@dimen/leftrightMargin"
+                        android:id="@+id/txtClubName"
+                        style="@style/label_value_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50"
+                        android:text="TextView" />
+                    <TextView
+                        style="@style/label_s"
+                        android:id="@+id/btnShowClub"
+                        android:layout_width="0dp"
+                        android:layout_weight=".15"
+                        android:layout_height="30dp"
+                        android:textColor="@color/colorWhite"
+                        android:text="@string/view"
+                        android:textAlignment="center"
+                        android:background="@drawable/bg_roundcorner_greenfill"
+                        android:gravity="center">
+                    </TextView>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/rowtxtTourLengthView"
+                    style="@style/itemContainer_at_one_tour">
+                    <TextView
+                        style="@style/icon_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".1"
+                        android:text="&#xF252;" />
+
+                    <TextView
+                        style="@style/label_text_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".25"
+                        android:text="مدت برنامه" />
+
+                    <TextView
+                        android:id="@+id/txtTourLengthView"
+                        style="@style/label_value_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".65"
+                        android:text="TextView" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/rowtxtPlaceOfTour"
+                    style="@style/itemContainer_at_one_tour">
+                    <TextView
+                        style="@style/icon_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".1"
+                        android:text="&#xF278;" />
+
+                    <TextView
+                        style="@style/label_text_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".25"
+                        android:text="منطقه اجرا" />
+
+                    <TextView
+                        android:id="@+id/txtPlaceOfTour"
+                        style="@style/label_value_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".65"
+                        android:text="TextView" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/rowtxtLeaderCustomerIdFullName"
+                    style="@style/itemContainer_at_one_tour">
+
+                    <TextView
+                        style="@style/icon_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".1"
+                        android:text="&#xF2BE;" />
+
+                    <TextView
+                        style="@style/label_text_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".25"
+                        android:text="سرپرست" />
+
+                    <TextView
+                        android:id="@+id/txtLeaderCustomerIdFullName"
+                        style="@style/label_value_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".65"
+                        android:text="TextView" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/rowtxtStartToEndDateView"
+                    style="@style/itemContainer_at_one_tour">
+                    <TextView
+                        style="@style/icon_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".1"
+                        android:text="&#xE80C;" />
+
+                    <TextView
+                        style="@style/label_text_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".25"
+                        android:text="تاریخ اجرا" />
+
+                    <TextView
+                        android:id="@+id/txtStartToEndDateView"
+                        style="@style/label_value_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".65"
+                        android:text="TextView" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/rowtxtClubTourCategoryIdView"
+                    style="@style/itemContainer_at_one_tour">
+
+                    <TextView
+                        style="@style/icon_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".1"
+                        android:text="&#xE80A;" />
+
+                    <TextView
+                        style="@style/label_text_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".25"
+                        android:text="نوع برنامه" />
+
+                    <TextView
+                        android:id="@+id/txtClubTourCategoryIdView"
+                        style="@style/label_value_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".65"
+                        android:text="TextView" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/rowtxtTourFinalPriceView"
+                    style="@style/itemContainer_at_one_tour">
+                    <TextView
+                        style="@style/icon_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".1"
+                        android:text="&#xE80D;" />
+
+                    <TextView
+                        style="@style/label_text_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".25"
+                        android:text="مبلغ ثبت نام" />
+
+                    <LinearLayout
+                        style="@style/label_value_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".65"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/txtTourFinalPriceView"
+                            style="@style/label_value_at_one_tour"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layoutDirection="ltr"
+                            android:text="TextView" />
+                        <TextView
+                            android:id="@+id/txtCurrencyName"
+                            style="@style/label_value_at_one_tour"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ریال" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/rowtxtRegEndDateView"
+                    style="@style/itemContainer_at_one_tour">
+
+                    <TextView
+                        style="@style/icon_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".1"
+                        android:text="&#xE811;" />
+
+                    <TextView
+                        style="@style/label_text_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".25"
+                        android:text="مهلت ثبت نام" />
+
+                    <TextView
+                        android:id="@+id/txtRegEndDateView"
+                        style="@style/label_value_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".65"
+                        android:text="TextView" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/rowtxtCityName"
+                    style="@style/itemContainer_at_one_tour">
+                    <TextView
+                        style="@style/icon_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".1"
+                        android:text="&#xF0F7;" />
+
+                    <TextView
+                        style="@style/label_text_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".25"
+                        android:text="شهر آغاز" />
+
+                    <TextView
+                        android:id="@+id/txtCityName"
+                        style="@style/label_value_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".65"
+                        android:text="TextView" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/rowtxtRegDesc"
+                    style="@style/itemContainer_at_one_tour">
+
+                    <TextView
+                        style="@style/icon_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".1"
+                        android:text="&#xF27B;" />
+
+                    <TextView
+                        style="@style/label_text_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".25"
+                        android:text="توضیحات" />
+
+                    <TextView
+                        android:id="@+id/txtRegDesc"
+                        style="@style/label_value_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".65"
+                        android:text="TextView" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/rowtxtTimeTable"
+                    style="@style/itemContainer_at_one_tour">
+                    <TextView
+                        style="@style/icon_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".1"
+                        android:text="&#xE807;" />
+
+                    <TextView
+                        style="@style/label_text_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".25"
+                        android:text="زمان بندی" />
+
+                    <TextView
+                        android:id="@+id/txtTimeTable"
+                        style="@style/label_value_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".65"
+                        android:text="TextView" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/rowtxtDesc_Short"
+                    style="@style/itemContainer_at_one_tour">
+
+                    <TextView
+                        style="@style/icon_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".1"
+                        android:text="&#xE807;" />
+
+                    <TextView
+                        style="@style/label_text_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".25"
+                        android:text="شرح برنامه" />
+
+                    <TextView
+                        android:id="@+id/txtDesc_Short"
+                        style="@style/label_value_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".65"
+                        android:text="TextView" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/rowtxtNecessaryTools"
+                    style="@style/itemContainer_at_one_tour">
+                    <TextView
+                        style="@style/icon_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".1"
+                        android:text="&#xE807;" />
+
+                    <TextView
+                        style="@style/label_text_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".25"
+                        android:text="وسایل خاص" />
+
+                    <TextView
+                        android:id="@+id/txtNecessaryTools"
+                        style="@style/label_value_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".65"
+                        android:text="TextView" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/rowtxtSpecialProperty"
+                    style="@style/itemContainer_at_one_tour">
+                    <TextView
+                        style="@style/icon_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".1"
+                        android:text="&#xE807;" />
+
+                    <TextView
+                        style="@style/label_text_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".25"
+                        android:text="ویژگی خاص" />
+
+                    <TextView
+                        android:id="@+id/txtSpecialProperty"
+                        style="@style/label_value_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".65"
+                        android:text="TextView" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/rowtxtPrerequisites"
+                    style="@style/itemContainer_at_one_tour">
+
+                    <TextView
+                        style="@style/icon_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".1"
+                        android:text="&#xE807;" />
+
+                    <TextView
+                        style="@style/label_text_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".25"
+                        android:text="پیش نیاز" />
+
+                    <TextView
+                        android:id="@+id/txtPrerequisites"
+                        style="@style/label_value_at_one_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".65"
+                        android:text="TextView" />
+                </LinearLayout>
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/rowDesc_Short_ForReg"
+                    style="@style/itemContainer_at_one_tour_Vertical">
+                    <LinearLayout
+                        style="@style/itemContainer_at_one_tour">
+                        <TextView
+                            style="@style/icon_at_one_tour"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".1"
+                            android:text="&#xE807;" />
+
+                        <TextView
+                            style="@style/label_text_at_one_tour"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".25"
+                            android:text="شرح برنامه" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".65"
+                            android:text="" />
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/txtDesc_Short_ForReg"
+                        style="@style/label_value_at_one_tour"
+                        android:padding="@dimen/leftrightMargin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/rowbtnRegister"
+                    style="@style/itemContainer_at_one_tour">
+                    <Button
+                        android:id="@+id/btnRegister"
+                        style="@style/button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="300"
+                        android:text="ثبت نام کنید!"
+                        app:icon="@android:drawable/ic_menu_upload"
+                        app:iconTint="@color/green" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

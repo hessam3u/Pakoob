@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layoutDirection="rtl">
+
+    <LinearLayout style="@style/ToolbarOuter">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarOfPage"
+            style="@style/ToolbarStyle"
+            app:contentInsetEnd="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetRight="0dp"
+            app:contentInsetStart="0dp">
+
+            <LinearLayout
+                android:id="@+id/toolbarNormal"
+                style="@style/ToolbarContainer">
+
+                <TextView
+                    android:id="@+id/btnBack"
+                    style="@style/ToolbarBackButton" />
+
+                <TextView
+                    android:id="@+id/txtPageTitle"
+                    android:gravity="center"
+                    style="@style/ToolbarPageTitle"
+                    android:text="@string/title_TripComputer" />
+
+                <TextView
+                    android:id="@+id/btnBell"
+                    style="@style/ToolbarTextButtons"
+                    android:layout_marginLeft="@dimen/leftrightMargin"
+                    android:clickable="true"
+                    android:visibility="invisible"
+                    android:text="&#xE833;"
+                    android:focusable="true" />
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+        <View style="@style/ToolbarBottomShadow" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/myMinActionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+>
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabForTripComputer"
+            style="@style/MyCustomTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewpagerForTripComputer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"></androidx.viewpager.widget.ViewPager>
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

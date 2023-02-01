@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/myMinActionBarSize"
+        android:fillViewport="true"
+        app:layout_anchorGravity="center">
+
+        <!--body container-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/myMinActionBarSize">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <LinearLayout
+                style="@style/dataFieldBox"
+                android:layout_marginEnd="@dimen/leftrightMargin"
+                android:id="@+id/linLine1"
+                android:orientation="vertical">
+                <TextView
+                    style="@style/dataFielldTitle6xl"
+                    android:text="@string/distance2"
+                    />
+                <TextView
+                    android:id="@+id/txtDistance"
+                    style="@style/dataFielldValue"
+                    android:text="21.730 Km"
+                    
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <LinearLayout
+                style="@style/dataFieldBox"
+                android:id="@+id/linLine2_1"
+                android:orientation="vertical">
+                <TextView
+                    style="@style/dataFielldTitle6xl"
+                    android:text="@string/Duration"
+                    />
+                <TextView
+                    android:id="@+id/txtDuration"
+                    style="@style/dataFielldValue"
+                    android:text="1d 12:23':33"
+                    
+                    />
+            </LinearLayout>
+            <LinearLayout
+                style="@style/dataFieldBox"
+                android:layout_marginEnd="@dimen/leftrightMargin"
+                android:id="@+id/linLine2_2"
+                android:orientation="vertical">
+                <TextView
+                    style="@style/dataFielldTitle6xl"
+                    android:text="@string/Elevation"
+                    />
+                <TextView
+                    android:id="@+id/txtElevation"
+                    style="@style/dataFielldValue"
+                    android:text="2823 m"
+                    
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <LinearLayout
+                style="@style/dataFieldBox"
+                android:id="@+id/linLine3_1"
+                android:orientation="vertical">
+                <TextView
+                    style="@style/dataFielldTitle6xl"
+                    android:text="@string/AscentTotal"
+                    />
+                <TextView
+                    android:id="@+id/txtAscentTotal"
+                    style="@style/dataFielldValue"
+                    android:text="1235 m"
+                    
+                    />
+            </LinearLayout>
+            <LinearLayout
+                style="@style/dataFieldBox"
+                android:layout_marginEnd="@dimen/leftrightMargin"
+                android:id="@+id/linLine3_2"
+                android:orientation="vertical">
+                <TextView
+                    style="@style/dataFielldTitle6xl"
+                    android:text="@string/DescentTotal"
+                    />
+                <TextView
+                    android:id="@+id/txtDescentTotal"
+                    style="@style/dataFielldValue"
+                    android:text="1256 m "
+                    
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <LinearLayout
+                    style="@style/dataFieldBox"
+                    android:layout_marginEnd="@dimen/leftrightMargin"
+                    android:orientation="vertical">
+                    <TextView
+                        style="@style/dataFielldTitle6xl"
+                        android:text="@string/Speed"
+                        />
+                    <TextView
+                        android:id="@+id/txtSpeed"
+                        style="@style/dataFielldValue"
+                        android:text="21.730 Km"
+                        
+                        />
+                </LinearLayout>
+            </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <LinearLayout
+                style="@style/dataFieldBox"
+                android:id="@+id/linLine4_1"
+                android:orientation="vertical">
+                <TextView
+                    style="@style/dataFielldTitle6xl"
+                    android:text="@string/AvgSpeed"
+                    />
+                <TextView
+                    android:id="@+id/txtAvgSpeed"
+                    style="@style/dataFielldValue"
+                    android:text="1235 m"
+                    
+                    />
+            </LinearLayout>
+            <LinearLayout
+                style="@style/dataFieldBox"
+                android:layout_marginEnd="@dimen/leftrightMargin"
+                android:id="@+id/linLine4_2"
+                android:orientation="vertical">
+                <TextView
+                    style="@style/dataFielldTitle6xl"
+                    android:text="@string/MaxSpeed"
+                    />
+                <TextView
+                    android:id="@+id/txtMaxSpeed"
+                    style="@style/dataFielldValue"
+                    android:text="1256 m "
+                    
+                    />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <LinearLayout
+                style="@style/dataFieldBox"
+                android:id="@+id/linLine5_1"
+                android:orientation="vertical">
+                <TextView
+                    style="@style/dataFielldTitle6xl"
+                    android:text="@string/MaxElevation"
+                    />
+                <TextView
+                    android:id="@+id/txtMaxElevation"
+                    style="@style/dataFielldValue"
+                    android:text="1235 m"
+                    
+                    />
+            </LinearLayout>
+            <LinearLayout
+                style="@style/dataFieldBox"
+                android:layout_marginEnd="@dimen/leftrightMargin"
+                android:id="@+id/linLine5_2"
+                android:orientation="vertical">
+                <TextView
+                    style="@style/dataFielldTitle6xl"
+                    android:text="@string/MinElevation"
+                    />
+                <TextView
+                    android:id="@+id/txtMinElevation"
+                    style="@style/dataFielldValue"
+                    android:text="1256 m "
+                    
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+<LinearLayout
+    android:id="@+id/linDummy"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/myMinActionBarSize"
+    android:orientation="vertical">
+
+</LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>

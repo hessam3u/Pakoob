@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layoutDirection="rtl">
+
+    <LinearLayout style="@style/ToolbarOuter">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarOfPage"
+            app:contentInsetLeft="0dp" app:contentInsetStart="0dp" app:contentInsetRight="0dp" app:contentInsetEnd="0dp"
+            style="@style/ToolbarStyle">
+
+            <LinearLayout
+                android:id="@+id/toolbarNormal"
+                style="@style/ToolbarContainer">
+
+                <TextView
+                    android:id="@+id/btnBack"
+                    style="@style/ToolbarBackButton" />
+
+                <TextView
+                    android:id="@+id/txtPageTitle"
+                    style="@style/ToolbarPageTitle"
+                    android:text="@string/title_all_tours" />
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/miFilter"
+                    android:text="&#xF0B0;"
+                    android:textSize="30dp"
+                    style="@style/ToolbarTextButtons" />
+                <TextView
+                    android:id="@+id/miSort"
+                    style="@style/ToolbarTextButtons"
+                    android:text="&#xF15D;"
+                   />
+
+
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+        <View style="@style/ToolbarBottomShadow"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/myMinActionBarSize">
+    <LinearLayout
+        android:id="@+id/layFilters"
+        style="@style/tour_list_filter_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0">
+
+        <LinearLayout
+            android:id="@+id/btnCityFilter"
+            style="@style/tour_list_filter_one">
+
+            <TextView
+                android:id="@+id/icoStatusCity"
+                style="@style/tour_list_filter_one_icon"
+                android:text="@string/ico_fontawesome_city"></TextView>
+
+            <TextView
+                style="@style/tour_list_filter_one_text"
+                android:text="فیلتر شهرها"></TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnClubNameFilter"
+            style="@style/tour_list_filter_one">
+
+            <TextView
+                android:id="@+id/icoStatusClub"
+                style="@style/tour_list_filter_one_icon"
+                android:text="@string/ico_fontawesome_club"></TextView>
+
+            <TextView
+                style="@style/tour_list_filter_one_text"
+                android:text="فیلتر باشگاه"></TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnLengthFilter"
+            style="@style/tour_list_filter_one">
+
+            <TextView
+                android:id="@+id/icoStatusDur"
+                style="@style/tour_list_filter_one_icon"
+                android:text="@string/ico_fontawesome_dur"></TextView>
+
+            <TextView
+                style="@style/tour_list_filter_one_text"
+                android:text="فیلتر مدت"></TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnCatFilter"
+            style="@style/tour_list_filter_one">
+
+            <TextView
+                android:id="@+id/icoStatusType"
+                style="@style/tour_list_filter_one_icon"
+                android:text="@string/ico_fontawesome_type"></TextView>
+
+            <TextView
+                style="@style/tour_list_filter_one_text"
+                android:text="فیلتر نوع"></TextView>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar_clubtour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/divContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@+id/layFilters">
+
+        <!--    No item exists-->
+        <RelativeLayout
+            android:id="@+id/divNoItemExists"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@color/colorWhite"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="با فیلترهای انتخاب شده، در آینده نزدیک برنامه ای برای نمایش وجود ندارد"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swipeContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+<!--            android:layout_marginBottom="44dp" if we want tab layout, then we can active it-->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvContacts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editText"
+                app:layout_constraintVertical_bias="1.0" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/divNoInternet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="بارگذاری مجدد"></TextView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/green">
+
+            <Button
+                android:id="@+id/btnRefreshInternet"
+                style="@style/button"
+                android:layout_width="48dp"
+                android:layout_height="58dp"
+                android:layout_centerInParent="true"
+                android:onClick="btnSelectClub1_Click"
+                android:padding="12dp"
+                app:icon="@drawable/ic_refresh_black_24dp"
+                app:iconTint="@color/colorGrey" />
+        </RelativeLayout>
+    </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

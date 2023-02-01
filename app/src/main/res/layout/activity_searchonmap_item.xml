@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/itemMainPart"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="2dp"
+    android:paddingRight="2dp"
+    android:paddingBottom="2dp"
+    android:orientation="vertical"
+    android:layoutDirection="rtl"
+    android:minHeight="@dimen/clubSearchItem_MinHeight">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="@dimen/clubSearchSubItem_MinHeight"
+    android:orientation="horizontal">
+    <LinearLayout
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_gravity="center"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:background="@drawable/circle_graylight"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_margin="4dp"
+                android:tint="#AE002095"
+                android:src="@drawable/ac_peak1"
+                android:id="@+id/txtImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY" />
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_marginTop="@dimen/leftrightMarginHalf"
+            style="@style/label_xxs"
+            android:id="@+id/lblDistance"
+            android:layout_gravity="center"
+            android:paddingLeft="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="6.7 کیلومتر" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="4dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtTitle"
+                style="@style/label"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="25dp"
+                android:paddingLeft="10dp"
+                android:text="عنوان حد"
+                android:textColor="@color/black" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/lblSecondLine"
+                style="@style/label_s"
+                android:layout_width="0dp"
+                android:layout_weight=".50"
+                android:layout_height="wrap_content"
+                android:paddingLeft="2dp"
+                android:text="نوع"
+                android:textColor="@color/colorGrey" />
+            <TextView
+                android:id="@+id/lblProvinceName"
+                style="@style/label_xs"
+                android:gravity="left|center"
+                android:layout_width="0dp"
+                android:layout_weight=".50"
+                android:layout_height="25dp"
+                android:text="سیستان و بلوچستان"
+                android:textColor="@color/black" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/btnIamFan"
+        style="@style/label"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:fontFamily="@font/fontello"
+        android:gravity="center_vertical"
+        android:text="&#xE800;"
+        android:textAlignment="center"
+        android:textColor="#5D8F00"
+        android:textSize="25dp"></TextView>
+
+    <!--    <Button-->
+<!--        android:id="@+id/btnOrder"-->
+<!--        android:layout_marginEnd="0dp"-->
+<!--        android:layout_width="95dp"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:text="در انتظار"-->
+<!--        style="@style/button"-->
+<!--        android:fontFamily="@font/iransansweb"/>-->
+
+</LinearLayout>
+    <ProgressBar
+        android:id="@+id/itemprogressbarIndet"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:max="100"
+        android:progress="0"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        style="?android:attr/progressBarStyleHorizontal"
+        />
+</LinearLayout>

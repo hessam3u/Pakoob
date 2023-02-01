@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layoutDirection="rtl"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/myMinActionBarSize"
+        android:orientation="vertical">
+
+        <!--    No item exists-->
+        <RelativeLayout
+            android:id="@+id/divNoItemExists"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:background="@color/colorWhite">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="در آینده نزدیک برنامه ای برای نمایش وجود ندارد. برای دریافت مجدد اطلاعات، صفحه را به طرف پایین بکشید."
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+        <!--    main content-->
+        <LinearLayout
+            android:id="@+id/divTourListPage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layoutDirection="rtl"
+            android:orientation="vertical">
+
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btnEditClubName2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="64dp"
+                    app:backgroundTint="@color/colorAccent"
+                    app:iconTint="@color/colorWhite"
+                    app:srcCompat="@android:drawable/ic_menu_edit" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar_clubtour"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:visibility="gone" />
+
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/swipeContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="44dp">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvContacts"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/editText"
+                        app:layout_constraintVertical_bias="1.0" />
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                <!--    <android.support.design.widget.FloatingActionButton-->
+                <!--        android:id="@+id/fab"-->
+                <!--        android:layout_width="wrap_content"-->
+                <!--        android:layout_height="wrap_content"-->
+                <!--        android:layout_gravity="end|bottom"-->
+                <!--        android:src="@android:drawable/ic_menu_search"-->
+                <!--        android:contentDescription="ارسال"-->
+                <!--        android:layout_margin="16dp" />-->
+
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/divNotChoosedClub"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView"
+                style="@style/label_xl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/btnSelectClub1"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_horizontal"
+                android:text="برای استفاده از این بخش، می بایست باشگاه خود را انتخاب نمایید تا برنامه های مربوط به این باشگاه به طور مخصوص در این صفحه به نمایش در آیند." />
+
+            <Button
+                android:id="@+id/btnSelectClub1"
+                style="@style/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:layout_weight="300"
+                android:onClick="btnSelectClub1_Click"
+                android:text="باشگاه خود را انتخاب کنید..."
+                app:icon="@android:drawable/ic_menu_add"
+                app:iconTint="@color/green" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/divNoInternet"
+            android:visibility="gone"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="بارگذاری مجدد"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true">
+            </TextView>
+            <RelativeLayout
+                android:backgroundTint="@color/green"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <Button
+                    android:layout_centerInParent="true"
+                    android:padding="12dp"
+                    style="@style/button"
+                    app:iconTint="@color/colorGrey"
+                    app:icon="@drawable/ic_refresh_black_24dp"
+                    android:id="@+id/btnRefreshInternet"
+                    android:layout_width="48dp"
+                    android:layout_height="58dp"
+                    android:onClick="btnSelectClub1_Click"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

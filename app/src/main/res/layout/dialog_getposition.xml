@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:textDirection="rtl"
+    android:orientation="vertical">
+    <LinearLayout
+        android:padding="@dimen/leftrightMargin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <TextView
+        style="@style/label_xl"
+        android:gravity="center_vertical"
+        android:text="@string/lblEnterPosition"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+    </TextView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/leftrightMargin"
+        android:background="@color/colorWhite"
+        android:orientation="vertical">
+    <TextView
+        style="@style/label"
+        android:layout_marginBottom="@dimen/leftrightMargin"
+        android:gravity="center_vertical"
+        android:text="@string/lblPositionSystem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+    </TextView>
+    <RelativeLayout
+        android:id="@+id/cmbPositionFormats_Container"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="@dimen/leftrightMargin"
+        android:background="@drawable/bg_roundcorner_gray"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/cmbPositionFormats"
+            android:textAlignment="textEnd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:gravity="end"
+            android:textSize="31dp"
+            android:layout_marginLeft="5dp"
+            android:spinnerMode="dropdown" />
+
+        <TextView
+            android:layout_marginRight="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:fontFamily="@font/fontello"
+            android:text="&#xE82A;"/>
+
+    </RelativeLayout>
+
+<!--    <Spinner-->
+<!--        style="@style/label"-->
+<!--        android:id="@+id/cmbPositionFormats"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:textAlignment="textEnd"-->
+<!--        android:layout_height="50dp" />-->
+
+    <LinearLayout
+        android:layoutDirection="ltr"
+        android:textDirection="ltr"
+        android:id="@+id/divDDMMSS"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal">
+            <RelativeLayout
+                android:id="@+id/cmbNorS_DDMMSS_Container"
+                android:layout_width="70dp"
+                android:layout_height="50dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/bg_roundcorner_gray"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/cmbNorS_DDMMSS"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:textSize="31dp"
+                    android:layout_marginLeft="5dp"
+                    android:spinnerMode="dropdown" />
+
+                <TextView
+                    android:layout_marginRight="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/fontello"
+                    android:text="&#xE82A;"/>
+
+            </RelativeLayout>
+
+            <EditText
+                style="@style/EditTextStyleForDegreeBoxes"
+                android:id="@+id/txtN_DD"
+                >
+            </EditText>
+            <TextView
+                android:id="@+id/lblN_DegreeSign"
+                android:textSize="31dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="°"></TextView>
+            <EditText
+                style="@style/EditTextStyleForDegreeBoxes"
+                android:id="@+id/txtN_MM"
+                >
+            </EditText>
+            <TextView
+                android:id="@+id/lblN_MinuteSign"
+                android:textSize="31dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text=" '"></TextView>
+            <EditText
+                style="@style/EditTextStyleForDegreeBoxes"
+                android:id="@+id/txtN_SS"
+                >
+            </EditText>
+
+            <TextView
+                android:id="@+id/lblN_SecondSign"
+                android:textSize="31dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="''"></TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginBottom="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal">
+            <RelativeLayout
+                android:id="@+id/cmbEorW_DDMMSS_Container"
+
+                android:layout_width="70dp"
+                android:layout_height="50dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/bg_roundcorner_gray"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/cmbEorW_DDMMSS"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:textSize="31dp"
+                    android:layout_marginLeft="5dp"
+                    android:spinnerMode="dropdown" />
+
+                <TextView
+                    android:layout_marginRight="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/fontello"
+                    android:text="&#xE82A;"/>
+
+            </RelativeLayout>
+
+<!--            <Spinner-->
+<!--                style="@style/label_xl"-->
+<!--                android:id="@+id/cmbEorW_DDMMSS"-->
+<!--                android:layout_width="100dp"-->
+<!--                android:textSize="31dp"-->
+<!--                android:layout_height="50dp" />-->
+            <EditText
+                style="@style/EditTextStyleForDegreeBoxes"
+                android:id="@+id/txtE_DD"
+                >
+            </EditText>
+            <TextView
+                android:id="@+id/lblE_DegreeSign"
+                android:textSize="31dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="°"></TextView>
+            <EditText
+                style="@style/EditTextStyleForDegreeBoxes"
+                android:id="@+id/txtE_MM"
+                >
+            </EditText>
+            <TextView
+                android:id="@+id/lblE_MinuteSign"
+                android:textSize="31dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text=" '"></TextView>
+            <EditText
+                style="@style/EditTextStyleForDegreeBoxes"
+                android:id="@+id/txtE_SS"
+                >
+            </EditText>
+
+            <TextView
+                android:id="@+id/lblE_SecondSign"
+                android:textSize="31dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="''"></TextView>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layoutDirection="ltr"
+        android:textDirection="ltr"
+        android:id="@+id/divUtm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_marginBottom="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/bg_roundcorner_gray"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/cmbUtmZoonE"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:textSize="31dp"
+                    android:layout_marginLeft="5dp"
+                    android:spinnerMode="dropdown" />
+
+                <TextView
+                    android:layout_marginRight="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/fontello"
+                    android:text="&#xE82A;"/>
+
+            </RelativeLayout>
+
+<!--            <Spinner-->
+<!--                style="@style/label_xl"-->
+<!--                android:id="@+id/cmbUtmZoonE"-->
+<!--                android:layout_width="120dp"-->
+<!--                android:textSize="31dp"-->
+<!--                android:layout_height="50dp" />-->
+            <RelativeLayout
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/bg_roundcorner_gray"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/cmbUtmZoonN"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:textSize="31dp"
+                    android:layout_marginLeft="5dp"
+                    android:spinnerMode="dropdown" />
+
+                <TextView
+                    android:layout_marginRight="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/fontello"
+                    android:text="&#xE82A;"/>
+
+            </RelativeLayout>
+<!--            <Spinner-->
+<!--                style="@style/label_xl"-->
+<!--                android:id="@+id/cmbUtmZoonN"-->
+<!--                android:layout_width="120dp"-->
+<!--                android:textSize="31dp"-->
+<!--                android:layout_height="50dp" />-->
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginBottom="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/txtUtmEasting"
+                style="@style/EditTextStyleForDegreeBoxes"
+                android:inputType="number"
+                android:maxLength="9"
+                android:text=""
+                >
+            </EditText>
+            <TextView
+                android:id="@+id/lblUtmEasting"
+                android:textSize="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="bottom"
+                android:text="m.E"></TextView>
+            <EditText
+                style="@style/EditTextStyleForDegreeBoxes"
+                android:inputType="number"
+                android:maxLength="9"
+                android:id="@+id/txtUtmNorthing"
+                android:text=""
+                >
+            </EditText>
+            <TextView
+                android:id="@+id/lblUtmNorthing"
+                android:inputType="numberDecimal"
+                android:textSize="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="bottom"
+                android:text="m.N"></TextView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+        <LinearLayout
+            android:layoutDirection="rtl"
+            android:textDirection="rtl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/btnAccept"
+                android:layout_marginTop="@dimen/leftrightMargin"
+                android:layout_marginLeft="@dimen/leftrightMargin"
+                style="@style/label"
+                android:text="@string/btnAccept"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:textColor="@color/colorWhite"
+                android:background="@drawable/bg_roundcorner_greenfill"
+                >
+            </TextView>
+            <TextView
+                android:id="@+id/btnCancel"
+                android:layout_marginTop="@dimen/leftrightMargin"
+                android:layout_marginLeft="@dimen/leftrightMargin"
+                style="@style/label"
+                android:text="@string/btnCancel"
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:textColor="@color/colorGrey"
+                >
+            </TextView>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

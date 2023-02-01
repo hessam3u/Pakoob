@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "721609252524",
+    "firebase_url": "https://naghshebaz-5540a.firebaseio.com",
+    "project_id": "naghshebaz-5540a",
+    "storage_bucket": "naghshebaz-5540a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:721609252524:android:1cb98529bd455367508909",
+        "android_client_info": {
+          "package_name": "mojafarin.naghshebaz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "721609252524-1vsecqtmqh46fr3qug3nvkg9pi74ma75.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYGFvoA6aR40UhXOgg-8drW8_yeF2on8k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "721609252524-1vsecqtmqh46fr3qug3nvkg9pi74ma75.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:721609252524:android:15447c02e3868a37508909",
+        "android_client_info": {
+          "package_name": "mojafarin.pakoob"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "721609252524-1vsecqtmqh46fr3qug3nvkg9pi74ma75.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYGFvoA6aR40UhXOgg-8drW8_yeF2on8k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "721609252524-1vsecqtmqh46fr3qug3nvkg9pi74ma75.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

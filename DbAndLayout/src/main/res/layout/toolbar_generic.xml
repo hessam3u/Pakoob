@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <LinearLayout style="@style/ToolbarOuter"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        >
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarOfPage"
+        app:contentInsetLeft="0dp" app:contentInsetStart="0dp" app:contentInsetRight="0dp" app:contentInsetEnd="0dp"
+        style="@style/ToolbarStyle">
+<!--        Orginal Version Commmennted at 1400-01-12 and Moved to Style -->
+<!--        android:id="@+id/toolbar_2"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@color/colorWhite"-->
+<!--        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
+<!--        app:elevation="0dp"-->
+<!--        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
+<!--        android:contentInsetLeft="0dp"-->
+<!--        android:contentInsetStart="0dp"-->
+<!--        app:contentInsetLeft="0dp"-->
+<!--        app:contentInsetStart="0dp"-->
+<!--        android:contentInsetRight="0dp"-->
+<!--        android:contentInsetEnd="0dp"-->
+<!--        app:contentInsetRight="0dp"-->
+<!--        app:contentInsetEnd="0dp"-->
+
+        <LinearLayout
+            android:id="@+id/toolbarNormal"
+            style="@style/ToolbarContainer">
+            <TextView
+                android:id="@+id/btnBack"
+                style="@style/ToolbarBackButton" />
+            <TextView
+                android:id="@+id/txtPageTitle"
+                style="@style/ToolbarPageTitle" />
+        </LinearLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+    <View style="@style/ToolbarBottomShadow"/>
+</LinearLayout>

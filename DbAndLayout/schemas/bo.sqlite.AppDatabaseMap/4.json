@@ -1,0 +1,566 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 4,
+    "identityHash": "17e2ea9092174c754c640be806d16d59",
+    "entities": [
+      {
+        "tableName": "TTExceptionLog",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`TTExceptionLogId` INTEGER PRIMARY KEY AUTOINCREMENT, `CCustomerId` INTEGER, `ExDate` TEXT, `AppId` INTEGER, `Platform` TEXT, `OsVersion` INTEGER NOT NULL, `PhoneSerial` TEXT, `DeviceModel` TEXT, `ManuIdiom` TEXT, `IP` TEXT, `VersionNumber` INTEGER, `ExMessage` TEXT, `ExText` TEXT, `InternalPage` INTEGER, `InternalCode` INTEGER)",
+        "fields": [
+          {
+            "fieldPath": "TTExceptionLogId",
+            "columnName": "TTExceptionLogId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "CCustomerId",
+            "columnName": "CCustomerId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ExDate",
+            "columnName": "ExDate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "AppId",
+            "columnName": "AppId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Platform",
+            "columnName": "Platform",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "OsVersion",
+            "columnName": "OsVersion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "PhoneSerial",
+            "columnName": "PhoneSerial",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "DeviceModel",
+            "columnName": "DeviceModel",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ManuIdiom",
+            "columnName": "ManuIdiom",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "IP",
+            "columnName": "IP",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "VersionNumber",
+            "columnName": "VersionNumber",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ExMessage",
+            "columnName": "ExMessage",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ExText",
+            "columnName": "ExText",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "InternalPage",
+            "columnName": "InternalPage",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "InternalCode",
+            "columnName": "InternalCode",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "TTExceptionLogId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_TTExceptionLog_TTExceptionLogId",
+            "unique": false,
+            "columnNames": [
+              "TTExceptionLogId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_TTExceptionLog_TTExceptionLogId` ON `${TABLE_NAME}` (`TTExceptionLogId`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "NbMap",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`NbMapId` INTEGER, `Name` TEXT, `OrginalName` TEXT, `NCCIndex` TEXT, `BlockName` TEXT, `LatS` REAL, `LatN` REAL, `LonE` REAL, `LonW` REAL, `Desc` TEXT, `Price` REAL, `AcServiceId` INTEGER, `AvailablityType` INTEGER, `EncType` INTEGER, `FileType` INTEGER, `NCCBlock` TEXT, `Scale` REAL, `Version` INTEGER, `Year` INTEGER, `NbPublisherTypeId` INTEGER, `DemoLatS` REAL, `DemoLatN` REAL, `DemoLonE` REAL, `DemoLonW` REAL, `DemoFileAddress` TEXT, `DemoStatus` INTEGER NOT NULL, `MapCategory` INTEGER NOT NULL, `MapType` INTEGER NOT NULL, `PreviewImage` TEXT NOT NULL, `RequestStatus` INTEGER, `BuyStatus` INTEGER, `BuyDesc` TEXT, `LocalFileAddress` TEXT, `Extracted` INTEGER NOT NULL, `IsVisible` INTEGER NOT NULL, PRIMARY KEY(`NbMapId`))",
+        "fields": [
+          {
+            "fieldPath": "NbMapId",
+            "columnName": "NbMapId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Name",
+            "columnName": "Name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "OrginalName",
+            "columnName": "OrginalName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "NCCIndex",
+            "columnName": "NCCIndex",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "BlockName",
+            "columnName": "BlockName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "LatS",
+            "columnName": "LatS",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "LatN",
+            "columnName": "LatN",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "LonE",
+            "columnName": "LonE",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "LonW",
+            "columnName": "LonW",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Desc",
+            "columnName": "Desc",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Price",
+            "columnName": "Price",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "AcServiceId",
+            "columnName": "AcServiceId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "AvailablityType",
+            "columnName": "AvailablityType",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "EncType",
+            "columnName": "EncType",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "FileType",
+            "columnName": "FileType",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "NCCBlock",
+            "columnName": "NCCBlock",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Scale",
+            "columnName": "Scale",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Version",
+            "columnName": "Version",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Year",
+            "columnName": "Year",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "NbPublisherTypeId",
+            "columnName": "NbPublisherTypeId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "DemoLatS",
+            "columnName": "DemoLatS",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "DemoLatN",
+            "columnName": "DemoLatN",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "DemoLonE",
+            "columnName": "DemoLonE",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "DemoLonW",
+            "columnName": "DemoLonW",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "DemoFileAddress",
+            "columnName": "DemoFileAddress",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "DemoStatus",
+            "columnName": "DemoStatus",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "MapCategory",
+            "columnName": "MapCategory",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "MapType",
+            "columnName": "MapType",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "PreviewImage",
+            "columnName": "PreviewImage",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "RequestStatus",
+            "columnName": "RequestStatus",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "BuyStatus",
+            "columnName": "BuyStatus",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "BuyDesc",
+            "columnName": "BuyDesc",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "LocalFileAddress",
+            "columnName": "LocalFileAddress",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Extracted",
+            "columnName": "Extracted",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "IsVisible",
+            "columnName": "IsVisible",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "NbMapId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "NbPoi",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`NbPoiId` INTEGER PRIMARY KEY AUTOINCREMENT, `Name` TEXT NOT NULL, `AltName` TEXT NOT NULL, `Level` INTEGER NOT NULL, `ParentId` INTEGER NOT NULL, `Address` TEXT NOT NULL, `LatS` REAL NOT NULL, `LonW` REAL NOT NULL, `LatN` REAL NOT NULL, `LonE` REAL NOT NULL, `Color` INTEGER NOT NULL, `ShowStatus` INTEGER NOT NULL, `PoiType` INTEGER NOT NULL, `ServerId` INTEGER NOT NULL, `CreatorType` INTEGER NOT NULL, `ValidityLevel` INTEGER NOT NULL, `ZoomMin` INTEGER NOT NULL, `ZoomMax` INTEGER NOT NULL, `IsPolygon` INTEGER NOT NULL, `Elevation` INTEGER NOT NULL, `ActivityType` INTEGER NOT NULL, `DisplaySize` INTEGER NOT NULL, `Priority` INTEGER NOT NULL, `LatBegin` REAL NOT NULL, `LonBegin` REAL NOT NULL, `addedInfo` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "NbPoiId",
+            "columnName": "NbPoiId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Name",
+            "columnName": "Name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "AltName",
+            "columnName": "AltName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "Level",
+            "columnName": "Level",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ParentId",
+            "columnName": "ParentId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "Address",
+            "columnName": "Address",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "LatS",
+            "columnName": "LatS",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "LonW",
+            "columnName": "LonW",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "LatN",
+            "columnName": "LatN",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "LonE",
+            "columnName": "LonE",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "Color",
+            "columnName": "Color",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ShowStatus",
+            "columnName": "ShowStatus",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "PoiType",
+            "columnName": "PoiType",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ServerId",
+            "columnName": "ServerId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "CreatorType",
+            "columnName": "CreatorType",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ValidityLevel",
+            "columnName": "ValidityLevel",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ZoomMin",
+            "columnName": "ZoomMin",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ZoomMax",
+            "columnName": "ZoomMax",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "IsPolygon",
+            "columnName": "IsPolygon",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "Elevation",
+            "columnName": "Elevation",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ActivityType",
+            "columnName": "ActivityType",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "DisplaySize",
+            "columnName": "DisplaySize",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "Priority",
+            "columnName": "Priority",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "LatBegin",
+            "columnName": "LatBegin",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "LonBegin",
+            "columnName": "LonBegin",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "addedInfo",
+            "columnName": "addedInfo",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "NbPoiId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "NbCurrentTrack",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`NbCurrentTrackId` INTEGER, `Latitude` REAL NOT NULL, `Longitude` REAL NOT NULL, `Time` INTEGER NOT NULL, `Elevation` REAL NOT NULL, PRIMARY KEY(`NbCurrentTrackId`))",
+        "fields": [
+          {
+            "fieldPath": "NbCurrentTrackId",
+            "columnName": "NbCurrentTrackId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "Latitude",
+            "columnName": "Latitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "Longitude",
+            "columnName": "Longitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "Time",
+            "columnName": "Time",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "Elevation",
+            "columnName": "Elevation",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "NbCurrentTrackId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '17e2ea9092174c754c640be806d16d59')"
+    ]
+  }
+}

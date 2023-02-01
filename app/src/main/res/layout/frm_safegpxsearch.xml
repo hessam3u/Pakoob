@@ -1,0 +1,194 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layoutDirection="rtl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <LinearLayout style="@style/ToolbarOuter">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarOfPage"
+            app:contentInsetLeft="0dp" app:contentInsetStart="0dp" app:contentInsetRight="0dp" app:contentInsetEnd="0dp"
+            style="@style/ToolbarStyle">
+
+            <LinearLayout
+                android:id="@+id/toolbarNormal"
+                style="@style/ToolbarContainer">
+                <TextView
+                    android:id="@+id/btnBack"
+                    style="@style/ToolbarBackButton"/>
+                <TextView
+                    android:id="@+id/txtPageTitle"
+                    style="@style/ToolbarPageTitle"
+                    android:gravity="center"
+                    android:text="@string/title_safegpxSearch"/>
+                <TextView
+                    android:visibility="invisible"
+                    android:clickable="true"
+                    android:layout_marginStart="@dimen/leftrightMargin"
+                    android:id="@+id/btnBell"
+                    style="@style/ToolbarTextButtons"
+                    android:text="&#xE833;"
+                    android:focusable="true" />
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+        <View style="@style/ToolbarBottomShadow"/>
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/divSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                style="@style/label_s"
+                android:id="@+id/txtSearchResult"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_gravity="center"
+                android:text="نتیجه جستجو"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSearchResult"
+                android:padding="4dp"
+                android:layout_marginTop="0dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+            <LinearLayout
+                android:id="@+id/linToDownlaodTracks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/liTitleOfMyReadyToDownload"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="@dimen/leftrightMargin"
+                    android:background="@color/colorGreyVeryLight"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/lblTitleOfRequest"
+                        style="@style/labelB"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center|center_vertical"
+                        android:text="@string/title_RequestTrackFromPakoob" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/leftrightMarginHalf"
+                    android:paddingRight="@dimen/leftrightMarginHalf">
+
+                    <TextView
+                        android:id="@+id/txtReadyToDownloadSearchReuslt"
+                        style="@style/label_s"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="start|center_vertical"
+                        android:text="@string/title_PleaseFillTrackRequestForm" />
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginLeft="@dimen/leftrightMargin"
+                    android:layout_marginRight="@dimen/leftrightMargin"
+                    android:layout_marginTop="@dimen/leftrightMarginMul2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start|center_vertical"
+                        android:text="@string/lblTitleOfTrack" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextboxNormal_Container_s"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:singleLine="true"
+                        android:padding="0dp"
+                        android:inputType="text"
+                        style="@style/TextboxNormal_Child"
+                        android:id="@+id/txtTitleOfRequest"
+                        android:layout_height="50dp"
+                        android:hint="@string/lblTitleOfTrackHint"
+                        android:autofillHints="" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:layout_marginTop="@dimen/leftrightMargin"
+                        style="@style/label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start|center_vertical"
+                        android:text="@string/lblDescOfTrack" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/TextboxNormal_Container_s"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <EditText
+                            android:gravity="start|top"
+                            android:padding="@dimen/leftrightMargin"
+                            android:inputType="text"
+                            style="@style/TextboxNormal_Child"
+                            android:id="@+id/txtDescOfRequest"
+                            android:layout_height="150dp"
+                            android:hint="@string/lblDescOfTrackHint"
+                            android:autofillHints="" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:orientation="vertical">
+                    <MorphingButton.IndeterminateProgressButton
+                        android:layout_marginTop="@dimen/leftrightMargin"
+                        android:gravity="center"
+                        android:id="@+id/btnRequestTrackToPakoob"
+                        android:layout_width="180dp"
+                        android:layout_height="wrap_content"
+                        style="@style/mbButton"
+                        android:text="@string/SendRequest"/>
+</LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    </ScrollView>
+
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

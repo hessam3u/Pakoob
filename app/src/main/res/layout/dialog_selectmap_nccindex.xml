@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mapFrameLayoutChild"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
+        <Button
+            android:id="@+id/btnSelectLocationOnMap"
+            style="@style/button"
+            android:elevation="100dp"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+            android:text="@string/selectMap">
+
+        </Button>
+        <fragment
+            android:elevation="60dp"
+            android:id="@+id/mapSelectLocation"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+        <TextView
+            android:id="@+id/txtSelectedNCCIndex"
+            android:textColor="#00FF00"
+            android:layout_gravity="end|bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <hmapscaleview.MapScaleView
+            android:id="@+id/scaleViewChild"
+            android:layout_width="wrap_content"
+            android:layout_height="250dp"
+            android:layout_gravity="center_vertical|left"
+            android:layout_marginLeft="40dp"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnSelectLayerChild"
+            app:fabCustomSize="50dp"
+            android:layout_gravity="bottom|start"
+            app:elevation="16dp"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="9dp"
+            android:layout_marginBottom="285dp"
+            app:backgroundTint="#33000000"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnShowCustomMapsChild"
+            app:fabCustomSize="50dp"
+            android:layout_gravity="bottom|start"
+            app:elevation="16dp"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="9dp"
+            android:layout_marginBottom="345dp"
+            app:backgroundTint="#33000000"/>
+
+    </FrameLayout>

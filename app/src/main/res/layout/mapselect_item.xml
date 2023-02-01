@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="2dp"
+    android:orientation="vertical"
+    android:layoutDirection="rtl"
+    android:minHeight="80dp">
+<LinearLayout
+    android:id="@+id/movies_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="70dp"
+    android:orientation="horizontal">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/btnShowHide"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:textColor="#5D8F00"
+            android:textSize="25dp"
+            android:fontFamily="@font/fontello"
+            android:text="&#xE81B;"
+            android:textAlignment="center"
+            android:background="@drawable/bg_roundcorner_black"
+            android:gravity="center_vertical"
+            tools:ignore="RtlCompat">
+        </TextView>
+
+<!--        <TextView-->
+<!--            android:id="@+id/btnShowHide"-->
+<!--            android:clickable="true"-->
+<!--            android:layout_width="60dp"-->
+<!--            android:layout_height="60dp"-->
+<!--            android:text="&#xE81B;"-->
+<!--            android:textSize="25dp"-->
+<!--            android:fontFamily="@font/fontello"/>-->
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="4dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtTitle"
+                style="@style/label"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/iransansweb"
+                android:paddingLeft="10dp"
+                android:text="نقشه قله شیرباد"
+                android:textColor="@color/red" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/txtPriceContainer"
+            android:layout_width="match_parent"
+            android:layout_height="21dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtPrice"
+                style="@style/label"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:fontFamily="@font/iransansweb"
+                android:text="250،000 ریال"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/label_s"
+                android:id="@+id/txtBlockName"
+                android:paddingLeft="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="بلوک بجنورد" />
+
+            <TextView
+                style="@style/label_s"
+                android:paddingLeft="2dp"
+                android:id="@+id/lblIndex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="برگ شماره"/>
+            <TextView
+                style="@style/label_s"
+                android:paddingLeft="2dp"
+                android:id="@+id/txtIndex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="7782 I SE"/>
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <TextView
+        style="@style/label"
+        android:id="@+id/btnOrder"
+        android:layout_width="75dp"
+        android:layout_height="30dp"
+        android:textColor="#5D8F00"
+        android:fontFamily="@font/iransansweb"
+        android:text="@string/InWait"
+        android:textAlignment="center"
+        android:background="@drawable/bg_roundcorner_black"
+        android:gravity="center_vertical"
+        tools:ignore="RtlCompat">
+    </TextView>
+
+<!--    <Button-->
+<!--        android:id="@+id/btnOrder"-->
+<!--        android:layout_marginEnd="0dp"-->
+<!--        android:layout_width="95dp"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:text="در انتظار"-->
+<!--        style="@style/button"-->
+<!--        android:fontFamily="@font/iransansweb"/>-->
+    <Button
+        android:id="@+id/btnMore"
+        android:padding="0dp"
+        android:layout_width="20dp"
+        android:layout_height="40dp"
+        android:textSize="25dp"
+        android:fontFamily="@font/fontello"
+        android:text="&#xF142;"
+        app:backgroundTint="@color/colorWhite"
+        android:textColor="@color/black"/>
+
+</LinearLayout>
+    <ProgressBar
+        android:id="@+id/itemprogressbarDet"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:max="100"
+        android:progress="0"
+        android:indeterminate="false"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyleHorizontal"
+        />
+    <ProgressBar
+        android:id="@+id/itemprogressbarIndet"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:max="100"
+        android:progress="0"
+        android:indeterminate="true"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyleHorizontal"
+        />
+</LinearLayout>

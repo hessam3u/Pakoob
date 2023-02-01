@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#09A819</color>
+    <color name="colorPrimaryDark">#053E0B</color>
+    <color name="colorAccent">#BF0000</color>
+    <color name="StatusBarColor">#ffffff</color>
+
+    <color name="colorPrimaryLight">#80F48C</color>
+<!--    <color name="colorPrimary">#7cb342</color>-->
+<!--    <color name="colorPrimaryDark">#4b830d</color>-->
+<!--    <color name="colorAccent">#000000</color>-->
+
+    <color name="red">#FF0000</color>
+    <color name="green">#0D8500</color>
+    <color name="greenJeeegh">#00ff24</color>
+    <color name="banafshJeeegh">#D900FF</color>
+    <color name="black">#000000</color>
+    <color name="colorAccentDark">#00B482</color>
+
+    <color name="colorBlack">#000000</color>
+    <color name="colorBlackLight">#555555</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorGrey">#707070</color>
+    <color name="colorGreyLight">#8A8A8A</color>
+    <color name="colorGreyVeryLight">#F6F6F6</color>
+
+    <color name="colorBlue3">#AECDD8FF</color>
+    <color name="colorBlue2">#AE7B98FF</color>
+    <color name="colorBlue1">#AE002095</color>
+    <color name="colorBlue">#073CFF</color>
+    <color name="colorBrownDark">#3C0101</color>
+    <color name="colorBrownMid">#6A2F02</color>
+    <color name="colorBrownLight">#885229</color>
+    <color name="colorOrange1">#FF6E00</color>
+
+
+
+    <color name="colorTextboxBack">#F6F8FA</color>
+
+    <!--    Register/Login-->
+    <color name="login_bg">#FFFFFF</color>
+
+    <!--    Buttons-->
+    <color name="btnAccept_background">#0D8500</color>
+    <color name="btnAccept_text">#FFFFFF</color>
+    <color name="btnAccept_stroke">#FFFFFF</color>
+    <color name="btnLink_background">#FFFFFF</color>
+    <color name="btnLink_text">#707070</color>
+    <color name="btnLinkNew_text">#2196F3</color>
+<!--    <color name="btnLink_stroke">#707070</color>-->
+    <color name="btnCancel_background">#F6F6F6</color>
+    <color name="btnCancel_text">#707070</color>
+    <color name="btnCancel_stroke">#707070</color>
+
+<!--    RecyclerView Colors-->
+    <color name="rv_pressed_color">#EF6666</color>
+    <color name="rv_selected_color">#CCCCCC</color>
+    <color name="rv_focused_color">#FFFFFF</color>
+
+
+    <color name="homeZoomButtonsNormal">#555555</color>
+    <color name="homeZoomButtonsMyLocation">#4E9100</color>
+
+    <color name="homeMyLocationIcon_Correct">#07389C</color>
+
+    <color name="labelAtHome">#000000</color>
+
+
+
+
+
+    <color name="filter_tour_bg">#f0f3f4</color>
+    <color name="filter_tour_bg_selected">#ff00ccff</color>
+
+
+    <color name="toolbar_defaultTextColor">#444444</color>
+    <color name="toolbar_defaultBackColor">#ffffff</color>
+
+
+    <color name="colorGold">#FFC515</color>
+
+<!--    FCM-->
+    <color name="UnreadMessageBackground">#B8E6B4</color>
+    <color name="NormalMessageBackground">#FFFFFF</color>
+
+    <!--    Home New 1400-07-07 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <color name="colorPrimaryEmad">#33644e</color>
+    <color name="secondColorEmad">#bd8526</color>
+    <color name="secondColorLight1Emad">#fff6e6</color>
+    <color name="homeBackgroundEmad">#f4f4f4</color>
+    <color name="homeForegroundEmad">#ffffff</color>
+
+
+    <color name="wthShowSplitorHour">#E6E6E6</color>
+    <color name="wthShowSplitorDay">#C6C6C6</color>
+    <color name="wthShowTableHeaders">#EFEFEF</color>
+    <color name="wthTableWindBackground">#F6F6F6</color>
+
+
+
+
+    <color name="holo_blue_bright">#ff00ddff</color>
+    <color name="holo_green_light">#ff99cc00</color>
+    <color name="holo_orange_light">#ffffbb33</color>
+    <color name="holo_red_light">#ffff4444</color>
+
+    <color name="mb_gray">#ffdedede</color>
+    <color name="mb_blue">#ff0099cc</color>
+    <color name="mb_blue_dark">#ff00719b</color>
+
+    <color name="mb_white">#ffffff</color>
+    <color name="mb_purple">#ffaa66cc</color>
+    <color name="mb_purple_dark">#ff8855aa</color>
+    <color name="mb_green">#ff99cc00</color>
+    <color name="mb_green_dark">#ff6d9b00</color>
+    <color name="mb_red">#ffff4444</color>
+    <color name="mb_red_dark">#ffcd3a3a</color>
+
+    <integer name="mb_animation">500</integer>
+
+
+</resources>

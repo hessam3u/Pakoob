@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layoutDirection="rtl">
+
+    <LinearLayout style="@style/ToolbarOuter">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarOfPage"
+            style="@style/ToolbarStyle"
+            app:contentInsetEnd="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetRight="0dp"
+            app:contentInsetStart="0dp">
+
+            <LinearLayout
+                android:id="@+id/toolbarNormal"
+                style="@style/ToolbarContainer">
+
+                <TextView
+                    android:id="@+id/btnBack"
+                    style="@style/ToolbarBackButton" />
+
+                <TextView
+                    android:id="@+id/txtPageTitle"
+                    android:gravity="center"
+                    style="@style/ToolbarPageTitle"
+                    android:text="@string/title_SafeGpx_View" />
+
+                <TextView
+                    android:id="@+id/btnBell"
+                    style="@style/ToolbarTextButtons"
+                    android:layout_marginLeft="@dimen/leftrightMargin"
+                    android:clickable="true"
+                    android:visibility="invisible"
+                    android:text="&#xE833;"
+                    android:focusable="true" />
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+        <View style="@style/ToolbarBottomShadow" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/myMinActionBarSize"
+        android:fillViewport="true"
+        app:layout_anchorGravity="center">
+
+        <!--body container-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+            <!--Loading Container-->
+            <!--head-->
+            <LinearLayout
+                android:id="@+id/linLoadingContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ProgressBar
+                    android:id="@+id/progressBarPage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="60dp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/txtSearchResult"
+                    style="@style/label_s"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:text="@string/IsLoading" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/leftrightMargin"
+                android:layout_marginRight="@dimen/leftrightMargin"
+                android:layout_marginBottom="@dimen/leftrightMarginMul2"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="@dimen/leftrightMargin"
+                    android:layout_marginBottom="@dimen/leftrightMargin"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imgIcon"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:background="@drawable/circle_grayverylight"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ac_mountaineering"
+                        android:tint="@color/colorBlackLight" />
+
+                    <TextView
+                        android:id="@+id/lblName"
+                        style="@style/label_l"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="@dimen/leftrightMargin"
+                        android:gravity="center"
+                        android:text="مسیر صعود به قله دماوند" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgScreen"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:adjustViewBounds="true"
+                        android:background="@drawable/bg_roundcorner_gray_backwhite5"
+                        android:padding="1dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ac_hiking" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/lblDistance"
+                            style="@style/label_l"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/leftrightMarginMul2"
+                            android:text="مسافت 250km" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/leftrightMarginMul2"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="@string/ActivityType" />
+
+                    <TextView
+                        android:id="@+id/lblActivityTypeName"
+                        style="@style/labelB"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="کوهنوردی" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/leftrightMarginMul2"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="@string/HardnessLevel" />
+
+                    <TextView
+                        android:id="@+id/lblHardnessLevel"
+                        style="@style/labelB"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="111کوهنوردی" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linValidity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/leftrightMarginMul2"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/label"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="@string/Validity" />
+
+                        <TextView
+                            android:id="@+id/lblValidity"
+                            style="@style/labelB"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="113کوهنوردی" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/lblValidityDesc"
+                    style="@style/label_s"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="کوهنوردی"
+                    android:textColor="@color/colorGrey" />
+
+                <LinearLayout
+                    android:id="@+id/linDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/leftrightMarginMul2"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/labelB"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="@string/SafeGpxDesc" />
+
+                    <TextView
+                        android:id="@+id/lblDesc"
+                        style="@style/label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorGreyVeryLight"
+                        android:layoutDirection="rtl"
+                        android:text="اجرای برنامه های حرفه ای کوهنوردی از مشهد و حومه و برگزاری کلاس های آموزشی در سطح گسترده" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linImportantNotes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/leftrightMarginMul2"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/labelB"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="@string/ImportantNotes" />
+
+                    <TextView
+                        android:id="@+id/lblImportantNotes"
+                        style="@style/label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorGreyVeryLight"
+                        android:layoutDirection="rtl"
+                        android:text="اجرای برنامه های حرفه ای کوهنوردی از مشهد و حومه و برگزاری کلاس های آموزشی در سطح گسترده" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/leftrightMarginMul2"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="@string/Price" />
+
+                    <TextView
+                        android:id="@+id/lblPrice"
+                        style="@style/labelB"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="125.665 تومان" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="@dimen/leftrightMarginMul2"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:id="@+id/btnBuyAndDownload"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bg_roundcorner_greenfill"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/label"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_horizontal|center_vertical"
+                            android:fontFamily="@font/fontello"
+                            android:gravity="center"
+                            android:text="&#xE83F;"
+                            android:textAlignment="center"
+                            android:textColor="#FFFFFF"
+                            android:textSize="25dp" />
+
+                        <TextView
+                            android:id="@+id/lblBuyAndDownload"
+                            style="@style/label_xl"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/leftrightMarginMul2"
+                            android:gravity="center"
+                            android:text="@string/btnBuyAndDownload"
+                            android:textAlignment="center"
+                            android:textColor="@color/colorWhite" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/btnDownload"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bg_roundcorner_greenfill"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/label"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_horizontal|center_vertical"
+                            android:fontFamily="@font/fontello"
+                            android:gravity="center"
+                            android:text="&#xE822;"
+                            android:textAlignment="center"
+                            android:textColor="#FFFFFF"
+                            android:textSize="25dp" />
+
+                        <TextView
+                            android:id="@+id/lblDownload"
+                            style="@style/label_xl"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/leftrightMarginMul2"
+                            android:gravity="center"
+                            android:text="@string/Download"
+                            android:textAlignment="center"
+                            android:textColor="@color/colorWhite" />
+
+                    </LinearLayout>
+
+
+                    <ProgressBar
+                        android:id="@+id/progressBarDet"
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:max="100"
+                        android:progress="0"
+                        android:indeterminate="false"
+                        android:visibility="gone"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        />
+                    <ProgressBar
+                        android:id="@+id/progressBarIndet"
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:max="100"
+                        android:progress="0"
+                        android:indeterminate="true"
+                        android:visibility="gone"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        />
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

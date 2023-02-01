@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layoutDirection="rtl"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/toolbar_generic"/>
+    <ScrollView
+        android:layout_marginTop="@dimen/myMinActionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                style="@style/faq_Panel_Header">
+                <TextView style="@style/rich_title_l" android:text="@string/q_ClubTitle">
+                </TextView>
+            </LinearLayout>
+            <LinearLayout
+                style="@style/faq_Panel">
+                <TextView style="@style/rich_title" android:text="@string/q_Club_Limited">
+                </TextView>
+                <TextView style="@style/rich_text" android:text="@string/q_Club_Limited_ans">
+                </TextView>
+                <TextView style="@style/rich_title" android:text="@string/q_CantFindMyClub">
+                </TextView>
+                <TextView style="@style/rich_text" android:text="@string/q_CantFindMyClub_ans">
+                </TextView>
+                <TextView style="@style/rich_title" android:text="@string/q_ClubCantSendMessage">
+                </TextView>
+                <TextView style="@style/rich_text" android:text="@string/q_ClubCantSendMessage_ans">
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/faq_Panel_Header">
+                <TextView style="@style/rich_title_l" android:text="@string/q_NavigationPageTitle">
+                </TextView>
+            </LinearLayout>
+        <LinearLayout
+            style="@style/faq_Panel">
+            <TextView style="@style/rich_title" android:text="@string/q_MainPartOfMap">
+            </TextView>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/help_of_map_page">
+            </ImageView>
+            <TextView style="@style/rich_title" android:text="@string/q_NavigationHowToDoIt">
+            </TextView>
+            <TextView style="@style/rich_text" android:text="@string/q_NavigationHowToDoIt_Ans">
+            </TextView>
+            <TextView style="@style/rich_title" android:text="@string/q_NavigationCanTrack">
+            </TextView>
+            <TextView style="@style/rich_text" android:text="@string/q_NavigationCanTrack_Ans">
+            </TextView>
+            <TextView style="@style/rich_title" android:text="@string/q_NavigationCanSavePoint">
+            </TextView>
+            <TextView style="@style/rich_text" android:text="@string/q_NavigationCanSavePoint_Ans">
+            </TextView>
+            <TextView style="@style/rich_title" android:text="@string/q_NavigationCanNavigate">
+        </TextView>
+            <TextView style="@style/rich_text" android:text="@string/q_NavigationCanNavigate_Ans">
+            </TextView>
+        </LinearLayout>
+        <LinearLayout
+                style="@style/faq_Panel_Header">
+                <TextView style="@style/rich_title_l" android:text="@string/q_MapPageTitle">
+                </TextView>
+            </LinearLayout>
+            <LinearLayout
+                style="@style/faq_Panel">
+
+
+                <TextView style="@style/rich_title" android:text="@string/q_emptyMaps">
+                </TextView>
+                <TextView style="@style/rich_text" android:text="@string/q_emptyMaps_a">
+                </TextView>
+
+                <TextView style="@style/rich_title" android:text="@string/q_isOffline">
+                </TextView>
+                <TextView style="@style/rich_text" android:text="@string/q_isOffline_a">
+                </TextView>
+
+
+                <TextView style="@style/rich_title" android:text="@string/q_searchMap">
+                </TextView>
+                <TextView style="@style/rich_text" android:text="@string/q_searchMap_a">
+                </TextView>
+
+
+                <TextView style="@style/rich_title" android:text="@string/q_searchByLocation">
+                </TextView>
+                <TextView style="@style/rich_text" android:text="@string/q_searchByLocation_a">
+                </TextView>
+
+                <TextView style="@style/rich_title" android:text="@string/q_searchMap_resultType">
+                </TextView>
+                <TextView style="@style/rich_text" android:text="@string/q_searchMap_resultType_a">
+                </TextView>
+
+                <TextView style="@style/rich_title" android:text="@string/q_mapfile">
+                </TextView>
+                <TextView style="@style/rich_text" android:text="@string/q_mapfile_a">
+                </TextView>
+
+                <TextView style="@style/rich_title" android:text="@string/q_hazfeNasb">
+                </TextView>
+                <TextView style="@style/rich_text" android:text="@string/q_hazfeNasb_a">
+                </TextView>
+
+                <TextView style="@style/rich_title" android:text="@string/q_estefadeHamzaman">
+                </TextView>
+                <TextView style="@style/rich_text" android:text="@string/q_estefadeHamzaman_a">
+                </TextView>
+
+                <TextView style="@style/rich_title" android:text="@string/q_hajmeNaghshe">
+                </TextView>
+                <TextView style="@style/rich_text" android:text="@string/q_hajmeNaghshe_a">
+                </TextView>
+
+                <TextView style="@style/rich_title" android:text="@string/q_posibleHighZoom">
+                </TextView>
+                <TextView style="@style/rich_text" android:text="@string/q_q_posibleHighZoom_a">
+                </TextView>
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

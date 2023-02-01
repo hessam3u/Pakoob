@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<!--    <item-->
+<!--        android:id="@+id/btnMoveToFolder"-->
+<!--        android:title="@string/btnMoveToFolder"/>-->
+    <item
+
+        android:id="@+id/btnAddFolderInToolbar"
+        android:title="@string/btnAddFolderInToolbar"/>
+    <item
+        tools:ignore="AppCompatResource"
+        android:icon="@drawable/ic_import"
+        android:id="@+id/btnImportTrackFile"
+        android:title="@string/btnImportTrackFile"/>
+    <item
+        android:id="@+id/btnSelectAll"
+        android:title="@string/btnSelectAll"/>
+</menu>

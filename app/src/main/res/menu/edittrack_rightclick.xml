@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:id="@+id/btnEditOnMap"
+        android:title="@string/btnEditOnMap"/>
+    <item
+        android:id="@+id/btnViewPoints"
+        android:title="@string/btnViewPoints"/>
+    <item
+        android:id="@+id/btnDelete"
+        android:title="@string/btnDelete"/>
+    <item
+        android:id="@+id/btnExportGPX"
+        android:title="@string/btnExportGPX"/>
+</menu>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/bg_roundcorner_gray_backwhite5"
+    android:id="@+id/itemMainPart"
+    android:clickable="true"
+    android:layout_width="113dp"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="75dp"
+    android:orientation="vertical"
+    android:padding="4dp"
+    android:layout_margin="4dp"
+    android:layoutDirection="rtl">
+<!--    226 × 170 lblItemTitle height:39dp-->
+
+    <ImageView
+        android:id="@+id/txtImage"
+        android:layout_width="113dp"
+        android:layout_height="85dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/lblItemTitle"
+            style="@style/label_s"
+            android:lineSpacingMultiplier=".8"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="top"
+            android:gravity="center_horizontal|center_vertical"
+            android:fontFamily="@font/iransansweb"
+            android:text="قله شاه جهان (طرح سیمرغ)"
+            android:textColor="@color/red"/>
+
+        <LinearLayout
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="21dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/label_s"
+                android:paddingLeft="2dp"
+                android:id="@+id/lblItemSbuTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" 22 بهمن"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

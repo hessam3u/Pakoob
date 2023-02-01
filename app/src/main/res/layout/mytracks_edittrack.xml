@@ -1,0 +1,382 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layoutDirection="rtl">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        style="@style/ToolbarOuter">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarOfPage"
+            style="@style/ToolbarStyle"
+            app:contentInsetEnd="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetRight="0dp"
+            app:contentInsetStart="0dp">
+
+            <LinearLayout
+                android:id="@+id/toolbarNormal"
+                style="@style/ToolbarContainer">
+
+                <TextView
+                    android:id="@+id/btnBack"
+                    style="@style/ToolbarBackButton" />
+
+                <TextView
+                    android:id="@+id/txtPageTitle"
+                    style="@style/ToolbarPageTitle"
+                    android:text="@string/title_mytracks"
+                    android:textSize="@dimen/textsize_pageTitle_s" />
+
+                <TextView
+                    android:id="@+id/btnSave"
+                    style="@style/ToolbarTextButtons"
+                    android:text="&#xE829;" />
+
+                <TextView
+                    android:id="@+id/btnMoreSelected"
+                    style="@style/ToolbarTextButtons"
+                    android:layout_width="40dp"
+                    android:paddingLeft="10dp"
+                    android:text="&#xF142;" />
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+        <View style="@style/ToolbarBottomShadow" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="@dimen/myMinActionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="@dimen/leftrightMargin"
+        android:layout_marginLeft="@dimen/leftrightMargin"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+      >
+
+        <LinearLayout
+            android:id="@+id/divMainContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/label"
+                android:text="@string/lblTrack_Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+            </TextView>
+            <EditText
+                android:layout_marginRight="@dimen/leftrightMargin"
+                android:singleLine="true"
+                android:lines="1"
+                android:maxLines="1"
+                android:id="@+id/txtTitle"
+                android:background="@drawable/bg_roundcorner_greenborder"
+                style="@style/label"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:imeOptions="actionDone"
+                android:gravity="center"
+                android:focusableInTouchMode="true"
+                android:text=""
+                android:textCursorDrawable="@null"
+                android:focusable="true"
+                >
+            </EditText>
+            <LinearLayout
+                android:layout_marginBottom="@dimen/leftrightMargin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    style="@style/label_l"
+                    android:text="@string/lblBasicInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                </TextView>
+                <LinearLayout
+                    android:background="@color/colorGreyVeryLight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_marginLeft="16dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <TextView style="@style/TextViewInTrackInfo_Title" android:text="@string/lblPointsCount" ></TextView>
+                            <TextView android:id="@+id/txtNumberOfPoints" style="@style/TextViewInTrackInfo_Value" android:text="-" ></TextView>
+                        </LinearLayout>
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <TextView style="@style/TextViewInTrackInfo_Title" android:text="@string/distance" ></TextView>
+                            <TextView android:id="@+id/txtDistance" style="@style/TextViewInTrackInfo_Value" android:text="-"> </TextView>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <TextView style="@style/TextViewInTrackInfo_Title" android:text="@string/Duration"></TextView>
+                            <TextView android:id="@+id/txtDuration" style="@style/TextViewInTrackInfo_Value" android:text="-" ></TextView>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <TextView android:text="@string/DurationMoving" style="@style/TextViewInTrackInfo_Title" ></TextView>
+                            <TextView android:id="@+id/txtDurationMoving" style="@style/TextViewInTrackInfo_Value" android:text="-" ></TextView>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <TextView android:text="@string/DurationStopped" style="@style/TextViewInTrackInfo_Title" ></TextView>
+                            <TextView android:id="@+id/txtDurationStopped" style="@style/TextViewInTrackInfo_Value" android:text="-" ></TextView>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <TextView android:text="@string/MaxSpeed" style="@style/TextViewInTrackInfo_Title" ></TextView>
+                            <TextView android:id="@+id/txtMaxSpeed" style="@style/TextViewInTrackInfo_Value" android:text="-" ></TextView>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <TextView android:text="@string/AvgSpeed" style="@style/TextViewInTrackInfo_Title" ></TextView>
+                            <TextView android:id="@+id/txtAvgSpeed" style="@style/TextViewInTrackInfo_Value" android:text="-" ></TextView>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <TextView android:text="@string/AscentTotal" style="@style/TextViewInTrackInfo_Title" ></TextView>
+                            <TextView android:id="@+id/txtAscentTotal" style="@style/TextViewInTrackInfo_Value" android:text="-" ></TextView>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <TextView android:text="@string/DescentTotal" style="@style/TextViewInTrackInfo_Title" ></TextView>
+                            <TextView android:id="@+id/txtDescentTotal" style="@style/TextViewInTrackInfo_Value" android:text="-" ></TextView>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <TextView android:text="@string/MaxElevation" style="@style/TextViewInTrackInfo_Title" ></TextView>
+                            <TextView android:id="@+id/txtMaxElevation" style="@style/TextViewInTrackInfo_Value" android:text="-" ></TextView>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <TextView android:text="@string/MinElevation" style="@style/TextViewInTrackInfo_Title" ></TextView>
+                            <TextView android:id="@+id/txtMinElevation" style="@style/TextViewInTrackInfo_Value" android:text="-" ></TextView>
+                        </LinearLayout>
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <TextView android:text="@string/AvgSpeedMoving" style="@style/TextViewInTrackInfo_Title"></TextView>
+                            <TextView android:id="@+id/txtAvgSpeedMoving" style="@style/TextViewInTrackInfo_Value" android:text="-" ></TextView>
+                        </LinearLayout>
+
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <TextView android:text="@string/StartTime" style="@style/TextViewInTrackInfo_Title"></TextView>
+                            <TextView android:id="@+id/txtStartTime" style="@style/TextViewInTrackInfo_Value" android:layoutDirection="rtl" android:text="-" ></TextView>
+                        </LinearLayout>
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <TextView android:text="@string/EndTime" style="@style/TextViewInTrackInfo_Title"></TextView>
+                            <TextView android:id="@+id/txtEndTime" style="@style/TextViewInTrackInfo_Value" android:layoutDirection="rtl" android:text="-" ></TextView>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/divSlopeCalculations"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    style="@style/label_l"
+                    android:text="@string/lblSlopeInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                </TextView>
+
+                <LinearLayout
+                    android:background="@color/colorGreyVeryLight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_marginLeft="16dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <TextView android:text="@string/lblUphill" style="@style/TextViewInTrackInfo_Title" ></TextView>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <TextView android:text="@string/lblValue" style="@style/TextViewInTrackInfo_Title" ></TextView>
+                            <TextView android:id="@+id/txtAscentTotal1" style="@style/TextViewInTrackInfo_Value" android:text="-" ></TextView>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <TextView android:text="@string/distance" style="@style/TextViewInTrackInfo_Title" ></TextView>
+                            <TextView android:id="@+id/txtDistanceAscent" style="@style/TextViewInTrackInfo_Value" android:text="-" ></TextView>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <TextView android:text="@string/Duration" style="@style/TextViewInTrackInfo_Title" ></TextView>
+                            <TextView android:id="@+id/txtDurationAscent" style="@style/TextViewInTrackInfo_Value" android:text="-" ></TextView>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <TextView android:text="@string/AvgSpeed" style="@style/TextViewInTrackInfo_Title" ></TextView>
+                            <TextView android:id="@+id/txtAvgSpeedAscent" style="@style/TextViewInTrackInfo_Value" android:text="-" ></TextView>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <TextView android:text="@string/Slope" style="@style/TextViewInTrackInfo_Title" ></TextView>
+                            <TextView android:id="@+id/txtSlopeAscent" style="@style/TextViewInTrackInfo_Value" android:text="-" ></TextView>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <TextView android:text="@string/lblDownhill" style="@style/TextViewInTrackInfo_Title" ></TextView>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <TextView android:text="@string/lblValue" style="@style/TextViewInTrackInfo_Title" ></TextView>
+                            <TextView android:id="@+id/txtDescentTotal1" style="@style/TextViewInTrackInfo_Value" android:text="-" ></TextView>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <TextView android:text="@string/distance" style="@style/TextViewInTrackInfo_Title" ></TextView>
+                            <TextView android:id="@+id/txtDistanceDescent" style="@style/TextViewInTrackInfo_Value" android:text="-" ></TextView>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <TextView android:text="@string/Duration" style="@style/TextViewInTrackInfo_Title" ></TextView>
+                            <TextView android:id="@+id/txtDurationDescent" style="@style/TextViewInTrackInfo_Value" android:text="-" ></TextView>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <TextView android:text="@string/AvgSpeed" style="@style/TextViewInTrackInfo_Title" ></TextView>
+                            <TextView android:id="@+id/txtAvgSpeedDescent" style="@style/TextViewInTrackInfo_Value" android:text="-" ></TextView>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <TextView android:text="@string/Slope" style="@style/TextViewInTrackInfo_Title" ></TextView>
+                            <TextView android:id="@+id/txtSlopeDescent" style="@style/TextViewInTrackInfo_Value" android:text="-" ></TextView>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            </LinearLayout>
+
+<!--            android:textCursorDrawable="@null"-->
+<!--            style="@style/EditTextStyle"-->
+<!--            android:maxLines="1"-->
+<!--            android:lines="1"-->
+<!--            android:focusable="true"-->
+<!--            android:focusableInTouchMode="true"-->
+<!--            android:singleLine="true"-->
+<!--            android:imeOptions="actionDone"-->
+<!--            android:id="@+id/txtTitle"-->
+<!--            android:text=""-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+            <TextView
+                style="@style/label"
+                android:text="@string/lblColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+            </TextView>
+            <ImageView
+                style="@style/label"
+                android:id="@+id/btnSelectColor"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                >
+            </ImageView>
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_marginTop="@dimen/leftrightMargin"
+                style="@style/label"
+                android:id="@+id/btnTrackInfo"
+                android:text="@string/btnTrackInfo"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:background="@drawable/bg_roundcorner_greenborder"
+                >
+            </TextView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_marginTop="@dimen/leftrightMargin"
+                    android:layout_marginLeft="@dimen/leftrightMargin"
+                    style="@style/label"
+                    android:id="@+id/btnEditOnMap"
+                    android:text="@string/btnEditOnMap"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/bg_roundcorner_greenfill"
+                    >
+                </TextView>
+                <TextView
+                    android:layout_marginTop="@dimen/leftrightMargin"
+                    style="@style/label"
+                    android:id="@+id/btnViewPoints"
+                    android:text="@string/btnViewPoints"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/bg_roundcorner_greenfill"
+                    >
+                </TextView>
+            </LinearLayout>
+
+            <TextView
+                android:layout_marginTop="@dimen/leftrightMargin"
+                style="@style/label"
+                android:id="@+id/btnDelete"
+                android:text="@string/btnDelete"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:textColor="@color/red"
+                android:background="@drawable/bg_roundcorner_red"
+                >
+            </TextView>
+        </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

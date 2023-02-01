@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    app:chainUseRtl="false"
+    android:id="@+id/itemOuterPart"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="6dp"
+    android:layout_marginBottom="6dp"
+    android:paddingLeft="2dp"
+    android:paddingRight="2dp"
+    android:paddingBottom="2dp"
+    android:orientation="horizontal"
+    android:layoutDirection="rtl">
+<LinearLayout
+    android:id="@+id/itemMainPart"
+    android:background="@drawable/bg_roundcorner_message_rec"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp"
+    android:paddingRight="8dp"
+    android:paddingLeft="8dp"
+    android:gravity="center_vertical"
+    android:minHeight="55dp"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/txtText1"
+        style="@style/label_s"
+        android:layout_width="wrap_content"
+        android:maxWidth="@dimen/messageStory_box_maxWidth"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/iransansweb"
+        android:text="آزادگان مشهد آزادگان مشهد آزادگان مشهد آزادگان مشهد آزادگان مشهد آزادگان مشهد آزادگان مشهد باشگاه کوهنوردی ها ین"
+        android:textColor="@color/colorBlack" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <TextView
+            style="@style/label_xs"
+            android:id="@+id/txtSendDate"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/iransansweb"
+            android:paddingLeft="10dp"
+            android:text="11:20 7 تیر 00"
+            android:textColor="@color/colorGrey" >
+        </TextView>
+
+    </RelativeLayout>
+
+
+</LinearLayout>
+    <TextView
+        android:id="@+id/txtCommand"
+        style="@style/label"
+        android:layout_marginLeft="@dimen/leftrightMargin"
+        android:layout_marginRight="@dimen/leftrightMargin"
+        android:paddingLeft="@dimen/leftrightMargin"
+        android:paddingRight="@dimen/leftrightMargin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:text="@string/view"
+        android:textAlignment="center"
+        android:background="@drawable/bg_roundcorner_greenfill"
+        android:gravity="center_horizontal|center_vertical"
+        android:layout_gravity="center"
+        />
+</LinearLayout>

@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/homeBackgroundEmad"
+    android:layoutDirection="rtl">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="0dp"
+        app:layout_constraintBottom_toTopOf="@id/bott_nav_view"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:descendantFocusability="blocksDescendants"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbarOfPage"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@color/colorPrimaryEmad"
+                android:contentInsetStart="0dp"
+                android:contentInsetLeft="0dp"
+                android:contentInsetEnd="0dp"
+                android:contentInsetRight="0dp"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:contentInsetEnd="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetRight="0dp"
+                app:contentInsetStart="0dp"
+                app:elevation="0dp"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+                <LinearLayout
+                    android:id="@+id/toolbarNormal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layoutDirection="rtl"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtPageTitle"
+                        style="@style/ToolbarPageTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:text="@string/app_name"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="24dp" />
+                </LinearLayout>
+
+            </androidx.appcompat.widget.Toolbar>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/leftrightMarginMul2"
+                android:layout_marginTop="-90dp"
+                android:layout_marginRight="@dimen/leftrightMarginMul2"
+                android:background="@drawable/bg_roundcorner_home_top"
+                android:orientation="vertical">
+
+                <LinearLayout style="@style/home_topPanelsEmad">
+
+                    <LinearLayout
+                        android:id="@+id/btnGotoMap"
+                        style="@style/home_iconContainerEmad">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/ic_loc"></ImageView>
+
+                        <TextView
+                            style="@style/label_l"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/MapAndRouting"></TextView>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="3dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/homeBackgroundEmad" />
+
+                    <LinearLayout
+                        android:id="@+id/btnGotoClasses"
+                        style="@style/home_iconContainerEmad">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/ic_kelasha">
+
+                        </ImageView>
+
+                        <TextView
+                            style="@style/label_l"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            android:text="@string/Classes"></TextView>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@color/homeBackgroundEmad" />
+
+                <LinearLayout style="@style/home_topPanelsEmad">
+
+                    <LinearLayout
+                        android:id="@+id/btnGotoTours"
+                        style="@style/home_iconContainerEmad">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/ic_barname_ha"></ImageView>
+
+                        <TextView
+                            style="@style/label_l"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/Tours"></TextView>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="3dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/homeBackgroundEmad" />
+
+                    <LinearLayout
+                        android:id="@+id/btnHome_Clubs"
+                        style="@style/home_iconContainerEmad">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/ac_peak2">
+
+                        </ImageView>
+
+                        <TextView
+                            style="@style/label_l"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            android:text="@string/clubs"></TextView>
+                    </LinearLayout>
+                </LinearLayout>
+
+<!--                added for ver 29 mordad 1401-->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@color/homeBackgroundEmad" />
+
+                <LinearLayout style="@style/home_topPanelsEmad">
+
+                    <LinearLayout
+                        android:id="@+id/btnHomeWeatherAndTracks"
+                        style="@style/home_iconContainerEmad">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/ic_weather_me">
+
+                        </ImageView>
+
+                        <TextView
+                            style="@style/label_l"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            android:text="@string/weatherAndTracks"></TextView>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View android:layout_width="match_parent" android:layout_height="3dp" android:layout_marginTop="@dimen/leftrightMarginMul2" android:background="@color/homeForegroundEmad" />
+        <LinearLayout
+            android:id="@+id/advBox1"
+            style="@style/home_panelsEmad"
+            android:orientation="vertical">
+<!--           <ImageView-->
+<!--               android:id="@+id/adv1_1"-->
+<!--               style="@style/home_AdvImageEmad"-->
+<!--                android:layout_marginBottom="@dimen/leftrightMargin" />-->
+<!--            <ImageView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:adjustViewBounds="true"-->
+<!--                android:scaleType="fitCenter"-->
+<!--                android:src="@drawable/advsample2" />-->
+<!--            <ImageView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:adjustViewBounds="true"-->
+<!--                android:scaleType="fitCenter"-->
+<!--                android:src="@drawable/advsample3" />-->
+        </LinearLayout>
+            <LinearLayout
+                style="@style/home_panelsEmad"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/btnGotoMyClub"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/leftrightMarginMul2"
+                    android:layout_marginRight="@dimen/leftrightMarginMul2"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/imgMyClubLogo_Empty"
+                        style="@style/home_icon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="0dp"
+                        android:text="&#xE813;"
+                        android:textColor="#F44336"
+                        android:textSize="30dp"></TextView>
+
+                    <ImageView
+                        android:id="@+id/imgMyClubLogo"
+                        style="@style/home_icon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="0dp"
+                        android:src="@mipmap/ic_launcher"
+                        android:visibility="gone"></ImageView>
+
+                    <TextView
+                        android:id="@+id/lblMyClubName"
+                        style="@style/label"
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginRight="@dimen/leftrightMargin"
+                        android:gravity="center_vertical|right"
+                        android:text="@string/MyClub"></TextView>
+                    <TextView
+                        android:id="@+id/btnChangeClub"
+                        android:clickable="true"
+                        style="@style/home_icon"
+                        android:background="#00000000"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="0dp"
+                        android:text="&#xe81e;"
+                        android:textColor="#F44336"
+                        android:textSize="30dp"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="5dp"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/leftrightMargin"
+                    android:layout_marginTop="@dimen/leftrightMargin"
+                    android:layout_marginRight="@dimen/leftrightMargin"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/lblMyClubMessage"
+                        style="@style/label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="هیچ برنامه ای برای نمایش وجود ندارد"></TextView>
+
+                    <pakoob.TourListComponent
+                        android:id="@+id/rvNextTours"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></pakoob.TourListComponent>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View android:layout_width="match_parent" android:layout_height="3dp" android:layout_marginTop="@dimen/leftrightMarginMul2" android:background="@color/homeForegroundEmad" />
+            <LinearLayout
+                android:id="@+id/advBox2"
+                style="@style/home_panelsEmad"
+                android:orientation="vertical">
+<!--                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:layout_marginBottom="@dimen/leftrightMargin"
+                    android:src="@drawable/advsample3" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:layout_marginBottom="@dimen/leftrightMargin"
+                    android:src="@drawable/advsample2" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/advsample1" />-->
+            </LinearLayout>
+            <LinearLayout
+                style="@style/home_panelsEmad"
+                android:orientation="vertical"
+                android:layout_height="250dp">
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabForHomeTours"
+                    style="@style/MyCustomTabLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/viewpagerForHomeTours"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"></androidx.viewpager.widget.ViewPager>
+            </LinearLayout>
+            <View android:layout_width="match_parent" android:layout_height="3dp" android:layout_marginTop="@dimen/leftrightMarginMul2" android:background="@color/homeForegroundEmad" />
+            <LinearLayout
+                android:id="@+id/advBox3"
+                style="@style/home_panelsEmad"
+                android:orientation="vertical">
+<!--                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:layout_marginBottom="@dimen/leftrightMargin"
+                    android:src="@drawable/advsample1" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/advsample2" />-->
+            </LinearLayout>
+            <View android:layout_width="match_parent" android:layout_height="3dp" android:layout_marginTop="@dimen/leftrightMarginMul2" android:background="@color/homeForegroundEmad" />
+
+             <LinearLayout
+                style="@style/home_panels"
+                android:paddingTop="@dimen/leftrightMargin"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/btnHome_StartRecording"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginLeft="@dimen/leftrightMarginMul2"
+                    android:layout_marginRight="@dimen/leftrightMarginMul2"
+                    android:background="@drawable/bg_roundcorner_greenfill_veryround"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftrightMarginMul2"
+                        android:fontFamily="@font/fontello"
+                        android:text="&#xE832;"
+                        android:textColor="@color/red"
+                        android:textSize="45dp"></TextView>
+
+                    <TextView
+                        style="@style/label_3xl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/startRecording"
+                        android:textColor="@color/colorWhite"
+                        android:textStyle="bold"></TextView>
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                style="@style/home_panels"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/btnMapSelect"
+                        style="@style/home_TextIconButton"
+                        android:layout_marginTop="0dp">
+
+                        <ImageView
+                            android:id="@+id/btnMapSelect_img"
+                            style="@style/ToolbarTextButtons"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_map_black_48dp" />
+
+                        <TextView
+                            style="@style/home_TextIconButton_TextView"
+                            android:text="@string/title_maps" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/btnMyTracks"
+                        style="@style/home_TextIconButton">
+
+                        <ImageView
+                            android:id="@+id/btnMyTracks_img"
+                            style="@style/ToolbarTextButtons"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic__track_icon48" />
+
+                        <TextView
+                            style="@style/home_TextIconButton_TextView"
+                            android:text="@string/title_mytracks" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/btnHelp"
+                        style="@style/home_TextIconButton">
+
+                        <ImageView
+                            android:id="@+id/btnHelp_img"
+                            style="@style/ToolbarTextButtons"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_help_outline_black_48dp" />
+
+                        <TextView
+                            style="@style/home_TextIconButton_TextView"
+                            android:text="@string/menu_help" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/btnContactUs"
+                        style="@style/home_TextIconButton">
+
+                        <ImageView
+                            android:id="@+id/btnContactUs_img"
+                            style="@style/ToolbarTextButtons"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_call_black_48dp" />
+
+                        <TextView
+                            style="@style/home_TextIconButton_TextView"
+                            android:text="@string/title_contactus" />
+                    </LinearLayout>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bott_nav_view"
+        app:itemIconTint="@color/black"
+        app:itemTextColor="@color/black"
+        app:itemTextAppearanceActive="@style/BottomNavigationViewTextStyle"
+        app:itemTextAppearanceInactive="@style/BottomNavigationViewTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/myMinActionBarSize"
+
+        android:minHeight="@dimen/myMinActionBarSize"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:background="?android:attr/windowBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/bottom_nav_menu" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
