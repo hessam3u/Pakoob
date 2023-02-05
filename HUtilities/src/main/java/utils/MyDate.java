@@ -8,6 +8,7 @@ import com.github.eloyzone.jalalicalendar.JalaliDateFormatter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
@@ -39,6 +40,15 @@ public class MyDate {
     }
     public static String getDayOfWeekInPersianFromCalendar(Calendar calendar){
         int wd = calendar.get(Calendar.DAY_OF_WEEK);
+        wd = (wd) % 7;
+
+        return PersianWeekdays[wd];
+    }
+    public static String getDayOfWeekInPersianFromCalendarEnum(DayOfWeek DayOfWeekEnum){
+        int wd = 0;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            wd = DayOfWeekEnum.getValue() + 1 + 7;
+        }
         wd = (wd) % 7;
 
         return PersianWeekdays[wd];
@@ -81,7 +91,7 @@ public class MyDate {
     public static final JalaliDateFormatter per_yyyyMdd = new JalaliDateFormatter("yyyy M dd", JalaliDateFormatter.FORMAT_IN_PERSIAN);
     public static final JalaliDateFormatter per_yyMdd = new JalaliDateFormatter("yy M dd", JalaliDateFormatter.FORMAT_IN_PERSIAN);
     public static String sQLStringToPersianSrting(String st, DateToStringFormat dformat, TimeToStringFormat tformat, String NullRes){
-        if (st == null || st.length() ==0|| st.length() !=19)
+        if (st == null || st.length() != 19)
             return NullRes;
         //input format : 2020-03-22T18:00:00
         int year = 0, month = 0, day = 0, hour = 0, min = 0, sec = 0;
@@ -152,9 +162,9 @@ public class MyDate {
     public static String CalendarToTimeString(Integer hour, Integer min, Integer sec, TimeToStringFormat tts, String seperator) {
         if (tts == TimeToStringFormat.None)
             return "";
-        String hStr = ((hour < 10)?"0":"") + hour.toString();
-        String mStr = ((min < 10)?"0":"") + min.toString();
-        String sStr = ((sec < 10)?"0":"") + sec.toString();
+        String hStr = ((hour < 10)?"0":"") + hour;
+        String mStr = ((min < 10)?"0":"") + min;
+        String sStr = ((sec < 10)?"0":"") + sec;
 
         if (tts == TimeToStringFormat.HourMin) {
             return hStr +seperator+ mStr;
@@ -166,9 +176,9 @@ public class MyDate {
             return emptyValue;
         int month = date % 10000 / 100;
         int day = date % 100;
-        return Integer.toString(date / 10000) + "/"
-                + (month < 10? "0":"") + Integer.toString(month) +"/"
-                + (day < 10? "0":"") + Integer.toString(day);
+        return (date / 10000) + "/"
+                + (month < 10? "0":"") +(month) +"/"
+                + (day < 10? "0":"") +(day);
     }
     public static int intFromPersianString(String date, int emptyValue){
         String[] arrOfStr = date.split("/");
