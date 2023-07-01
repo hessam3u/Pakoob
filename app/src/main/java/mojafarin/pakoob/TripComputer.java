@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Calendar;
@@ -273,7 +274,7 @@ public class TripComputer extends HFragment {
 
 
     public static class TripComputerPage2 extends HFragment {
-        TextView txtAccuracy, txtBearing, txtVerticalAccuracy, txtDelination, txtHeading;
+        TextView txtAccuracy, txtBearing, txtVerticalAccuracy, txtDelination, txtHeading, txtUpDownAngle, txtRotateAngle;
 
         Timer timer = new Timer();
         Handler handler = new Handler(Looper.getMainLooper());
@@ -310,10 +311,14 @@ public class TripComputer extends HFragment {
 //            txtVerticalAccuracy = v.findViewById(R.id.txtVerticalAccuracy);
             txtDelination = v.findViewById(R.id.txtDelination);
             txtHeading = v.findViewById(R.id.txtHeading);
+            txtUpDownAngle = v.findViewById(R.id.txtUpDownAngle);
+            txtRotateAngle = v.findViewById(R.id.txtRotateAngle);
 
             txtAccuracy.setText("-");
             txtBearing.setText("-");
             txtHeading.setText("-");
+            txtUpDownAngle.setText("-");
+            txtRotateAngle.setText("-");
             txtDelination.setText("-");
 
            timerFunctionTick();
@@ -333,6 +338,17 @@ public class TripComputer extends HFragment {
                     heading = 180 + (heading + 180);
                 }
                 txtHeading.setText(String.format(Locale.ENGLISH, "%d°%1d'", (int)heading, (int)((heading - (int)heading) * 60)));
+
+//1402-04 برای تست انحراف ها
+//                LatLng tmp1 = new LatLng(36.29405,59.50385);
+//                LatLng tmp2 = new LatLng(36.31445, 59.51782);
+//                double DD= hMapTools.GetAzimuthInDegree(tmp1, tmp2);
+//                Log.e("LATLON", "is: " + DD);
+//                txtHeading.setText("is: " + DD);
+
+                double angleYInPercent = Math.abs(MapPage.angleY) <89.5 ?(int)(Math.tan(Math.toRadians(MapPage.angleY)) * 100):10000;
+                txtUpDownAngle.setText(String.format(Locale.ENGLISH, "%d°%1d' (%%%d)", (int)MapPage.angleY, (int)((MapPage.angleY - (int)MapPage.angleY) * 60), (int)angleYInPercent));
+                txtRotateAngle.setText(String.format(Locale.ENGLISH, "%d°%1d'", (int)MapPage.angleZ, (int)((MapPage.angleZ - (int)MapPage.angleZ) * 60)));
 //                txtHeading.setText(String.format("%d°%02d'", (int)heading, (int)((heading - (int)heading) * 60)));
 //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //                    float verticalAcc = MapPage.location.getVerticalAccuracyMeters();

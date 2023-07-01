@@ -9,6 +9,8 @@ import android.view.View;
 
 import mojafarin.pakoob.MainActivity;
 import mojafarin.pakoob.R;
+import utils.projectStatics;
+
 import static mojafarin.pakoob.mainactivitymodes.GoToTargetMode.TargetNext_DegreeToWithDeltaAngle;
 import static mojafarin.pakoob.mainactivitymodes.GoToTargetMode.TargetNext_DistanceFriendly;
 
@@ -22,6 +24,7 @@ public class MapNavigateToPoint extends View {
     final Paint paint;
     final Paint paintPointer;
     final Paint paintForText;
+    final String DistToDest_Text;
     public MapNavigateToPoint(Context context) {
         this(context, null);
     }
@@ -48,12 +51,15 @@ public class MapNavigateToPoint extends View {
 
 
         paintForText=new Paint();
+        paintForText.setTypeface(projectStatics.getIranSans_FONT(context));
         paintForText.setStyle(Paint.Style.FILL);
         paintForText.setColor(context.getResources().getColor(R.color.greenJeeegh));//Color.parseColor("#444444"));
         paintForText.setStrokeWidth(1);
         paintForText.setTextSize(50);
         paintForText.setTextAlign(Paint.Align.CENTER);
         paintForText.setAntiAlias(true);
+
+        DistToDest_Text = getResources().getString(R.string.distToDest);
 
     }
     @Override
@@ -62,7 +68,7 @@ public class MapNavigateToPoint extends View {
 //        int height = measureDimension(desiredHeight(), heightMeasureSpec);
         Width = MeasureSpec.getSize(widthMeasureSpec);
         Height = MeasureSpec.getSize(heightMeasureSpec);
-        setMeasuredDimension(Width, Height);
+        setMeasuredDimension(Width, Height + 5); //در 1402-04 این عدد 5 رو اضافه کردم که پایینش درست بیافته
 
         paintPointer.setStrokeWidth(Width / 15.0f);
 
@@ -98,7 +104,7 @@ public class MapNavigateToPoint extends View {
         canvas.restore();
 
 
-        canvas.drawText(TargetNext_DistanceFriendly, xPos, yPos, paintForText);
+        canvas.drawText(DistToDest_Text + TargetNext_DistanceFriendly, xPos, yPos, paintForText);
 
 //            canvas.drawLine(XMid - lineLength , YMid, XMid + lineLength, YMid, paint);
 //

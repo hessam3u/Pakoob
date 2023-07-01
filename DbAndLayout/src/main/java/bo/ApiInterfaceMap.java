@@ -1,5 +1,6 @@
 package bo;
 
+import bo.NewClasses.InsUpdRes;
 import bo.entity.MobileInfoDTO;
 import bo.NewClasses.SimpleRequest;
 import bo.NewClasses.StringContentDTO;
@@ -16,8 +17,8 @@ public interface ApiInterfaceMap {
     Call<ResponseBody> CheckConfirmCode(@Body SimpleRequest obj);//ConfirmSms2DTO:PersonalInfoDTO
     @POST("UpdatePersonalInfo")
     Call<ResponseBody> UpdatePersonalInfo(@Body SimpleRequest req);//PersonalInfoDTO.PersonalInfoDTORequest:InsUpdRes
-    @POST("CheckVersion")
-    Call<StringContentDTO> CheckVersion(@Body MobileInfoDTO info);
+    @POST("CheckVersion2")
+    Call<InsUpdRes> CheckVersion2(@Body MobileInfoDTO info);
 
     @POST("Download")
     Call<ResponseBody> Download(@Body SimpleRequest request);//DownloadRequest:InsUpdRes //based on : https://futurestud.io/tutorials/retrofit-2-how-to-download-files-from-server

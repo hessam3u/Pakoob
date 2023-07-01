@@ -91,6 +91,45 @@
                         />
                 </LinearLayout>
             </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <LinearLayout
+                    style="@style/dataFieldBox"
+                    android:id="@+id/linLine7_1"
+                    android:orientation="vertical">
+                    <TextView
+                        style="@style/dataFielldTitle4xl"
+                        android:text="@string/HorizonAngle"
+                        />
+                    <TextView
+                        android:id="@+id/txtUpDownAngle"
+                        style="@style/dataFielldValue"
+                        android:textSize="24dp"
+                        android:text="1235 m"
+
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    style="@style/dataFieldBox"
+                    android:layout_marginEnd="@dimen/leftrightMargin"
+                    android:id="@+id/linLine7_2"
+                    android:orientation="vertical">
+                    <TextView
+                        style="@style/dataFielldTitle4xl"
+                        android:text="@string/RotateAngle"
+                        />
+                    <TextView
+                        android:id="@+id/txtRotateAngle"
+                        style="@style/dataFielldValue"
+                        android:text="1256 m "
+
+                        />
+                </LinearLayout>
+            </LinearLayout>
 <LinearLayout
     android:id="@+id/linDummy"
     android:layout_width="match_parent"

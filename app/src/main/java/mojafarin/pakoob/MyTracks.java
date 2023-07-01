@@ -261,9 +261,11 @@ public class MyTracks extends HFragment {
         btnBack = v.findViewById(R.id.btnBack);
         btnBack.setOnClickListener(view -> {((MainActivityManager) context).onBackPressed();});
 
-        this.dialogMapObj = MainActivity.dialogMapObj;
-        this.dialogMap = MainActivity.dialogMap;
-        //((MainActivity) context).reCreateDialogMapObj();
+
+//        ((MainActivity) context).reCreateDialogMapObj(getContext());
+//        this.dialogMapObj = MainActivity.dialogMapObj;
+//        this.dialogMap = MainActivity.dialogMap;
+
 
         pageProgressBar = v.findViewById(R.id.progressBar);
 
@@ -280,16 +282,17 @@ public class MyTracks extends HFragment {
         showHideBtnUp(View.GONE);
 
 
-        mapFrameLayout = v.findViewById(R.id.mapFrameLayout);
-        //Set dimens of mapLayout
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int height = displayMetrics.heightPixels;
-        int width = displayMetrics.widthPixels;
-        ViewGroup.LayoutParams params = mapFrameLayout.getLayoutParams();
-        params.width = width - 90;
-        params.height = height - 250;
-        mapFrameLayout.setLayoutParams(params);
+        //1402-04 درراستای خرابکاری مربوط به نقشه کامنت شد
+//        mapFrameLayout = v.findViewById(R.id.mapFrameLayout);
+//        //Set dimens of mapLayout
+//        DisplayMetrics displayMetrics = new DisplayMetrics();
+//        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+//        int height = displayMetrics.heightPixels;
+//        int width = displayMetrics.widthPixels;
+//        ViewGroup.LayoutParams params = mapFrameLayout.getLayoutParams();
+//        params.width = width - 90;
+//        params.height = height - 250;
+//        mapFrameLayout.setLayoutParams(params);
 
         toolbarNormal = v.findViewById(R.id.toolbarNormal);
         toolbarSelected = v.findViewById(R.id.toolbarSelected);
@@ -531,7 +534,8 @@ public class MyTracks extends HFragment {
                     int size = adapter.data.size();
                     for (int i = size-1; i >= 0; i--) {
                         NbPoi item = adapter.data.get(i);
-                        if (item.isSelected) {GPXFile.DeleteNbPoiRec(item);
+                        if (item.isSelected) {
+                            GPXFile.DeleteNbPoiRec(item);
                             adapter.data.remove(i);
                             adapter.notifyItemRemoved(i);
                         }
@@ -1095,105 +1099,80 @@ public class MyTracks extends HFragment {
 
     }
 
+    ShowMapDialog showMapDialog = null;
     public AlertDialog dialogMap = null;
     DialogMapBuilder dialogMapObj = null;
     private void showOnMap_Click(NbPoi poi) {
+        int step = 0;
         try {
-            if (dialogMap == null) {
-                AlertDialog.Builder alertDialogBuilder = dialogMapObj.GetBuilder();
-                dialogMap = alertDialogBuilder.create();
-                Window w = dialogMap.getWindow();
-                w.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            boolean dialogIsNull = false;
+            if (showMapDialog == null) {
+                showMapDialog = ShowMapDialog.getInstance();
+                dialogIsNull = true;
             }
-            dialogMapObj.setForModeShowTrack(poi, view -> {
-                dialogMap.dismiss();
+            showMapDialog.setForModeShowTrack(poi, view -> {
+                //dialogMap.dismiss();
             });
+            if (true || !showMapDialog.isAdded())
+                context.showFragment(showMapDialog);
+            else{
+//                context.changeFragmentVisibility(showMapDialog, true);
+//                showMapDialog.fillForm();
+            }
+            return;
 
-            dialogMap.show();
+//            dialogMap = null;
+//            if (dialogMap == null || MainActivity.appExistsBeforeAndShouldReloadAll_ReReadDialogMap) {
+//                step = 100;
+//                AlertDialog.Builder alertDialogBuilder = dialogMapObj.GetBuilder();
+//                step = 200;
+//                dialogMap = alertDialogBuilder.create();
+//                step = 300;
+//                Window w = dialogMap.getWindow();
+//                step = 400;
+//                w.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+//
+//                MainActivity.appExistsBeforeAndShouldReloadAll_ReReadDialogMap = false;
+//            }
+//            step = 500;
+//            dialogMapObj.setForModeShowSelect(lastLocation, 10, view -> btnSelectLocationOnMap_Click());
+//            step = 600;
+//            dialogMap.show();
+//            step = 700;
+//            return true;
         }
         catch (Exception ex){
-            Log.e(Tag, "Exception: " + ex.getMessage());
+            projectStatics.showDialog(context, getResources().getString(R.string.dialog_UnknownError)
+                    , getResources().getString(R.string.dialog_UnknownErrorDesc)
+                    , getResources().getString(R.string.ok), null, "", null);
+
+            TTExceptionLogSQLite.insert(ex.getMessage(), "Step: " + step + "-ex:" + ex.getStackTrace().toString(), PrjConfig.frmMapSelect, 120);
+            Log.d("جستجو_روی_نقشه", "Step: " + step + "-ex:" + ex.getMessage() + ex.getStackTrace());
             ex.printStackTrace();
-            TTExceptionLogSQLite.insert(ex.getMessage(), "", PrjConfig.frmMyTracks, 109);
+            return ;
         }
-    }
-    public void displayPoiBoundsOnMap(NbPoi poi){
-        MapPage.addPOIToMapRecursive(poi, map, context);
-
-        //show Bounds
-
-        if (NbPoi.Enums.PoiType_Folder == poi.PoiType || NbPoi.Enums.PoiType_Track == poi.PoiType || poi.PoiType == NbPoi.Enums.PoiType_Route) {
-            double wToE = hMapTools.distanceBetweenMeteres(poi.LatN, poi.LonW, poi.LatN, poi.LonE);
-            double sToN = hMapTools.distanceBetweenMeteres(poi.LatS, poi.LonW, poi.LatN, poi.LonW);
-            int zoom = hMapTools.KmToMapZoom(Math.max(wToE, sToN)/1000)+3;
-
-            LatLng mid = new LatLng(poi.LatS+(poi.LatN - poi.LatS) / 2, poi.LonW+(poi.LonE - poi.LonW) / 2);
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(mid, zoom));
-
-        }
-        else{
-            LatLng sydney = new LatLng(poi.LatS, poi.LonW);
-//            map.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 14));
-        }
-        mapFrameLayout.setVisibility(View.VISIBLE);
-    }
-
-    boolean showCustomMaps = true;
-    TileOverlay tileOverlayCustomMap;
-
-    public void initTileProvider() {
-        TileProvider tileProvider = new UrlTileProvider(256, 256) {
-            @Override
-            public URL getTileUrl(int x, int y, int zoom) {
-                if (!showCustomMaps)
-                    return null;
-                /* Define the URL pattern for the tile images */
-                String s = app.tileRoot + zoom + "/" + x + "-" + y + ".png"; //String.format(tileRoot+ "%d/%d-%d.png", zoom, x, y);
-
-                //Log.d("Current URL: ", s);
-
-                File file = new File(s);
-                if (!file.exists())
-                    return null;
-                try {
-                    return new URL("file:///" + s);
-                } catch (MalformedURLException e) {
-                    throw new AssertionError(e);
-                }
-
-            }
-        };
-        tileOverlayCustomMap = map.addTileOverlay(new TileOverlayOptions()
-                .tileProvider(tileProvider));
-    }
-//1399-12-07
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        // check if the request code is same as what is passed  here it is 2
+   //1402-04 برای مشکل نقشه کامنت شد
 //        try {
-//            if (requestCode == MainActivity.ResultCode_ForMyTracks){
-//                if (data != null && data.getExtras() != null){
-//                    if (data.hasExtra("NbPoiId")) {
-//                        //Close and go to MainActivity
-//                        setResult(MainActivity.ResultCode_ForMyTracks, data);
-//                        finish();//finishing activity
-//                    }
-//                }
+//            if (dialogMap == null || MainActivity.appExistsBeforeAndShouldReloadAll_ReReadDialogMap) {
+//                AlertDialog.Builder alertDialogBuilder = dialogMapObj.GetBuilder();
+//                dialogMap = alertDialogBuilder.create();
+//                Window w = dialogMap.getWindow();
+//                w.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+//                MainActivity.appExistsBeforeAndShouldReloadAll_ReReadDialogMap = false;
 //            }
+//            dialogMapObj.setForModeShowTrack(poi, view -> {
+//                dialogMap.dismiss();
+//            });
 //
-//        } catch (Exception ex) {
-//            int x = 0;
+//            dialogMap.show();
 //        }
-//    }
-
-    Context context;
-    @Override
-    public void onAttach(Context _context) { //1st Event
-        super.onAttach(context);
-        this.context = _context;
+//        catch (Exception ex){
+//            Log.e(Tag, "Exception: " + ex.getMessage());
+//            ex.printStackTrace();
+//            TTExceptionLogSQLite.insert(ex.getMessage(), "", PrjConfig.frmMyTracks, 109);
+//        }
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
         return inflater.inflate(R.layout.mytracks, parent, false);

@@ -50,7 +50,7 @@
     </TextView>
     <TextView style="@style/rich_text" android:text="@string/q_contactByEmail_a">
     </TextView>
-    <TextView style="@style/rich_text" android:text="با تشکر از آقایان هادی باختری، علی اسلام  خراسانی، محمد چراغی، فرامرز قنبری، نوید نکودل و خانم صالحه سلطانی که ما را در پایدار سازی این نسخه یاری نموده اند.">
+    <TextView style="@style/rich_text" android:text="با تشکر از خانم ها زهره شعرباف و صالحه سلطانی و آقایان هادی باختری، علی اسلام  خراسانی، محمد چراغی، فرامرز قنبری، نوید نکودل که ما را در پایدار سازی این نسخه یاری نموده اند.">
     </TextView>
 
 

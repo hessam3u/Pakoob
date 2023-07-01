@@ -14,7 +14,7 @@ import bo.entity.NbLogSearch;
 
 @Dao
 public interface NbLogSearchDao {
-    @Insert(onConflict = OnConflictStrategy.FAIL)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     long insert(NbLogSearch NbLogSearch);
 
     @Query("select * from NbLogSearch where :filter order by NbLogSearchId desc")

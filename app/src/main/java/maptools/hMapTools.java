@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -19,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,7 +48,7 @@ public class hMapTools {
 
 
     public final static int CustomMapMinZoom = 8;
-    public final static int CustomMapMaxZoomNormal = 15;
+    public final static int CustomMapMaxZoomNormal = 16;
     public final static int CustomMapMaxZoomAvailable = 17;
 
 
@@ -321,6 +323,7 @@ public class hMapTools {
     public static final int DegreesDecimalMinutes = 2;
     public static final int DecimalDegrees = 3;
     public static final int UTM = 4;
+    public static final int DecimalDegrees_JustNumber = 5;
     public static final int DEFAULT_POSITION_FORMAT = UTM;
 
     public enum LocationToStringStyle{
@@ -345,6 +348,8 @@ public class hMapTools {
             return (location.latitude > 0? "N":"S") + ((int)(location.latitude * app.DegreePrecisionTen)/app.DegreePrecisionTen) + (style == LocationToStringStyle.InLineSmall || style == LocationToStringStyle.TwoLineSmall?"":"°")
                     + (style == LocationToStringStyle.Twoline || style == LocationToStringStyle.TwoLineSmall ? "\n":" ")
                     + (location.longitude > 0? "E":"W") + ((int)(location.longitude * app.DegreePrecisionTen)/app.DegreePrecisionTen) + (style == LocationToStringStyle.InLineSmall || style == LocationToStringStyle.TwoLineSmall?"":"°");
+        } else if (destLocation == hMapTools.DecimalDegrees_JustNumber){
+            return String.format(Locale.ENGLISH,"%.05f", location.latitude) + "," + String.format(Locale.ENGLISH, "%.05f", location.longitude);
         } else if(destLocation == hMapTools.DegreesDecimalMinutes ){
             double absolute_lat = Math.abs(location.latitude);
             int degrees_lat = (int)Math.floor(absolute_lat);
@@ -402,7 +407,31 @@ public class hMapTools {
         int mtrs = distInt % 1000 / 100;
         return (distInt / 1000) + (mtrs > 0? "." + mtrs:"")+ "km";
     }
-
+    public static double calculateArea(List<LatLng> latLngs) {
+        double area = 0.0;
+        int n = latLngs.size();
+        for (int i = 0; i < n; i++) {
+            int j = (i + 1) % n;
+            LatLng current_i = latLngs.get(i);
+            LatLng current_j = latLngs.get(j);
+//            area += Math.toRadians(longitudes.get(j) - longitudes.get(i)) * (2 + Math.sin(Math.toRadians(latitudes.get(i))) + Math.sin(Math.toRadians(latitudes.get(j))));
+            area += Math.toRadians(current_j.longitude - current_i.longitude) * (2 + Math.sin(Math.toRadians(current_i.latitude)) + Math.sin(Math.toRadians(current_j.latitude)));
+        }
+        area *= 6378137.0 * 6378137.0 / 2.0;
+        return Math.abs(area);
+    }
+    public static String areaFriendly(double area){
+        if (area < 10000){
+            int areaInt = (int)area;
+            return Integer.toString(areaInt) + " m2";
+        }
+        else{
+            double nArea = area * 0.0001;
+            int areaInt = (int)(nArea);
+            int khoorde = ((int)((nArea - areaInt)*10) % 10);
+            return Integer.toString(areaInt) + (khoorde > 0? "." + khoorde:"") + " ha";
+        }
+    }
     public static final int TIME_FRIENDLY_MODE_LONG_EXACT = 1;
     public static final int TIME_FRIENDLY_MODE_SMALL = 2;
     public static String timeBetweenFriendly(long miliStart, long miliEnd, final int compactMode){
@@ -456,14 +485,27 @@ public class hMapTools {
 
     public static double GetAzimuthInDegree(LatLng source, LatLng destination)
     {
-        double longitudinalDifference = destination.longitude - source.longitude;
-        double latitudinalDifference = destination.latitude - source.latitude;
-        double azimuth = (Math.PI * .5d) - Math.atan(latitudinalDifference / longitudinalDifference);
-        if (longitudinalDifference > 0)
-            return rad2deg(azimuth);
-        else if (longitudinalDifference < 0) return rad2deg(azimuth + Math.PI);
-        else if (latitudinalDifference < 0) return rad2deg(Math.PI);
-        return 0d;
+//        double longitudinalDifference = destination.longitude - source.longitude;
+//        double latitudinalDifference = destination.latitude - source.latitude;
+//        double azimuth = (Math.PI * .5d) - Math.atan(latitudinalDifference / longitudinalDifference);
+//        if (longitudinalDifference > 0)
+//            return rad2deg(azimuth);
+//        else if (longitudinalDifference < 0) return rad2deg(azimuth + Math.PI);
+//        else if (latitudinalDifference < 0) return rad2deg(Math.PI);
+//        return 0d;
+
+        //1404-02 عوضش کردم
+        //https://stackoverflow.com/a/9462757/2144698
+        double longitude1 = source.longitude;
+        double longitude2 = destination.longitude;
+        double latitude1 = Math.toRadians(source.latitude);
+        double latitude2 = Math.toRadians(destination.latitude);
+        double longDiff= Math.toRadians(longitude2-longitude1);
+        double y= Math.sin(longDiff)*Math.cos(latitude2);
+        double x=Math.cos(latitude1)*Math.sin(latitude2)-Math.sin(latitude1)*Math.cos(latitude2)*Math.cos(longDiff);
+
+        return (Math.toDegrees(Math.atan2(y, x))+360)%360;
+
     }
 
 
@@ -528,14 +570,23 @@ public class hMapTools {
 //    S36.6526°,E66.45454    °
 //    36.6526°, 66.45454°
 //    N 36.6526, E 66.45454
-    static final String latLonPatternD =  "^([N|S|s|n])*\\s*(-?\\d+(\\.\\d+)?)\\s*[°]?,\\s*([E|W|e|w])*\\s*(-?\\d+(\\.\\d+)?)\\s*[°]?$";
+    static final String latLonPatternD_simple1 =  "\\s*(-?\\d+(\\.\\d+)?)\\s*[°]?\\s*[,]\\s*\\s*(-?\\d+(\\.\\d+)?)\\s*[°]?";
+    static final String latLonPatternD =  "^([N|S|s|n])*\\s*(-?\\d+(\\.\\d+)?)\\s*[°]?\\s*[,]\\s*([E|W|e|w])*\\s*(-?\\d+(\\.\\d+)?)\\s*[°]?$";
 //    N 36° 22.293', w 59° 20.093'
 //    N 36° 0.5', E 59° 0.2'
     static final String latLonPatternM =  "^([N|S|s|n]?)\\s*(-?\\d+)\\s*[°]\\s*(\\d+(\\.\\d+)?)\\s*['][,]?\\s*([E|W|e|w]*)\\s*(-?\\d+)\\s*[°]\\s*(\\d+(\\.\\d+)?)\\s*[']?$";
     static final String latLonPatternS =  "^([N|S|s|n]?)\\s*(-?\\d+)\\s*[°]\\s*(\\d+)\\s*[']\\s*(\\d+(\\.\\d+)?)\\s*[\"][,]?\\s*([E|W|e|w]*)\\s*(-?\\d+)\\s*[°]\\s*(\\d+)\\s*[']\\s*(\\d+(\\.\\d+)?)\\s*[\"]$";
     public static LatLng extractLatLonString(String text){
-        Pattern mPattern = Pattern.compile(latLonPatternD);
+        Pattern mPattern = Pattern.compile(latLonPatternD_simple1);
         Matcher matcher = mPattern.matcher(text);
+        if (matcher.find()){
+            Double lat = Double.parseDouble(matcher.group(1));
+            Double lon = Double.parseDouble(matcher.group(3));
+            LatLng res = new LatLng(lat, lon);
+            return res;
+        }
+        mPattern = Pattern.compile(latLonPatternD);
+        matcher = mPattern.matcher(text);
         if (matcher.find()){
             Double lat = Double.parseDouble(matcher.group(2));
             Double lon = Double.parseDouble(matcher.group(5));

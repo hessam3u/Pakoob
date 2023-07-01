@@ -33,13 +33,6 @@ public class PleaseRegister extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //MainActivity.initFiltersAsync();
 
-        // check permission
-        if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) context, new String[]{
-                    android.Manifest.permission.ACCESS_FINE_LOCATION
-            }, PrjConfig.Location_FINE_PERMISSION_REQUEST_CODE);
-        }
-
         initializeComponents(view);
     }
 

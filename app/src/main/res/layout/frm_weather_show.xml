@@ -361,14 +361,14 @@
                                 android:textColor="#000000"
                                 android:text="&#xE83D;">
                             </TextView>
+
                             <TextView
-                                android:layout_height="30dp"
-                                android:layout_width="15dp"
                                 style="@style/weather_text_logos"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:textColor="#06B0FF"
-                                android:text="&#xE83B;">
-                            </TextView>
+                                android:text="&#xE83C;"
+                                android:textColor="#06B0FF"></TextView>
                             <TextView
                                 android:layout_height="30dp"
                                 android:layout_width="15dp"
@@ -383,7 +383,7 @@
                                 style="@style/weather_text_logos"
                                 android:gravity="center"
                                 android:textColor="#06B0FF"
-                                android:text="&#xE83C;">
+                                android:text="&#xE841;">
                             </TextView>
                         </LinearLayout>
                         <!--    Splitor-->

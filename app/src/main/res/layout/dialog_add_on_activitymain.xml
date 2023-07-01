@@ -56,14 +56,13 @@
     android:layout_height="70dp"
     android:orientation="horizontal">
     <TextView
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:fontFamily="@font/fontello"
         android:textSize="30dp"
         android:textColor="#E3CB00"
-        android:gravity="center_vertical"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
         android:text="&#xE810;">
     </TextView>
     <LinearLayout
@@ -79,7 +78,7 @@
             >
         </TextView>
         <TextView
-            style="@style/label"
+            style="@style/label_s"
             android:text="@string/lblAddWaypointDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -87,6 +86,7 @@
         </TextView>
     </LinearLayout>
 </LinearLayout>
+
 <LinearLayout
         android:layout_marginBottom="@dimen/leftrightMargin"
         android:background="@drawable/bg_roundcorner_greenborder"
@@ -113,7 +113,7 @@
                 >
             </TextView>
             <TextView
-                style="@style/label"
+                style="@style/label_s"
                 android:text="@string/lblPlotRouteDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -131,14 +131,13 @@
         android:layout_height="70dp"
         android:orientation="horizontal">
         <TextView
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:fontFamily="@font/fontello"
             android:textSize="23dp"
             android:textColor="#F44336"
-            android:gravity="center_vertical"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
             android:text="&#xE830;">
         </TextView>
         <LinearLayout
@@ -154,8 +153,48 @@
                 >
             </TextView>
             <TextView
-                style="@style/label"
+                style="@style/label_s"
                 android:text="@string/lblAddSightNGoDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+            </TextView>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginBottom="@dimen/leftrightMargin"
+        android:background="@drawable/bg_roundcorner_greenborder"
+        android:padding="@dimen/leftrightMargin"
+        android:id="@+id/btnDialog_SendLocation"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:fontFamily="@font/fontello"
+            android:textSize="30dp"
+            android:textColor="#E30000"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:text="&#xE83F;">
+        </TextView>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                style="@style/label_xl"
+                android:text="@string/lblSendCurrentLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+            </TextView>
+            <TextView
+                style="@style/label_s"
+                android:text="@string/lblSendCurrentLocationDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >

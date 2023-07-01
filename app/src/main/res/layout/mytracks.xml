@@ -74,68 +74,68 @@
         <View style="@style/ToolbarBottomShadow" />
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/mapFrameLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:elevation="50dp"
-        android:visibility="gone">
+<!--    <FrameLayout-->
+<!--        android:id="@+id/mapFrameLayout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:elevation="50dp"-->
+<!--        android:visibility="gone">-->
 
-        <Button
-            android:id="@+id/btnSelectLocationOnMap"
-            style="@style/button"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40dp"
-            android:elevation="100dp"
-            android:text="بستن">
+<!--        <Button-->
+<!--            android:id="@+id/btnSelectLocationOnMap"-->
+<!--            style="@style/button"-->
+<!--            android:layout_width="200dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:layout_marginTop="40dp"-->
+<!--            android:elevation="100dp"-->
+<!--            android:text="بستن">-->
 
-        </Button>
+<!--        </Button>-->
 
-        <fragment
-            android:id="@+id/map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+<!--        <fragment-->
+<!--            android:id="@+id/map"-->
+<!--            android:name="com.google.android.gms.maps.SupportMapFragment"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent" />-->
 
-        <TextView
-            android:id="@+id/txtSelectedNCCIndex"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom" />
+<!--        <TextView-->
+<!--            android:id="@+id/txtSelectedNCCIndex"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="end|bottom" />-->
 
-        <hmapscaleview.MapScaleView
-            android:id="@+id/scaleView"
-            android:layout_width="wrap_content"
-            android:layout_height="250dp"
-            android:layout_gravity="center_vertical|left"
-            android:layout_marginLeft="40dp" />
+<!--        <hmapscaleview.MapScaleView-->
+<!--            android:id="@+id/scaleView"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="250dp"-->
+<!--            android:layout_gravity="center_vertical|left"-->
+<!--            android:layout_marginLeft="40dp" />-->
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btnSelectLayer"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|start"
-            android:layout_marginRight="9dp"
-            android:layout_marginBottom="285dp"
-            app:backgroundTint="#33000000"
-            app:elevation="16dp"
-            app:fabCustomSize="50dp" />
+<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--            android:id="@+id/btnSelectLayer"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="bottom|start"-->
+<!--            android:layout_marginRight="9dp"-->
+<!--            android:layout_marginBottom="285dp"-->
+<!--            app:backgroundTint="#33000000"-->
+<!--            app:elevation="16dp"-->
+<!--            app:fabCustomSize="50dp" />-->
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btnShowCustomMaps"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|start"
-            android:layout_marginRight="9dp"
-            android:layout_marginBottom="345dp"
-            app:backgroundTint="#33000000"
-            app:elevation="16dp"
-            app:fabCustomSize="50dp" />
+<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--            android:id="@+id/btnShowCustomMaps"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="bottom|start"-->
+<!--            android:layout_marginRight="9dp"-->
+<!--            android:layout_marginBottom="345dp"-->
+<!--            app:backgroundTint="#33000000"-->
+<!--            app:elevation="16dp"-->
+<!--            app:fabCustomSize="50dp" />-->
 
-    </FrameLayout>
+<!--    </FrameLayout>-->
 
     <ScrollView
         android:layout_width="match_parent"

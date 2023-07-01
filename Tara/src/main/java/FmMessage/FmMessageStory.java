@@ -133,7 +133,7 @@ public class FmMessageStory extends HFragment {
     private ProgressBar pageProgressBar;
     boolean isLoadingMore = false;
     final Integer readPageSize = 100;
-    TextView txtSearchResult, txtSelectedNCCIndex, lblYourMaps;
+    TextView txtSearchResult;
 
     @Override
     public void initializeComponents(View v) {

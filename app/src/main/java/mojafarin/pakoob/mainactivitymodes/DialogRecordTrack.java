@@ -110,65 +110,93 @@ public class DialogRecordTrack {
 
             try {
                 if (getIsRecordingForceReRead()) {
-                    List<NbCurrentTrack> trackPointsInDb = NbCurrentTrackSQLite.selectAll();
-                    int trkSize =trackPointsInDb.size();
-                    if ( trkSize== 0){
-                        Toast.makeText(mapPage.getContext(), mapPage.getString(R.string.currentTrackIsTooShortToSave), Toast.LENGTH_LONG).show();
-                        discardTrackPanel();
-                        return;
-                    }
 
-                    TrackData data = new TrackData();
-                    short poiType = NbPoi.Enums.PoiType_Track;
-                    Random rand = new Random();
+                    projectStatics.showDialog(activity
+                            , activity.getResources().getString(R.string.StopTrackRecording_Title)
+                            , activity.getResources().getString(R.string.StopTrackRecording_Desc)
+                            , activity.getResources().getString(R.string.ok), view1 -> {
+                                try {
 
-                    data.Color = GPXFile.RandomColors.get(rand.nextInt(GPXFile.colorCount));
-                    Calendar now = Calendar.getInstance();
-                    JalaliDate jalaliDate = MyDate.getJalaliDate(now);
-                    data.Name = activity.getResources().getString(R.string.Route) + " " + MyDate.CalendarToPersianDateString(now, MyDate.DateToStringFormat.yyyymmdd, "")
-                            + "-" + MyDate.CalendarToTimeString(now, MyDate.TimeToStringFormat.HourMinSec, "");
+                                    List<NbCurrentTrack> trackPointsInDb = NbCurrentTrackSQLite.selectAll();
+                                int trkSize =trackPointsInDb.size();
+                                if ( trkSize== 0){
+                                    Toast.makeText(mapPage.getContext(), mapPage.getString(R.string.currentTrackIsTooShortToSave), Toast.LENGTH_LONG).show();
+                                    discardTrackPanel();
+                                    return;
+                                }
 
-                    TimeZone utcTimeZone = TimeZone.getTimeZone("UTC");
-                    for (int i = 0; i < trkSize; i++) {
-                        NbCurrentTrack currentTrack = trackPointsInDb.get(i);
+                                TrackData data = new TrackData();
+                                short poiType = NbPoi.Enums.PoiType_Track;
+                                Random rand = new Random();
 
-                        data.Points.add(currentTrack.getLatLon());
-                        data.Elev.add(currentTrack.Elevation);
-                        Calendar cl = Calendar.getInstance();
-                        cl.setTimeInMillis(currentTrack.Time);
-                        cl.setTimeZone(utcTimeZone);
-                        data.Time.add(cl);
-                    }
-                    if (data.Points.size() < 2) {
-                        discardTrackPanel();
-                        return;
-                    }
-                    NbPoi saved = GPXFile.SaveDesignedRouteToDb(0, poiType, data, activity);
-                    if (saved.NbPoiId != 0) {
-                        //Not working after fragmenting...
-                        activity.openEditTrack(saved.NbPoiId, "MainActivity", 0, null);
-                        discardTrackPanel();
-                    }
+                                data.Color = GPXFile.RandomColors.get(rand.nextInt(GPXFile.colorCount));
+                                Calendar now = Calendar.getInstance();
+                                JalaliDate jalaliDate = MyDate.getJalaliDate(now);
+                                data.Name = activity.getResources().getString(R.string.Route) + " " + MyDate.CalendarToPersianDateString(now, MyDate.DateToStringFormat.yyyymmdd, "")
+                                        + "-" + MyDate.CalendarToTimeString(now, MyDate.TimeToStringFormat.HourMinSec, "");
+
+                                TimeZone utcTimeZone = TimeZone.getTimeZone("UTC");
+                                for (int i = 0; i < trkSize; i++) {
+                                    NbCurrentTrack currentTrack = trackPointsInDb.get(i);
+
+                                    data.Points.add(currentTrack.getLatLon());
+                                    data.Elev.add(currentTrack.Elevation);
+                                    Calendar cl = Calendar.getInstance();
+                                    cl.setTimeInMillis(currentTrack.Time);
+                                    cl.setTimeZone(utcTimeZone);
+                                    data.Time.add(cl);
+                                }
+                                if (data.Points.size() < 2) {
+                                    discardTrackPanel();
+                                    return;
+                                }
+                                NbPoi saved = null;
+                                    saved = GPXFile.SaveDesignedRouteToDb(0, poiType, data, activity);
+
+                                if (saved.NbPoiId != 0) {
+                                    //Not working after fragmenting...
+                                    activity.openEditTrack(saved.NbPoiId, "MainActivity", 0, null);
+                                    discardTrackPanel();
+                                }
+                                } catch (Exception ex) {
+                                    ex.printStackTrace();
+                                    projectStatics.showDialog(activity
+                                            , activity.getResources().getString(R.string.vali_SaveInFileError)
+                                            , activity.getResources().getString(R.string.vali_SaveInFileError_Desc) + ex.getMessage()
+                                            , activity.getResources().getString(R.string.ok)
+                                            , null
+                                            , ""
+                                            , null);
+                                    Log.e("خطا", ex.getMessage());
+                                    ex.printStackTrace();
+                                    TTExceptionLogSQLite.insert(ex.getMessage(), ex.getStackTrace().toString(), PrjConfig.frmTrackRecording, 112);
+                                }
+                            }
+                            , activity.getResources().getString(R.string.cancel), null);
+
+
                 }
                 else{
                     Context context = mapPage.getContext();
-                    if (Build.VERSION.SDK_INT >= 29) {
-                        if (ActivityCompat.checkSelfPermission((Activity) context, Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            if (Build.VERSION.SDK_INT == 29) {
-                                ActivityCompat.requestPermissions((Activity) context, new String[]{
-                                        android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
-                                }, PrjConfig.Location_BACKGROUND_PERMISSION_REQUEST_CODE);
-                            } else {
-                                projectStatics.showDialog((MainActivity) context
-                                        , context.getResources().getString(R.string.RequestBackgroundLocationInAndroid29_Title)
-                                        , context.getResources().getString(R.string.RequestBackgroundLocationInAndroid29_Title_Desc)
-                                        , context.getResources().getString(R.string.ok), view1 -> {
-                                            hutilities.showAppSettingToChangePermission(context);
-                                        }
-                                        , "", null);
-                            }
-                        }
-                    }
+                    //1402-03-21
+                    //در راستای حذف دسترسی در پس زمینه کامنت شد
+//                    if (Build.VERSION.SDK_INT >= 29) {
+//                        if (ActivityCompat.checkSelfPermission((Activity) context, Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                            if (Build.VERSION.SDK_INT == 29) {
+//                                ActivityCompat.requestPermissions((Activity) context, new String[]{
+//                                        android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
+//                                }, PrjConfig.Location_BACKGROUND_PERMISSION_REQUEST_CODE);
+//                            } else {
+//                                projectStatics.showDialog((MainActivity) context
+//                                        , context.getResources().getString(R.string.RequestBackgroundLocationInAndroid29_Title)
+//                                        , context.getResources().getString(R.string.RequestBackgroundLocationInAndroid29_Title_Desc)
+//                                        , context.getResources().getString(R.string.ok), view1 -> {
+//                                            hutilities.showAppSettingToChangePermission(context);
+//                                        }
+//                                        , "", null);
+//                            }
+//                        }
+//                    }
                     this.startRecording();
                     Toast.makeText(context.getApplicationContext(), "ذخیره مسیر آغاز شد...", Toast.LENGTH_LONG).show();
                 }
@@ -183,7 +211,7 @@ public class DialogRecordTrack {
                         , null);
                 Log.e("خطا", ex.getMessage());
                 ex.printStackTrace();
-                TTExceptionLogSQLite.insert(ex.getMessage(), ex.getStackTrace().toString(), PrjConfig.frmMapPage, 111);
+                TTExceptionLogSQLite.insert(ex.getMessage(), ex.getStackTrace().toString(), PrjConfig.frmTrackRecording, 111);
             }
         });
     }

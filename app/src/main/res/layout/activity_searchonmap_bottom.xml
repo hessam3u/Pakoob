@@ -95,6 +95,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/leftrightMargin"
                         android:text="@string/btnSaveOrEdit_Save" />
+                    <Button
+                        app:strokeColor="@color/btnLinkNew_text"
+                        android:id="@+id/btnGoInSearch"
+                        style="@style/btnLinkNewOutline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/leftrightMargin"
+                        android:text="@string/btnGo" />
                 </LinearLayout>
 
                 <LinearLayout

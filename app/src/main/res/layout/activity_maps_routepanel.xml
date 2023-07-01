@@ -14,9 +14,9 @@
     </TextView>
 <!--    end splitor-->
     <TextView
-        android:layout_marginRight="@dimen/leftrightMargin"
-        android:layout_marginLeft="@dimen/leftrightMargin"
-        style="@style/label"
+        android:layout_margin="@dimen/leftrightMargin"
+
+        style="@style/label_l"
         android:id="@+id/txtYouAreDesigningRoute"
         android:text="@string/YouAreDesigningRoute"
         android:layout_width="match_parent"
@@ -24,56 +24,58 @@
         >
     </TextView>
     <!--    end title-->
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <TextView
+        style="@style/label"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:gravity="right"
+        android:text="@string/numberOfPoints">
+    </TextView>
 
+    <TextView
+        android:id="@+id/txtRoutePointCount"
+        style="@style/label_xl"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:text="0"></TextView>
+    <TextView
+        style="@style/label"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:gravity="right"
+        android:text="@string/distanceFronPrev">
+    </TextView>
+
+    <TextView
+        android:id="@+id/txtRouteDistancePointToPrev"
+        style="@style/label_xl"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:gravity="right"
+        android:text="0m">
+    </TextView>
+</LinearLayout>
     <LinearLayout
-            android:layout_marginRight="@dimen/leftrightMargin"
-            android:layout_marginLeft="@dimen/leftrightMargin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/label"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:gravity="right"
-                android:text="@string/numberOfPoints">
-            </TextView>
-
-            <TextView
-                style="@style/label"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:gravity="right"
-                android:text="@string/distance">
-            </TextView>
-
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
         <TextView
             style="@style/label"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="right"
-            android:text="@string/distanceFronPrev">
+            android:text="@string/distance">
         </TextView>
-        </LinearLayout>
-    <LinearLayout
-        android:layout_marginRight="@dimen/leftrightMargin"
-        android:layout_marginLeft="@dimen/leftrightMargin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/txtRoutePointCount"
-            style="@style/label_xl"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:text="0"></TextView>
 
         <TextView
             android:id="@+id/txtRouteDistance"
@@ -84,15 +86,46 @@
             android:gravity="right"
             android:text="0m">
         </TextView>
+
         <TextView
-            android:id="@+id/txtRouteDistancePointToPrev"
+            style="@style/label"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="right"
+            android:text="@string/area">
+        </TextView>
+
+        <TextView
+            android:id="@+id/txtArea"
             style="@style/label_xl"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="right"
-            android:text="0m">
+            android:text="0m2">
         </TextView>
+
+    </LinearLayout>
+    <LinearLayout
+            android:layout_marginRight="@dimen/leftrightMargin"
+            android:layout_marginLeft="@dimen/leftrightMargin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+
+
+
+        </LinearLayout>
+    <LinearLayout
+        android:layout_marginRight="@dimen/leftrightMargin"
+        android:layout_marginLeft="@dimen/leftrightMargin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
     </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -114,7 +147,6 @@
                 android:layout_height="40dp"
                 android:textColor="#FFFFFF"
                 android:fontFamily="@font/iransansweb"
-                android:textSize="20dp"
                 android:text="@string/btnAddToRoute"
                 android:textAlignment="center"
                 android:background="@drawable/bg_roundcorner_greenfill"
@@ -133,8 +165,6 @@
                 android:paddingLeft="12dp"
                 android:layout_height="40dp"
                 android:textColor="#D30808"
-                android:fontFamily="@font/iransansweb"
-                android:textSize="20dp"
                 android:text="@string/btnRemoveRoutePoint"
                 android:textAlignment="center"
                 android:background="@drawable/bg_roundcorner_red"
@@ -142,25 +172,23 @@
                 tools:ignore="RtlCompat">
             </TextView>
             <TextView
-                android:layout_marginTop="3dp"
                 style="@style/label"
                 android:id="@+id/btnSaveRoute"
-
+                android:layout_height="40dp"
+                android:paddingRight="12dp"
+                android:paddingLeft="12dp"
                 android:layout_marginLeft="@dimen/leftrightMargin"
 
-                android:layout_width="50dp"
-                android:layout_height="40dp"
+                android:layout_width="wrap_content"
                 android:textColor="@color/green"
-                android:fontFamily="@font/fontello"
-                android:textSize="25dp"
-                android:text="&#xE829;"
+                android:text="@string/saveRoute"
                 android:textAlignment="center"
                 android:background="@drawable/bg_roundcorner_greenborder"
                 android:gravity="center_vertical"
                 tools:ignore="RtlCompat">
             </TextView>
             <TextView
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="6dp"
                 android:background="@drawable/bg_roundcorner_gray"
 
                 android:layout_marginLeft="@dimen/leftrightMargin"

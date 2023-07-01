@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layoutDirection="rtl">
+
+        <LinearLayout style="@style/ToolbarOuter">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbarOfPage"
+                    style="@style/ToolbarStyle"
+                    app:contentInsetEnd="0dp"
+                    app:contentInsetLeft="0dp"
+                    app:contentInsetRight="0dp"
+                    app:contentInsetStart="0dp">
+
+                        <LinearLayout
+                            android:id="@+id/toolbarNormal"
+                            style="@style/ToolbarContainer">
+
+                                <TextView
+                                    android:id="@+id/btnBack"
+                                    style="@style/ToolbarBackButton" />
+
+                                <TextView
+                                    android:id="@+id/txtPageTitle"
+                                    android:gravity="center"
+                                    style="@style/ToolbarPageTitle"
+                                    android:text="@string/title_ShowMapDialog" />
+
+                                <TextView
+                                    android:id="@+id/btnBell"
+                                    style="@style/ToolbarTextButtons"
+                                    android:layout_marginLeft="@dimen/leftrightMargin"
+                                    android:clickable="true"
+                                    android:visibility="invisible"
+                                    android:text="&#xE833;"
+                                    android:focusable="true" />
+                        </LinearLayout>
+                </androidx.appcompat.widget.Toolbar>
+
+                <View style="@style/ToolbarBottomShadow" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/myMinActionBarSize"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+                android:orientation="vertical">
+<TextView
+    android:id="@+id/lblTitleOfMap"
+    android:layout_margin="@dimen/leftrightMargin"
+    android:layout_marginTop="@dimen/leftrightMarginMul2"
+    style="@style/label"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+        android:text="لطفا کادر نقشه مورد نظر خود را انتخاب نموده، دکمه انتخاب نقشه را بفشارید."
+        ></TextView>
+                <TextView
+                    android:layout_margin="@dimen/leftrightMarginHalf"
+                    android:id="@+id/lblMapNo"
+                    style="@style/label_xs"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="شماره نقشه انتخاب شده فعلی:"
+                    ></TextView>
+                <TextView
+                    android:layout_margin="@dimen/leftrightMarginHalf"
+                    android:id="@+id/txtSelectedNCCIndex"
+                    android:gravity="center"
+                    style="@style/label_xs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    ></TextView>
+                <!--    Splitor-->
+                <LinearLayout android:layout_width="match_parent" android:background="@color/wthShowSplitorDay" android:layout_height="1dp" android:orientation="horizontal" android:id="@+id/liSplitorDate"></LinearLayout>
+
+
+<!--                <TextView-->
+<!--                    android:id="@+id/txtSelectedNCCIndex"-->
+<!--                    android:textColor="#00FF00"-->
+<!--                    android:layout_gravity="end|bottom"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"/>-->
+                <FrameLayout
+                    android:id="@+id/mapFrameLayoutChild"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center">
+                        <Button
+                            android:id="@+id/btnSelectLocationOnMap"
+                            style="@style/button"
+                            android:elevation="100dp"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="40dp"
+                            android:text="@string/selectMap">
+
+                        </Button>
+                        <fragment
+                            android:elevation="60dp"
+                            android:id="@+id/mapSelectLocation"
+                            android:name="com.google.android.gms.maps.SupportMapFragment"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            />
+
+                        <hmapscaleview.MapScaleView
+                            android:id="@+id/scaleViewChild"
+                            android:layout_width="wrap_content"
+                            android:layout_height="250dp"
+                            android:layout_gravity="center_vertical|left"
+                            android:layout_marginLeft="40dp"/>
+
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/btnSelectLayerChild"
+                            app:fabCustomSize="50dp"
+                            android:layout_gravity="bottom|start"
+                            app:elevation="16dp"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="9dp"
+                            android:layout_marginBottom="285dp"
+                            app:backgroundTint="#33000000"/>
+
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/btnShowCustomMapsChild"
+                            app:fabCustomSize="50dp"
+                            android:layout_gravity="bottom|start"
+                            app:elevation="16dp"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="9dp"
+                            android:layout_marginBottom="345dp"
+                            app:backgroundTint="#33000000"/>
+
+                </FrameLayout>
+        </LinearLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

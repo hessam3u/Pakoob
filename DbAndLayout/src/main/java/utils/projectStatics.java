@@ -1,5 +1,7 @@
 package utils;
 
+import static android.text.InputType.TYPE_CLASS_NUMBER;
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -283,6 +285,16 @@ public class projectStatics {
 //            txtInput.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_roundcorner_gray));
             txtInput.setText(defaultInputText);
             txtInput.setLayoutParams(layparams_txtInput);
+            txtInput.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                txtInput.setFocusedByDefault(true);
+//            }
+            //نمایش کیبور و دریافت فوکوس خطوط زیر
+            txtInput.requestFocus();
+            //و دو خط زیر برای نمایش کیبورد که فعلا کار نمیکنه
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(txtInput, InputMethodManager.SHOW_IMPLICIT);
+            
             txtInput.setTextAppearance(context, R.style.label);
             txtInput.setTextSize(18);
             txtInput.setSingleLine(SingeLine);
@@ -292,6 +304,10 @@ public class projectStatics {
             txtInput.setPadding(2, 2, 2, 2);
             if (inputType != 0) {
                 txtInput.setInputType(inputType);
+
+                if (inputType == TYPE_CLASS_NUMBER){
+                    txtInput.setTextDirection(View.TEXT_DIRECTION_LTR);
+                }
             }
             layMain.addView(txtInput);
 

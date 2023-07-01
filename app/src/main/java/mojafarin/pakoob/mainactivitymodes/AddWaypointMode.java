@@ -42,7 +42,7 @@ public class AddWaypointMode {
         pnlAddWaypoint = context.findViewById(R.id.pnlAddWaypoint);
 
     }
-    TextView txtLocationOfWaypoint, btnSaveWaypoint, btnDiscardWaypoint, btnGo;
+    TextView txtLocationOfWaypoint, btnSaveWaypoint, btnDiscardWaypoint, btnGo, btnDeleteWaypoint;
     EditText txtNameOfWaypoint;
     public View pnlAddWaypoint;
     public Marker AddWaypointMarker = null;
@@ -82,9 +82,11 @@ public class AddWaypointMode {
             txtLocationOfWaypoint = pnlAddWaypoint.findViewById(R.id.txtLocationOfWaypoint);
             btnDiscardWaypoint = pnlAddWaypoint.findViewById(R.id.btnDiscardWaypoint);
             btnGo = pnlAddWaypoint.findViewById(R.id.btnGo);
+            btnDeleteWaypoint = pnlAddWaypoint.findViewById(R.id.btnDeleteWaypoint);
 
             btnSaveWaypoint.setOnClickListener(view -> {
                 saveWaypoint_Click();
+                discardWaypoint_Click(true);
             });
             btnDiscardWaypoint.setOnClickListener(view -> {
                 discardWaypoint_Click(false);
@@ -96,9 +98,24 @@ public class AddWaypointMode {
                 txtNameOfWaypoint_Click();
             });
             btnGo.setOnClickListener(view -> {
+                saveWaypoint_Click();
                 mapPage.btnGo_Click();
             });
+            btnDeleteWaypoint.setOnClickListener(view -> {
+                projectStatics.showDialog(context, context.getResources().getString(R.string.DeleteConfirm)
+                        , context.getResources().getString(R.string.AreYouSureToDeleteWaypoint)
+                        , context.getResources().getString(R.string.ok), view1 -> {
+                    //CLICK OK:
+                            GPXFile.DeleteNbPoiRec(editingWaypoint);
+                            discardWaypoint_Click(true);
+                        }, context.getResources().getString(R.string.cancel), null);
+            });
         }
+        if (editingWaypoint != null){
+            btnDeleteWaypoint.setVisibility(View.VISIBLE);
+        }
+        else
+            btnDeleteWaypoint.setVisibility(View.GONE);
     }
 
     private void txtNameOfWaypoint_Click() {
@@ -191,6 +208,5 @@ public class AddWaypointMode {
 //                    compact.marker.setVisible(true);
 //            }
 //        }
-        discardWaypoint_Click(true);
     }
 }

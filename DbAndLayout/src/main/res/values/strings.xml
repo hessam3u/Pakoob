@@ -127,6 +127,7 @@
     <string name="deleteMaps">پاک کردن حافظه دانلودها</string>
     <string name="deleteMaps_desc">در صورت پاک نکردن حافظه نقشه‌ها، همچنان می‌توانید به کار خود ادامه دهید.</string>
     <string name="AreYouSureToDeleteFiles">آیا از پاک کردن فایل‌ها اطمینان دارید؟</string>
+    <string name="AreYouSureToDeleteWaypoint">آیا از پاک کردن نقطه اطمینان دارید؟</string>
     <string name="DeleteConfirm">تایید حذف</string>
     <string name="deleteHighZoom">پاک کردن حافظه زوم‌های بالا</string>
     <string name="deleteHighZoom_desc">برای تولید مجدد، به صفحه نقشه‌ها رفته و با کمک دکمه سه نقطه در کنار نقشه، این زوم را مجددا فعال کنید. با این دکمه زوم‌های 100 متر و پایین تر حذف خواهد شد.</string>
@@ -195,9 +196,12 @@
     <string name="TrackWithNameOf">مسیر با نام</string>
     <string name="numberOfPoints">تعداد نقطه‌ها:</string>
     <string name="distance">مسافت:</string>
+    <string name="area">مساحت:</string>
     <string name="distance2">مسافت</string>
+    <string name="distToDest">تا هدف :</string>
     <string name="YouAreDesigningRoute">در حال طراحی مسیر</string>
     <string name="save">ذخیره</string>
+    <string name="saveRoute">ذخیره مسیر</string>
     <string name="statistics">آمار\nسفر</string>
     <string name="startSaveTrack">آغاز\nمسیر</string>
     <string name="currentTrackIsTooShortToSave">به دلیل عدم برداشت مختصاتی، هیچ مسیری ذخیره نگردید</string>
@@ -213,10 +217,30 @@
     <string name="SearchingSatellite">در حال محاسبه موقعیت</string>
     <string name="vali_GeneralError_Title">خطای اعتبارسنجی</string>
     <string name="vali_PleaseEnterName">لطفا نام را وارد کنید</string>
-    <string name="lblPlotRouteTitle">طراحی مسیر</string>
+    <string name="SightNGo_vali_PleaseEnterDistance">لطفا فاصله را وارد کنید</string>
+    <string name="SightNG_ovali_PleaseDraw_Title">نیاز به ترسیم خط دید</string>
+    <string name="SightNGo_vali_PleaseDraw_Desc">لطفا نخست خط دید را ترسیم نمایید</string>
+    <string name="SightNGo_vali_PleaseValidAzimuth_Desc">مقدار گرا و زاویه می بایست از صفر تا 360 درجه باشد</string>
+
+    <string name="lblPlotRouteTitle">طراحی مسیر/سنجش مساحت</string>
     <string name="lblPlotRouteDesc">مسیری که قصد رفتن به آن را دارید طراحی کنید.</string>
     <string name="lblAddWaypoint">اضافه کردن نقطه</string>
-    <string name="lblAddWaypointDesc">یک نقطه در محل مکان نما اضافه کنید</string>
+    <string name="lblAddWaypointDesc">مکان خودتان یا یک مختصات را ذخیره کنید</string>
+    <string name="lblSendCurrentLocation">ارسال موقعیت فعلی</string>
+    <string name="lblSendCurrentLocationDesc">موقعیت فعلی خود را پیامک کنید</string>
+    <string name="lblAddWaypoint_InMyLocation">در مکان شما</string>
+    <string name="lblAddWaypoint_InMyLocation_Desc">نقطه در مکان فعلی شما اضافه گردد</string>
+    <string name="lblAddWaypoint_InCursorLocation">در محل مرکز فعلی نقشه</string>
+    <string name="lblAddWaypoint_InCursorLocation_Desc">نقطه در مرکز تصویر اضافه گردد</string>
+    <string name="lblAddWaypoint_InCustomLocation">در مختصات دلخواه</string>
+    <string name="lblAddWaypoint_InCustomLocation_Desc">نقطه در مختصات دلخواه شما ثبت گردد</string>
+    <string name="lblShareCurrentLoc_JustLatLon">ارسال حرفه ای</string>
+    <string name="lblShareCurrentLoc_JustLatLonDesc">متن حاوی فقط مختصات فعلی و کاملا مختصر</string>
+    <string name="lblShareCurrentLoc_LatLonAndTime">ارسال حرفه ای و زمان</string>
+    <string name="lblShareCurrentLoc_LatLonAndTimeDesc">در متن، علاوه بر مختصات، زمان هم ضمیمه شود</string>
+    <string name="lblShareCurrentLoc_GoogleMapLinkAndTime">ارسال لینک گوگل مپ</string>
+    <string name="lblShareCurrentLoc_GoogleMapLinkAndTimeDesc">پیام قابل باز شدن در گوگل مپ باشد</string>
+
     <string name="YouAreAddingWaypoint">ثبت نقطه (روی نقشه کلیک کنید یا در کادر زیر وارد نمایید)</string>
     <string name="nameOfWaypoint">نام نقطه</string>
     <string name="LocationOfWaypoint">مختصات نقطه</string>
@@ -248,6 +272,8 @@
     <string name="MinElevation">کمترین ارتفاع</string>
     <string name="MaxElevation">بیشترین ارتفاع</string>
     <string name="Delination">انحراف مغناطیسی</string>
+    <string name="RotateAngle">چرخش گوشی</string>
+    <string name="HorizonAngle">شیب سنج</string>
     <string name="Heading">زاویه قطب نما</string>
     <string name="Bearing">پارامتر Bearing</string>
     <string name="SNR">پارامتر SNR</string>
@@ -294,29 +320,40 @@
     <string name="btnRemoveRoutePoint">حذف نقطه</string>
     <string name="EnterName_Title">انتخاب نام</string>
     <string name="EnterName_Message">لطفا نام شاخه جدید را وارد نمایید:</string>
+    <string name="EnterName_ForWaypoint_Title">انتخاب نام</string>
+    <string name="EnterName_ForWaypoint_MyLocation_Message">لطفا نامی که مالید برای نقطه فعلی خودتان انتخاب نمایید را وارد نمایید:</string>
+    <string name="EnterName_ForWaypoint_CursorLocation_Message">لطفا نام مد نظرتان را وارد نمایید:</string>
     <string name="btnRename">تغییر نام</string>
     <string name="btnAddFolderInToolbar">ایجاد شاخه جدید</string>
     <string name="btnImportTrackFile">وارد کردن فایل GPX</string>
     <string name="btnSelectAll">انتخاب همه</string>
     <string name="EnterNewName_Message">لطفا نام جدید را وارد نمایید:</string>
     <string name="lblAddSightNGo">خط جهت نگاه</string>
-    <string name="lblAddSightNGoDesc">ثبت خط جهت نگاه و راستای دید</string>
+    <string name="lblAddSightNGoDesc">نقاط دوردست را کشف و به سمت آنها بروید</string>
     <string name="vali_NoCurrectLocation">در انتظار موقعیت</string>
     <string name="vali_NoCurrectLocation_Desc">موقعیت فعلی شما هنوز تثبیت نشده و امکان استفاده از این قابلیت وجود ندارد</string>
-    <string name="btnGo">برو</string>
+    <string name="btnGo">برو به سمتش</string>
     <string name="AreYouSureToExit_Title">اطمینان از خروج</string>
     <string name="AreYouSureToExit_Desc">آیا از خروج اطمینان دارید؟</string>
     <string name="StopNavigation_Title">توقف ناوبری</string>
     <string name="StopNavigation_Desc">آیا از توقف ناوبری و رفتن به سمت هدف اطمینان دارید؟</string>
     <string name="YouAreSightNGo">در حال ثبت خط دید</string>
     <string name="btnSaveSightNGo">ذخیره خط دید</string>
+    <string name="btnGotoSightNGo">برو به سمت هدف</string>
     <string name="btnCaptureSightNGo">ترسیم خط دید</string>
+    <string name="lblSightNoGo_Azimuth">گرای فعلی</string>
     <string name="btnReset">از نو</string>
-    <string name="EnterNewDistance_Title">دریافت فاصله</string>
-    <string name="EnterNewDistance_Desc">لطفا فاصله مد نظر را وارد نمایید</string>
-    <string name="menuCreateZoomLevel1">ایجاد یک سطح زوم بیشتر</string>
-    <string name="menuCreateZoomLevel2">ایجاد دو سطح زوم بیشتر</string>
+    <string name="SightNGo_EnterNewDistance_Title">دریافت فاصله</string>
+    <string name="SightNGo_EnterNewAzimuth_Title">دریافت زاویه</string>
+    <string name="SightNGo_EnterNewDistance_Desc">لطفا فاصله مد نظر را به واحد متر وارد نمایید</string>
+    <string name="SightNGo_EnterNewAzimuth_Desc">لطفا گرای مد نظر را به واحد زاویه از شمال مغناطیسی وارد کنید تا خط دید در آن راستا ترسیم شود</string>
+    <string name="menuCreateZoomLevel1">فعال سازی نقشه در بیشترین زوم</string>
+    <string name="menuCreateZoomLevel2">ایجاد دو سطح زوم بیشتر</string><!--NOTUSED-->
+    <string name="StopTrackRecording_Title">توقف برداشت مسیر</string>
+    <string name="StopTrackRecording_Desc">آیا مسیر شما به پایان رسیده و قصد ذخیره نهایی آن را دارید؟</string>
     <string name="SightNGo">خط دید</string>
+    <string name="enterDistance">تغییر فاصله</string>
+    <string name="SightNGo_ManualChangeAzimuth">تغییر دستی گرا</string>
     <string name="reCreateMap">استخراج مجدد</string>
     <string name="menu_deleteMapTiles">پاک کردن حافظه این نقشه</string>
     <string name="menu_deleteMapTilesAndDownload">پاک کردن حافظه این نقشه و دانلودهایش</string>
@@ -344,11 +381,18 @@
     <string name="RequestBackgroundLocationInAndroid29_Title">درخواست مجوز دسترسی</string>
     <string name="RequestBackgroundLocationInAndroid29_Title_Desc">برای دسترسی به موقعیت مکانی شما در پس زمینه، می‌بایست با رفتن به تنظیمات مربوط به برنامه و در قسمت مجوزهای دسترسی به مکان (Location)، این مجوز (گزینه همه زمان‌ها یا Allow all the time) را برای پاکوب فعال نمایید.\n در غیر این صورت ممکن است زمانی که برنامه را برای چند دقیقه استفاده نمی‌کنید، مسیر شما را موقتا ذخیره نکند.</string>
     <string name="locationPermission_Denied">مجوز دسترسی به موقعیت مکانی</string>
+    <string name="locationPermission_Desc">برای استفاده از امکان مسیریابی و نقشه، در صفحه بعد مجوز همیشگی استفاده از مکان را بدهید</string>
     <string name="locationPermission_Denied_Desc">شما قبلا مجوز دسترسی به موقعیت مکانی برای این اپلکیشن را رد کرده اید. لطفا برای ادامه کار، از تنظیمات دستگاه، بخش برنامه‌ها، این برنامه را پیدا کرده و به آن مجوز (Permission) دسترسی به مکان را بدهید.</string>
     <string name="StoragePermission_Denied">مجوزدسترسی به فایل‌ها</string>
     <string name="StoragePermission_Denied_Desc">شما قبلا مجوز دسترسی به فایل‌ها را رد کرده اید. لطفا در صفحه ای که باز می‌شود در بخش مجوزها (Permission) مجوز دسترسی به حافظه را به این اپلیکیشن بدهید</string>
     <string name="FineLocationDenied_Title">مجوز دسترسی</string>
-    <string name="FineLocationDenied_Desc">شما مجوز دسترسی به موقعیت مکان در این اپ را ارائه نداده اید و در نتیجه امکان ثبت ترک با دقت بالا وجود ندارد. لطفا از طریق تنظیمات-برنامه ها-پاکوب-مجوز دسترسی به موقعیت مکانی دقیق را به پاکوب بدهید</string>
+    <string name="FineLocationDenied_Desc">شما مجوز دسترسی به موقعیت مکان در این اپ را ارائه نداده اید و در نتیجه امکان استفاده از مکان وجود ندارد. لطفا از طریق تنظیمات-برنامه ها-پاکوب-مجوز دسترسی به موقعیت مکانی دقیق را به پاکوب بدهید</string>
+
+    <string name="shareViaText">اشتراک گذاری از طریق</string>
+    <string name="share_YourLocation">مکان فعلی</string>
+    <string name="share_SendTime">زمان ارسال</string>
+    <string name="share_SendDate">تاریخ ارسال</string>
+    <string name="share_IamInThisLocation">مکان من در این لینک قرار دارد</string>
 
 
     <string name="locationIsOff">روشن کردن مکان</string>
@@ -468,6 +512,9 @@
     <string name="title_safegpxSearch">جستجوی مسیرها و نقشه ها</string>
     <string name="title_SafeGpx_View">مسیر و گزارش پیمایش</string>
     <string name="title_TripComputer">آمار سفر</string>
+    <string name="title_ShowMapDialog">جستجو روی نقشه</string>
+    <string name="title_ShowMapDialog_ShowTrack">نمایش محدوده</string>
+    <string name="title_ShowMapDialog_ShowBound">نمایش محدوده</string>
 
     <string name="ico_fontawesome_ok" translatable="false">&#xe80b;</string>
     <string name="ico_fontawesome_city" translatable="false">&#xF0F7;</string>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/leftrightMargin"
+    android:textDirection="rtl"
+    android:orientation="vertical">
+
+<LinearLayout
+    android:layout_marginBottom="@dimen/leftrightMargin"
+    android:background="@drawable/bg_roundcorner_greenborder"
+    android:padding="@dimen/leftrightMargin"
+    android:id="@+id/btnShareCurrentLoc_JustLatLon"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:orientation="horizontal">
+    <TextView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:fontFamily="@font/fontello"
+        android:textSize="30dp"
+        android:textColor="#FF5722"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:text="&#xE810;">
+    </TextView>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            style="@style/label_xl"
+            android:text="@string/lblShareCurrentLoc_JustLatLon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+        </TextView>
+
+        <TextView
+            style="@style/label_s"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lblShareCurrentLoc_JustLatLonDesc"></TextView>
+    </LinearLayout>
+</LinearLayout>
+<LinearLayout
+        android:layout_marginBottom="@dimen/leftrightMargin"
+        android:background="@drawable/bg_roundcorner_greenborder"
+        android:padding="@dimen/leftrightMargin"
+        android:id="@+id/btnShareCurrentLoc_LatLonAndTimeDesc"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:fontFamily="@font/fontello"
+        android:textSize="30dp"
+        android:textColor="#B300FF"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:text="&#xE811;">
+    </TextView>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                style="@style/label_xl"
+                android:text="@string/lblShareCurrentLoc_LatLonAndTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+            </TextView>
+            <TextView
+                style="@style/label_s"
+                android:text="@string/lblShareCurrentLoc_LatLonAndTimeDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+            </TextView>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginBottom="@dimen/leftrightMargin"
+        android:background="@drawable/bg_roundcorner_greenborder"
+        android:padding="@dimen/leftrightMargin"
+        android:id="@+id/btnShareCurrentLoc_GoogleMapLinkAndTime"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:fontFamily="@font/fontello"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:text="&#xF278;"
+            android:textColor="#0004FF"
+            android:textSize="23dp"></TextView>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                style="@style/label_xl"
+                android:text="@string/lblShareCurrentLoc_GoogleMapLinkAndTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+            </TextView>
+            <TextView
+                style="@style/label_s"
+                android:text="@string/lblShareCurrentLoc_GoogleMapLinkAndTimeDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+            </TextView>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

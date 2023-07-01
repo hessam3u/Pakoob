@@ -173,8 +173,9 @@ public class MapSelect extends HFragment {
         btnBack =v.findViewById(R.id.btnBack);
         btnBack.setOnClickListener(view -> {hutilities.hideKeyboard(context, txtSearch);((AppCompatActivity) context).onBackPressed();});
 
-        this.dialogMapObj = MainActivity.dialogMapObj;
-        this.dialogMap = MainActivity.dialogMap;
+//        this.dialogMapObj = MainActivity.dialogMapObj;
+//        this.dialogMap = MainActivity.dialogMap;
+        //reCreateDialogMapObj();
 
         adapterLocal = new NbMapsAdapter(context, null);
 
@@ -224,35 +225,59 @@ public class MapSelect extends HFragment {
     }
 
     private void btnSelectLocationOnMap_Click() {
-        dialogMapObj.lastLocation = dialogMapObj.locationMarker.getPosition();
-        dialogMapObj.lastLocationZoom = dialogMapObj.mapSelectLocation.getCameraPosition().zoom;
-        this.lastLocation = dialogMapObj.lastLocation;
-        txtSearch.setText(String.format(Locale.US, "%.5f", dialogMapObj.lastLocation.latitude) + "," + String.format(Locale.US, "%.5f", dialogMapObj.lastLocation.longitude));
-        dialogMap.dismiss();
+        showMapDialog.lastLocation = showMapDialog.locationMarker.getPosition();
+        showMapDialog.lastLocationZoom = showMapDialog.mapSelectLocation.getCameraPosition().zoom;
+        this.lastLocation = showMapDialog.lastLocation;
+        txtSearch.setText(String.format(Locale.US, "%.5f", showMapDialog.lastLocation.latitude) + "," + String.format(Locale.US, "%.5f", showMapDialog.lastLocation.longitude));
+
+        //تبدیل دیالوگ به فرگمنت و کامنت کردن در تابستان 1402
+        //dialogMap.dismiss();
+
+        //context.changeFragmentVisibility(showMapDialog, false);
+        context.onBackPressed();
+        //showMapDialog.onBackPressedInChild();
+
         btnSearch_Click();
     }
 
     public AlertDialog dialogMap = null;
     DialogMapBuilder dialogMapObj = null;
+
+    ShowMapDialog showMapDialog = null;
     private boolean btnFindByLocation_Click() {
         int step = 0;
         try {
-            if (dialogMap == null) {
-                step = 100;
-                AlertDialog.Builder alertDialogBuilder = dialogMapObj.GetBuilder();
-                step = 200;
-                dialogMap = alertDialogBuilder.create();
-                step = 300;
-                Window w = dialogMap.getWindow();
-                step = 400;
-                w.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            if (showMapDialog == null) {
+                showMapDialog = ShowMapDialog.getInstance();
             }
-            step = 500;
-            dialogMapObj.setForModeShowSelect(lastLocation, 10, view -> btnSelectLocationOnMap_Click());
-            step = 600;
-            dialogMap.show();
-            step = 700;
+            showMapDialog.setForModeShowSelect(lastLocation, 10, view -> btnSelectLocationOnMap_Click());
+            if (true || !showMapDialog.isAdded())
+                context.showFragment(showMapDialog);
+            else{
+//                context.changeFragmentVisibility(showMapDialog, true);
+//                showMapDialog.fillForm();
+            }
             return true;
+
+//            dialogMap = null;
+//            if (dialogMap == null || MainActivity.appExistsBeforeAndShouldReloadAll_ReReadDialogMap) {
+//                step = 100;
+//                AlertDialog.Builder alertDialogBuilder = dialogMapObj.GetBuilder();
+//                step = 200;
+//                dialogMap = alertDialogBuilder.create();
+//                step = 300;
+//                Window w = dialogMap.getWindow();
+//                step = 400;
+//                w.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+//
+//                MainActivity.appExistsBeforeAndShouldReloadAll_ReReadDialogMap = false;
+//            }
+//            step = 500;
+//            dialogMapObj.setForModeShowSelect(lastLocation, 10, view -> btnSelectLocationOnMap_Click());
+//            step = 600;
+//            dialogMap.show();
+//            step = 700;
+//            return true;
         }
         catch (Exception ex){
             projectStatics.showDialog(context, getResources().getString(R.string.dialog_UnknownError)
@@ -716,10 +741,10 @@ public class MapSelect extends HFragment {
                             fromZoom = hMapTools.CustomMapMinZoom;
                             toZoom = hMapTools.CustomMapMaxZoomNormal;
                             break;
-                        case R.id.menu_createZoom100:
-                            doCreateForNewerZoom = true;
-                            fromZoom = toZoom = 16;
-                            break;
+//                        case R.id.menu_createZoom100:
+//                            doCreateForNewerZoom = true;
+//                            fromZoom = toZoom = 16;
+//                            break;
                         case R.id.menu_creatZoom50:
                             doCreateForNewerZoom = true;
                             fromZoom = 16;
@@ -817,41 +842,31 @@ public class MapSelect extends HFragment {
         }
 
         private void btnShowHide_Click(NbMap currentObj) {
-//            Intent intent=new Intent();
-//            intent.putExtra("latn",currentObj.LatN ) ;
-//            intent.putExtra("lats", currentObj.LatS) ;
-//            intent.putExtra("lone", currentObj.LonE) ;
-//            intent.putExtra("lonw", currentObj.LonW);
-//            intent.putExtra("zoom", 12f) ;
-//            intent.putExtra("bounds", currentObj.LocalFileAddress == null || currentObj.LocalFileAddress.length() == 0) ;
-//
-//            setResult(2,intent);
-//            finish();//finishing activity
-
             //hide keyboard
             hutilities.hideKeyboard(context, txtSearch);
             //hideKeyboard();
 
-            if (dialogMap == null) {
-                AlertDialog.Builder alertDialogBuilder = dialogMapObj.GetBuilder();
-                dialogMap = alertDialogBuilder.create();
-                Window w = dialogMap.getWindow();
-                w.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            if (showMapDialog == null) {
+                showMapDialog = ShowMapDialog.getInstance();
             }
-            dialogMapObj.setForModeShowBounds(currentObj, view -> btnSelectLocationOnMap_Click());
+            showMapDialog.setForModeShowBounds(currentObj, view -> btnSelectLocationOnMap_Click());
+            if (true || !showMapDialog.isAdded())
+                ((MainActivity)context).showFragment(showMapDialog);
+            else{
+//                context.changeFragmentVisibility(showMapDialog, true);
+//                showMapDialog.fillForm();
+            }
+            return ;
 
-//            dialogMapObj.latN = currentObj.LatN;
-//            dialogMapObj.latS = currentObj.LatS;
-//            dialogMapObj.lonE = currentObj.LonE;
-//            dialogMapObj.lonW = currentObj.LonW;
-//            dialogMapObj.zoom = 11f;
-//            dialogMapObj.bounds = currentObj.LocalFileAddress == null || currentObj.LocalFileAddress.length() == 0;
-
-            //showHideMapElements("bound");
-
-//            dialogMapObj.showMapBounds(latN,latS,lonE, lonW, zoom );
-
-            dialogMap.show();
+            //1402-04 کامنت برای خرابکاری نقشه
+//            if (dialogMap == null) {
+//                AlertDialog.Builder alertDialogBuilder = dialogMapObj.GetBuilder();
+//                dialogMap = alertDialogBuilder.create();
+//                Window w = dialogMap.getWindow();
+//                w.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+//            }
+//            dialogMapObj.setForModeShowBounds(currentObj, view -> btnSelectLocationOnMap_Click());
+//            dialogMap.show();
 
 //            mapFrameLayoutChild.setVisibility(View.VISIBLE);
         }

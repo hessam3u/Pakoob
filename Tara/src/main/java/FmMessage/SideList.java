@@ -91,7 +91,7 @@ public class SideList extends Fragment {
     private ProgressBar pageProgressBar;
     boolean isLoadingMore = false;
     final Integer readPageSize = 100;
-    TextView txtSearchResult, txtSelectedNCCIndex, lblYourMaps;
+    TextView txtSearchResult;
 
     void initializeComponents(View v) {
 

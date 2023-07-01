@@ -14,9 +14,8 @@
     </TextView>
 <!--    end splitor-->
     <TextView
-        android:layout_marginRight="@dimen/leftrightMargin"
-        android:layout_marginLeft="@dimen/leftrightMargin"
-        style="@style/label"
+        android:layout_margin="@dimen/leftrightMargin"
+        style="@style/label_l"
         android:id="@+id/txtYouAreDesigningRoute"
         android:text="@string/YouAreSightNGo"
         android:layout_width="match_parent"
@@ -25,89 +24,140 @@
     </TextView>
     <!--    end title-->
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginRight="@dimen/leftrightMargin"
             android:layout_marginLeft="@dimen/leftrightMargin"
-            android:gravity="right"
-            android:textDirection="rtl"
+            android:layout_marginRight="@dimen/leftrightMargin"
             android:orientation="horizontal">
             <TextView
                 style="@style/label"
-                android:id="@+id/btnCaptureSightNGo"
+                android:layout_width="0dp"
+                android:layout_weight=".5"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/lblSightNoGo_Azimuth">
+            </TextView>
+            <TextView
+                android:layout_marginEnd="@dimen/leftrightMargin"
+                android:id="@+id/txtHeading"
+                style="@style/dataFielldValue"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="129">
+            </TextView>
+            <TextView
+                android:id="@+id/btnManualChangeAzimuth"
+                style="@style/label"
+                android:layout_weight=".8"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_roundcorner_greenborder"
+                android:gravity="center_vertical"
+                android:layout_gravity="center"
+                android:paddingLeft="@dimen/leftrightMarginHalf"
+                android:paddingRight="@dimen/leftrightMarginHalf"
+                android:text="@string/SightNGo_ManualChangeAzimuth"
+                android:textAlignment="center"
+                tools:ignore="RtlCompat"></TextView>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/leftrightMargin"
+            android:layout_marginRight="@dimen/leftrightMargin"
+            android:orientation="horizontal">
 
-                android:layout_marginRight="@dimen/leftrightMargin"
-                android:layout_marginLeft="@dimen/leftrightMargin"
+            <TextView
+                android:id="@+id/btnGotoSightNGo"
+                style="@style/label"
 
+                android:layout_weight="1.5"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="@dimen/leftrightMarginHalf"
+                android:background="@drawable/bg_roundcorner_greenborder"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingLeft="@dimen/leftrightMarginHalf"
+                android:paddingRight="@dimen/leftrightMarginHalf"
+                android:text="@string/btnGotoSightNGo"
+                android:textAlignment="center"
+                tools:ignore="RtlCompat"></TextView>
+
+            <TextView
+                android:id="@+id/btnSaveSightNGo"
+                style="@style/label"
+
+                android:layout_weight="1.2"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="@dimen/leftrightMarginHalf"
+                android:background="@drawable/bg_roundcorner_greenborder"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingLeft="@dimen/leftrightMarginHalf"
+                android:paddingRight="@dimen/leftrightMarginHalf"
+                android:text="@string/btnSaveSightNGo"
+                android:textAlignment="center"
+                android:textColor="@color/green"
+                tools:ignore="RtlCompat"></TextView>
+
+            <TextView
+                android:id="@+id/btnSightNGoSettings"
+                style="@style/label"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:textColor="#FFFFFF"
-                android:fontFamily="@font/iransansweb"
-                android:textSize="20dp"
-                android:text="@string/btnCaptureSightNGo"
-                android:textAlignment="center"
-                android:background="@drawable/bg_roundcorner_greenfill"
-                android:gravity="center_vertical"
-                tools:ignore="RtlCompat">
-            </TextView>
-
-            <TextView
-                style="@style/label"
-                android:id="@+id/btnSaveSightNGo"
-
-                android:layout_marginLeft="@dimen/leftrightMargin"
-
-                android:layout_width="wrap_content"
-                android:paddingRight="12dp"
-                android:paddingLeft="12dp"
-                android:layout_height="40dp"
-                android:textColor="@color/green"
-                android:fontFamily="@font/iransansweb"
-                android:textSize="20dp"
-                android:text="@string/btnSaveSightNGo"
-                android:textAlignment="center"
-                android:background="@drawable/bg_roundcorner_greenborder"
-                android:gravity="center_horizontal|center_vertical"
-                tools:ignore="RtlCompat">
-            </TextView>
-            <TextView
-                android:layout_marginTop="3dp"
-                style="@style/label"
-                android:id="@+id/btnSightNGoSettings"
-
-                android:layout_marginLeft="@dimen/leftrightMargin"
-
-                android:layout_width="50dp"
-                android:layout_height="40dp"
-                android:textColor="@color/green"
-                android:fontFamily="@font/fontello"
-                android:textSize="25dp"
-                android:text="&#xE81E;"
-                android:textAlignment="center"
+                android:layout_marginLeft="@dimen/leftrightMarginHalf"
                 android:background="@drawable/bg_roundcorner_greenborder"
                 android:gravity="center_vertical"
-                tools:ignore="RtlCompat">
-            </TextView>
+                android:paddingLeft="@dimen/leftrightMarginHalf"
+                android:paddingRight="@dimen/leftrightMarginHalf"
+                android:text="@string/enterDistance"
+                android:textAlignment="center"
+                tools:ignore="RtlCompat"></TextView>
+
             <TextView
-                android:layout_marginTop="3dp"
-                android:background="@drawable/bg_roundcorner_gray"
-
-                android:layout_marginLeft="@dimen/leftrightMargin"
-
-                style="@style/label"
                 android:id="@+id/btnDiscardSightNGo"
+                style="@style/label"
+
                 android:layout_width="40dp"
+
                 android:layout_height="40dp"
-                android:textColor="#777777"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_roundcorner_gray"
                 android:fontFamily="@font/fontello"
-                android:textSize="25dp"
+                android:gravity="center_vertical"
+                android:layout_gravity="start"
                 android:text="&#xE803;"
                 android:textAlignment="center"
-                android:gravity="center_vertical"
-                tools:ignore="RtlCompat">
-            </TextView>
+                android:textColor="#777777"
+                android:textSize="25dp"
+                tools:ignore="RtlCompat"></TextView>
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/btnCaptureSightNGo"
+            style="@style/label"
+            android:layout_marginBottom="@dimen/leftrightMargin"
+
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+
+            android:layout_marginLeft="@dimen/leftrightMargin"
+            android:layout_marginRight="@dimen/leftrightMargin"
+            android:layout_weight="1"
+            android:background="@drawable/bg_roundcorner_greenfill"
+            android:gravity="center_vertical"
+            android:text="@string/btnCaptureSightNGo"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp"
+            tools:ignore="RtlCompat"></TextView>
+    </LinearLayout>
 
     </LinearLayout>

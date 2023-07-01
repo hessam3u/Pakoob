@@ -4,6 +4,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import MorphingButton.MorphingButton;
+import bo.NewClasses.InsUpdRes;
 import bo.dbConstantsMap;
 import bo.dbConstantsTara;
 import bo.entity.FmMessage;
@@ -81,6 +84,12 @@ public class MainActivity extends MainActivityManager {
     public static boolean isTrackUp = true;
     public static boolean isLockOnMe = true;
 
+    //1402-03-31 برای زمانی که اپ یه لحظه بسته میشه و دوباره باز میشه لازمه این کار انجام بشه برای لود مجدد همه چیز
+    public static boolean appExistsBeforeAndShouldReloadAll_ReReadPois = true;
+    public static boolean appExistsBeforeAndShouldReloadAll_OpenMapFirst = true;
+    public static boolean appExistsBeforeAndShouldReloadAll_ReReadDialogMap = true;
+    boolean onCreateIsCalling = true;
+
     public static LatLng currentLatLon;
     public static double currentElev = 0;
     public static float currentSpeed = 0;
@@ -98,13 +107,8 @@ public class MainActivity extends MainActivityManager {
 
     byte buyType = 0;
     String goodId_NbMapId, buyId;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-        //GPXFile.DeleteAllNbPois();
-        //GPXFile.ParseFile("",MainActivity.this);
-        Intent intent = getIntent();
+    void processIntent(Intent intent){
         if (intent.getData() != null) {
 
             String data = intent.getDataString();
@@ -196,6 +200,24 @@ public class MainActivity extends MainActivityManager {
                 intent.setData(null);
             }
         }
+        if (intent.getExtras() != null && intent.getExtras().containsKey("ChanalId")){
+            //برای زمانی که روی نوتیفیکیشن مربوط به ثبت ترک کلیک میکنه میخوایم که ترک ها لود بشه حتما
+            String st = intent.getExtras().getString("ChanalId");
+            appExistsBeforeAndShouldReloadAll_ReReadPois = true;
+            appExistsBeforeAndShouldReloadAll_ReReadDialogMap = true;
+        }
+    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        onCreateIsCalling = true;
+
+
+        //GPXFile.DeleteAllNbPois();
+        //GPXFile.ParseFile("",MainActivity.this);
+        Intent intent = getIntent();
+        processIntent(intent);
+
         app.session.setVisitCounter(app.session.getVisitCounter() + 1);
 
         setContentView(R.layout.activity_main);
@@ -233,12 +255,15 @@ public class MainActivity extends MainActivityManager {
             backToHome();
         }
 
-        saveAndSendInitLocation(getApplicationContext());
+        if (!app.isFirstTimeRunning_ForLocationReadingInMapPage)
+            saveAndSendInitLocation(getApplicationContext());
 
         //commented at ver 29 and moved into ps
 //        if (visitCounter % 5 == 0)
 //            app.DoSyncExceptions(MainActivity.this);
 
+
+        //همزمان در oncreate-onNewIntent
         Bundle extras = intent.getExtras();
         if (extras != null) {
             if (extras.containsKey("NotificationMessage")) {
@@ -248,12 +273,13 @@ public class MainActivity extends MainActivityManager {
         
         doCheckVersion();
 
-        // check permission
-        if (ActivityCompat.checkSelfPermission((Activity) this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) this, new String[]{
-                    Manifest.permission.ACCESS_FINE_LOCATION
-            }, PrjConfig.Location_FINE_PERMISSION_REQUEST_CODE);
-        }
+        //1402-04 انتقال دسترسی به مکان به صفحه نقشه
+//        // check permission
+//        if (ActivityCompat.checkSelfPermission((Activity) this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions((Activity) this, new String[]{
+//                    Manifest.permission.ACCESS_FINE_LOCATION
+//            }, PrjConfig.Location_FINE_PERMISSION_REQUEST_CODE);
+//        }
 
         //Also call when login
         initFirebase();
@@ -263,16 +289,20 @@ public class MainActivity extends MainActivityManager {
 
         Log.e("BBBBBB", "values again: " + buyType +"--" + buyId+"--" + goodId_NbMapId);
 
+        //همزمان در onCreate-onNewIntent
         if ((recievedFileName!= null && recievedFileName.length() > 0) || inputStream != null) {
             showFragment(MyTracks.getInstance("start", recievedFileName, "", inputStream));
+            inputStream = null;
+            recievedFileName = "";
         }
         else if (buyType != 0 && !goodId_NbMapId.isEmpty()){
             Log.e("BBBBBB", "Goto Show Fragment");
             showFragment(SafeGpxView.getInstance(Integer.parseInt(goodId_NbMapId), PrjConfig.frmHome));
         }
 
-        if (mapPage != null)
-            mapPage.stopTrackRecordingServiceIfRunning();
+        //1402-04 توی رزیوم فرزند فراخوانی میشه
+//        if (mapPage != null)
+//            mapPage.stopTrackRecordingServiceIfRunning();
 
         //Toast.makeText(MainActivity.this, getResources().getString(R.id.google_maps_key), Toast.LENGTH_SHORT).show();
 
@@ -304,6 +334,22 @@ public class MainActivity extends MainActivityManager {
     }
 
     public static void saveAndSendInitLocation(Context context) {
+
+        // check permission and get permission
+        if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            projectStatics.showDialog(context
+                    , context.getString(R.string.locationPermission_Denied)
+                    , context.getString(R.string.locationPermission_Desc)
+                    , context.getString(R.string.ok)
+                    , view -> {
+                        ActivityCompat.requestPermissions((Activity) context, new String[]{
+                                android.Manifest.permission.ACCESS_FINE_LOCATION
+                        }, PrjConfig.Location_FINE_PERMISSION_REQUEST_CODE);
+                    }
+                    , ""
+                    , null);
+        }
+
         //HHH 1400-09-10 FOR COARSE LOCATION
         Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_COARSE);
@@ -332,16 +378,17 @@ public class MainActivity extends MainActivityManager {
     }
 
     private void initializeComponents() {
-        reCreateDialogMapObj();
+        //reCreateDialogMapObj(this);
     }
-    public void reCreateDialogMapObj(){
-        dialogMapObj = new DialogMapBuilder(this);
-        if (dialogMap == null) {
+    public void reCreateDialogMapObj(Context context){
+        dialogMapObj = new DialogMapBuilder(context);
+        if (true || dialogMap == null) { //یه کاری کردم که همش اجرا بشه ببینم کار میکنه کوفتی یا نه 1402-04
             AlertDialog.Builder alertDialogBuilder = dialogMapObj.GetBuilder();
             dialogMap = alertDialogBuilder.create();
             Window w = dialogMap.getWindow();
             w.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         }
+
     }
 
 
@@ -351,6 +398,26 @@ public class MainActivity extends MainActivityManager {
     public static final int ResultCode_ForMyTracks = 1200;
 
 
+    @Override
+    public void changeFragmentVisibility(final Fragment fragment, boolean makeVisible){
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(android.R.animator.fade_in,
+                android.R.animator.fade_out);
+        if (makeVisible) {
+            ft.hide(myFragments.get(myFragments.size() - 1)); //مخفی کردن فرگمنت فعلی
+            ft.show(fragment); // نمایش فرگمنت درخواستی
+            myFragments.push(fragment);
+            Log.d("hidden","Show");
+
+        } else {
+            ft.hide(fragment); //مخفی  کردن فرگمنت درخواستی
+            ft.show(myFragments.get(myFragments.size() - 2)); // نمایش فرگمنتی که در پشت سر این فرگمنت قرار داشت
+            myFragments.pop();
+            Log.d("Shown","Hide");
+        }
+
+        ft.commit();
+    }
     public void backToMapPage() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -602,6 +669,10 @@ public class MainActivity extends MainActivityManager {
     @Override
     protected void onResume() {
         super.onResume();
+//        if (onCreateIsCalling){
+//            onCreateIsCalling = false;
+//            return;
+//        }
         try {
             if (mapPage != null)
                 mapPage.onResumeInChild();
@@ -677,6 +748,9 @@ public class MainActivity extends MainActivityManager {
                 if (grantResults.length > 0) {
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                         //Do something...
+                        //از اینجا به بعد آزاد هست که هر کاری بکنه
+                        app.isFirstTimeRunning_ForLocationReadingInMapPage = false;
+                        mapPage.checkLocation(false);
                     }
                     else if (grantResults[0] == PackageManager.PERMISSION_DENIED){
                         //if permission denied previously
@@ -716,26 +790,91 @@ public class MainActivity extends MainActivityManager {
 
     public void doCheckVersion() {
         MobileInfoDTO info = MobileInfoDTO.instance();
-        Call<StringContentDTO> call = app.apiMap.CheckVersion(info);
-        call.enqueue(new Callback<StringContentDTO>() {
+        Call<InsUpdRes> call = app.apiMap.CheckVersion2(info);
+        call.enqueue(new Callback<InsUpdRes>() {
             @Override
-            public void onResponse(Call<StringContentDTO> call, Response<StringContentDTO> response) {
-                if (response.isSuccessful()) {
-                    StringContentDTO res = response.body();
-                    if (res.data != null && res.data.length() > 0) {
-                        projectStatics.showDialog(MainActivity.this
-                                , getResources().getString(R.string.updateAvailable)
-                                , res.data
-                                , getResources().getString(R.string.ok)
-                                , null
-                                , ""
-                                , null);
+            public void onResponse(Call<InsUpdRes> call, Response<InsUpdRes> response) {
+                try {
+                    if (response.isSuccessful()) {
+                        InsUpdRes res = response.body();
+                        if (res != null && res.isOk == false) {
+                            String[] commandParts = res.command.split(";;;");
+
+                            String title = res.resValue;
+                            String message = res.message;
+
+                            if (commandParts[0].equals("1")){
+                                //1: Open Message Box
+                                projectStatics.showDialog(MainActivity.this
+                                        , title//getResources().getString(R.string.updateAvailable)
+                                        , message
+                                        , commandParts[1]//getResources().getString(R.string.ok)
+                                        , view -> {
+                                    String whatToDo = commandParts[2];
+                                    String data = commandParts[3];
+                                    if (whatToDo.equals("2")){
+                                        //Open Link
+                                        String link = data;
+                                        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                                                Uri.parse(link));
+                                        startActivity(browserIntent);
+                                    }
+                                    else if (whatToDo.equals("3")){
+                                        //Open "THIS APP" In Google Play
+                                        final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                                        try {
+                                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                                        } catch (android.content.ActivityNotFoundException anfe) {
+                                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                                        }
+                                    }
+                                    else {
+                                        //Not Imp Yet
+                                    }
+                                        }
+                                        , commandParts.length > 4? commandParts[4]:""
+                                        , view -> {
+                                    if (commandParts.length > 4){
+                                        String whatToDo = commandParts[5];
+                                        String data = commandParts[6];
+                                        if (whatToDo.equals("2")){
+                                            //Open Link
+                                            String link = data;
+                                            Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                                                    Uri.parse(link));
+                                            startActivity(browserIntent);
+                                        }
+                                        else if (whatToDo.equals("3")){
+                                            //Open "THIS APP" In Google Play
+                                            final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                                            try {
+                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                                            } catch (android.content.ActivityNotFoundException anfe) {
+                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                                            }
+                                        }
+                                        else {
+                                            //Not Imp Yet
+                                        }
+                                    }
+                                        });
+                            }
+                            else{
+                                //Not Imp in this Vesion
+                            }
+
+                        }
                     }
+                }
+                catch (Exception ex){
+                    Log.e("خطا چک_به_روز_رسانی" , ex.getMessage());
+                    ex.printStackTrace();
+                    TTExceptionLogSQLite.insert(ex.getMessage(), ex.getStackTrace().toString(), PrjConfig.frmMainActivity, 1503);
                 }
             }
 
             @Override
-            public void onFailure(Call<StringContentDTO> call, Throwable t) {
+            public void onFailure(Call<InsUpdRes> call, Throwable t) {
                 int x = 0;
             }
         });
@@ -744,13 +883,22 @@ public class MainActivity extends MainActivityManager {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        //همزمان در oncreate-onNewIntent
         Bundle extras = intent.getExtras();
         if (extras != null) {
             if (extras.containsKey("NotificationMessage")) {
                 showNotificationAtMain(extras);
             }
         }
+        processIntent(intent);
+        //همزمان در onCreate-onNewIntent
+        if ((recievedFileName!= null && recievedFileName.length() > 0) || inputStream != null) {
+            showFragment(MyTracks.getInstance("start", recievedFileName, "", inputStream));
+            inputStream = null;
+            recievedFileName = "";
+        }
     }
+
 
     private void showNotificationAtMain(Bundle extras) {
         try {

@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import java.lang.reflect.Executable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -75,9 +74,11 @@ public class app extends Application {
 
     public static int MinTrackDistance = 5;
     public static int MinTrackTime = 2000;
+    public static int CalendarType = 1; //1 means Jalali, 2 means Miladi
 
     public static boolean FirebaseInited = false;
 
+    public static boolean isFirstTimeRunning_ForLocationReadingInMapPage = false;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -85,6 +86,7 @@ public class app extends Application {
         hutilities.VersionCode = BuildConfig.VERSION_CODE;
         Context context = getApplicationContext();
         session = new sessionManager(context);
+        isFirstTimeRunning_ForLocationReadingInMapPage = app.session.getVisitCounter() == 0;
 
         if (!PrjConfig.IsDebugMode)
             PrjConfig.WebApiAddress = session.getWebApiAddress();
@@ -211,7 +213,7 @@ public class app extends Application {
                 else {
                     if (ShowStatus == NbPoi.Enums.ShowStatus_Show) {
                         compactItem = NbPoiCompact.getInstance(current);
-                        MapPage.addPOIToMap(compactItem, MainActivity.map, context);
+                        MapPage.addPOIToMap(compactItem, MainActivity.map, false, context);
                         app.visiblePOIs.add(compactItem);
                     }
                 }

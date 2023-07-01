@@ -28,5 +28,6 @@ public class MainActivityManager extends AppCompatActivity{
     public void OpenInAppCommand(String command){
 
     }
-
+    public void changeFragmentVisibility(Fragment fragment, boolean makeVisible) {
+    }
 }

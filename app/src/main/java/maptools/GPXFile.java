@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -47,6 +48,7 @@ import static bo.entity.NbPoi.Enums.PoiType_Route;
 import static bo.entity.NbPoi.Enums.PoiType_Track;
 import static bo.entity.NbPoi.Enums.PoiType_Waypoint;
 import static bo.entity.NbPoi.Enums.ShowStatus_Show;
+import static utils.TextFormat.ReplacePersianNumbersWithEnglishOne;
 
 public class GPXFile {
     public List<TrackData> tracks = new ArrayList<>();
@@ -134,7 +136,7 @@ public class GPXFile {
                                         if (parserEvent == XmlPullParser.START_TAG) {
                                             if (tag.equals("gpxx:DisplayColor")) {
                                                 parserEvent = parser.next();//Move forward
-                                                data = parser.getText();
+                                                data = ReplacePersianNumbersWithEnglishOne(parser.getText());
                                                 track.ColorString = data;
                                             }
                                         }
@@ -183,16 +185,17 @@ public class GPXFile {
                                                 switch (tag) {
                                                     case "ele": {
                                                         parserEvent = parser.next();//Move forward
-                                                        data = parser.getText();
+                                                        data = ReplacePersianNumbersWithEnglishOne(parser.getText());
                                                         track.Elev.add(hutilities.parseFloatPersian(data));
                                                         break;
                                                     }
                                                     case "time": {
                                                         parserEvent = parser.next();//Move forward
-                                                        data = parser.getText();
+                                                        data = ReplacePersianNumbersWithEnglishOne(parser.getText());
                                                         Calendar cal = Calendar.getInstance();
 //                                                        cal.setTimeZone(utc);
-                                                        cal.setTime(dateFormat.parse(data));
+                                                        cal.setTime(parseDate(data));
+
                                                         track.Time.add(cal);
                                                         break;
                                                     }
@@ -246,16 +249,16 @@ public class GPXFile {
                 switch (tag) {
                     case "ele": {
                         parserEvent = parser.next();
-                        data = parser.getText();
+                        data = ReplacePersianNumbersWithEnglishOne(parser.getText());
                         waypoint.Elevation = hutilities.parseFloatPersian(data);
                         break;
                     }
                     case "time": {
                         parserEvent = parser.next();
-                        data = parser.getText();
+                        data = ReplacePersianNumbersWithEnglishOne(parser.getText());
                         Calendar cal = Calendar.getInstance();
 //                        cal.setTimeZone(utc);
-                        cal.setTime(dateFormat.parse(data));
+                        cal.setTime(parseDate(data));
                         waypoint.Time = cal;
                         break;
                     }
@@ -267,7 +270,7 @@ public class GPXFile {
                     }
                     case "sym": {
                         parserEvent = parser.next();
-                        data = parser.getText();
+                        data = ReplacePersianNumbersWithEnglishOne(parser.getText());
                         waypoint.Icon = data;
                         break;
                     }
@@ -279,7 +282,26 @@ public class GPXFile {
         return waypoint;
     }
 
-    static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    static SimpleDateFormat[] allDateFormats = new SimpleDateFormat[]{
+            new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'"),
+            new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"),
+    };
+    static int lastDateFormatIndex = 0;
+    static Date parseDate(String data){
+        int index = lastDateFormatIndex;
+        for (int i = 0; i < allDateFormats.length; i++) {
+            try
+            {
+                return allDateFormats[index].parse(data);
+            }
+            catch (ParseException e) {
+                lastDateFormatIndex = (lastDateFormatIndex + 1) % allDateFormats.length;
+                index = lastDateFormatIndex;
+            }
+        }
+        return new Date();
+    }
 
     public static GPXFile ImportGpxFileIntoMapbaz(String path, String preferedRootNameIfNeeded, Context context, long parentId, byte currentLevel, boolean addToMap, Handler handlerForAdd) {
         try {
@@ -386,7 +408,7 @@ public class GPXFile {
                     int insertedSize = insertedItems.size();
                     for (int i = 0; i < insertedSize; i++) {
                         NbPoiCompact compact = NbPoiCompact.getInstance(insertedItems.get(i));
-                        MapPage.addPOIToMap(compact, MainActivity.map, context);
+                        MapPage.addPOIToMap(compact, MainActivity.map, false, context);
                         app.visiblePOIs.add(compact);
                     }
                 }
@@ -558,7 +580,7 @@ public class GPXFile {
         //Addinggggggggg to MAP. NOTE : *******same as DesignedTradk and SaveDesignedWaypoint
         if (nbPoiId == 0) {
             NbPoiCompact compact = NbPoiCompact.getInstance(res);
-            MapPage.addPOIToMap(compact, MainActivity.map, context);
+            MapPage.addPOIToMap(compact, MainActivity.map, false, context);
             app.visiblePOIs.add(compact);
         } else {
             NbPoiCompact compactItem = null;
@@ -577,7 +599,7 @@ public class GPXFile {
             }
             if (res.ShowStatus == ShowStatus_Show) {
                 NbPoiCompact compact = NbPoiCompact.getInstance(res);
-                MapPage.addPOIToMap(compact, MainActivity.map, context);
+                MapPage.addPOIToMap(compact, MainActivity.map, false, context);
                 app.visiblePOIs.add(compact);
             }
         }
@@ -603,7 +625,7 @@ public class GPXFile {
         //Addinggggggggg to MAP. NOTE : *******same as DesignedTradk and SaveDesignedWaypoint
         if (nbPoiId == 0) {
             NbPoiCompact compact = NbPoiCompact.getInstance(res);
-            MapPage.addPOIToMap(compact, MainActivity.map, context);
+            MapPage.addPOIToMap(compact, MainActivity.map, false, context);
             app.visiblePOIs.add(compact);
         } else {
             NbPoiCompact compactItem = null;
@@ -622,7 +644,7 @@ public class GPXFile {
             }
             if (res.ShowStatus == ShowStatus_Show) {
                 NbPoiCompact compact = NbPoiCompact.getInstance(res);
-                MapPage.addPOIToMap(compact, MainActivity.map, context);
+                MapPage.addPOIToMap(compact, MainActivity.map, false, context);
                 app.visiblePOIs.add(compact);
             }
         }

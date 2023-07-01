@@ -4,9 +4,9 @@ import android.graphics.Color;
 import android.view.View;
 import android.widget.TextView;
 
-import com.github.eloyzone.jalalicalendar.JalaliDate;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -49,10 +49,11 @@ public class RouteDesignMode {
     public List<Marker> routeMarkers = new ArrayList<>();
     public List<String> routeMarkerIds = new ArrayList<>();
     public int routeCurrentIndex = -1;
+    public Polyline currentLine = null;
     //List<LatLng> routePoints = new ArrayList<>();
     List<Polyline> routePolys = new ArrayList<>();
     BitmapDescriptor currentRouteIcon = null, oldRouteIcons = null;
-    TextView txtRouteDistance, txtRoutePointCount, txtYouAreDesigningRoute, btnDeleteLastRoutePoint, btnSaveRoute, btnDiscardRoute, txtRouteDistancePointToPrev, btnAddToRoute;
+    TextView txtRouteDistance, txtArea, txtRoutePointCount, txtYouAreDesigningRoute, btnDeleteLastRoutePoint, btnSaveRoute, btnDiscardRoute, txtRouteDistancePointToPrev, btnAddToRoute;
     public View pnlRouteDesign;
     public long editingRouteId = 0;
     public boolean editingRouteIsVisible = false;
@@ -60,6 +61,7 @@ public class RouteDesignMode {
     public void initRouteDesignPanel() {
         if (txtRouteDistance == null) {
             txtRouteDistance = activity.findViewById(R.id.txtRouteDistance);
+            txtArea = activity.findViewById(R.id.txtArea);
             txtRoutePointCount = activity.findViewById(R.id.txtRoutePointCount);
             txtYouAreDesigningRoute = activity.findViewById(R.id.txtYouAreDesigningRoute);
             btnDeleteLastRoutePoint = activity.findViewById(R.id.btnDeleteLastRoutePoint);
@@ -88,12 +90,22 @@ public class RouteDesignMode {
             currentRouteIcon = hutilities.bitmapDescriptorFromVector(activity, R.drawable.ic_mosalasred);
             oldRouteIcons = hutilities.bitmapDescriptorFromVector(activity, R.drawable.ic_mosalasblue);
         }
+
+
         LatLng oldDrawPath = null;//new LatLng(0, 0);
         //routePoints.add(latLng);
         if (routeMarkers.size() == 0) {
             oldDrawPath = latLng;
         } else {
             oldDrawPath = routeMarkers.get(routeCurrentIndex).getPosition();
+
+            //Validation
+            if (routeCurrentIndex != -1){
+                if (oldDrawPath.latitude == latLng.latitude && oldDrawPath.longitude == latLng.longitude){
+                    return;
+                }
+            }
+
             List<LatLng> nRoutePoints = new ArrayList<>();
             nRoutePoints.add(oldDrawPath);
             nRoutePoints.add(latLng);
@@ -134,6 +146,8 @@ public class RouteDesignMode {
         resetRouteCounters();
         route_CalculateDistanceFromPrev();
 
+        //برای خوشگل کاری طراحی مسیر
+        resetCurrentLine();
     }
     public void deleteRouteCurrent(){
         if (routeCurrentIndex == -1)
@@ -165,17 +179,25 @@ public class RouteDesignMode {
         resetRouteMarkerTitles();
         resetRouteCounters();
 
-        if (routeCurrentIndex < size_markers - 1){
+        if (routeCurrentIndex == 0 && routeCurrentIndex < size_markers - 1){
             markerClick_Route(routeMarkers.get(routeCurrentIndex), true);
         }
         else if (routeCurrentIndex > 0){
             markerClick_Route(routeMarkers.get(routeCurrentIndex - 1), true);
         }
-        else
+        else {
             routeCurrentIndex = -1; //No Items Remaining
+
+            //خوشگل کاری رو پاک کنیم
+            resetCurrentLine();
+        }
+        route_CalculateDistanceFromPrev();
 
     }
     public void saveRoute() {
+        //خوشگل کاری طراحی مسیر با حرکت دوربین
+        resetCurrentLine();
+
         TrackData data = new TrackData();
         short poiType = NbPoi.Enums.PoiType_Route;
         Random rand = new Random();
@@ -256,7 +278,9 @@ public class RouteDesignMode {
         pnlRouteDesign.setVisibility(View.GONE);
         txtRoutePointCount.setText("0");
         txtRouteDistance.setText("0m");
+        txtArea.setText("0m");
         txtRouteDistancePointToPrev.setText("0m");
+        resetCurrentLine();
     }
 
     public void resetRouteMarkerTitles(){
@@ -269,16 +293,22 @@ public class RouteDesignMode {
     }
     public void resetRouteCounters(){
         double distance = 0;
-
+        List<LatLng> latLngs = new ArrayList<>();
+        LatLng oldLatLong = null;
+        LatLng currentLatLong = null;
         for (int i = 0; i < routeMarkers.size(); i++) {
+            oldLatLong = currentLatLong;
+            currentLatLong = routeMarkers.get(i).getPosition();
+            latLngs.add(currentLatLong);
             if (i > 0){
-                LatLng current = routeMarkers.get(i).getPosition();
-                LatLng prev = routeMarkers.get(i - 1).getPosition();
+                LatLng current = currentLatLong;//routeMarkers.get(i).getPosition();
+                LatLng prev = oldLatLong;//routeMarkers.get(i - 1).getPosition();
                 distance += hMapTools.distanceBetweenMeteres(current.latitude, current.longitude, prev.latitude, prev.longitude);
             }
         }
         txtRoutePointCount.setText(Integer.toString(routeMarkers.size()));
         txtRouteDistance.setText(hMapTools.distanceBetweenFriendly(distance));
+        txtArea.setText(hMapTools.areaFriendly(hMapTools.calculateArea(latLngs)));
     }
 
     public Polyline getRoutePolyline(List<LatLng> routePoints) {
@@ -308,6 +338,8 @@ public class RouteDesignMode {
             routeMarkers.get(index).setIcon(currentRouteIcon);
             routeCurrentIndex = index;
         }
+        resetCurrentLine();
+        redrawCurrentLine(map.getCameraPosition().target);
     }
 
     public void mapDraging_Route(Marker marker) {
@@ -347,4 +379,26 @@ public class RouteDesignMode {
     }
 
 
+    public void resetCurrentLine(){
+        if (currentLine != null){
+            currentLine.remove();
+            currentLine = null;
+        }
+    }
+    public void redrawCurrentLine(LatLng cameraLatLon) {
+        if (routeCurrentIndex == -1)
+            return;
+        resetCurrentLine();
+        List<LatLng> myLine = new ArrayList<>();
+        myLine.add(routeMarkers.get(routeCurrentIndex).getPosition());
+        myLine.add(cameraLatLon);
+        if (routeMarkers.size() > routeCurrentIndex + 1){
+            myLine.add(routeMarkers.get(routeCurrentIndex + 1).getPosition());
+        }
+        currentLine = map.addPolyline(new PolylineOptions()
+                .addAll(myLine)
+                .width(15)
+                .color(Color.GREEN)
+                .zIndex(100000));
+    }
 }

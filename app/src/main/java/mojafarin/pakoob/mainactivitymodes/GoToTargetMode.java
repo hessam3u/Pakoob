@@ -56,7 +56,10 @@ public class GoToTargetMode {
         TargetIndex = targetIndex;
         viewNagivateTo.setVisibility(View.VISIBLE);
         Navigating = true;
-        destMarker = MainActivity.map.addMarker(new MarkerOptions().position(TargetNext_LatLon).title("هدف"));
+        if (destMarker != null)
+            destMarker.remove();
+        destMarker = MainActivity.map.addMarker(new MarkerOptions().position(TargetNext_LatLon)
+                .title(TargetPoi!= null && TargetPoi.Name != null && TargetPoi.Name.length() > 0?TargetPoi.Name:"هدف"));
         if (destLinePattern == null)
             destLinePattern = Arrays.asList(new Dot(), new Gap(20), new Dash(30), new Gap(20));
         showNavigation();

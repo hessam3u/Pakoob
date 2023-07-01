@@ -614,6 +614,14 @@ public class hutilities {
         window.setStatusBarColor(color);
     }
 
+    public static void OpenShareBox(String title, String content, String ShareVia_Text, Context context){
+        Intent i=new Intent(android.content.Intent.ACTION_SEND);
+        i.setType("text/plain");
+        i.putExtra(android.content.Intent.EXTRA_SUBJECT,title);
+        i.putExtra(android.content.Intent.EXTRA_TEXT, content);
+        context.startActivity(Intent.createChooser(i,ShareVia_Text));
+    }
+
     public static final String FileNameReservedChars = "|\\?*<\":>+[]/'";
     public static String ReplaceInvalidFileChars(String source, String replaceWith){
         //Tested with https://regex101.com/ at 1401-02-05

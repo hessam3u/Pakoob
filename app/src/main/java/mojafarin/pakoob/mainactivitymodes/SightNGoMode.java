@@ -1,6 +1,9 @@
 package mojafarin.pakoob.mainactivitymodes;
 
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -14,7 +17,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import bo.entity.NbPoi;
 import maptools.GPXFile;
@@ -37,11 +43,15 @@ import static mojafarin.pakoob.MapPage.IsInSightNGoMode;
 public class SightNGoMode {
     public boolean isCaptured = false;
     Polyline sightnNGoLine = null;
-    public TextView btnCaptureSightNGo, btnSaveSightNGo, btnDiscardSightNGo, btnSightNGoSettings;
+    public TextView btnCaptureSightNGo, btnSaveSightNGo, btnGotoSightNGo, btnDiscardSightNGo, btnSightNGoSettings, txtHeading, btnManualChangeAzimuth;
     MainActivity activity;
     View pnlSightNGo;
-    public int distanceInMeters = 55000;
+    public int distanceInMeters = 5000;
     MapPage mapPage;
+
+    public Timer timer;
+    Handler handler = new Handler(Looper.getMainLooper());
+    TimerTask t;
 
     public SightNGoMode(MainActivity mainActivity, MapPage mapPage) {
         activity = mainActivity;
@@ -53,12 +63,15 @@ public class SightNGoMode {
     private void initializeComponentes() {
         btnCaptureSightNGo = activity.findViewById(R.id.btnCaptureSightNGo);
         btnSaveSightNGo = activity.findViewById(R.id.btnSaveSightNGo);
+        btnGotoSightNGo = activity.findViewById(R.id.btnGotoSightNGo);
         btnDiscardSightNGo = activity.findViewById(R.id.btnDiscardSightNGo);
         pnlSightNGo = activity.findViewById(R.id.pnlSightNGo);
         btnSightNGoSettings = activity.findViewById(R.id.btnSightNGoSettings);
+        btnManualChangeAzimuth = activity.findViewById(R.id.btnManualChangeAzimuth);
+        txtHeading = activity.findViewById(R.id.txtHeading);
 
         btnCaptureSightNGo.setOnClickListener(view -> {
-            btnCaptureSightNGo_Click();
+            btnCaptureSightNGo_Click(distanceInMeters, angle);
         });
         btnDiscardSightNGo.setOnClickListener(view -> {
             btnDiscardSightNGo_Click();
@@ -66,25 +79,56 @@ public class SightNGoMode {
         btnSaveSightNGo.setOnClickListener(view -> {
             btnSaveSightNGo_Click();
         });
+        btnGotoSightNGo.setOnClickListener(view -> {
+            btnGotoSightNGo_Click();
+        });
         btnSightNGoSettings.setOnClickListener(view -> {
             btnSightNGoSettings_Click();
         });
+        btnManualChangeAzimuth.setOnClickListener(view -> {
+            btnManualChangeAzimuth_Click();
+        });
+    }
+
+    private void btnManualChangeAzimuth_Click() {
+        projectStatics.showEnterTextDialog(activity, activity.getResources().getString(R.string.SightNGo_EnterNewAzimuth_Title)
+                , activity.getResources().getString(R.string.SightNGo_EnterNewAzimuth_Desc)
+                , Integer.toString((int)capturedAngle), activity.getResources().getString(R.string.btnAccept)
+                , view -> {
+                    View parent = (View) view.getParent().getParent();
+
+                    EditText txtInput = parent.findViewById(projectStatics.showEnterTextDialog_EditTextId);
+                    String text = txtInput.getText().toString();
+                    if (text.trim().length() == 0) {
+                        projectStatics.showDialog(activity, activity.getResources().getString(R.string.vali_GeneralError_Title), activity.getResources().getString(R.string.SightNGo_vali_PleaseEnterDistance), activity.getResources().getString(R.string.ok), null, "", null);
+                        return;
+                    }
+                    double tmpAngle = Integer.parseInt(text);
+                    if (tmpAngle < 0 || tmpAngle > 359){
+                        projectStatics.showDialog(activity, activity.getResources().getString(R.string.vali_GeneralError_Title), activity.getResources().getString(R.string.SightNGo_vali_PleaseValidAzimuth_Desc), activity.getResources().getString(R.string.ok), null, "", null);
+                        return;
+                    }
+                    this.capturedAngle = tmpAngle;
+                    isCaptured = false;
+                    btnCaptureSightNGo_Click(distanceInMeters, capturedAngle);
+                }
+                , activity.getResources().getString(R.string.btnCancel), null, TYPE_CLASS_NUMBER
+                , true);
     }
 
     private void btnSightNGoSettings_Click() {
-
-        projectStatics.showEnterTextDialog(activity, activity.getResources().getString(R.string.EnterNewDistance_Title)
-                , activity.getResources().getString(R.string.EnterNewDistance_Desc)
+        projectStatics.showEnterTextDialog(activity, activity.getResources().getString(R.string.SightNGo_EnterNewDistance_Title)
+                , activity.getResources().getString(R.string.SightNGo_EnterNewDistance_Desc)
                 , Integer.toString(distanceInMeters), activity.getResources().getString(R.string.btnAccept)
                 , view -> {
                     View parent = (View) view.getParent().getParent();
 
-                    EditText txtInput = parent.findViewById(R.id.txtInput);
+                    EditText txtInput = parent.findViewById(projectStatics.showEnterTextDialog_EditTextId);
                     String text = txtInput.getText().toString();
                     if (text.trim().length() == 0) {
                         projectStatics.showDialog(activity
                                 , activity.getResources().getString(R.string.vali_GeneralError_Title)
-                                , activity.getResources().getString(R.string.vali_PleaseEnterName)
+                                , activity.getResources().getString(R.string.SightNGo_vali_PleaseEnterDistance)
                                 , activity.getResources().getString(R.string.ok)
                                 , null
                                 , ""
@@ -93,13 +137,37 @@ public class SightNGoMode {
                     }
                     this.distanceInMeters = Integer.parseInt(text);
                     if (isCaptured)
-                        drawSightNGo(true);
+                        drawSightNGo(this.distanceInMeters, capturedAngle);
                 }
                 , activity.getResources().getString(R.string.btnCancel), null, TYPE_CLASS_NUMBER
                 , true);
     }
+    private void btnGotoSightNGo_Click() {
+
+        double tmpAngle = angle;
+        if (isCaptured)
+            tmpAngle = angle;
+        LatLng dest = hMapTools.newPointAtDistanceAndDegree(currentLatLon, distanceInMeters, tmpAngle + app.declination);//
+
+        NbPoi poi = new NbPoi();
+        poi.Name = "هدف خط نگاه";
+
+        mapPage.goToTargetMode.initNavigateToPoint(new LatLng(dest.latitude, dest.longitude), poi, 0);
+
+        btnDiscardSightNGo_Click();
+    }
 
     private void btnSaveSightNGo_Click() {
+        if (!isCaptured){
+            projectStatics.showDialog(activity
+                    , activity.getResources().getString(R.string.SightNG_ovali_PleaseDraw_Title)
+                    , activity.getResources().getString(R.string.SightNGo_vali_PleaseDraw_Desc)
+                    , activity.getResources().getString(R.string.ok)
+                    , null
+                    , ""
+                    , null);
+            return;
+        }
         TrackData data = new TrackData();
         short poiType = NbPoi.Enums.PoiType_Route;
         Random rand = new Random();
@@ -141,11 +209,12 @@ public class SightNGoMode {
         pnlSightNGo.setVisibility(View.GONE);
         IsInSightNGoMode = false;
         isCaptured = false;
+        timer.cancel();
     }
 
-    private void btnCaptureSightNGo_Click() {
+    private void btnCaptureSightNGo_Click(int distanceToDraw, double angleToDraw) {
         if (!isCaptured) {
-            drawSightNGo(false);
+            drawSightNGo(distanceToDraw, angleToDraw);
             btnCaptureSightNGo.setText(activity.getResources().getString(R.string.btnReset));
         } else {
             sightnNGoLine.setVisible(false);
@@ -166,26 +235,40 @@ public class SightNGoMode {
         mapPage.btnGotoCurrentLocation.callOnClick();
         pnlSightNGo.setVisibility(View.VISIBLE);
         IsInSightNGoMode = true;
+        //1401-11-25 two lines:
+        btnCaptureSightNGo.setText(activity.getResources().getString(R.string.btnCaptureSightNGo));
+        isCaptured = false;
+        txtHeading.setText("-");
+
         //drawSightNGo();
+        timer = new Timer();
+        t = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(() -> {
+                    double heading = MapPage.angle;
+                    if (heading < 0){
+                        heading = 180 + (heading + 180);
+                    }
+                    txtHeading.setText(String.format(Locale.ENGLISH, "%d°%1d'", (int)heading, (int)((heading - (int)heading) * 60)));
+                    }
+                );
+            }
+        };
+        timer.schedule(t, 0, 200);
     }
 
     List<LatLng> points;
-    double currentAngle = 0;
+    double capturedAngle = 0;
 
-    public void drawSightNGo(boolean redrawOldLine) {
+    public void drawSightNGo(int distanceToDraw, double angleToDraw) {
         if (currentLatLon == null)
             return;
-        if (redrawOldLine && isCaptured) {
-            LatLng pt1 = points.get(0);
-            points.clear();
-            points.add(pt1);
-            points.add(hMapTools.newPointAtDistanceAndDegree(currentLatLon, distanceInMeters, currentAngle + app.declination));
-        } else {
-            points = new ArrayList<>();
-            points.add(currentLatLon);
-            points.add(hMapTools.newPointAtDistanceAndDegree(currentLatLon, distanceInMeters, angle + app.declination));
-            currentAngle = angle;
-        }
+        points = new ArrayList<>();
+        points.add(currentLatLon);
+        points.add(hMapTools.newPointAtDistanceAndDegree(currentLatLon, distanceToDraw, angleToDraw + app.declination));
+        capturedAngle = angleToDraw;
+
         if (sightnNGoLine == null) {
             sightnNGoLine = map.addPolyline(new PolylineOptions()
                     .width(10)
