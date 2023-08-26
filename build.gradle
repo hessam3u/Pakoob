@@ -6,9 +6,9 @@ buildscript {
         material = '1.3.0'
         persianDate = '0.8'
 
-        libraryMinSdk = 14
-        libraryTargetSdk = 31
-        libraryCompileSdkVersion = 30
+        libraryMinSdk = 21
+        libraryTargetSdk = 33
+        libraryCompileSdkVersion = 33
     }
     repositories {
         google()

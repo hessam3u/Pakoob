@@ -388,6 +388,11 @@
     <string name="FineLocationDenied_Title">مجوز دسترسی</string>
     <string name="FineLocationDenied_Desc">شما مجوز دسترسی به موقعیت مکان در این اپ را ارائه نداده اید و در نتیجه امکان استفاده از مکان وجود ندارد. لطفا از طریق تنظیمات-برنامه ها-پاکوب-مجوز دسترسی به موقعیت مکانی دقیق را به پاکوب بدهید</string>
 
+    <string name="featureCommingSoon_Title">به زودی</string>
+    <string name="featureCommingSoon_Desc">این امکان به زودی و در نسخه های آتی فعال سازی خواهد شد</string>
+    <string name="notifPermission_DeniedTitle">ارسال اعلان و پیام های مفید</string>
+    <string name="notifPermission_Desc">مایلی که پیام ها و اعلان های مرتبط به مسیرهای بهینه و اعلام برنامه ها بهت برسه؟ لطفا در قسمت بالای صفحه بعد، مجوز دسترسی به اعلان ها رو به اپ پاکوب بده و تیک کنار اعلان ها (Notifications) رو بزن.</string>
+
     <string name="shareViaText">اشتراک گذاری از طریق</string>
     <string name="share_YourLocation">مکان فعلی</string>
     <string name="share_SendTime">زمان ارسال</string>
@@ -573,6 +578,12 @@
     <string name="btnSaveOrEdit_Save">ذخیره نقطه</string>
     <string name="btnSaveOrEdit_Edit">ویرایش نقطه</string>
     <string name="OpenRoadRooting">مسیریابی جاده ای</string>
+    <string name="DoShow">نمایش</string>
+    <string name="DoHide">مخفی کردن</string>
+    <string name="Properties">جزئیات</string>
+    <string name="btnShowALlOnMap">نمایش محدوده</string>
+
+
     <string name="AddMissingPlace">معرفی این مکان به پاکوب</string>
     <string name="DownloadTracks">دانلود ترک مسیرها</string>
     <string name="ActivityType">نوع مسیر</string>

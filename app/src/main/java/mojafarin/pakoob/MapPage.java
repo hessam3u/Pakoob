@@ -25,7 +25,6 @@ import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
@@ -87,7 +86,6 @@ import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.android.gms.maps.model.TileProvider;
 import com.google.android.gms.maps.model.UrlTileProvider;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
@@ -106,17 +104,17 @@ import java.util.Locale;
 
 import bo.NewClasses.SimpleRequest;
 import bo.entity.NbCurrentTrack;
-import bo.entity.NbLogSearch;
 import bo.entity.NbPoi;
 import bo.entity.NbPoiCompact;
 import bo.entity.NbPoiList;
 import bo.entity.SearchRequestDTO;
 import bo.sqlite.NbCurrentTrackSQLite;
-import bo.sqlite.NbLogSearchSQLite;
 import bo.sqlite.NbPoiSQLite;
 import bo.sqlite.TTExceptionLogSQLite;
 import hmapscaleview.MapScaleView;
 import maptools.GPXFile;
+import maptools.InfoBottomPoint;
+import maptools.InfoBottomTrack;
 import maptools.MapCenterPointer;
 import maptools.MapMyLocationIcon;
 import maptools.TrackData;
@@ -641,8 +639,10 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                 @Override
                 public void onPolylineClick(Polyline polyline) {
                     //Toast.makeText((MainActivity) context, polyline.getTag().toString(), Toast.LENGTH_LONG);
-                    txtPosition.setText(getResources().getString(R.string.TrackWithNameOf) + " " +
-                            polyline.getTag().toString());
+                    Object tag = polyline.getTag();
+                    String strVal = String.valueOf(tag);
+                    long value = Long.parseLong((strVal));
+                    poiClicked_track(value);
                 }
             });
             step = 500;
@@ -657,7 +657,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                 ArrayList<NbPoi> list = new ArrayList<>();
                 list.add(poi);
                 AddResultsToMap(list);
-                poiClicked(searchMarkers.get(0));
+                poiClicked_marker(searchMarkers.get(0));
             });
             map.setOnMapClickListener(latLng -> {
                 if (IsInAddWaypointMode == MAP_CLICK_MODE_WAYPOINT) {
@@ -710,7 +710,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                     return true;
 
                 } else { //if normal Mode
-                    return poiClicked(marker);
+                    return poiClicked_marker(marker);
                 }
             });
 
@@ -815,8 +815,8 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                         .color(poi.Color)
                         .zIndex(100000));
 
-                //line.setClickable(true);
-                line.setTag(poi.Name);
+                line.setClickable(true);
+                line.setTag(poi.NbPoiId);
                 poi.polyLine = line;
                 return line;
             } else {
@@ -1408,12 +1408,12 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         CameraPosition oldPos = map.getCameraPosition();
 
         CameraPosition pos = null;
-        if (currentLatLon == null) { //1402-04 اضافه شد که باعث بشه دوربین الکی حرکت نکنه اگه روی خودمون فیکس بود
+        if (currentLatLon == null ) { //1402-04 اضافه شد که باعث بشه دوربین الکی حرکت نکنه اگه روی خودمون فیکس بود
             pos = CameraPosition.builder(oldPos).bearing(rotationAngle).build();
         } else {
             pos = CameraPosition.builder(oldPos).target(currentLatLon).bearing(rotationAngle).build();
         }
-        //if Added at 1400-01-01 because of unwanted camera movement in new Androids
+        //if Added at 1400-01-01 because of unwanted camera movement in new Androids1
         if (!(oldPos.target.latitude == pos.target.latitude && oldPos.target.longitude == pos.target.longitude && Math.abs(oldPos.bearing - pos.bearing) < 0.1))
             map.moveCamera(CameraUpdateFactory.newCameraPosition(pos));
         //End Add for Autorotate part 5
@@ -2346,7 +2346,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(position, ZoomToShowPoint));
         isLockOnMe = false;
 
-        poiClicked(poi);
+        poiClicked_marker(poi);
     }
 
     private void initRecyclerView() {
@@ -2578,106 +2578,36 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         }
     }
 
-    NbPoi selectedPoiInInfoButtom = null;
-    InfoBottom objInfoBottom = null;
+    NbPoi selectedPoiInInfoButtom_Point = null;
+    NbPoi selectedPoiInInfoButtom_Track = null;
+    InfoBottomPoint objInfoBottomPoint = null;
+    InfoBottomTrack objInfoBottomTrack = null;
 
-    public boolean poiClicked(Marker marker) {
+    public boolean poiClicked_marker(Marker marker) {
         NbPoi poi = (NbPoi) marker.getTag();
         if (poi == null) {
             poi = NbPoi.getPoiForPosition(marker.getPosition().latitude, marker.getPosition().longitude, getString(R.string.Position));
-//            poi.NbPoiId = 0l;
-//            poi.LatS = marker.getPosition().latitude;
-//            poi.LonW = marker.getPosition().longitude;
-//            poi.Name = String.format(getString(R.string.Position) + " " + "%.4f,%.4f", poi.LatS, poi.LonW);
         }
         Log.e("شششش", "ID of POI222: " + poi.NbPoiId);
 
-        return poiClicked(poi);
+        return poiClicked_marker(poi);
     }
 
-    public boolean poiClicked(NbPoi poi) {
-        objInfoBottom = InfoBottom.getInstance(poi, context);
-        selectedPoiInInfoButtom = poi;
-        objInfoBottom.show(context.getSupportFragmentManager(), objInfoBottom.getTag());
+    public boolean poiClicked_marker(NbPoi poi) {
+        objInfoBottomPoint = InfoBottomPoint.getInstance(poi, context);
+        selectedPoiInInfoButtom_Point = poi;
+        objInfoBottomPoint.show(context.getSupportFragmentManager(), objInfoBottomPoint.getTag());
 
         return true;
     }
 
-    public static class InfoBottom extends BottomSheetDialogFragment {
-        public NbPoi poi;
-        View view;
-        Button btnOpenWeather, btnRoadRooting, btnDownloadTracks, btnLinkNew, btnEditWaypoint, btnGoInSearch;
-        Context context;
+    public boolean poiClicked_track(long poiId) {
+        NbPoi poi = NbPoiSQLite.select(poiId);
+        objInfoBottomTrack = InfoBottomTrack.getInstance(poi, context);
+        selectedPoiInInfoButtom_Track = poi;
+        objInfoBottomTrack.show(context.getSupportFragmentManager(), objInfoBottomTrack.getTag());
 
-        public InfoBottom() {
-        }
-
-        public static InfoBottom getInstance(NbPoi poi, Context context) {
-            InfoBottom res = new InfoBottom();
-            res.poi = poi;
-            res.context = context;
-            return res;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-            view = inflater.inflate(R.layout.activity_searchonmap_bottom, parent, false);
-            return view;
-        }
-
-        @Override
-        public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-            super.onViewCreated(view, savedInstanceState);
-            TextView txtSelectedName = view.findViewById(R.id.txtSelectedName);
-            txtSelectedName.setText(poi.Name);
-
-
-            btnOpenWeather = view.findViewById(R.id.btnOpenWeather);
-            btnOpenWeather.setOnClickListener(view1 -> {
-                this.dismiss();
-                ((MainActivityManager) context).showFragment(WeatherShow.getInstance(this.poi, PrjConfig.frmMapPage));
-            });
-            btnRoadRooting = view.findViewById(R.id.btnRoadRooting);
-            btnRoadRooting.setOnClickListener(view1 -> {
-                NbLogSearchSQLite.insert(NbLogSearch.getInstance(NbLogSearch.CommandType_OpenCityRouting, "", this.poi.LatS, this.poi.LonW, 0));
-
-                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                        Uri.parse("http://maps.google.com/maps?saddr=" + this.poi.LatS + "," + this.poi.LonW + "&daddr=" + this.poi.LatS + "," + this.poi.LonW));
-                startActivity(intent);
-            });
-            btnDownloadTracks = view.findViewById(R.id.btnDownloadTracks);
-            btnDownloadTracks.setOnClickListener(view1 -> {
-                this.dismiss();
-                ((MainActivityManager) context).showFragment(SafeGpxSearch.getInstance("", this.poi));
-            });
-
-            btnEditWaypoint = view.findViewById(R.id.btnEditWaypoint);
-            btnEditWaypoint.setOnClickListener(view1 -> {
-                this.dismiss();
-                if (this.poi.NbPoiId > 0) {
-                    ((MainActivity) context).showNbPoiOnMapForEdit(this.poi.NbPoiId, this.poi.Name);
-                } else {
-                    ((MainActivity) context).btnAddWaypoint_Click(new LatLng(this.poi.LatS, this.poi.LonW));
-                }
-                ((MainActivity) context).mapPage.clearAllSearchResults();
-            });
-            btnGoInSearch = view.findViewById(R.id.btnGoInSearch);
-            btnGoInSearch.setOnClickListener(view1 -> {
-                this.dismiss();
-                ((MainActivity) context).mapPage.clearAllSearchResults();
-                if (poi.Name == null || poi.Name.length() == 0)
-                    poi.Name = "هدف انتخاب شده";
-
-                ((MainActivity) context).mapPage.goToTargetMode.initNavigateToPoint
-                        (new LatLng(poi.LatS, poi.LonW), poi, 0);
-            });
-            Log.e("شششش", "ID of POI: " + this.poi.NbPoiId + "-" + this.poi.ServerId);
-            if (this.poi.NbPoiId > 0)
-                btnEditWaypoint.setText(getString(R.string.btnSaveOrEdit_Edit));
-            else
-                btnEditWaypoint.setText(getString(R.string.btnSaveOrEdit_Save));
-
-        }
+        return true;
     }
     //---------------------- پایان قمست های اضافه جستجو کردن ---------------------
 

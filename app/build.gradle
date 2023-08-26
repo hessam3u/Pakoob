@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 33
     lintOptions {//1399-12-11 added for error : Execution failed for task ':app:lintVitalRelease'.
         checkReleaseBuilds false
     }
@@ -11,9 +11,9 @@ android {
         multiDexEnabled true
         applicationId "mojafarin.pakoob"
         minSdkVersion 19
-        targetSdkVersion 31
-        versionCode 35
-        versionName "2.2.5"
+        targetSdkVersion 33
+        versionCode 38
+        versionName "2.2.8"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

@@ -1,6 +1,7 @@
 package mojafarin.pakoob;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -257,6 +258,19 @@ public class MainActivity extends MainActivityManager {
 
         if (!app.isFirstTimeRunning_ForLocationReadingInMapPage)
             saveAndSendInitLocation(getApplicationContext());
+
+        //Check NotificationPermission
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+        boolean areNotificationsEnabled = notificationManagerCompat.areNotificationsEnabled();
+        if (!areNotificationsEnabled){
+            projectStatics.showDialog(this
+                    , this.getResources().getString(R.string.notifPermission_DeniedTitle)
+                    , this.getResources().getString(R.string.notifPermission_Desc)
+                    , this.getResources().getString(R.string.ok), view -> {
+                        hutilities.showAppSettingToChangePermission(this);
+                    }, "", null);
+        }
+
 
         //commented at ver 29 and moved into ps
 //        if (visitCounter % 5 == 0)
@@ -1076,7 +1090,7 @@ public class MainActivity extends MainActivityManager {
         showFragment(new Register(mode), false);
     }
 
-    MapPage mapPage;
+    public MapPage mapPage;
     Home home;
     public void setResultFromMapSelect(Intent data){
         if (mapPage != null)

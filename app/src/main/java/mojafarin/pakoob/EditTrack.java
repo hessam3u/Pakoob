@@ -275,6 +275,9 @@ public class EditTrack extends Fragment {
         btnTrackInfo = v.findViewById(R.id.btnTrackInfo);
         btnTrackInfo.setVisibility(View.GONE);
         btnEditOnMap = v.findViewById(R.id.btnEditOnMap);
+        if (dataSize > 500){
+            btnEditOnMap.setVisibility(View.GONE);
+        }
         btnViewPoints = v.findViewById(R.id.btnViewPoints);
         btnDelete = v.findViewById(R.id.btnDelete);
         btnDelete.setVisibility(View.GONE);
@@ -579,6 +582,7 @@ public class EditTrack extends Fragment {
 
     private void btnExportGPX_Click() {
         String path = "";
+        //requireContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
         new ChooserDialog(context)
                 .withFilter(true, true, "")
                 .withStartFile(path)
@@ -586,52 +590,7 @@ public class EditTrack extends Fragment {
                 .withChosenListener(new ChooserDialog.Result() {
                     @Override
                     public void onChoosePath(String path, File pathFile) {
-                        //NbPoi lastItem = NbPoiSQLite.selectLastInserted();
-                        Log.e("انتخاب پوشه", path + "----" + pathFile);
-                        List<NbPoi> toConvert = new ArrayList<>();
-                        toConvert.add(currentObj);
-                        String content = GPXFile.ExportGPXToString(toConvert);
-                        String fileNameToSave = currentObj.Name;
-                        File file = new File(path + File.separator + fileNameToSave + ".gpx");
-                        if (file.exists()) {
-                            Random random = new Random();
-                            fileNameToSave = fileNameToSave + "-" + random.nextInt(10000);
-                            file = new File(path + File.separator + fileNameToSave + ".gpx");
-                        }
-                        try {
-                            OutputStreamWriter writer =
-                                    new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
-                            writer.write(content, 0, content.length());
-                            writer.close();
-                            String message = getResources().getString(R.string.SaveCompleted_Desc).replace("000", path).replace("111", fileNameToSave + ".gpx");
-                            projectStatics.showDialog(context, getResources().getString(R.string.SaveCompleted)
-                                    , message
-                                    , getResources().getString(R.string.btnAccept)
-                                    , null
-                                    , ""
-                                    , null);
-                        } catch (Exception e) {
-                            String friendlyMsg = getResources().getString(R.string.ErrorInSave_Desc);
-                            boolean isUnknownEx = true;
-                            if (e.getMessage().contains("EPERM")){
-                                friendlyMsg = getResources().getString(R.string.ErrorInSaveMimeType_Desc);
-                                isUnknownEx = false;
-                            }
-                            else if (e.getMessage().contains("Permission denied")){
-                                friendlyMsg = getResources().getString(R.string.ErrorInSavePermissionDenied);
-                                isUnknownEx = false;
-                            }
-                            projectStatics.showDialog(context, getResources().getString(R.string.ErrorInSave)
-                                    ,friendlyMsg
-                                    , getResources().getString(R.string.btnAccept)
-                                    , null
-                                    , ""
-                                    , null);
-                            if (isUnknownEx) {
-                                TTExceptionLogSQLite.insert(e.getMessage(), "FILE PATH:" + path + "----" + pathFile, PrjConfig.frmEditTrack, 300);
-                                e.printStackTrace();
-                            }
-                        }
+                        DoExportGPX(path, pathFile);
                     }
                 })
                 // to handle the back key pressed or clicked outside the dialog:
@@ -645,6 +604,57 @@ public class EditTrack extends Fragment {
                 .show();
 
 
+    }
+
+    boolean DoExportGPX(String path, File pathFile){
+        //NbPoi lastItem = NbPoiSQLite.selectLastInserted();
+        Log.e("انتخاب پوشه", path + "----" + pathFile);
+        List<NbPoi> toConvert = new ArrayList<>();
+        toConvert.add(currentObj);
+        String content = GPXFile.ExportGPXToString(toConvert);
+        String fileNameToSave = currentObj.Name;
+        File file = new File(path + File.separator + fileNameToSave + ".gpx");
+        if (file.exists()) {
+            Random random = new Random();
+            fileNameToSave = fileNameToSave + "-" + random.nextInt(10000);
+            file = new File(path + File.separator + fileNameToSave + ".gpx");
+        }
+        try {
+            OutputStreamWriter writer =
+                    new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
+            writer.write(content, 0, content.length());
+            writer.close();
+            String message = getResources().getString(R.string.SaveCompleted_Desc).replace("000", path).replace("111", fileNameToSave + ".gpx");
+            projectStatics.showDialog(context, getResources().getString(R.string.SaveCompleted)
+                    , message
+                    , getResources().getString(R.string.btnAccept)
+                    , null
+                    , ""
+                    , null);
+        } catch (Exception e) {
+            String friendlyMsg = getResources().getString(R.string.ErrorInSave_Desc);
+            boolean isUnknownEx = true;
+            if (e.getMessage().contains("EPERM")){
+                friendlyMsg = getResources().getString(R.string.ErrorInSaveMimeType_Desc);
+                isUnknownEx = false;
+            }
+            else if (e.getMessage().contains("Permission denied")){
+                friendlyMsg = getResources().getString(R.string.ErrorInSavePermissionDenied);
+                isUnknownEx = false;
+            }
+            projectStatics.showDialog(context, getResources().getString(R.string.ErrorInSave)
+                    ,friendlyMsg
+                    , getResources().getString(R.string.btnAccept)
+                    , null
+                    , ""
+                    , null);
+            if (isUnknownEx) {
+                TTExceptionLogSQLite.insert(e.getMessage(), "FILE PATH:" + path + "----" + pathFile, PrjConfig.frmEditTrack, 300);
+                e.printStackTrace();
+            }
+            return false;
+        }
+        return true;
     }
 
     Context context;
