@@ -262,11 +262,11 @@ public class CompleteRegister extends HFragment {
             lay_txtName.setErrorEnabled(true);
             return false;
         }
-        if (name.matches(".*[\\x00-\\x7F].*")) {
-            lay_txtName.setError("نام نباید شامل حروف انگلیسی باشد");
-            lay_txtName.setErrorEnabled(true);
-            return false;
-        }
+//        if (name.matches(".*[\\x00-\\x7F].*")) {
+//            lay_txtName.setError("نام نباید شامل حروف انگلیسی باشد");
+//            lay_txtName.setErrorEnabled(true);
+//            return false;
+//        }
         lay_txtName.setErrorEnabled(false);
 
         String family = txtFamily.getText().toString();
@@ -278,11 +278,11 @@ public class CompleteRegister extends HFragment {
             lay_txtFamily.setErrorEnabled(true);
             return false;
         }
-        if (family.matches(".*[\\x00-\\x7F].*")) {
-            lay_txtFamily.setError("نام خانوادگی نباید شامل حروف انگلیسی باشد");
-            lay_txtFamily.setErrorEnabled(true);
-            return false;
-        }
+//        if (family.matches(".*[\\x00-\\x7F].*")) {
+//            lay_txtFamily.setError("نام خانوادگی نباید شامل حروف انگلیسی باشد");
+//            lay_txtFamily.setErrorEnabled(true);
+//            return false;
+//        }
         lay_txtFamily.setErrorEnabled(false);
 
         return true;

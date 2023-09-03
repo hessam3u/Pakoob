@@ -43,7 +43,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:gravity="center"
-            android:hint="09151037928"
+            android:hint="به شکل 09151037928"
             android:inputType="phone"
             android:letterSpacing="0.08"
             android:maxLength="11"

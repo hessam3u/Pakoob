@@ -4,10 +4,15 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,11 +56,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.Stack;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DiffUtil;
@@ -160,29 +168,26 @@ public class MyTracks extends HFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {//4th Event
         super.onViewCreated(view, savedInstanceState);
         initializeComponents(view);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        }
+        else{
+            checkREAD_WRITE_PermissionForBefore_ANDROID_R(context);
+        }
+    }
 
-//        Intent intent = getIntent();
-//        if (intent.getExtras() != null && intent.getExtras().containsKey("fileName")){
-//            String fileName = intent.getExtras().getString("fileName");
-//            importGPXFromPath(fileName);
-//        }
-
-
+    public static void checkREAD_WRITE_PermissionForBefore_ANDROID_R(Context context){
         //Checking Permission... NOTE: onRequestPermissionsResult is in PARENT Activity
         if (ContextCompat.checkSelfPermission(context,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-
-            // Permission is not granted
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale((AppCompatActivity)context,
+            if (ActivityCompat.shouldShowRequestPermissionRationale((AppCompatActivity) context,
                     android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
             } else {
                 // No explanation needed; request the permission
-                ActivityCompat.requestPermissions((AppCompatActivity)context,
+                ActivityCompat.requestPermissions((AppCompatActivity) context,
                         new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
                         PrjConfig.MY_PERMISSIONS_READ_EXTERNAL_STORAGE);
 
@@ -224,7 +229,19 @@ public class MyTracks extends HFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.mytracks);
-
+        launcher = new ActivityResultLauncher<Intent>() {
+            @Override
+            public void launch(Intent input, @Nullable ActivityOptionsCompat options) {
+            }
+            @Override
+            public void unregister() {
+            }
+            @NonNull
+            @Override
+            public ActivityResultContract<Intent, ?> getContract() {
+                return null;
+            }
+        };
     }
     TextView btnMoreSelected, btnMoreNormal;
 
@@ -748,117 +765,138 @@ public class MyTracks extends HFragment {
         }
     }
 
+    private ActivityResultLauncher<Intent> launcher; // Initialise this object in Activity.onCreate()
+    private Uri baseDocumentTreeUri;
+
     private void btnExportGPX_Click() {
-        String path ="";
-        new ChooserDialog(context)
-                .withFilter(true, true, "")
-                .withStartFile(path)
-                .withResources(R.string.fileChooser_SelectPathToSave, R.string.fileChooser_myTracks_btnSelect, R.string.fileChooser_myTracks_btnCancel)
-                .withChosenListener(new ChooserDialog.Result() {
-                    @Override
-                    public void onChoosePath(String path, File pathFile) {
-                        int size = adapter.data.size();
-                        List<NbPoi> toConvert = new ArrayList<>();
+        if (false && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+            launcher.launch(intent);
+        }
+        else{
+            //Old androids
+            File ff = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            String path =ff.getPath();
+            saveSelectedData(path);
 
-                        String fileNameToSave = "";
-                        if (currentId != 0){
-                            NbPoi current = NbPoiSQLite.select(currentId);
-                            fileNameToSave = current.Name;
-                        }
-                        for (int i = size-1; i >= 0; i--) {
-                            NbPoi item = adapter.data.get(i);
-                            if (item.isSelected) {
+        }
+//        new ChooserDialog(context)
+//                .withFilter(true, true, "")
+//                .withStartFile(path)
+//                .withResources(R.string.fileChooser_SelectPathToSave, R.string.fileChooser_myTracks_btnSelect, R.string.fileChooser_myTracks_btnCancel)
+//                .withChosenListener(new ChooserDialog.Result() {
+//                    @Override
+//                    public void onChoosePath(String path, File pathFile) {
+//                        saveSelectedData(path);
+//                    }
+//                })
+//                // to handle the back key pressed or clicked outside the dialog:
+//                .withOnCancelListener(new DialogInterface.OnCancelListener() {
+//                    public void onCancel(DialogInterface dialog) {
+//                        Log.d("CANCEL", "CANCEL");
+//                        dialog.cancel(); // MUST have
+//                    }
+//                })
+//                .build()
+//                .show();
 
-                                if (item.PoiType == NbPoi.Enums.PoiType_Folder) {
-                                    if (fileNameToSave.length() == 0) {
-                                        fileNameToSave = item.Name;
-                                    }
-                                    toConvert.addAll(NbPoiSQLite.SelectWithChilds(item, false));
-                                } else {
-                                    toConvert.add(item);
-                                }
-                            }
-                        }
-                        if (fileNameToSave.length() == 0){
-                            fileNameToSave = toConvert.get(0).Name;
-                        }
-                        //NbPoi lastItem = NbPoiSQLite.selectLastInserted();
-                        String content = GPXFile.ExportGPXToString(toConvert);
-                        File file = new File(path + File.separator + fileNameToSave + ".gpx");
-                        if (file.exists()){
-                            Random random = new Random();
-                            fileNameToSave = fileNameToSave + "-" + random.nextInt(10000);
-                            file = new File(path + File.separator + fileNameToSave + ".gpx" );
-                        }
-                        try {
-                            OutputStreamWriter writer =
-                                    new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
-                            writer.write(content, 0, content.length());
-                            writer.close();
-                            String message =getResources().getString(R.string.SaveCompleted_Desc).replace("000", path).replace("111", fileNameToSave+ ".gpx");
-                            projectStatics.showDialog(context, getResources().getString(R.string.SaveCompleted)
-                                    , message
-                                    , getResources().getString(R.string.btnAccept)
-                                    , null
-                                    , ""
-                                    , null);
+    }
+    void saveSelectedData(String path){
+        int size = adapter.data.size();
+        List<NbPoi> toConvert = new ArrayList<>();
 
-                            clearSelection();
-                        } catch (Exception e) {
-                            String friendlyMsg = getResources().getString(R.string.ErrorInSave_Desc);
-                            boolean isUnknownEx = true;
-                            if (e.getMessage().contains("EPERM")){
-                                friendlyMsg = getResources().getString(R.string.ErrorInSaveMimeType_Desc);
-                                isUnknownEx = false;
-                            }
-                            projectStatics.showDialog(context, getResources().getString(R.string.ErrorInSave)
-                                    ,friendlyMsg
-                                    , getResources().getString(R.string.btnAccept)
-                                    , null
-                                    , ""
-                                    , null);
-                            if (isUnknownEx) {
-                                TTExceptionLogSQLite.insert(e.getMessage(), "FILE PATH:" + path + "----" + pathFile, PrjConfig.frmEditTrack, 300);
-                                e.printStackTrace();
-                            }
-                        }
+        String fileNameToSave = "";
+        if (currentId != 0){
+            NbPoi current = NbPoiSQLite.select(currentId);
+            fileNameToSave = current.Name;
+        }
+        for (int i = size-1; i >= 0; i--) {
+            NbPoi item = adapter.data.get(i);
+            if (item.isSelected) {
 
+                if (item.PoiType == NbPoi.Enums.PoiType_Folder) {
+                    if (fileNameToSave.length() == 0) {
+                        fileNameToSave = item.Name;
                     }
-                })
-                // to handle the back key pressed or clicked outside the dialog:
-                .withOnCancelListener(new DialogInterface.OnCancelListener() {
-                    public void onCancel(DialogInterface dialog) {
-                        Log.d("CANCEL", "CANCEL");
-                        dialog.cancel(); // MUST have
-                    }
-                })
-                .build()
-                .show();
+                    toConvert.addAll(NbPoiSQLite.SelectWithChilds(item, false));
+                } else {
+                    toConvert.add(item);
+                }
+            }
+        }
+        if (fileNameToSave.length() == 0){
+            fileNameToSave = toConvert.get(0).Name;
+        }
+        //NbPoi lastItem = NbPoiSQLite.selectLastInserted();
+        String content = GPXFile.ExportGPXToString(toConvert);
+        File file = new File(path + File.separator + fileNameToSave + ".gpx");
+        if (file.exists()){
+            Random random = new Random();
+            fileNameToSave = fileNameToSave + "-" + random.nextInt(10000);
+            file = new File(path + File.separator + fileNameToSave + ".gpx" );
+        }
+        try {
+            OutputStreamWriter writer =
+                    new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
+            writer.write(content, 0, content.length());
+            writer.close();
+            String message =getResources().getString(R.string.SaveCompleted_Desc).replace("000",
+                    getString(R.string.DownloadFolder)).replace("111", fileNameToSave+ ".gpx");
+            projectStatics.showDialog(context, getResources().getString(R.string.SaveCompleted)
+                    , message
+                    , getResources().getString(R.string.btnAccept)
+                    , null
+                    , ""
+                    , null);
 
+            clearSelection();
+        } catch (Exception e) {
+            String friendlyMsg = getResources().getString(R.string.ErrorInSave_Desc);
+            boolean isUnknownEx = true;
+            if (e.getMessage().contains("EPERM")){
+                friendlyMsg = getResources().getString(R.string.ErrorInSaveMimeType_Desc);
+                isUnknownEx = false;
+            }
+            projectStatics.showDialog(context, getResources().getString(R.string.ErrorInSave)
+                    ,friendlyMsg
+                    , getResources().getString(R.string.btnAccept)
+                    , null
+                    , ""
+                    , null);
+            if (isUnknownEx) {
+                TTExceptionLogSQLite.insert(e.getMessage(), "FILE PATH:" + path + "----", PrjConfig.frmEditTrack, 300);
+                e.printStackTrace();
+            }
+        }
     }
 
     private void btnImportTrackFile_Click() {
-        String path ="";
-        new ChooserDialog(context)
-                .withFilter(false, true, "gpx")
-                .withStartFile(path)
-                .withResources(R.string.fileChooser_myTracks_title, R.string.fileChooser_myTracks_btnSelect, R.string.fileChooser_myTracks_btnCancel)
-                .withChosenListener(new ChooserDialog.Result() {
-                    @Override
-                    public void onChoosePath(String path, File pathFile) {
-                        //NbPoi lastItem = NbPoiSQLite.selectLastInserted();
-                        importGPXFromPath(path);
-                    }
-                })
-                // to handle the back key pressed or clicked outside the dialog:
-                .withOnCancelListener(new DialogInterface.OnCancelListener() {
-                    public void onCancel(DialogInterface dialog) {
-                        Log.d("CANCEL", "CANCEL");
-                        dialog.cancel(); // MUST have
-                    }
-                })
-                .build()
-                .show();
+        projectStatics.showDialog(context, context.getResources().getString(R.string.dialog_FileImportingHelp_Title)
+                , context.getResources().getString(R.string.dialog_FileImportingHelp_Desc)
+                , context.getResources().getString(R.string.ok)
+                , null, "", null);
+
+//        String path ="";
+//        new ChooserDialog(context)
+//                .withFilter(false, true, "gpx")
+//                .withStartFile(path)
+//                .withResources(R.string.fileChooser_myTracks_title, R.string.fileChooser_myTracks_btnSelect, R.string.fileChooser_myTracks_btnCancel)
+//                .withChosenListener(new ChooserDialog.Result() {
+//                    @Override
+//                    public void onChoosePath(String path, File pathFile) {
+//                        //NbPoi lastItem = NbPoiSQLite.selectLastInserted();
+//                        importGPXFromPath(path);
+//                    }
+//                })
+//                // to handle the back key pressed or clicked outside the dialog:
+//                .withOnCancelListener(new DialogInterface.OnCancelListener() {
+//                    public void onCancel(DialogInterface dialog) {
+//                        Log.d("CANCEL", "CANCEL");
+//                        dialog.cancel(); // MUST have
+//                    }
+//                })
+//                .build()
+//                .show();
     }
 
     boolean importGPXFromPath(String path){

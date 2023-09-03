@@ -638,11 +638,16 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             map.setOnPolylineClickListener(new GoogleMap.OnPolylineClickListener() {
                 @Override
                 public void onPolylineClick(Polyline polyline) {
-                    //Toast.makeText((MainActivity) context, polyline.getTag().toString(), Toast.LENGTH_LONG);
-                    Object tag = polyline.getTag();
-                    String strVal = String.valueOf(tag);
-                    long value = Long.parseLong((strVal));
-                    poiClicked_track(value);
+                    try {
+                        Object tag = polyline.getTag();
+                        String strVal = String.valueOf(tag);
+                        long value = Long.parseLong((strVal));
+                        poiClicked_track(value);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        Log.e("Clicked_Error", ex.getMessage());
+                        TTExceptionLogSQLite.insert(ex.getMessage(), "", PrjConfig.frmMapPage, 159);
+                    }
                 }
             });
             step = 500;
@@ -1070,7 +1075,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         //added 1401-09-10Fused
         //AA1402-04-08 اضافه کردن شرط نسخه اندروید، برای این که فکر می کردم که برای اندرویدهای قدیمی ممکنه این قضیه مشکل ساز بشه
         if (hutilities.checkGooglePlayServiceAvailability(context)
-        && android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.O) {
+                && android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.O) {
             Log.e(Tag, "لوک" + "F:checkLocation_Fired Internally " + " and myLocationListener: " + (myLocationListener == null ? "NULL" : "Not NULL"));
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
             fusedLocationRequest = LocationRequest.create();//new version will be Builder()
@@ -1094,8 +1099,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                 }
             };
 
-        }
-        else {
+        } else {
             Log.e(Tag, "لوک" + "N:checkLocation_Fired Internally " + " and myLocationListener: " + (myLocationListener == null ? "NULL" : "Not NULL"));
             myLocationListener = new LocationListener() {
                 @SuppressLint("MissingPermission")
@@ -1146,7 +1150,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
     private void startLocationUpdates() {
         //AA1402-04-08 اضافه کردن شرط نسخه اندروید، برای این که فکر می کردم که برای اندرویدهای قدیمی ممکنه این قضیه مشکل ساز بشه
         if (hutilities.checkGooglePlayServiceAvailability(context) &&
-        android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.O ) {
+                android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.O) {
             Log.e(Tag, "لوک" + " درخواست به روز رسانی موقعیت در صفحه نقشه- 150F");
             fusedLocationClient.requestLocationUpdates(fusedLocationRequest,
                     locationCallback
@@ -1287,7 +1291,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             mapMyLocationIcon.setX(p1.x - mapMyLocationIcon.XMid);//45
             mapMyLocationIcon.setY(p1.y - mapMyLocationIcon.YMid);//35
             //1402-04 در اصل فقط بیرینگ به این ارسال میشه. بقیه پارامترها به خاطر دستگاه های بدون قطب نما اجرا شده
-            float tmpBearing = hasCompassSensor || currentLatLon == null ? bearing  + app.declination: location.getBearing(); //درباره این خط و اضافه کردن دکلینیشن بحث هست
+            float tmpBearing = hasCompassSensor || currentLatLon == null ? bearing + app.declination : location.getBearing(); //درباره این خط و اضافه کردن دکلینیشن بحث هست
             mapMyLocationIcon.bearingRelatedToMap = isTrackUp && isLockOnMe ? 0 : tmpBearing - map.getCameraPosition().bearing;
             mapMyLocationIcon.invalidate();
         } else {
@@ -1408,7 +1412,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         CameraPosition oldPos = map.getCameraPosition();
 
         CameraPosition pos = null;
-        if (currentLatLon == null ) { //1402-04 اضافه شد که باعث بشه دوربین الکی حرکت نکنه اگه روی خودمون فیکس بود
+        if (currentLatLon == null) { //1402-04 اضافه شد که باعث بشه دوربین الکی حرکت نکنه اگه روی خودمون فیکس بود
             pos = CameraPosition.builder(oldPos).bearing(rotationAngle).build();
         } else {
             pos = CameraPosition.builder(oldPos).target(currentLatLon).bearing(rotationAngle).build();
@@ -1540,7 +1544,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         btnShareCurrentLoc_GoogleMapLinkAndTime = dialogView.findViewById(R.id.btnShareCurrentLoc_GoogleMapLinkAndTime);
 
         btnDialog_SendLocationDialog.show();
-        if (currentLatLon == null){
+        if (currentLatLon == null) {
             projectStatics.showDialog(context, getResources().getString(R.string.WaitUntilSatelliteFound_Title)
                     , getResources().getString(R.string.WaitUntilSatelliteFound_Desc), getResources().getString(R.string.ok), null, "", null);
             return;
@@ -1549,38 +1553,38 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             hutilities.OpenShareBox(
                     getString(R.string.share_YourLocation),
                     hMapTools.LocationToString(currentLatLon, hMapTools.DecimalDegrees_JustNumber, hMapTools.LocationToStringStyle.Inline),
-                    getString(R.string.shareViaText),context
-                    );
+                    getString(R.string.shareViaText), context
+            );
         });
         btnShareCurrentLoc_LatLonAndTimeDesc.setOnClickListener(view1 -> {
             Calendar now = Calendar.getInstance();
             JalaliDate jalaliDate = MyDate.getJalaliDate(now);
             String dateStr = "";
-            if (app.CalendarType == 1){
-                dateStr = String.format(Locale.ENGLISH, "%04d", jalaliDate.getYear())  +"/"+ String.format(Locale.ENGLISH, "%02d", jalaliDate.getMonthPersian().getValue()) +"/"+ String.format(Locale.ENGLISH, "%02d", jalaliDate.getDay());
+            if (app.CalendarType == 1) {
+                dateStr = String.format(Locale.ENGLISH, "%04d", jalaliDate.getYear()) + "/" + String.format(Locale.ENGLISH, "%02d", jalaliDate.getMonthPersian().getValue()) + "/" + String.format(Locale.ENGLISH, "%02d", jalaliDate.getDay());
             }
-            String timeStr =  String.format(Locale.ENGLISH, "%02d", now.get(Calendar.HOUR_OF_DAY)) + ":" + String.format(Locale.ENGLISH, "%02d", now.get(Calendar.MINUTE)) ;
+            String timeStr = String.format(Locale.ENGLISH, "%02d", now.get(Calendar.HOUR_OF_DAY)) + ":" + String.format(Locale.ENGLISH, "%02d", now.get(Calendar.MINUTE));
             hutilities.OpenShareBox(
                     getString(R.string.share_YourLocation),
                     hMapTools.LocationToString(currentLatLon, hMapTools.DecimalDegrees_JustNumber, hMapTools.LocationToStringStyle.Inline)
-                    + "\n"
-                    + hMapTools.LocationToString(currentLatLon, hMapTools.DegreesMinuteSeconds, hMapTools.LocationToStringStyle.Inline)
-                    + "\n"
-                    + getString(R.string.share_SendTime) + ":" + timeStr
-                    + "\n"
-                    +  getString(R.string.share_SendDate) + ":" + dateStr
+                            + "\n"
+                            + hMapTools.LocationToString(currentLatLon, hMapTools.DegreesMinuteSeconds, hMapTools.LocationToStringStyle.Inline)
+                            + "\n"
+                            + getString(R.string.share_SendTime) + ":" + timeStr
+                            + "\n"
+                            + getString(R.string.share_SendDate) + ":" + dateStr
                     ,
-                    getString(R.string.shareViaText),context
-                    );
+                    getString(R.string.shareViaText), context
+            );
         });
         btnShareCurrentLoc_GoogleMapLinkAndTime.setOnClickListener(view1 -> {
             Calendar now = Calendar.getInstance();
             JalaliDate jalaliDate = MyDate.getJalaliDate(now);
             String dateStr = "";
-            if (app.CalendarType == 1){
-                dateStr = String.format(Locale.ENGLISH, "%04d", jalaliDate.getYear())  +"/"+ String.format(Locale.ENGLISH, "%02d", jalaliDate.getMonthPersian().getValue()) +"/"+ String.format(Locale.ENGLISH, "%02d", jalaliDate.getDay());
+            if (app.CalendarType == 1) {
+                dateStr = String.format(Locale.ENGLISH, "%04d", jalaliDate.getYear()) + "/" + String.format(Locale.ENGLISH, "%02d", jalaliDate.getMonthPersian().getValue()) + "/" + String.format(Locale.ENGLISH, "%02d", jalaliDate.getDay());
             }
-            String timeStr =  String.format(Locale.ENGLISH, "%02d", now.get(Calendar.HOUR_OF_DAY)) + ":" + String.format(Locale.ENGLISH, "%02d", now.get(Calendar.MINUTE)) ;
+            String timeStr = String.format(Locale.ENGLISH, "%02d", now.get(Calendar.HOUR_OF_DAY)) + ":" + String.format(Locale.ENGLISH, "%02d", now.get(Calendar.MINUTE));
             String googleMapLink = String.format(Locale.ENGLISH, "https://www.google.com/maps/place/%.5f+%.5f/@%.5f,%.5f,11z",
                     currentLatLon.latitude, currentLatLon.longitude, currentLatLon.latitude, currentLatLon.longitude);
             hutilities.OpenShareBox(
@@ -1589,19 +1593,20 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                             + "\n"
                             + googleMapLink
                             + "\n"
-                    + getString(R.string.Position) + ":"
+                            + getString(R.string.Position) + ":"
                             + "\n"
-                    + hMapTools.LocationToString(currentLatLon, hMapTools.DegreesMinuteSeconds, hMapTools.LocationToStringStyle.Inline)
-                    + "\n"
-                    + getString(R.string.share_SendTime) + "> " + timeStr
-                    + "\n"
-                    +  getString(R.string.share_SendDate) + "> " + dateStr
+                            + hMapTools.LocationToString(currentLatLon, hMapTools.DegreesMinuteSeconds, hMapTools.LocationToStringStyle.Inline)
+                            + "\n"
+                            + getString(R.string.share_SendTime) + "> " + timeStr
+                            + "\n"
+                            + getString(R.string.share_SendDate) + "> " + dateStr
                     ,
-                    getString(R.string.shareViaText),context
-                    );
+                    getString(R.string.shareViaText), context
+            );
         });
 
     }
+
     private void btnAddWaypoint_Click() {
         if (anyDialogIsOpen())
             return;
@@ -2606,14 +2611,13 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         objInfoBottomTrack = InfoBottomTrack.getInstance(poi, context);
         selectedPoiInInfoButtom_Track = poi;
         objInfoBottomTrack.show(context.getSupportFragmentManager(), objInfoBottomTrack.getTag());
-
         return true;
     }
     //---------------------- پایان قمست های اضافه جستجو کردن ---------------------
 
     @Override
     public void onDetach() {
-        if (sightNGoMode != null && IsInSightNGoMode){
+        if (sightNGoMode != null && IsInSightNGoMode) {
             sightNGoMode.timer.cancel();
         }
         super.onDetach();

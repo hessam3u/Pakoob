@@ -90,6 +90,7 @@ public class PrjConfig {
 
 
     public static final int Location_FINE_PERMISSION_REQUEST_CODE = 200; // New Record Track
+    public static final int POST_NOTIFICATIONS_REQUEST_CODE = 201; // New Record Track
     public static final int MY_PERMISSIONS_WRITE_EXTERNAL_STORAGE = 12039;
     public static final int MY_PERMISSIONS_READ_EXTERNAL_STORAGE = 12038;
     public static final int Location_BACKGROUND_PERMISSION_REQUEST_CODE = 21562;

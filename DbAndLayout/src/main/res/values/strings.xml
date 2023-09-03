@@ -166,11 +166,17 @@
     <string name="dialog_emptyGpxfile_title">فایل خالی می‌باشد</string>
     <string name="dialog_emptyGpxfile_desc">فایل انتخاب شده محتوی اطلاعات مسیر یا نقطه نمی‌باشد و در نتیجه امکان دریافت آن وجود ندارد</string>
     <string name="dialog_FileImported_title">دریافت موفق فایل</string>
+    <string name="dialog_FileImportingHelp_Title">نحوه وارد کردن فایل</string>
+    <string name="dialog_FileImportingHelp_Desc">برای وارد کردن فایل کافیست روی فایل مورد نظر را در اپلیکیشن ها (تلگرام، واتساپ و...) یا در فایل های شخصی ضربه بزنید و سپس انتخاب کنید که با پاکوب باز شوند.</string>
     <string name="dialog_fileImported">فایل با موفقیت دریافت و در لیست نقطه‌ها و Trackها قرار گرفت.</string>
     <string name="dialog_File_NOT_Imported_title">مشکل در دریافت فایل</string>
     <string name="dialog_file_NOT_Imported">متاسفانه فایل مورد نظر در حین دریافت و استخراج با مشکل مواجه شد. لطفا این مورد را به اطلاع پشتیبانی برسانید</string>
     <string name="dialog_FileNotSupported_Title">عدم سازگاری نوع فایل</string>
     <string name="dialog_FileNotSupported_Desc">فایل دریافتی با این نسخه از پاکوب سازگاری ندارد. لطفا از نسخه های جدیدتر پاکوب استفاده نمایید</string>
+
+    <string name="map_NotLoadedAtRoutDesign_Title">نقشه در حال بارگزاری</string>
+    <string name="map_NotLoadedAtRoutDesign_Desc">نقشه هنوز بارگزاری نشده است. لطفا تا زمانی که لود شدن نقشه صبر نمایید.</string>
+
 
     <string name="Up_Text">شاخه بالا ...</string>
     <string name="Up_Text_EmptyForMyTracks">لیست نقطه‌ها، و Trackها و Routeهای شما</string>
@@ -299,7 +305,7 @@
     <string name="SaveCompleted">ذخیره سازی انجام شد</string>
     <string name="NoFolderExistsForTransfer_Title">انتخاب شاخه</string>
     <string name="NoFolderExistsForTransfer">هیچ شاخه ای برای انتقال وجود ندارد. لطفا یک شاخه جدید ایجاد کنید</string>
-    <string name="SaveCompleted_Desc">فایل خروجی در آدرس
+    <string name="SaveCompleted_Desc">فایل خروجی در شاخه
         \n
         000
         \n
@@ -309,12 +315,14 @@
         \n
         ذخیره گردید.
     </string>
+    <string name="DownloadFolder">دانلودها (Downloads)</string>
+
     <string name="Warning">هشدار</string>
     <string name="TooManyPointsToEditOnMap">تعداد نقطه‌های این مسیر زیاد بوده و امکان ویرایش آن روی نقشه در نسخه فعلی میسر نخواهد بود.</string>
     <string name="ErrorInSave">خطای ذخیره سازی</string>
     <string name="ErrorInSave_Desc">متاسفانه خطایی ناشناخته در هنگام ذخیره سازی به وجود آمده است.</string>
     <string name="ErrorInSaveMimeType_Desc">شاخه ای که انتخاب کرده اید برای ذخیره فایل مناسب نیست. لطفا شاخه دیگری مانند شاخه دانلودها را انتخاب کنید</string>
-    <string name="ErrorInSavePermissionDenied">پاکوب دسترسی لازم برای ذخیره فایل ها را ندارد. لطفا این دسترسی را فعال نمایید</string>
+    <string name="ErrorInSavePermissionDenied">پاکوب دسترسی لازم برای ذخیره فایل ها را ندارد. لطفا این دسترسی را فعال نموده، مجددا امتحان کنید</string>
     <string name="btnAddToRoute">اضافه نقطه</string>
     <string name="distanceFronPrev">فاصله از نقطه قبل:</string>
     <string name="btnRemoveRoutePoint">حذف نقطه</string>

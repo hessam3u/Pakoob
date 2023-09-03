@@ -109,7 +109,7 @@ public class MainActivity extends MainActivityManager {
     byte buyType = 0;
     String goodId_NbMapId, buyId;
 
-    void processIntent(Intent intent){
+    void processIntent(Intent intent) {
         if (intent.getData() != null) {
 
             String data = intent.getDataString();
@@ -130,7 +130,7 @@ public class MainActivity extends MainActivityManager {
                         goodId_NbMapId = parts[2];
                     }
 
-                    Log.e("BBBBBB", data + "--" + "values: " + buyType +"--" + buyId+"--" + goodId_NbMapId);
+                    Log.e("BBBBBB", data + "--" + "values: " + buyType + "--" + buyId + "--" + goodId_NbMapId);
 
                     if (buyType == NbMap.Enums.NbBuyType_Map) {
                         //1401-05-15 Commented and moved to MapSelect Page
@@ -146,8 +146,7 @@ public class MainActivity extends MainActivityManager {
                                 }
                                 , ""
                                 , null);
-                    }
-                    else if (buyType == NbMap.Enums.NbBuyType_Map) {
+                    } else if (buyType == NbMap.Enums.NbBuyType_Map) {
                         projectStatics.showDialog(MainActivity.this
                                 , getResources().getString(R.string.afterBuyGPX_title)
                                 , getResources().getString(R.string.afterBuyGPX_desc)
@@ -159,8 +158,7 @@ public class MainActivity extends MainActivityManager {
                 } catch (Exception ex) {
                     int x = 0;
                 }
-            }
-            else if (data.contains("content")) {
+            } else if (data.contains("content")) {
                 String action = intent.getAction();
                 recievedFileName = "";
                 inputStream = null;
@@ -174,12 +172,11 @@ public class MainActivity extends MainActivityManager {
                             Uri uri = intent.getData();
                             recievedFileName = hutilities.getContentFullPath(resolver, uri);
 
-                            if (recievedFileName == null){
+                            if (recievedFileName == null) {
                                 inputStream = resolver.openInputStream(uri);
                                 recievedFileName = uri.toString();
 
-                            }
-                            else{
+                            } else {
                                 inputStream = null;
                             }
                             //inputStream = resolver.openInputStream(uri);
@@ -201,13 +198,14 @@ public class MainActivity extends MainActivityManager {
                 intent.setData(null);
             }
         }
-        if (intent.getExtras() != null && intent.getExtras().containsKey("ChanalId")){
+        if (intent.getExtras() != null && intent.getExtras().containsKey("ChanalId")) {
             //برای زمانی که روی نوتیفیکیشن مربوط به ثبت ترک کلیک میکنه میخوایم که ترک ها لود بشه حتما
             String st = intent.getExtras().getString("ChanalId");
             appExistsBeforeAndShouldReloadAll_ReReadPois = true;
             appExistsBeforeAndShouldReloadAll_ReReadDialogMap = true;
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -248,11 +246,10 @@ public class MainActivity extends MainActivityManager {
 
 
         //3 - Show Other Pages of needed
-        int visitCounter =app.session.getVisitCounter();
-        if (!app.session.isLoggedIn()){
+        int visitCounter = app.session.getVisitCounter();
+        if (!app.session.isLoggedIn()) {
             showFragment(new PleaseRegister());
-        }
-        else if(app.session.getOpenHomeAtStartup() == 1){
+        } else if (app.session.getOpenHomeAtStartup() == 1) {
             backToHome();
         }
 
@@ -260,15 +257,20 @@ public class MainActivity extends MainActivityManager {
             saveAndSendInitLocation(getApplicationContext());
 
         //Check NotificationPermission
-        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
-        boolean areNotificationsEnabled = notificationManagerCompat.areNotificationsEnabled();
-        if (!areNotificationsEnabled){
-            projectStatics.showDialog(this
-                    , this.getResources().getString(R.string.notifPermission_DeniedTitle)
-                    , this.getResources().getString(R.string.notifPermission_Desc)
-                    , this.getResources().getString(R.string.ok), view -> {
-                        hutilities.showAppSettingToChangePermission(this);
-                    }, "", null);
+//        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+//        boolean areNotificationsEnabled = notificationManagerCompat.areNotificationsEnabled();
+//        if (!areNotificationsEnabled){
+//            projectStatics.showDialog(this
+//                    , this.getResources().getString(R.string.notifPermission_DeniedTitle)
+//                    , this.getResources().getString(R.string.notifPermission_Desc)
+//                    , this.getResources().getString(R.string.ok), view -> {
+//                        hutilities.showAppSettingToChangePermission(this);
+//                    }, "", null);
+//        }
+        if (ActivityCompat.checkSelfPermission((Activity) this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) this, new String[]{
+                    Manifest.permission.POST_NOTIFICATIONS
+            }, PrjConfig.POST_NOTIFICATIONS_REQUEST_CODE);
         }
 
 
@@ -284,7 +286,7 @@ public class MainActivity extends MainActivityManager {
                 showNotificationAtMain(extras);
             }
         }
-        
+
         doCheckVersion();
 
         //1402-04 انتقال دسترسی به مکان به صفحه نقشه
@@ -301,15 +303,14 @@ public class MainActivity extends MainActivityManager {
         //initTrackService();
 
 
-        Log.e("BBBBBB", "values again: " + buyType +"--" + buyId+"--" + goodId_NbMapId);
+        Log.e("BBBBBB", "values again: " + buyType + "--" + buyId + "--" + goodId_NbMapId);
 
         //همزمان در onCreate-onNewIntent
-        if ((recievedFileName!= null && recievedFileName.length() > 0) || inputStream != null) {
+        if ((recievedFileName != null && recievedFileName.length() > 0) || inputStream != null) {
             showFragment(MyTracks.getInstance("start", recievedFileName, "", inputStream));
             inputStream = null;
             recievedFileName = "";
-        }
-        else if (buyType != 0 && !goodId_NbMapId.isEmpty()){
+        } else if (buyType != 0 && !goodId_NbMapId.isEmpty()) {
             Log.e("BBBBBB", "Goto Show Fragment");
             showFragment(SafeGpxView.getInstance(Integer.parseInt(goodId_NbMapId), PrjConfig.frmHome));
         }
@@ -374,16 +375,22 @@ public class MainActivity extends MainActivityManager {
                 if (location != null) {
                     app.session.setLastAproxLocation(new LatLng(location.getLatitude(), location.getLongitude()));
                     app.session.setLastAproxLocationFixTime(MyDate.CalendarToCSharpDateTimeAcceptable(Calendar.getInstance()));
-                    app.session.setLastAproxLocationFixType((byte)2);
+                    app.session.setLastAproxLocationFixType((byte) 2);
                     app.DoSyncL(context);
                 }
             }
+
             @Override
-            public void onStatusChanged(String s, int i, Bundle bundle) {}
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+            }
+
             @Override
-            public void onProviderEnabled(String s) {}
+            public void onProviderEnabled(String s) {
+            }
+
             @Override
-            public void onProviderDisabled(String s) {}
+            public void onProviderDisabled(String s) {
+            }
         };
 
         if (!(ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
@@ -394,7 +401,8 @@ public class MainActivity extends MainActivityManager {
     private void initializeComponents() {
         //reCreateDialogMapObj(this);
     }
-    public void reCreateDialogMapObj(Context context){
+
+    public void reCreateDialogMapObj(Context context) {
         dialogMapObj = new DialogMapBuilder(context);
         if (true || dialogMap == null) { //یه کاری کردم که همش اجرا بشه ببینم کار میکنه کوفتی یا نه 1402-04
             AlertDialog.Builder alertDialogBuilder = dialogMapObj.GetBuilder();
@@ -413,7 +421,7 @@ public class MainActivity extends MainActivityManager {
 
 
     @Override
-    public void changeFragmentVisibility(final Fragment fragment, boolean makeVisible){
+    public void changeFragmentVisibility(final Fragment fragment, boolean makeVisible) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.setCustomAnimations(android.R.animator.fade_in,
                 android.R.animator.fade_out);
@@ -421,17 +429,18 @@ public class MainActivity extends MainActivityManager {
             ft.hide(myFragments.get(myFragments.size() - 1)); //مخفی کردن فرگمنت فعلی
             ft.show(fragment); // نمایش فرگمنت درخواستی
             myFragments.push(fragment);
-            Log.d("hidden","Show");
+            Log.d("hidden", "Show");
 
         } else {
             ft.hide(fragment); //مخفی  کردن فرگمنت درخواستی
             ft.show(myFragments.get(myFragments.size() - 2)); // نمایش فرگمنتی که در پشت سر این فرگمنت قرار داشت
             myFragments.pop();
-            Log.d("Shown","Hide");
+            Log.d("Shown", "Hide");
         }
 
         ft.commit();
     }
+
     public void backToMapPage() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -458,10 +467,11 @@ public class MainActivity extends MainActivityManager {
         currentFragment = mapPage;
         mapIsShowingOnTop = true;
         ft.commit();
-        ((HFragment)currentFragment).onFragmentShown();
+        ((HFragment) currentFragment).onFragmentShown();
     }
+
     @Override
-    public void backToHome(){
+    public void backToHome() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
 
@@ -482,94 +492,103 @@ public class MainActivity extends MainActivityManager {
         currentFragment = home;
         mapIsShowingOnTop = false;
         ft.commit();
-        ((HFragment)currentFragment).onFragmentShown();
+        ((HFragment) currentFragment).onFragmentShown();
     }
 
     Fragment currentFragment = null;
     Stack<Fragment> myFragments = new Stack<>();
 
     @Override
-    public void showFragment(Fragment mFragment){
-       showFragment(mFragment, false);
+    public void showFragment(Fragment mFragment) {
+        showFragment(mFragment, false);
     }
-    public void hideMapFragment(){
+
+    public void hideMapFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         int backStackCount = fragmentManager.getBackStackEntryCount();
-        Log.e("تعداد صفحات",Integer.toString(backStackCount));
+        Log.e("تعداد صفحات", Integer.toString(backStackCount));
         transaction.hide(mapPage);
         mapPage.onFragmentHided();
         transaction.show(home);
         backStackCount = fragmentManager.getBackStackEntryCount();
-        Log.e("تعداد صفحات",Integer.toString(backStackCount));
+        Log.e("تعداد صفحات", Integer.toString(backStackCount));
         transaction.commit();
         home.onFragmentShown();
     }
+
     @Override
     public void showFragment(Fragment mFragment, boolean closeCurrent) {
         showHideMainActivityOnNavigation(false);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
 
-        if (closeCurrent){
+        if (closeCurrent) {
             doBackOnFragmentStacks(fragmentManager);
         }
-        int count =myFragments.size();
+        int count = myFragments.size();
         //اگه صفحه دیگه ای باز بود، اون رو مخفی کنیم
-        if (count > 0){
-            Fragment peak=myFragments.peek();
-            ft.hide(peak); if (peak.getClass() == HFragment.class) ((HFragment) peak).onFragmentHided();
-        }
-        else if (count == 0){
+        if (count > 0) {
+            Fragment peak = myFragments.peek();
+            ft.hide(peak);
+            if (peak.getClass() == HFragment.class) ((HFragment) peak).onFragmentHided();
+        } else if (count == 0) {
             if (!home.isHidden()) {
-                ft.hide(home); home.onFragmentHided();
+                ft.hide(home);
+                home.onFragmentHided();
             }
             if (!mapPage.isHidden()) {
-                ft.hide(mapPage); mapPage.onFragmentHided();
+                ft.hide(mapPage);
+                mapPage.onFragmentHided();
             }
         }
         ft.add(R.id.your_placeholder, mFragment);
         myFragments.push(mFragment);
 
         ft.commit();
-        currentFragment = mFragment; if (currentFragment.getClass() == HFragment.class) ((HFragment) currentFragment).onFragmentHided();
+        currentFragment = mFragment;
+        if (currentFragment.getClass() == HFragment.class)
+            ((HFragment) currentFragment).onFragmentHided();
     }
-    void doBackOnFragmentStacks(FragmentManager fragmentManager){
+
+    void doBackOnFragmentStacks(FragmentManager fragmentManager) {
         int backStackCount = myFragments.size();
         Log.e("ششششش", Integer.toString(backStackCount));
         FragmentTransaction ft = fragmentManager.beginTransaction();
 
-        if (backStackCount > 0 ){
+        if (backStackCount > 0) {
             if (currentFragment.getClass() == HFragment.class)
-                ((HFragment)currentFragment).onFragmentRemoved();
+                ((HFragment) currentFragment).onFragmentRemoved();
             ft.remove(currentFragment);
             myFragments.pop();
         }
-        if(backStackCount > 1){
+        if (backStackCount > 1) {
             currentFragment = myFragments.peek();
             currentFragment.onResume();//**** Manual Call because of not loosing State - 1400-01-24 added for ClubSearch
-            if (currentFragment.isHidden()){
+            if (currentFragment.isHidden()) {
                 ft.show(currentFragment);
             }
         }
-        if (backStackCount <= 1){
+        if (backStackCount <= 1) {
             //اگر همین الان توی صفحه نقشه بودیم
-            if (currentFragment != null && currentFragment == mapPage){
-              mapIsShowingOnTop = false;
-              ft.hide(mapPage); mapPage.onFragmentHided();
+            if (currentFragment != null && currentFragment == mapPage) {
+                mapIsShowingOnTop = false;
+                ft.hide(mapPage);
+                mapPage.onFragmentHided();
             }
             //Home and MapPage
-            if (mapIsShowingOnTop){
+            if (mapIsShowingOnTop) {
                 ft.show(mapPage);
                 if (!home.isHidden()) {
-                    ft.hide(home); home.onFragmentHided();
+                    ft.hide(home);
+                    home.onFragmentHided();
                 }
                 currentFragment = mapPage;
-            }
-            else{
+            } else {
                 ft.show(home);
                 if (!mapPage.isHidden()) {
-                    ft.hide(mapPage); mapPage.onFragmentHided();
+                    ft.hide(mapPage);
+                    mapPage.onFragmentHided();
                 }
                 currentFragment = home;
             }
@@ -577,60 +596,58 @@ public class MainActivity extends MainActivityManager {
         }
         ft.commit();
         if (currentFragment.getClass() == HFragment.class)
-            ((HFragment)currentFragment).onFragmentShown();
+            ((HFragment) currentFragment).onFragmentShown();
 
     }
+
     @Override
     public void onBackPressed() {
         try {
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fr =  currentFragment;//fragmentManager.findFragmentById(R.id.your_placeholder);
-        int backStackCount = myFragments.size();
-        Log.e("بک کانت", Integer.toString(backStackCount));
-        if (backStackCount > 0) {
-            boolean backAllowed = true;
-            if (fr instanceof HFragment){
-                backAllowed = ((HFragment) fr).onBackPressedInChild();
-            }
-            else if (fr instanceof MapSelect) {
-                backAllowed = ((MapSelect) fr).onBackPressed();
-            } else if (fr instanceof MyTracks) {
-                backAllowed = ((MyTracks) fr).onBackPressed();
-            } else if (fr instanceof PleaseRegister) {
-                backAllowed = ((PleaseRegister) fr).onBackPressed();
-            } else if (fr instanceof Register) {
-                backAllowed = ((Register) fr).onBackPressed();
-            }
-            if (backAllowed) {
-                doBackOnFragmentStacks(fragmentManager);
-            }
-        } else {
-            if (fr instanceof Home){
-                projectStatics.showDialog(MainActivity.this, getResources().getString(R.string.AreYouSureToExit_Title)
-                        , getResources().getString(R.string.AreYouSureToExit_Desc),
-                        getResources().getString(R.string.ok), view -> {
-                            this.finish();
-                        }, getResources().getString(R.string.cancel)
-                        , null);
-            }
-            else if (fr instanceof MapPage){
-                boolean backAllowed = ((MapPage)fr).onBackPressedInChild();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            Fragment fr = currentFragment;//fragmentManager.findFragmentById(R.id.your_placeholder);
+            int backStackCount = myFragments.size();
+            Log.e("بک کانت", Integer.toString(backStackCount));
+            if (backStackCount > 0) {
+                boolean backAllowed = true;
+                if (fr instanceof HFragment) {
+                    backAllowed = ((HFragment) fr).onBackPressedInChild();
+                } else if (fr instanceof MapSelect) {
+                    backAllowed = ((MapSelect) fr).onBackPressed();
+                } else if (fr instanceof MyTracks) {
+                    backAllowed = ((MyTracks) fr).onBackPressed();
+                } else if (fr instanceof PleaseRegister) {
+                    backAllowed = ((PleaseRegister) fr).onBackPressed();
+                } else if (fr instanceof Register) {
+                    backAllowed = ((Register) fr).onBackPressed();
+                }
                 if (backAllowed) {
                     doBackOnFragmentStacks(fragmentManager);
                 }
-            }
+            } else {
+                if (fr instanceof Home) {
+                    projectStatics.showDialog(MainActivity.this, getResources().getString(R.string.AreYouSureToExit_Title)
+                            , getResources().getString(R.string.AreYouSureToExit_Desc),
+                            getResources().getString(R.string.ok), view -> {
+                                this.finish();
+                            }, getResources().getString(R.string.cancel)
+                            , null);
+                } else if (fr instanceof MapPage) {
+                    boolean backAllowed = ((MapPage) fr).onBackPressedInChild();
+                    if (backAllowed) {
+                        doBackOnFragmentStacks(fragmentManager);
+                    }
+                }
 //            projectStatics.showDialog(MainActivity.this, getResources().getString(R.string.AreYouSureToExit_Title)
 //                    , getResources().getString(R.string.AreYouSureToExit_Desc),
 //                    getResources().getString(R.string.ok), view -> {
 //                        this.finish();
 //                    }, getResources().getString(R.string.cancel)
 //                    , null);
-        }
+            }
 
-        }
-        catch (Exception ex){
-            Log.e("خطا" , ex.getMessage());
+        } catch (Exception ex) {
+            Log.e("خطا", ex.getMessage());
             ex.printStackTrace();
             TTExceptionLogSQLite.insert(ex.getMessage(), ex.getStackTrace().toString(), PrjConfig.frmMainActivity, 1500);
         }
@@ -690,9 +707,8 @@ public class MainActivity extends MainActivityManager {
         try {
             if (mapPage != null)
                 mapPage.onResumeInChild();
-        }
-        catch (Exception ex){
-            Log.e("خطا" , ex.getMessage());
+        } catch (Exception ex) {
+            Log.e("خطا", ex.getMessage());
             ex.printStackTrace();
             TTExceptionLogSQLite.insert(ex.getMessage(), ex.getStackTrace().toString(), PrjConfig.frmMainActivity, 1501);
         }
@@ -718,7 +734,6 @@ public class MainActivity extends MainActivityManager {
     }
 
 
-
     @Override
     protected void onPause() {
         try {
@@ -727,9 +742,8 @@ public class MainActivity extends MainActivityManager {
             super.onPause();
             if (mapPage != null)
                 mapPage.onPauseInChild();
-        }
-        catch (Exception ex){
-            Log.e("خطا" , ex.getMessage());
+        } catch (Exception ex) {
+            Log.e("خطا", ex.getMessage());
             ex.printStackTrace();
             TTExceptionLogSQLite.insert(ex.getMessage(), ex.getStackTrace().toString(), PrjConfig.frmMainActivity, 1506);
         }
@@ -765,8 +779,7 @@ public class MainActivity extends MainActivityManager {
                         //از اینجا به بعد آزاد هست که هر کاری بکنه
                         app.isFirstTimeRunning_ForLocationReadingInMapPage = false;
                         mapPage.checkLocation(false);
-                    }
-                    else if (grantResults[0] == PackageManager.PERMISSION_DENIED){
+                    } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                         //if permission denied previously
                         projectStatics.showDialog(this
                                 , this.getResources().getString(R.string.locationPermission_Denied)
@@ -779,17 +792,31 @@ public class MainActivity extends MainActivityManager {
                 break;
             }
             case PrjConfig.MY_PERMISSIONS_WRITE_EXTERNAL_STORAGE:
-            case PrjConfig.MY_PERMISSIONS_READ_EXTERNAL_STORAGE:
-            {
+            case PrjConfig.MY_PERMISSIONS_READ_EXTERNAL_STORAGE: {
                 if (grantResults.length > 0) {
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                         //Do something...
-                    }
-                    else if (grantResults[0] == PackageManager.PERMISSION_DENIED){
+                    } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                         //if permission denied previously
                         projectStatics.showDialog(this
                                 , this.getResources().getString(R.string.StoragePermission_Denied)
                                 , this.getResources().getString(R.string.StoragePermission_Denied_Desc)
+                                , this.getResources().getString(R.string.ok), view -> {
+                                    hutilities.showAppSettingToChangePermission(this);
+                                }, "", null);
+                    }
+                }
+                break;
+            }
+            case PrjConfig.POST_NOTIFICATIONS_REQUEST_CODE: {
+                if (grantResults.length > 0) {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        //Do something...
+                    } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                        //if permission denied previously
+                        projectStatics.showDialog(this
+                                , this.getResources().getString(R.string.notifPermission_DeniedTitle)
+                                , this.getResources().getString(R.string.notifPermission_Desc)
                                 , this.getResources().getString(R.string.ok), view -> {
                                     hutilities.showAppSettingToChangePermission(this);
                                 }, "", null);
@@ -817,71 +844,67 @@ public class MainActivity extends MainActivityManager {
                             String title = res.resValue;
                             String message = res.message;
 
-                            if (commandParts[0].equals("1")){
+                            if (commandParts[0].equals("1")) {
                                 //1: Open Message Box
                                 projectStatics.showDialog(MainActivity.this
                                         , title//getResources().getString(R.string.updateAvailable)
                                         , message
                                         , commandParts[1]//getResources().getString(R.string.ok)
                                         , view -> {
-                                    String whatToDo = commandParts[2];
-                                    String data = commandParts[3];
-                                    if (whatToDo.equals("2")){
-                                        //Open Link
-                                        String link = data;
-                                        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                                                Uri.parse(link));
-                                        startActivity(browserIntent);
-                                    }
-                                    else if (whatToDo.equals("3")){
-                                        //Open "THIS APP" In Google Play
-                                        final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
-                                        try {
-                                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                                        } catch (android.content.ActivityNotFoundException anfe) {
-                                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                                        }
-                                    }
-                                    else {
-                                        //Not Imp Yet
-                                    }
-                                        }
-                                        , commandParts.length > 4? commandParts[4]:""
-                                        , view -> {
-                                    if (commandParts.length > 4){
-                                        String whatToDo = commandParts[5];
-                                        String data = commandParts[6];
-                                        if (whatToDo.equals("2")){
-                                            //Open Link
-                                            String link = data;
-                                            Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                                                    Uri.parse(link));
-                                            startActivity(browserIntent);
-                                        }
-                                        else if (whatToDo.equals("3")){
-                                            //Open "THIS APP" In Google Play
-                                            final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
-                                            try {
-                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                                            } catch (android.content.ActivityNotFoundException anfe) {
-                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                                            String whatToDo = commandParts[2];
+                                            String data = commandParts[3];
+                                            if (whatToDo.equals("2")) {
+                                                //Open Link
+                                                String link = data;
+                                                Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                                                        Uri.parse(link));
+                                                startActivity(browserIntent);
+                                            } else if (whatToDo.equals("3")) {
+                                                //Open "THIS APP" In Google Play
+                                                final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                                                try {
+                                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                                                } catch (
+                                                        android.content.ActivityNotFoundException anfe) {
+                                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                                                }
+                                            } else {
+                                                //Not Imp Yet
                                             }
                                         }
-                                        else {
-                                            //Not Imp Yet
-                                        }
-                                    }
+                                        , commandParts.length > 4 ? commandParts[4] : ""
+                                        , view -> {
+                                            if (commandParts.length > 4) {
+                                                String whatToDo = commandParts[5];
+                                                String data = commandParts[6];
+                                                if (whatToDo.equals("2")) {
+                                                    //Open Link
+                                                    String link = data;
+                                                    Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                                                            Uri.parse(link));
+                                                    startActivity(browserIntent);
+                                                } else if (whatToDo.equals("3")) {
+                                                    //Open "THIS APP" In Google Play
+                                                    final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                                                    try {
+                                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                                                    } catch (
+                                                            android.content.ActivityNotFoundException anfe) {
+                                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                                                    }
+                                                } else {
+                                                    //Not Imp Yet
+                                                }
+                                            }
                                         });
-                            }
-                            else{
+                            } else {
                                 //Not Imp in this Vesion
                             }
 
                         }
                     }
-                }
-                catch (Exception ex){
-                    Log.e("خطا چک_به_روز_رسانی" , ex.getMessage());
+                } catch (Exception ex) {
+                    Log.e("خطا چک_به_روز_رسانی", ex.getMessage());
                     ex.printStackTrace();
                     TTExceptionLogSQLite.insert(ex.getMessage(), ex.getStackTrace().toString(), PrjConfig.frmMainActivity, 1503);
                 }
@@ -906,7 +929,7 @@ public class MainActivity extends MainActivityManager {
         }
         processIntent(intent);
         //همزمان در onCreate-onNewIntent
-        if ((recievedFileName!= null && recievedFileName.length() > 0) || inputStream != null) {
+        if ((recievedFileName != null && recievedFileName.length() > 0) || inputStream != null) {
             showFragment(MyTracks.getInstance("start", recievedFileName, "", inputStream));
             inputStream = null;
             recievedFileName = "";
@@ -926,22 +949,21 @@ public class MainActivity extends MainActivityManager {
 
                 //اگه لاگ این نبود، ساید وجود نداره در نتیجه فقط باید پیام رو نشون بدیم و خلاص
                 if (app.session.isLoggedIn()) {
-                    if (message.OpenAction == FmMessage.OpenAction_OpenLink){
+                    if (message.OpenAction == FmMessage.OpenAction_OpenLink) {
                         OpenFmMessageCommand(message);
                         showFragment(new SideList());
-                    }
-                    else if(message.OpenAction == FmMessage.OpenAction_OpenInApp){
+                    } else if (message.OpenAction == FmMessage.OpenAction_OpenInApp) {
                         OpenFmMessageCommand(message);
-                    }
-                    else{
+                    } else {
                         showFragment(new SideList());
                     }
-                }
-                else{
+                } else {
                     projectStatics.showDialog(MainActivity.this, title, msg
                             , message.OpenAction == FmMessage.OpenAction_NormalMessage
-                                    || message.OpenAction == FmMessage.OpenAction_None? getResources().getString(R.string.ok): getResources().getString(R.string.view)
-                            , view -> {OpenFmMessageCommand(message);}
+                                    || message.OpenAction == FmMessage.OpenAction_None ? getResources().getString(R.string.ok) : getResources().getString(R.string.view)
+                            , view -> {
+                                OpenFmMessageCommand(message);
+                            }
                             , "", null);
                 }
             }
@@ -954,7 +976,7 @@ public class MainActivity extends MainActivityManager {
     }
 
     @Override
-    public void logOutUser(MainActivityManager current){
+    public void logOutUser(MainActivityManager current) {
         Handler handler = new Handler(Looper.getMainLooper());
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -980,15 +1002,14 @@ public class MainActivity extends MainActivityManager {
                     if (directory.exists()) {
                         hutilities.deleteRecursive(directory);
                     }
-                }
-                catch (Exception ex){
+                } catch (Exception ex) {
                 }
             }
         });
         thread.start();
 
-        if (current.getClass() == MainActivity.class){
-            MainActivity mainActivity = (MainActivity)current;
+        if (current.getClass() == MainActivity.class) {
+            MainActivity mainActivity = (MainActivity) current;
             FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
             int backStackCount = fragmentManager.getBackStackEntryCount();
             while (backStackCount > 0) {
@@ -1007,9 +1028,9 @@ public class MainActivity extends MainActivityManager {
     }
 
     @Override
-    public void OpenInAppCommand(String command){
+    public void OpenInAppCommand(String command) {
         String[] parts = command.split(";");
-        if (parts.length >= 2){
+        if (parts.length >= 2) {
 
             long param1 = 0l;
             try {
@@ -1023,29 +1044,26 @@ public class MainActivity extends MainActivityManager {
             } catch (NumberFormatException e) {
                 param2 = 0l;
             }
-            if (param1 == PrjConfig.frmTourShowOne){
-                if (param2 > 0){
+            if (param1 == PrjConfig.frmTourShowOne) {
+                if (param2 > 0) {
                     showFragment(TourShowOne.getInstance(param2));
                 }
-            }
-            else if (param1 == PrjConfig.frmClubView_Home){
-                if (param2 > 0){
-                    showFragment(ClubView_Home.getInstance((int)param2, PrjConfig.frmMainActivity));
+            } else if (param1 == PrjConfig.frmClubView_Home) {
+                if (param2 > 0) {
+                    showFragment(ClubView_Home.getInstance((int) param2, PrjConfig.frmMainActivity));
                 }
-            }
-            else if (param1 == PrjConfig.frmMapSelect){
+            } else if (param1 == PrjConfig.frmMapSelect) {
                 //if (param2 > 0){
                 MapSelect page = MapSelect.getInstance(true);
                 showFragment(page);
                 //}
-            }
-            else if (param1 == PrjConfig.frmSafeGpxView){
-                if (param2 > 0){
-                    SafeGpxView frm = SafeGpxView.getInstance((int)param2, 1);
+            } else if (param1 == PrjConfig.frmSafeGpxView) {
+                if (param2 > 0) {
+                    SafeGpxView frm = SafeGpxView.getInstance((int) param2, 1);
                     showFragment(frm);
                 }
-            }  else if (param1 == PrjConfig.frmSafeGpxSearch){
-                if (parts.length > 2){
+            } else if (param1 == PrjConfig.frmSafeGpxSearch) {
+                if (parts.length > 2) {
                     try {
                         double latitude = Double.parseDouble(parts[1]);
                         double longitude = Double.parseDouble(parts[2]);
@@ -1053,32 +1071,31 @@ public class MainActivity extends MainActivityManager {
 
                         SafeGpxSearch frm = SafeGpxSearch.getInstance("", poi);
                         showFragment(frm);
-                    }
-                    catch (Exception ex){
-                        Log.e("خطا بازکردن_ترکها" , ex.getMessage());
+                    } catch (Exception ex) {
+                        Log.e("خطا بازکردن_ترکها", ex.getMessage());
                         ex.printStackTrace();
                         TTExceptionLogSQLite.insert(ex.getMessage(), ex.getStackTrace().toString(), PrjConfig.frmMainActivity, 1501);
                     }
-                }
-                else{
-                    Log.e("خطا بازکردن_ترکها" , "بخش ها ناکافی");
-                    TTExceptionLogSQLite.insert("بخش ها ناکافی", "پارامتر ارسالی : "+command, PrjConfig.frmMainActivity, 1502);
+                } else {
+                    Log.e("خطا بازکردن_ترکها", "بخش ها ناکافی");
+                    TTExceptionLogSQLite.insert("بخش ها ناکافی", "پارامتر ارسالی : " + command, PrjConfig.frmMainActivity, 1502);
                 }
             }
         }
     }
+
     @Override
     public void OpenFmMessageCommand(FmMessage currentObj) {
         Log.e("NewMessageOnMain", "OpenFmMessageCommand_OpenAction :" + currentObj.OpenAction + " currentObj.ActionParam:" + currentObj.ActionParam);
-        if (currentObj.OpenAction == FmMessage.OpenAction_OpenInApp){
+        if (currentObj.OpenAction == FmMessage.OpenAction_OpenInApp) {
             String command = currentObj.ActionParam;
             //Check if it is a tour or something like that
             OpenInAppCommand(command);
         }
-        if (currentObj.OpenAction == FmMessage.OpenAction_OpenLink){
+        if (currentObj.OpenAction == FmMessage.OpenAction_OpenLink) {
             String command = currentObj.ActionParam;
             String[] parts = command.split("\\*" + "\\*" + "\\*");
-            if (parts.length > 0){
+            if (parts.length > 0) {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(parts[0]));
                 startActivity(browserIntent);
             }
@@ -1086,26 +1103,29 @@ public class MainActivity extends MainActivityManager {
     }
 
     @Override
-    public void showLoginProcess(String mode){
+    public void showLoginProcess(String mode) {
         showFragment(new Register(mode), false);
     }
 
     public MapPage mapPage;
     Home home;
-    public void setResultFromMapSelect(Intent data){
+
+    public void setResultFromMapSelect(Intent data) {
         if (mapPage != null)
             mapPage.setResultFromMapSelect(data);
     }
-    public void showNbPoiOnMapForEdit(long NbPoiId, String DefaultName){
+
+    public void showNbPoiOnMapForEdit(long NbPoiId, String DefaultName) {
         if (mapPage != null)
             mapPage.showNbPoiOnMapForEdit(NbPoiId, DefaultName);
     }
-    public void btnAddWaypoint_Click(LatLng point){
+
+    public void btnAddWaypoint_Click(LatLng point) {
         if (mapPage != null)
             mapPage.btnAddWaypoint_Click(point);
     }
 
-    public void setMenuVisibility(boolean reloadHome){
+    public void setMenuVisibility(boolean reloadHome) {
         if (mapPage != null)
             mapPage.setMenuVisibility();
         if (reloadHome) {
@@ -1135,6 +1155,7 @@ public class MainActivity extends MainActivityManager {
 //        savedInstanceState.putParcelable("parcelable", "");
 //        savedInstanceState.putSerializable("serializable", "");
     }
+
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);

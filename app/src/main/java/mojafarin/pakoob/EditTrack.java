@@ -10,6 +10,7 @@ import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -581,34 +582,36 @@ public class EditTrack extends Fragment {
 
 
     private void btnExportGPX_Click() {
-        String path = "";
-        //requireContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
-        new ChooserDialog(context)
-                .withFilter(true, true, "")
-                .withStartFile(path)
-                .withResources(R.string.fileChooser_SelectPathToSave, R.string.fileChooser_myTracks_btnSelect, R.string.fileChooser_myTracks_btnCancel)
-                .withChosenListener(new ChooserDialog.Result() {
-                    @Override
-                    public void onChoosePath(String path, File pathFile) {
-                        DoExportGPX(path, pathFile);
-                    }
-                })
-                // to handle the back key pressed or clicked outside the dialog:
-                .withOnCancelListener(new DialogInterface.OnCancelListener() {
-                    public void onCancel(DialogInterface dialog) {
-                        Log.d("CANCEL", "CANCEL");
-                        dialog.cancel(); // MUST have
-                    }
-                })
-                .build()
-                .show();
+        File ff = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        String path =ff.getPath();
+        DoExportGPX(path);
+
+//        new ChooserDialog(context)
+//                .withFilter(true, true, "")
+//                .withStartFile(path)
+//                .withResources(R.string.fileChooser_SelectPathToSave, R.string.fileChooser_myTracks_btnSelect, R.string.fileChooser_myTracks_btnCancel)
+//                .withChosenListener(new ChooserDialog.Result() {
+//                    @Override
+//                    public void onChoosePath(String path, File pathFile) {
+//                        DoExportGPX(path);
+//                    }
+//                })
+//                // to handle the back key pressed or clicked outside the dialog:
+//                .withOnCancelListener(new DialogInterface.OnCancelListener() {
+//                    public void onCancel(DialogInterface dialog) {
+//                        Log.d("CANCEL", "CANCEL");
+//                        dialog.cancel(); // MUST have
+//                    }
+//                })
+//                .build()
+//                .show();
 
 
     }
 
-    boolean DoExportGPX(String path, File pathFile){
+    boolean DoExportGPX(String path){
         //NbPoi lastItem = NbPoiSQLite.selectLastInserted();
-        Log.e("انتخاب پوشه", path + "----" + pathFile);
+        Log.e("انتخاب پوشه", path + "----");
         List<NbPoi> toConvert = new ArrayList<>();
         toConvert.add(currentObj);
         String content = GPXFile.ExportGPXToString(toConvert);
@@ -624,7 +627,8 @@ public class EditTrack extends Fragment {
                     new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
             writer.write(content, 0, content.length());
             writer.close();
-            String message = getResources().getString(R.string.SaveCompleted_Desc).replace("000", path).replace("111", fileNameToSave + ".gpx");
+            String message = getResources().getString(R.string.SaveCompleted_Desc).replace("000",
+                    getString(R.string.DownloadFolder)).replace("111", fileNameToSave + ".gpx");
             projectStatics.showDialog(context, getResources().getString(R.string.SaveCompleted)
                     , message
                     , getResources().getString(R.string.btnAccept)
@@ -640,6 +644,7 @@ public class EditTrack extends Fragment {
             }
             else if (e.getMessage().contains("Permission denied")){
                 friendlyMsg = getResources().getString(R.string.ErrorInSavePermissionDenied);
+                MyTracks.checkREAD_WRITE_PermissionForBefore_ANDROID_R(context);
                 isUnknownEx = false;
             }
             projectStatics.showDialog(context, getResources().getString(R.string.ErrorInSave)
@@ -649,7 +654,7 @@ public class EditTrack extends Fragment {
                     , ""
                     , null);
             if (isUnknownEx) {
-                TTExceptionLogSQLite.insert(e.getMessage(), "FILE PATH:" + path + "----" + pathFile, PrjConfig.frmEditTrack, 300);
+                TTExceptionLogSQLite.insert(e.getMessage(), "FILE PATH:" + path + "----" , PrjConfig.frmEditTrack, 300);
                 e.printStackTrace();
             }
             return false;

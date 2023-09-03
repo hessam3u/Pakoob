@@ -323,6 +323,13 @@ public class RouteDesignMode {
                 return;
             }
             else{
+                if (cameraLatLon == null){
+                    projectStatics.showDialog(activity, activity.getResources().getString(R.string.map_NotLoadedAtRoutDesign_Title)
+                            , activity.getResources().getString(R.string.map_NotLoadedAtRoutDesign_Desc)
+                            , activity.getResources().getString(R.string.ok)
+                            , null, "", null);
+                    return;
+                }
                 LatLng currentRoutePoint = routeMarkers.get(routeCurrentIndex).getPosition();
                 String distanceFromCamera = hMapTools.distanceBetweenFriendly(cameraLatLon.latitude, cameraLatLon.longitude, currentRoutePoint.latitude, currentRoutePoint.longitude);
                 txtRouteDistancePointToPrev.setText(distanceFromCamera);
