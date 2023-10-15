@@ -1,6 +1,9 @@
 package mojafarin.pakoob;
 
 
+import static utils.HFragment.stktrc2k;
+import static utils.HFragment.stktrc2kt;
+
 import android.app.ActivityManager;
 import android.app.Application;
 import android.app.NotificationChannel;
@@ -445,7 +448,7 @@ public class app extends Application {
                 }catch (Exception ex){
                     ex.printStackTrace();
                     Log.e(TAG, ex.getMessage());
-                    TTExceptionLogSQLite.insert(ex.getMessage(), "", PrjConfig.app, 101);
+                    TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.app, 101);
                 }
             }
 
@@ -597,7 +600,7 @@ public class app extends Application {
                         res.command = String.valueOf(response.code());
                     }catch (Exception ex){
                         Log.e("ارسال مشکل", "115");
-                        TTExceptionLogSQLite.insert(ex.getMessage(), "", PrjConfig.frm_FunctionSendProblem, 220);
+                        TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frm_FunctionSendProblem, 220);
                         ex.printStackTrace();
                         res.command = "0";
                     }
@@ -609,7 +612,7 @@ public class app extends Application {
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     try {
-                        TTExceptionLogSQLite.insert(t.getMessage(), "", PrjConfig.frm_FunctionSendProblem, 221);
+                        TTExceptionLogSQLite.insert(t.getMessage(), stktrc2kt(t), PrjConfig.frm_FunctionSendProblem, 221);
                         //if (!isAdded()) return;
                         Log.e("ارسال مشکل", "003");
                         t.printStackTrace();
@@ -621,7 +624,7 @@ public class app extends Application {
             });
         } catch (Exception ex) {
             Log.e("ارسال مشکل", "134");
-            TTExceptionLogSQLite.insert(ex.getMessage(), "", PrjConfig.frm_FunctionSendProblem, 222);
+            TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frm_FunctionSendProblem, 222);
             ex.printStackTrace();
         }
 

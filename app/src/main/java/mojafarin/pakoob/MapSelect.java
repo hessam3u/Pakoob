@@ -129,7 +129,7 @@ public class MapSelect extends HFragment {
         }
 
         dataSource = NbMapSQLite.selectAllLive();
-        dataSource.observe(this, posts -> {
+        dataSource.observe(context, posts -> {
             adapterLocal.setData(posts);
             if (posts.size() == 0) {
                 lblYourMaps.setText("عنوان شهر، روستا، قله، منطقه یا شماره نقشه را جستجو کنید تا لیست نقشه های قابل انتخاب نمایش داده شود.");
@@ -284,7 +284,7 @@ public class MapSelect extends HFragment {
                     , getResources().getString(R.string.dialog_UnknownErrorDescForOpenSearchOnMap)
                     , getResources().getString(R.string.ok), null, "", null);
 
-            TTExceptionLogSQLite.insert(ex.getMessage(), "Step: " + step + "-ex:" + ex.getStackTrace().toString(), PrjConfig.frmMapSelect, 120);
+            TTExceptionLogSQLite.insert(ex.getMessage(), "Step: " + step + "-ex:" + stktrc2k(ex), PrjConfig.frmMapSelect, 120);
             Log.d("جستجو_روی_نقشه", "Step: " + step + "-ex:" + ex.getMessage() + ex.getStackTrace());
             ex.printStackTrace();
             return false;
@@ -347,14 +347,14 @@ public class MapSelect extends HFragment {
                     } catch (Exception ex) {
                         ex.printStackTrace();
                         Log.e("MY_ERROR", ex.getMessage());
-                        TTExceptionLogSQLite.insert(ex.getMessage(), "", PrjConfig.frmMapSelect, 101);
+                        TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmMapSelect, 101);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     if (!isAdded()) return;
-                    TTExceptionLogSQLite.insert(t.getMessage(), "", PrjConfig.frmMapSelect, 100);
+                    TTExceptionLogSQLite.insert(t.getMessage(), stktrc2kt(t), PrjConfig.frmMapSelect, 100);
                     divSearch.setVisibility(View.VISIBLE);
                     pageProgressBar.setVisibility(View.GONE);
                     txtSearchResult.setVisibility(View.VISIBLE);
@@ -368,7 +368,7 @@ public class MapSelect extends HFragment {
             ex.printStackTrace();
             projectStatics.showDialog(context, context.getResources().getString(R.string.dialog_UnknownError)
                     , context.getResources().getString(R.string.dialog_UnknownErrorRepeatAndDesc) + ex.getMessage(), context.getResources().getString(R.string.ok), null, "", null);
-            TTExceptionLogSQLite.insert(ex.getMessage(), "", PrjConfig.frmMapSelect, 105);
+            TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmMapSelect, 105);
         }
     }
 
@@ -1017,7 +1017,7 @@ public class MapSelect extends HFragment {
                         progressBar.setVisibility(View.INVISIBLE);
 
                     } catch (Exception ex) {
-                        TTExceptionLogSQLite.insert("Exception", response.message(), PrjConfig.frmMapSelect, 200);
+                        TTExceptionLogSQLite.insert("Exception:" + response.message(), stktrc2k(ex), PrjConfig.frmMapSelect, 200);
                         ex.printStackTrace();
                         progressBar.setVisibility(View.INVISIBLE);
                         isDownloading = false;
@@ -1253,7 +1253,7 @@ public class MapSelect extends HFragment {
                                 holder.progressBarDet.setVisibility(View.GONE);
                             }
                         });
-                        TTExceptionLogSQLite.insert(e.getMessage(), step + "-" + remoteAddr, PrjConfig.frmMapSelect, 400);
+                        TTExceptionLogSQLite.insert(step + "-" + remoteAddr + "--"+ e.getMessage(),stktrc2k(e) , PrjConfig.frmMapSelect, 400);
 
                     }
                     isDownloading = false;
@@ -1311,7 +1311,7 @@ public class MapSelect extends HFragment {
                         });
                     } catch (Exception ex) {
                         ex.printStackTrace();
-                        TTExceptionLogSQLite.insert("Decrypt", ex.getMessage(), PrjConfig.frmMapSelect, 253);
+                        TTExceptionLogSQLite.insert("Decrypt:" + ex.getMessage(),stktrc2k(ex), PrjConfig.frmMapSelect, 253);
                     }
                     isDownloading = false;;
                 }

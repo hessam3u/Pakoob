@@ -432,7 +432,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                 isLockOnMe = true;
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLon, map.getCameraPosition().zoom));
                 if (!isTrackUp)
-                    updateCamera(0);
+                    updateCamera(0,false);
                 updateMyLocationIcon();
                 setBtnGotoCurrentLocation();
 
@@ -646,7 +646,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                     } catch (Exception ex) {
                         ex.printStackTrace();
                         Log.e("Clicked_Error", ex.getMessage());
-                        TTExceptionLogSQLite.insert(ex.getMessage(), "", PrjConfig.frmMapPage, 159);
+                        TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmMapPage, 159);
                     }
                 }
             });
@@ -744,7 +744,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                     addPOIToMap(poi, map, MainActivity.appExistsBeforeAndShouldReloadAll_ReReadPois, context);
 
                 } catch (Exception ex) {
-                    TTExceptionLogSQLite.insert(ex.getMessage(), ex.getStackTrace().toString(), PrjConfig.frmMapPage, 1004);
+                    TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmMapPage, 1004);
                     ex.printStackTrace();
                 }
             }
@@ -779,7 +779,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                     , getResources().getString(R.string.dialog_UnknownErrorDesc)
                     , getResources().getString(R.string.ok), null, "", null);
 
-            TTExceptionLogSQLite.insert(ex.getMessage(), "Step: " + step + "-ex:" + ex.getStackTrace().toString(), PrjConfig.frmMapPage, 1200);
+            TTExceptionLogSQLite.insert(ex.getMessage(), "Step: " + step + "-ex:" + stktrc2k(ex), PrjConfig.frmMapPage, 1200);
             Log.d("صفحه_نقشه", "Step: " + step + "-ex:" + ex.getMessage() + ex.getStackTrace());
             ex.printStackTrace();
         }
@@ -787,7 +787,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
 
     private void compass_Clicked() {
         isTrackUp = false;
-        updateCamera(0);
+        updateCamera(0, true);
         updateMyLocationIcon();
         setBtnGotoCurrentLocation();
     }
@@ -1379,7 +1379,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                     bearing = (float) angle + app.declination;
 
                     if (isTrackUp && isLockOnMe) {// اگه میخوام که چرخش حتی اگه روی من نبود ادامه داشته باشه، isLockOnMe حذف بشه
-                        updateCamera(bearing);
+                        updateCamera(bearing,false);
                     } else {
                         updateMyLocationIcon();
                     }
@@ -1405,14 +1405,14 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
 
     }
 
-    private void updateCamera(float rotationAngle) {
+    private void updateCamera(float rotationAngle, boolean compassClicked) {
         //Add for Autorotate part 4
         if (map == null)
             return;
         CameraPosition oldPos = map.getCameraPosition();
 
         CameraPosition pos = null;
-        if (currentLatLon == null) { //1402-04 اضافه شد که باعث بشه دوربین الکی حرکت نکنه اگه روی خودمون فیکس بود
+        if (compassClicked || currentLatLon == null) { //1402-04 اضافه شد که باعث بشه دوربین الکی حرکت نکنه اگه روی خودمون فیکس بود
             pos = CameraPosition.builder(oldPos).bearing(rotationAngle).build();
         } else {
             pos = CameraPosition.builder(oldPos).target(currentLatLon).bearing(rotationAngle).build();
@@ -1966,7 +1966,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             projectStatics.showDialog(context, getString(R.string.CantLoadTrackToEdit), getString(R.string.CantLoadTrackToEdit_Desc)
                     , getString(R.string.accept), null, "", null);
             Log.e(Tag, "خطا" + ex.getMessage());
-            TTExceptionLogSQLite.insert(ex.getMessage(), "DEBUGSTEP:" + debugStep + "--" + ex.getStackTrace().toString(), PrjConfig.frmMapPage, 1003);
+            TTExceptionLogSQLite.insert(ex.getMessage(), "DEBUGSTEP:" + debugStep + "--" + stktrc2k(ex), PrjConfig.frmMapPage, 1003);
             ex.printStackTrace();
         }
     }
@@ -2041,7 +2041,8 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             float tmpBearing = hasCompassSensor || currentLatLon == null ? bearing : location.getBearing() + app.declination;
             //1401-03-24 added
             //HHH ممکنه یکی از اینا لازم نباشه. چک بشه بعدا
-            updateCamera(tmpBearing);
+            if (isLockOnMe) //فقط در صورتی که روی من قفل بود، به مکان فعلی بپره. شاید کاربر در حال کار روی یه مسیر باشه و نباید به نقطه فعلی بپره
+                updateCamera(tmpBearing,false);
             setBtnGotoCurrentLocation();
             updateMyLocationIcon();
 
@@ -2058,7 +2059,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         } catch (Exception ex) {
             Log.e(Tag, "خطا" + ex.getMessage());
             ex.printStackTrace();
-            TTExceptionLogSQLite.insert(ex.getMessage(), ex.getStackTrace().toString(), PrjConfig.frmMapPage, 1001);
+            TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmMapPage, 1001);
         }
     }
 
@@ -2289,13 +2290,13 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                     } catch (Exception ex) {
                         ex.printStackTrace();
                         Log.e(Tag, "MY_ERROR" + ex.getMessage());
-                        TTExceptionLogSQLite.insert(ex.getMessage(), "", PrjConfig.frm_SearchOnMap, 100);
+                        TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frm_SearchOnMap, 100);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    TTExceptionLogSQLite.insert(t.getMessage(), "", PrjConfig.frm_SearchOnMap, 100);
+                    TTExceptionLogSQLite.insert(t.getMessage(), stktrc2kt(t), PrjConfig.frm_SearchOnMap, 100);
                     if (!isAdded()) return;
                     divSearch.setVisibility(View.VISIBLE);
                     pageProgressBar.setVisibility(View.GONE);
@@ -2310,7 +2311,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             projectStatics.showDialog(context, getString(R.string.ProblemInSearch), getString(R.string.ProblemInSearch_DESC)
                     , getString(R.string.accept), null, "", null);
             Log.e(Tag, "خطا" + " text " + ex.getMessage());
-            TTExceptionLogSQLite.insert(ex.getMessage(), "Searched: " + text + " - " + ex.getStackTrace().toString(), PrjConfig.frmMapPage, 1006);
+            TTExceptionLogSQLite.insert(ex.getMessage(), "Searched: " + text + " - " + stktrc2k(ex), PrjConfig.frmMapPage, 1006);
             ex.printStackTrace();
         }
     }

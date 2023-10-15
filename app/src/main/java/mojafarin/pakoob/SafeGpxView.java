@@ -237,7 +237,7 @@ public class SafeGpxView extends HFragment {
             Log.d(Tag, "بازکردن" + "fillForm_on_safeGpxView: " + ex.getMessage() + ex.getStackTrace());
             //Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             ex.printStackTrace();
-            TTExceptionLogSQLite.insert(ex.getMessage(), ex.getStackTrace().toString(), PrjConfig.frmSafeGpxView, 150);
+            TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmSafeGpxView, 150);
         }
     }
     void SetVisibilityOfBottoms(){
@@ -534,7 +534,7 @@ public class SafeGpxView extends HFragment {
                         Log.d(Tag, "server contact failed");
                     }
                 } catch (IOException e) {
-                    TTExceptionLogSQLite.insert("IOException", e.getMessage(), PrjConfig.frmSafeGpxView, 50);
+                    TTExceptionLogSQLite.insert("IOException»" + e.getMessage(), stktrc2k(e), PrjConfig.frmSafeGpxView, 50);
                     e.printStackTrace();
                     isDownloading = false;;
                 }

@@ -110,7 +110,7 @@ public class ShowMapDialog extends HFragment {
             Log.e(Tag, "بازکردن" + "fillForm_on_safeGpxView: " + ex.getMessage() + ex.getStackTrace());
             //Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             ex.printStackTrace();
-            TTExceptionLogSQLite.insert(ex.getMessage(), ex.getStackTrace().toString(), PrjConfig.frmTripComputer, 150);
+            TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmTripComputer, 150);
         }
     }
 
@@ -131,7 +131,7 @@ public class ShowMapDialog extends HFragment {
         } catch (Exception ex) {
             Log.e(Tag, "بازکردن" + "fillForm: " + ex.getMessage() + ex.getStackTrace());
             ex.printStackTrace();
-            TTExceptionLogSQLite.insert(ex.getMessage(), ex.getStackTrace().toString(), PrjConfig.frmTripComputer, 150);
+            TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmTripComputer, 150);
         }
     }
 
@@ -212,7 +212,7 @@ public class ShowMapDialog extends HFragment {
                 mapSelectLocation.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 14));
             }
         } catch (Exception ex) {
-            TTExceptionLogSQLite.insert(ex.getMessage(), "debugStep:" + debugStep, PrjConfig.frmDialogMapBuilder, 100);
+            TTExceptionLogSQLite.insert("debugStep:" + debugStep+"-"+ex.getMessage(), stktrc2k(ex), PrjConfig.frmDialogMapBuilder, 100);
             ex.printStackTrace();
         }
     }

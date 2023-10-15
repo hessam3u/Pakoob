@@ -3,6 +3,7 @@
     android:orientation="vertical"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
+    android:background="@color/app_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -56,8 +57,9 @@
         android:text="@string/dialog_readyToGoBank_discountCop"/>
 
     <EditText
-        style="@style/textbox_filled_mat"
-    android:id="@+id/txtDiscountCode"
+        style="@style/label"
+        android:background="@drawable/bg_roundcorner_greenborder"
+        android:id="@+id/txtDiscountCode"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
         android:singleLine="true"

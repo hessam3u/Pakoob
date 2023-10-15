@@ -1,5 +1,7 @@
 package mojafarin.pakoob;
 
+import static utils.HFragment.stktrc2k;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Canvas;
@@ -237,7 +239,7 @@ public class EditTrack extends Fragment {
             if (!hasElev)
                 divSlopeCalculations.setVisibility(View.GONE);
         } catch (Exception ex) {
-            TTExceptionLogSQLite.insert(ex.getMessage(), "", PrjConfig.frmEditTrack, 102);
+            TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmEditTrack, 102);
             ex.printStackTrace();
         }
     }

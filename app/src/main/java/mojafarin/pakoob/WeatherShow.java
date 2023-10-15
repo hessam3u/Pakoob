@@ -264,7 +264,7 @@ public class WeatherShow extends HFragment {
 
 
         } catch (Exception ex) {
-            TTExceptionLogSQLite.insert(ex.getMessage(), ex.getStackTrace().toString(), PrjConfig.frmWeatherShow, 150);
+            TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmWeatherShow, 150);
             Log.d("ADDDDD", "WeatherShow_FillForm: " + ex.getMessage() + ex.getStackTrace());
             //Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             ex.printStackTrace();

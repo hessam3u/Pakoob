@@ -1,9 +1,13 @@
 package maptools;
 
+import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.ReceiverCallNotAllowedException;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.animation.BounceInterpolator;
 import android.widget.Toast;
@@ -36,10 +40,12 @@ import java.util.TimeZone;
 import bo.entity.NbPoi;
 import bo.entity.NbPoiCompact;
 import bo.sqlite.NbPoiSQLite;
+import bo.sqlite.TTExceptionLogSQLite;
 import mojafarin.pakoob.MainActivity;
 import mojafarin.pakoob.MapPage;
 import mojafarin.pakoob.R;
 import mojafarin.pakoob.app;
+import utils.PrjConfig;
 import utils.hutilities;
 import utils.projectStatics;
 
@@ -48,6 +54,7 @@ import static bo.entity.NbPoi.Enums.PoiType_Route;
 import static bo.entity.NbPoi.Enums.PoiType_Track;
 import static bo.entity.NbPoi.Enums.PoiType_Waypoint;
 import static bo.entity.NbPoi.Enums.ShowStatus_Show;
+import static utils.HFragment.stktrc2k;
 import static utils.TextFormat.ReplacePersianNumbersWithEnglishOne;
 
 public class GPXFile {
@@ -303,6 +310,34 @@ public class GPXFile {
         return new Date();
     }
 
+    //این تابع هنوز تست نشده و کلا هم استفاده نشده و فقط در مهر 02 درستش کردم برای این که مشکل خطای دسترسی رو حل کنم
+    // لینک راه حل : https://medium.com/@sriramaripirala/android-10-open-failed-eacces-permission-denied-da8b630a89df
+    public static GPXFile ImportGpxFileIntoMapbaz(Uri fileUri, String path, String preferedRootNameIfNeeded, Context context, long parentId, byte currentLevel, boolean addToMap, Handler handlerForAdd) {
+        try {
+            ParcelFileDescriptor parcelFileDescriptor = context.getContentResolver().openFileDescriptor(fileUri, "r", null);
+            FileInputStream inputStream = new FileInputStream(parcelFileDescriptor.getFileDescriptor());
+            String inputFileNameWithExtention = path.substring(path.lastIndexOf(File.separator) + 1);
+            return ImportGpxFileIntoMapbaz(inputStream, inputFileNameWithExtention, preferedRootNameIfNeeded, context, parentId, currentLevel, addToMap, handlerForAdd);
+        } catch (Exception ex) {
+            if (ex.getMessage().contains("EACCES")){
+                projectStatics.showDialog(context, context.getResources().getString(R.string.dialog_invalidGpxFile_title)
+                        , context.getResources().getString(R.string.dialog_invalidGpxFilePermission)
+                        , context.getResources().getString(R.string.ok)
+                        , view -> {context.startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));}, "", null);
+            }
+            else {
+                projectStatics.showDialog(context, context.getResources().getString(R.string.dialog_invalidGpxFile_title)
+                        , context.getResources().getString(R.string.dialog_invalidGpxFile)
+                        , context.getResources().getString(R.string.ok)
+                        , null, "", null);
+            }
+            Log.e("بازکردن_جی_پی_ایکس", ex.getMessage());
+            TTExceptionLogSQLite.insert("FILE PATH:" + path + "----" + ex.getMessage(), stktrc2k(ex), PrjConfig.frmGPXFile, 300);
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
     public static GPXFile ImportGpxFileIntoMapbaz(String path, String preferedRootNameIfNeeded, Context context, long parentId, byte currentLevel, boolean addToMap, Handler handlerForAdd) {
         try {
             File file = new File(path);
@@ -310,11 +345,20 @@ public class GPXFile {
             String inputFileNameWithExtention = path.substring(path.lastIndexOf(File.separator) + 1);
             return ImportGpxFileIntoMapbaz(inputStream, inputFileNameWithExtention, preferedRootNameIfNeeded, context, parentId, currentLevel, addToMap, handlerForAdd);
         } catch (Exception ex) {
-            projectStatics.showDialog(context, context.getResources().getString(R.string.dialog_invalidGpxFile_title)
-                    , context.getResources().getString(R.string.dialog_invalidGpxFile)
-                    , context.getResources().getString(R.string.ok)
-                    , null, "", null);
+            if (ex.getMessage().contains("EACCES")){
+                projectStatics.showDialog(context, context.getResources().getString(R.string.dialog_invalidGpxFile_title)
+                        , context.getResources().getString(R.string.dialog_invalidGpxFilePermission)
+                        , context.getResources().getString(R.string.ok)
+                        , view -> {context.startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));}, "", null);
+            }
+            else {
+                projectStatics.showDialog(context, context.getResources().getString(R.string.dialog_invalidGpxFile_title)
+                        , context.getResources().getString(R.string.dialog_invalidGpxFile)
+                        , context.getResources().getString(R.string.ok)
+                        , null, "", null);
+            }
             Log.e("بازکردن_جی_پی_ایکس", ex.getMessage());
+            TTExceptionLogSQLite.insert("FILE PATH:" + path + "----" + ex.getMessage(), stktrc2k(ex), PrjConfig.frmGPXFile, 300);
             ex.printStackTrace();
         }
         return null;

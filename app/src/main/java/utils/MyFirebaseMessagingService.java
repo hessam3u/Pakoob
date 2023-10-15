@@ -1,5 +1,7 @@
 package utils;
 
+import static utils.HFragment.stktrc2k;
+
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
@@ -89,7 +91,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //                JSONObject json = new JSONObject(remoteMessage.getData().toString());
 //                handleDataMessage_Sample(json);
             } catch (Exception ex) {
-                TTExceptionLogSQLite.insert(ex.getMessage(), "", PrjConfig.frm_FunctionRecFCM, 100);
+                TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frm_FunctionRecFCM, 100);
                 Log.e(TAG, "Exception: " + ex.getMessage());
                 ex.printStackTrace();
             }

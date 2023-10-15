@@ -1,5 +1,7 @@
 package mojafarin.pakoob.mainactivitymodes;
 
+import static utils.HFragment.stktrc2k;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -169,7 +171,7 @@ public class DialogRecordTrack {
                                             , null);
                                     Log.e("خطا", ex.getMessage());
                                     ex.printStackTrace();
-                                    TTExceptionLogSQLite.insert(ex.getMessage(), ex.getStackTrace().toString(), PrjConfig.frmTrackRecording, 112);
+                                    TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmTrackRecording, 112);
                                 }
                             }
                             , activity.getResources().getString(R.string.cancel), null);
@@ -211,7 +213,7 @@ public class DialogRecordTrack {
                         , null);
                 Log.e("خطا", ex.getMessage());
                 ex.printStackTrace();
-                TTExceptionLogSQLite.insert(ex.getMessage(), ex.getStackTrace().toString(), PrjConfig.frmTrackRecording, 111);
+                TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmTrackRecording, 111);
             }
         });
     }

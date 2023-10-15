@@ -255,7 +255,7 @@ public class SafeGpxSearch extends HFragment {
                     //progressBar.setVisibility(View.GONE);
 
                 } catch (Exception ex) {
-                    TTExceptionLogSQLite.insert("Exception", response.message(), PrjConfig.frmSafeGpxView, 200);
+                    TTExceptionLogSQLite.insert("Exception:" +response.message(),stktrc2k(ex) , PrjConfig.frmSafeGpxView, 200);
                     ex.printStackTrace();
                     Handler handler = new Handler();
                     handler.postDelayed(() -> {morphToFailure(button, 500);button.unblockTouch();}, 1000);
@@ -266,7 +266,7 @@ public class SafeGpxSearch extends HFragment {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                TTExceptionLogSQLite.insert("Fail", t.getMessage(), PrjConfig.frmSafeGpxView, 100);
+                TTExceptionLogSQLite.insert("Fail:"+t.getMessage(),stktrc2kt(t) , PrjConfig.frmSafeGpxView, 100);
                 if (!isAdded()) return;
                 morphToFailure(button, 500);
                 Log.e(Tag, "error" + " " + t.getMessage());
@@ -397,13 +397,13 @@ public class SafeGpxSearch extends HFragment {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     Log.e("MY_ERROR", ex.getMessage());
-                    TTExceptionLogSQLite.insert(ex.getMessage(), "", PrjConfig.frmSafeGpxSearch, 101);
+                    TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmSafeGpxSearch, 101);
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                TTExceptionLogSQLite.insert(t.getMessage(), "", PrjConfig.frmSafeGpxSearch, 100);
+                TTExceptionLogSQLite.insert(t.getMessage(), stktrc2kt(t), PrjConfig.frmSafeGpxSearch, 100);
                 if (!isAdded()) return;
                 divSearch.setVisibility(View.VISIBLE);
                 pageProgressBar.setVisibility(View.GONE);
@@ -525,7 +525,7 @@ public class SafeGpxSearch extends HFragment {
                     progressBar.setVisibility(View.GONE);
 
                 } catch (Exception ex) {
-                    TTExceptionLogSQLite.insert("Exception", response.message(), PrjConfig.frmSafeGpxSearch, 201);
+                    TTExceptionLogSQLite.insert("Exception:"+response.message(), stktrc2k(ex), PrjConfig.frmSafeGpxSearch, 201);
                     ex.printStackTrace();
                     progressBar.setVisibility(View.GONE);
                     isDownloading = false;
@@ -534,7 +534,7 @@ public class SafeGpxSearch extends HFragment {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                TTExceptionLogSQLite.insert("Fail", t.getMessage(), PrjConfig.frmSafeGpxSearch, 100);
+                TTExceptionLogSQLite.insert("Fail:"+t.getMessage(), stktrc2kt(t), PrjConfig.frmSafeGpxSearch, 100);
                 if (!isAdded()) return;
                 progressBar.setVisibility(View.GONE);
                 Log.e(Tag, "error");

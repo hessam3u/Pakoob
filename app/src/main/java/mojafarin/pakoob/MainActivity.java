@@ -1,5 +1,7 @@
 package mojafarin.pakoob;
 
+import static utils.HFragment.stktrc2k;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
@@ -649,7 +651,7 @@ public class MainActivity extends MainActivityManager {
         } catch (Exception ex) {
             Log.e("خطا", ex.getMessage());
             ex.printStackTrace();
-            TTExceptionLogSQLite.insert(ex.getMessage(), ex.getStackTrace().toString(), PrjConfig.frmMainActivity, 1500);
+            TTExceptionLogSQLite.insert(ex.getMessage(),stktrc2k(ex), PrjConfig.frmMainActivity, 1500);
         }
     }
 
@@ -710,7 +712,7 @@ public class MainActivity extends MainActivityManager {
         } catch (Exception ex) {
             Log.e("خطا", ex.getMessage());
             ex.printStackTrace();
-            TTExceptionLogSQLite.insert(ex.getMessage(), ex.getStackTrace().toString(), PrjConfig.frmMainActivity, 1501);
+            TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmMainActivity, 1501);
         }
     }
 
@@ -745,7 +747,7 @@ public class MainActivity extends MainActivityManager {
         } catch (Exception ex) {
             Log.e("خطا", ex.getMessage());
             ex.printStackTrace();
-            TTExceptionLogSQLite.insert(ex.getMessage(), ex.getStackTrace().toString(), PrjConfig.frmMainActivity, 1506);
+            TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmMainActivity, 1506);
         }
     }
 
@@ -906,7 +908,7 @@ public class MainActivity extends MainActivityManager {
                 } catch (Exception ex) {
                     Log.e("خطا چک_به_روز_رسانی", ex.getMessage());
                     ex.printStackTrace();
-                    TTExceptionLogSQLite.insert(ex.getMessage(), ex.getStackTrace().toString(), PrjConfig.frmMainActivity, 1503);
+                    TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmMainActivity, 1503);
                 }
             }
 
@@ -1074,7 +1076,7 @@ public class MainActivity extends MainActivityManager {
                     } catch (Exception ex) {
                         Log.e("خطا بازکردن_ترکها", ex.getMessage());
                         ex.printStackTrace();
-                        TTExceptionLogSQLite.insert(ex.getMessage(), ex.getStackTrace().toString(), PrjConfig.frmMainActivity, 1501);
+                        TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmMainActivity, 1501);
                     }
                 } else {
                     Log.e("خطا بازکردن_ترکها", "بخش ها ناکافی");

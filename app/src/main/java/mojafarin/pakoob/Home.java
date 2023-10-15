@@ -94,7 +94,7 @@ public class Home extends HFragment {
         } catch (Exception ex) {
             Log.e("خطا در لود", ex.getMessage());
             ex.printStackTrace();
-            TTExceptionLogSQLite.insert("خطا در لود " + ex.getMessage(), ex.getStackTrace().toString(), PrjConfig.frmHome, 1501);
+            TTExceptionLogSQLite.insert("خطا در لود " + ex.getMessage(), stktrc2k(ex), PrjConfig.frmHome, 1501);
         }
 
 //        if (showHelpAfterLoad) {
@@ -225,7 +225,7 @@ public class Home extends HFragment {
                     }
                 } catch (Exception ex) {
                     Log.e("اد کش", "خخخخ " + ex.getMessage() + " " + ex.getStackTrace());
-                    TTExceptionLogSQLite.insert(ex.getMessage(), "", PrjConfig.frmHome, 101);
+                    TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmHome, 101);
                     offlineLoadAdv();
                     ex.printStackTrace();
                 }
@@ -233,7 +233,7 @@ public class Home extends HFragment {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                TTExceptionLogSQLite.insert(t.getMessage(), "", PrjConfig.frmHome, 100);
+                TTExceptionLogSQLite.insert(t.getMessage(), stktrc2kt(t), PrjConfig.frmHome, 100);
                 if (!isAdded()) return;
                 offlineLoadAdv();
             }

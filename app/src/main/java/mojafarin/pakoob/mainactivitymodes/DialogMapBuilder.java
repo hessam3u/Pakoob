@@ -1,5 +1,7 @@
 package mojafarin.pakoob.mainactivitymodes;
 
+import static utils.HFragment.stktrc2k;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -188,7 +190,7 @@ View v;
             }
         }
         catch (Exception ex){
-            TTExceptionLogSQLite.insert(ex.getMessage(), "debugStep:" + debugStep, PrjConfig.frmDialogMapBuilder, 100);
+            TTExceptionLogSQLite.insert("debugStep:" + debugStep+"-"+ex.getMessage(),stktrc2k(ex) , PrjConfig.frmDialogMapBuilder, 100);
             ex.printStackTrace();
         }
     }

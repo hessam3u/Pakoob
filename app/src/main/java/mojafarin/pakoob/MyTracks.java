@@ -810,11 +810,12 @@ public class MyTracks extends HFragment {
             NbPoi current = NbPoiSQLite.select(currentId);
             fileNameToSave = current.Name;
         }
+        String folderStructure = "";
         for (int i = size-1; i >= 0; i--) {
             NbPoi item = adapter.data.get(i);
             if (item.isSelected) {
-
                 if (item.PoiType == NbPoi.Enums.PoiType_Folder) {
+                    //folderStructure += (folderStructure.length() > 0?";":"") +
                     if (fileNameToSave.length() == 0) {
                         fileNameToSave = item.Name;
                     }
@@ -864,7 +865,7 @@ public class MyTracks extends HFragment {
                     , ""
                     , null);
             if (isUnknownEx) {
-                TTExceptionLogSQLite.insert(e.getMessage(), "FILE PATH:" + path + "----", PrjConfig.frmEditTrack, 300);
+                TTExceptionLogSQLite.insert("FILE PATH:" + path + "----" + e.getMessage(), stktrc2k(e), PrjConfig.frmEditTrack, 300);
                 e.printStackTrace();
             }
         }
@@ -1184,7 +1185,7 @@ public class MyTracks extends HFragment {
                     , getResources().getString(R.string.dialog_UnknownErrorDesc)
                     , getResources().getString(R.string.ok), null, "", null);
 
-            TTExceptionLogSQLite.insert(ex.getMessage(), "Step: " + step + "-ex:" + ex.getStackTrace().toString(), PrjConfig.frmMapSelect, 120);
+            TTExceptionLogSQLite.insert("Step: " + step + "-ex:" +ex.getMessage(),  stktrc2k(ex), PrjConfig.frmMapSelect, 120);
             Log.d("جستجو_روی_نقشه", "Step: " + step + "-ex:" + ex.getMessage() + ex.getStackTrace());
             ex.printStackTrace();
             return ;
@@ -1207,7 +1208,7 @@ public class MyTracks extends HFragment {
 //        catch (Exception ex){
 //            Log.e(Tag, "Exception: " + ex.getMessage());
 //            ex.printStackTrace();
-//            TTExceptionLogSQLite.insert(ex.getMessage(), "", PrjConfig.frmMyTracks, 109);
+//            TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmMyTracks, 109);
 //        }
     }
 

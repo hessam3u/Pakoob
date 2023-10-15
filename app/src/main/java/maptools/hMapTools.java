@@ -1,5 +1,7 @@
 package maptools;
 
+import static utils.HFragment.stktrc2k;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -159,7 +161,7 @@ public class hMapTools {
         } catch (FileNotFoundException ex) {
             Log.e(TAG, ex.getMessage());
             ex.printStackTrace();
-            TTExceptionLogSQLite.insert(ex.getMessage(), "ds is : " + DeleteStep + "_"+ ex.getStackTrace(), PrjConfig.app, 101);
+            TTExceptionLogSQLite.insert(ex.getMessage(), "ds is : " + DeleteStep + "_"+ stktrc2k(ex), PrjConfig.app, 101);
             return false;
         }
         return true;
