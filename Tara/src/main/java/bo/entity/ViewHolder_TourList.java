@@ -1,5 +1,7 @@
 package bo.entity;
 
+import static utils.HFragment.stktrc2k;
+
 import android.content.Context;
 import android.media.projection.MediaProjection;
 import android.util.Log;
@@ -73,7 +75,7 @@ public class ViewHolder_TourList extends RecyclerView.ViewHolder {
                     //.error(R.drawable.ic_launcher_background)  HHH 1400-01-10
                     .into(this.txt_ct_ImageLinkUri);
         } catch (Exception ex) {
-            TTExceptionLogSQLite.insert(ex.getMessage(), ex.getStackTrace().toString(), PrjConfig.frm_Component_TourListVer, 100);
+            TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frm_Component_TourListVer, 100);
             Log.d("بازکردن", "Bind Ver Tour: " + ex.getMessage() + ex.getStackTrace());
             //Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             ex.printStackTrace();

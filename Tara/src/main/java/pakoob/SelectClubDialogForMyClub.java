@@ -1,5 +1,8 @@
 package pakoob;
 
+import static utils.HFragment.stktrc2k;
+import static utils.HFragment.stktrc2kt;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -106,7 +109,7 @@ public class SelectClubDialogForMyClub extends SelectAnythingDialog {
                     } catch (Exception ex) {
                         ex.printStackTrace();
                         Log.e("MY_ERROR", ex.getMessage());
-                        TTExceptionLogSQLite.insert(ex.getMessage(), "", PrjConfig.frm_SelectClub, 101);
+                        TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frm_SelectClub, 101);
                     }
                 }
 
@@ -114,7 +117,7 @@ public class SelectClubDialogForMyClub extends SelectAnythingDialog {
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     //if (!isAdded()) return;
                     try {
-                        TTExceptionLogSQLite.insert(t.getMessage(), "", PrjConfig.frm_SelectClub, 100);
+                        TTExceptionLogSQLite.insert(t.getMessage(), stktrc2kt(t), PrjConfig.frm_SelectClub, 100);
                         callCount--;
                         //divSearch.setVisibility(View.VISIBLE);
                         pageProgressBarIndet.setVisibility(View.INVISIBLE);
@@ -245,7 +248,7 @@ public class SelectClubDialogForMyClub extends SelectAnythingDialog {
             return path + File.separator + filename;
         } catch (Exception ex) {
             Log.e("خطا" , ex.getMessage());
-            TTExceptionLogSQLite.insert(ex.getMessage(), ex.getStackTrace().toString(), PrjConfig.frm_SelectClub, 103);
+            TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frm_SelectClub, 103);
             ex.printStackTrace();
         }
         return "";

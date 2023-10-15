@@ -33,6 +33,7 @@ public class PrjConfig {
     public static final int frmTourList = 114;
     public static final int frmTripComputer = 115;
     public static final int frmTrackRecording = 116;
+    public static final int frmGPXFile = 117;
 
 
     public static final String MessageSplitor = "*?*/*?/";

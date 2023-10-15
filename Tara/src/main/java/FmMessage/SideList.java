@@ -1,5 +1,8 @@
 package FmMessage;
 
+import static utils.HFragment.stktrc2k;
+import static utils.HFragment.stktrc2kt;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -224,13 +227,13 @@ public class SideList extends Fragment {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     Log.e("MY_ERROR", ex.getMessage());
-                    TTExceptionLogSQLite.insert(ex.getMessage(), "", PrjConfig.frmSideList, 101);
+                    TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmSideList, 101);
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                TTExceptionLogSQLite.insert(t.getMessage(), "", PrjConfig.frmSideList, 100);
+                TTExceptionLogSQLite.insert(t.getMessage(), stktrc2kt(t), PrjConfig.frmSideList, 100);
                 if (!isAdded()) return;
                 divSearch.setVisibility(View.VISIBLE);
                 pageProgressBar.setVisibility(View.GONE);

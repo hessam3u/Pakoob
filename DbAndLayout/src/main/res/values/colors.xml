@@ -118,5 +118,8 @@
 
     <integer name="mb_animation">500</integer>
 
+    <color name="app_background">#ffffff</color>
+
+
 
 </resources>

@@ -381,7 +381,7 @@ public class TourShowOne extends HFragment {
                     }
                 }
             } catch (Exception ex) {
-                TTExceptionLogSQLite.insert(ex.getMessage(), "", PrjConfig.frmTourShowOne, 100);
+                TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmTourShowOne, 100);
                 Log.d("بازکردن", "btnOpenTours_Click: " + ex.getMessage() + ex.getStackTrace());
                 //Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                 ex.printStackTrace();

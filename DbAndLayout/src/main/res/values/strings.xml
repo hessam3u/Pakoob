@@ -163,6 +163,8 @@
     <string name="fileChooser_myTracks_btnCancel">انصراف</string>
     <string name="dialog_invalidGpxFile">فایل انتخاب شده حاوی خطا می‌باشد و امکان باز کردن آن وجود ندارد. لطفا موضوع را به پشتیبانی گزارش نمایید</string>
     <string name="dialog_invalidGpxFile_title">خطا در باز کردن فایل</string>
+    <string name="dialog_invalidGpxFilePermission">دسترسی لازم برای باز کردن این فایل وجود ندارد. لطفا فایل را از شاخه اصلی خود پیدا کنید (به طور معمول شاخه دانلودها) و سپس آن را با پاکوب باز نمایید.\n در ادامه شاخه دانلودها باز خواهد شد تا بتوانید فایل را بیابید.</string>
+
     <string name="dialog_emptyGpxfile_title">فایل خالی می‌باشد</string>
     <string name="dialog_emptyGpxfile_desc">فایل انتخاب شده محتوی اطلاعات مسیر یا نقطه نمی‌باشد و در نتیجه امکان دریافت آن وجود ندارد</string>
     <string name="dialog_FileImported_title">دریافت موفق فایل</string>
@@ -329,7 +331,7 @@
     <string name="EnterName_Title">انتخاب نام</string>
     <string name="EnterName_Message">لطفا نام شاخه جدید را وارد نمایید:</string>
     <string name="EnterName_ForWaypoint_Title">انتخاب نام</string>
-    <string name="EnterName_ForWaypoint_MyLocation_Message">لطفا نامی که مالید برای نقطه فعلی خودتان انتخاب نمایید را وارد نمایید:</string>
+    <string name="EnterName_ForWaypoint_MyLocation_Message">لطفا نامی که مایلید برای نقطه فعلی خودتان انتخاب نمایید را وارد نمایید:</string>
     <string name="EnterName_ForWaypoint_CursorLocation_Message">لطفا نام مد نظرتان را وارد نمایید:</string>
     <string name="btnRename">تغییر نام</string>
     <string name="btnAddFolderInToolbar">ایجاد شاخه جدید</string>
@@ -389,7 +391,7 @@
     <string name="RequestBackgroundLocationInAndroid29_Title">درخواست مجوز دسترسی</string>
     <string name="RequestBackgroundLocationInAndroid29_Title_Desc">برای دسترسی به موقعیت مکانی شما در پس زمینه، می‌بایست با رفتن به تنظیمات مربوط به برنامه و در قسمت مجوزهای دسترسی به مکان (Location)، این مجوز (گزینه همه زمان‌ها یا Allow all the time) را برای پاکوب فعال نمایید.\n در غیر این صورت ممکن است زمانی که برنامه را برای چند دقیقه استفاده نمی‌کنید، مسیر شما را موقتا ذخیره نکند.</string>
     <string name="locationPermission_Denied">مجوز دسترسی به موقعیت مکانی</string>
-    <string name="locationPermission_Desc">برای استفاده از امکان مسیریابی و نقشه، در صفحه بعد مجوز همیشگی استفاده از مکان را بدهید</string>
+    <string name="locationPermission_Desc">برای استفاده از امکان مسیریابی و نقشه، در صفحه بعد مجوز استفاده از مکان را بدهید</string>
     <string name="locationPermission_Denied_Desc">شما قبلا مجوز دسترسی به موقعیت مکانی برای این اپلکیشن را رد کرده اید. لطفا برای ادامه کار، از تنظیمات دستگاه، بخش برنامه‌ها، این برنامه را پیدا کرده و به آن مجوز (Permission) دسترسی به مکان را بدهید.</string>
     <string name="StoragePermission_Denied">مجوزدسترسی به فایل‌ها</string>
     <string name="StoragePermission_Denied_Desc">شما قبلا مجوز دسترسی به فایل‌ها را رد کرده اید. لطفا در صفحه ای که باز می‌شود در بخش مجوزها (Permission) مجوز دسترسی به حافظه را به این اپلیکیشن بدهید</string>

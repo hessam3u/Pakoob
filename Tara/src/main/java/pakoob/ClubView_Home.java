@@ -197,7 +197,7 @@ public class ClubView_Home extends HFragment {
             else
                 btnBell.setText(dbConstantsTara.BellOff);
         } catch (Exception ex) {
-            TTExceptionLogSQLite.insert(ex.getMessage(), ex.getStackTrace().toString(), PrjConfig.frmClubView_Home, 150);
+            TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmClubView_Home, 150);
             Log.d("بازکردن", "btnOpenTours_Click: " + ex.getMessage() + ex.getStackTrace());
             //Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             ex.printStackTrace();

@@ -507,7 +507,7 @@ public class TourList extends HFragment {
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
 //                progressDoalog.dismiss();
-                    TTExceptionLogSQLite.insert(t.getMessage(), "", PrjConfig.frmTourList, 100);
+                    TTExceptionLogSQLite.insert(t.getMessage(), stktrc2kt(t), PrjConfig.frmTourList, 100);
                     if (!isAdded()) return;
                     progressBar.setVisibility(View.GONE);
                     setVisibilityOfRefreshLoading(View.VISIBLE);

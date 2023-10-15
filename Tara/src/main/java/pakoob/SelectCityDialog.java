@@ -1,5 +1,8 @@
 package pakoob;
 
+import static utils.HFragment.stktrc2k;
+import static utils.HFragment.stktrc2kt;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -111,7 +114,7 @@ public class SelectCityDialog extends SelectAnythingDialog {
                         ex.printStackTrace();
 
                         Log.e("MY_ERROR", ex.getMessage());
-                        TTExceptionLogSQLite.insert(ex.getMessage(), "", PrjConfig.frm_SelectCityDialog, 101);
+                        TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frm_SelectCityDialog, 101);
                     }
                 }
 
@@ -119,7 +122,7 @@ public class SelectCityDialog extends SelectAnythingDialog {
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     //if (!isAdded()) return;
                     try {
-                        TTExceptionLogSQLite.insert(t.getMessage(), "", PrjConfig.frm_SelectCityDialog, 100);
+                        TTExceptionLogSQLite.insert(t.getMessage(), stktrc2kt(t), PrjConfig.frm_SelectCityDialog, 100);
                         callCount--;
                         //divSearch.setVisibility(View.VISIBLE);
                         pageProgressBarIndet.setVisibility(View.INVISIBLE);

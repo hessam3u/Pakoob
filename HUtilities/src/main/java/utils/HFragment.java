@@ -10,6 +10,8 @@ import androidx.annotation.DimenRes;
 import androidx.annotation.IntegerRes;
 import androidx.fragment.app.Fragment;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,4 +56,16 @@ public class HFragment extends Fragment {
         return getResources().getInteger(resId);
     }
 
+    public static String stktrc2k(Exception ex){
+        StringWriter sw = new StringWriter();
+        ex.printStackTrace(new PrintWriter(sw));
+        String exceptionAsString = sw.toString();
+        return exceptionAsString.length() < 2000?exceptionAsString:exceptionAsString.substring(0, 2000);
+    }
+    public static String stktrc2kt(Throwable ex){
+        StringWriter sw = new StringWriter();
+        ex.printStackTrace(new PrintWriter(sw));
+        String exceptionAsString = sw.toString();
+        return exceptionAsString.length() < 2000?exceptionAsString:exceptionAsString.substring(0, 2000);
+    }
 }

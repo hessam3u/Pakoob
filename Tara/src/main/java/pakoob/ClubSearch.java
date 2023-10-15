@@ -270,13 +270,13 @@ public class ClubSearch extends HFragment {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     Log.e("MY_ERROR", ex.getMessage());
-                    TTExceptionLogSQLite.insert(ex.getMessage(), "", PrjConfig.frmClubSearch, 101);
+                    TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmClubSearch, 101);
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                TTExceptionLogSQLite.insert(t.getMessage(), "", PrjConfig.frmClubSearch, 100);
+                TTExceptionLogSQLite.insert(t.getMessage(), stktrc2kt(t), PrjConfig.frmClubSearch, 100);
                 if (!isAdded()) return;
                 divSearch.setVisibility(View.VISIBLE);
                 pageProgressBar.setVisibility(View.GONE);

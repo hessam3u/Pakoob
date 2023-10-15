@@ -2,6 +2,8 @@ package utils;
 
 import static android.text.InputType.TYPE_CLASS_NUMBER;
 
+import static utils.HFragment.stktrc2kt;
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -539,7 +541,7 @@ public class projectStatics {
                     , context.getResources().getString(R.string.ok)
                     , null, "", null);
         }
-        TTExceptionLogSQLite.insert(t.getMessage(), "From ManageEx", Page_Id, OperationCode);
+        TTExceptionLogSQLite.insert("From ManageEx" + " - " + t.getMessage(), stktrc2kt(t), Page_Id, OperationCode);
         t.printStackTrace();
         return msg;
     }

@@ -14,7 +14,7 @@
         android:id="@+id/lblTitle"
         style="@style/label_xl"
         android:gravity="center_vertical"
-        android:text="@string/SelectClub_Title"
+        android:text="----"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         >
@@ -31,7 +31,7 @@
         style="@style/label"
         android:layout_marginBottom="@dimen/leftrightMargin"
         android:gravity="center_vertical"
-        android:text="@string/SelectClub_Favorate_Desc"
+        android:text="--------"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
