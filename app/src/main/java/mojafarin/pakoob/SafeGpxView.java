@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLConnection;
@@ -556,6 +557,144 @@ public class SafeGpxView extends HFragment {
                 Log.e(Tag, "error");
             }
         });
+    }
+
+    public void doDownloadInBackground2(String remoteAddr, String tempDownloadDirectoryName, String downloadedFileName, NbSafeGpx currentObj, Context context) {//, Button view, ProgressBar progressBarDet, ProgressBar progressBarIndet,, Button btnMore
+        Handler handler = new Handler(Looper.getMainLooper());
+        progressBarDet.setProgress(0);
+        progressBarDet.setVisibility(View.VISIBLE);
+        Thread thread = new Thread(() -> {
+            int step = 0;
+            try {
+                //                        //connecting to url
+//                        String url = "http://pakoob24.ir/ui/temp/aa.jpg";
+                URL url = new URL(remoteAddr);
+
+                //1401-03-23 : https://stackoverflow.com/questions/59093629/add-a-self-signed-ssl-certificate-to-httpurlconnection
+                //رفع خطای دانلود ناموفق
+                if ( (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N)){
+                    TrustManager[] trustAllCerts = new TrustManager[]{
+                            new X509ExtendedTrustManager() {
+                                public void checkClientTrusted(X509Certificate[] chain, String authType, Socket socket) {}
+                                public void checkServerTrusted(X509Certificate[] chain, String authType, Socket socket) {}
+                                public void checkClientTrusted(X509Certificate[] chain, String authType, SSLEngine engine) {}
+                                public void checkServerTrusted(X509Certificate[] chain, String authType, SSLEngine engine) {}
+                                public void checkClientTrusted(X509Certificate[] chain, String authType) {}
+                                public void checkServerTrusted(X509Certificate[] chain, String authType) {}
+                                public X509Certificate[] getAcceptedIssuers() {
+                                    return new X509Certificate[0];
+                                }
+                            }
+                    };
+
+                    SSLContext sslContext = SSLContext.getInstance("TLS");
+                    sslContext.init(null, trustAllCerts, null);
+
+                    HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
+                }
+
+
+                HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+                int responseCode = httpConn.getResponseCode();
+                // Check if the connection is successful
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    int lenghtOfFile = httpConn.getContentLength();//c.getContentLength();
+                    step = 30;
+                    if (lenghtOfFile <= 0) {
+                        handler.post(new Runnable() {
+                            public void run() {
+                                projectStatics.showDialog(context, "خطا در دانلود", "فایل درخواستی قابل دانلود نمی باشد.", getResources().getString(R.string.ok), null, "", null);
+                                progressBarDet.setVisibility(View.GONE);
+                                isDownloading = false;
+                            }
+                        });
+                        return;
+                    }
+                    step = 40;
+
+                    int BUFFER_SIZE = 8192;
+                    //this is where the file will be seen after the download
+                    FileOutputStream output = new FileOutputStream(new File(tempDownloadDirectoryName, downloadedFileName));
+                    step = 50;
+                    //file input is from the url
+                    InputStream in = httpConn.getInputStream();//new BufferedInputStream(url.openStream());//c.getInputStream();
+                    step = 60;
+                    BufferedInputStream bis = new BufferedInputStream(in, BUFFER_SIZE);
+                    step = 70;
+
+                    //here’s the download code
+                    byte[] buffer = new byte[BUFFER_SIZE];
+                    int len1 = 0;
+                    long total = 0;
+
+                    while ((len1 = bis.read(buffer, 0, BUFFER_SIZE)) > 0) {
+                        total += len1; //total = total + len1
+                        long finalTotal = total;
+                        handler.post(new Runnable() {
+                            public void run() {
+                                progressBarDet.setProgress((int) ((finalTotal * 100) / lenghtOfFile));
+                            }
+                        });
+                        output.write(buffer, 0, len1);
+                    }
+                    step = 80;
+                    in.close();
+                    output.flush();
+                    output.close();
+                    step = 90;
+
+                    File tempDownloadFile = new File(tempDownloadDirectoryName, downloadedFileName);
+                    if (tempDownloadFile.length() != lenghtOfFile) {
+                        handler.post(() -> {
+                            projectStatics.showDialog(context, "خطا در دانلود", "فایل درخواستی به شکل نامناسبی دانلود شد. لطفا دوباره تلاش کنید.", getResources().getString(R.string.ok), null, "", null);
+                            progressBarDet.setVisibility(View.GONE);
+                            isDownloading = false;
+                        });
+                        return;
+                    }
+                    step = 100;
+
+                    step = 110;
+
+                    handler.post(() -> progressBarDet.setVisibility(View.GONE));
+
+                    handler.post(() -> Toast.makeText(context, "دانلود کامل شد ... در حال استخراج مسیر", Toast.LENGTH_LONG).show());
+                    handler.post(() -> {
+                        //  آغاز عملیات دیکریپت کردن
+                        DecryptAndGenerateMapAndDbUpdate(tempDownloadDirectoryName, downloadedFileName, currentObj);
+                    });
+                } else {
+                    String msgToShow = "اتصال با سرور دچار مشکل است و در حال حاظر این با کد خطای "+ httpConn.getResponseCode() +" مواجه هستیم";
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            projectStatics.showDialog(context, "خطا در دانلود", msgToShow, getResources().getString(R.string.ok), null, "", null);
+                            progressBarDet.setVisibility(View.GONE);
+                        }
+                    });
+                }
+
+
+            } catch (Exception e) {
+
+                Log.e(Tag, "اکسپشن" + step + " _ " + remoteAddr + "\n" + e.getMessage());
+                e.printStackTrace();
+                String msg = "یک خطای پیش بینی نشده در هنگام دانلود رخ داده است. لطفا دوباره تلاش کنید.";
+                if (e.getMessage().toLowerCase().contains("time"))
+                    msg = "مدت زمان زیادی برای دانلود سپری شد. احتمالا اینترنت شما ضعیف است یا مشکلی در سرور وجود دارد.";
+                String msgToShow = msg;
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        projectStatics.showDialog(context, "خطا در دانلود", msgToShow, getResources().getString(R.string.ok), null, "", null);
+                        progressBarDet.setVisibility(View.GONE);
+                    }
+                });
+                TTExceptionLogSQLite.insert(e.getMessage(), step + "-" + remoteAddr, PrjConfig.frmSafeGpxView, 400);
+            }
+            isDownloading = false;
+        });
+        thread.start();
     }
 
     public void doDownloadInBackground(String remoteAddr, String tempDownloadDirectoryName, String downloadedFileName, NbSafeGpx currentObj, Context context) {//, Button view, ProgressBar progressBarDet, ProgressBar progressBarIndet,, Button btnMore

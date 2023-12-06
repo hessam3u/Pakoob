@@ -35,6 +35,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLConnection;
@@ -1063,7 +1064,7 @@ public class MapSelect extends HFragment {
                                 isDownloading = false;;
                                 return;
                             }
-                            doDownloadInBackground(res.command,  tempDownloadFolder, fileName, mapsFolder, currentObj, holder, context);
+                            doDownloadInBackground2(res.command,  tempDownloadFolder, fileName, mapsFolder, currentObj, holder, context);
 //                            boolean writtenToDisk = writeResponseBodyToDisk(response.body(), downloadDirectoryName, fileName);
 //                            Log.d(TAG, "file download was a success? " + writtenToDisk);
 //
@@ -1103,6 +1104,189 @@ public class MapSelect extends HFragment {
                 }
             });
         }
+
+        //این تابع تست نشده اما با کمک جی پی تی نوشته شده و احتمالا کار میکنه اما به محض این که برنامه نویسش تموم شد، باگ مربوط به
+        //Connection Reset هم حل شد!
+        //نوشته شده به تاریخ 14020915
+        public void doDownloadInBackground2(String remoteAddr, String tempDownloadDirectoryName, String fileName, String mapsFolderName, NbMap currentObj, NbMapViewHolder holder, Context context) {//, Button view, ProgressBar progressBarDet, ProgressBar progressBarIndet,, Button btnMore
+            Handler handler = new Handler(Looper.getMainLooper());
+            holder.progressBarDet.setProgress(0);
+            holder.progressBarDet.setVisibility(View.VISIBLE);
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    int step = 0;
+                    try {
+                        //                        //connecting to url
+//                        String url = "http://pakoob24.ir/ui/temp/aa.jpg";
+                        URL url = new URL(remoteAddr);
+
+                        //1401-03-23 : https://stackoverflow.com/questions/59093629/add-a-self-signed-ssl-certificate-to-httpurlconnection
+                        //رفع خطای دانلود ناموفق
+                        if ( (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N)){
+                            TrustManager[] trustAllCerts = new TrustManager[]{
+                                    new X509ExtendedTrustManager() {
+                                        public void checkClientTrusted(X509Certificate[] chain, String authType, Socket socket) {}
+                                        public void checkServerTrusted(X509Certificate[] chain, String authType, Socket socket) {}
+                                        public void checkClientTrusted(X509Certificate[] chain, String authType, SSLEngine engine) {}
+                                        public void checkServerTrusted(X509Certificate[] chain, String authType, SSLEngine engine) {}
+                                        public void checkClientTrusted(X509Certificate[] chain, String authType) {}
+                                        public void checkServerTrusted(X509Certificate[] chain, String authType) {}
+                                        public X509Certificate[] getAcceptedIssuers() {
+                                            return new X509Certificate[0];
+                                        }
+                                    }
+                            };
+
+                            SSLContext sslContext = SSLContext.getInstance("TLS");
+                            sslContext.init(null, trustAllCerts, null);
+
+                            HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
+                        }
+
+                        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+                        int responseCode = httpConn.getResponseCode();
+                        // Check if the connection is successful
+                        if (responseCode == HttpURLConnection.HTTP_OK) {
+
+//                            InputStream inputStream = httpConn.getInputStream();
+//
+//                            FileOutputStream outputStream = new FileOutputStream(saveFilePath);
+//
+//                            int bytesRead;
+//                            byte[] buffer = new byte[4096];
+//                            while ((bytesRead = inputStream.read(buffer)) != -1) {
+//                                outputStream.write(buffer, 0, bytesRead);
+//                            }
+//
+//                            outputStream.close();
+//                            inputStream.close();
+//                            System.out.println("File downloaded successfully!");
+
+                            int lenghtOfFile = httpConn.getContentLength();//c.getContentLength();
+                            step = 30;
+                            if (lenghtOfFile <= 0) {
+                                handler.post(new Runnable() {
+                                    public void run() {
+                                        projectStatics.showDialog(context, "خطا در دانلود", "فایل درخواستی قابل دانلود نمی باشد.", getResources().getString(R.string.ok), null, "", null);
+                                    }
+                                });
+                                isDownloading = false;
+                                return;
+                            }
+                            step = 40;
+
+                            int BUFFER_SIZE = 8192;
+                            //this is where the file will be seen after the download
+                            FileOutputStream output = new FileOutputStream(new File(tempDownloadDirectoryName, fileName));
+                            step = 50;
+                            //file input is from the url
+                            InputStream in = httpConn.getInputStream();//new BufferedInputStream(url.openStream());//c.getInputStream();
+                            step = 60;
+                            BufferedInputStream bis = new BufferedInputStream(in, BUFFER_SIZE);
+                            step = 70;
+
+                            //here’s the download code
+                            byte[] buffer = new byte[BUFFER_SIZE];
+                            int len1 = 0;
+                            long total = 0;
+
+                            while ((len1 = bis.read(buffer, 0, BUFFER_SIZE)) > 0) {
+                                total += len1; //total = total + len1
+                                long finalTotal = total;
+                                handler.post(new Runnable() {
+                                    public void run() {
+                                        holder.progressBarDet.setProgress((int) ((finalTotal * 100) / lenghtOfFile));
+                                    }
+                                });
+                                output.write(buffer, 0, len1);
+                            }
+                            step = 80;
+                            in.close();
+                            output.flush();
+                            output.close();
+                            step = 90;
+
+                            File tempDownloadFile = new File(tempDownloadDirectoryName, fileName);
+                            if (tempDownloadFile.length() != lenghtOfFile) {
+                                handler.post(new Runnable() {
+                                    public void run() {
+                                        projectStatics.showDialog(context, "خطا در دانلود", "فایل درخواستی به شکل نامناسبی دانلود شد. لطفا دوباره تلاش کنید.", getResources().getString(R.string.ok), null, "", null);
+                                    }
+                                });
+                                isDownloading = false;
+                                return;
+                            }
+                            step = 100;
+                            boolean moveRes = hutilities.moveFile(tempDownloadDirectoryName + File.separator + fileName, mapsFolderName, fileName);
+                            if (!moveRes) {
+                                handler.post(new Runnable() {
+                                    public void run() {
+                                        projectStatics.showDialog(context, "خطا در دانلود", "در حال حاضر امکان ساعت فایل دانلود شده وجود ندارد. لطفا دوباره تلاش کنید.", getResources().getString(R.string.ok), null, "", null);
+                                    }
+                                });
+                                isDownloading = false;
+                                return;
+                            }
+                            step = 110;
+
+                            handler.post(new Runnable() {
+                                public void run() {
+                                    holder.progressBarDet.setVisibility(View.GONE);
+                                }
+                            });
+
+                            handler.post(new Runnable() {
+                                public void run() {
+                                    Toast.makeText(context, "دانلود کامل شد ... در حال ساخت مسیر", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                            handler.post(new Runnable() {
+                                public void run() {
+                                    // آغاز عملیات دیکریپت کردن
+                                    DecryptAndGenerateMapAndDbUpdate(hMapTools.CustomMapMinZoom, hMapTools.CustomMapMaxZoomNormal, mapsFolderName, fileName, currentObj, holder);
+                                }
+                            });
+
+
+                        } else {
+                            String msgToShow = "اتصال با سرور دچار مشکل است و در حال حاظر این با کد خطای "+ httpConn.getResponseCode() +" مواجه هستیم";
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    projectStatics.showDialog(context, "خطا در دانلود", msgToShow, getResources().getString(R.string.ok), null, "", null);
+                                    holder.progressBarDet.setVisibility(View.GONE);
+                                }
+                            });
+                        }
+                        httpConn.disconnect();
+                        //END of gpt
+
+
+                    } catch (Exception e) {
+
+                        Log.e("اکسپشن", step + " _ " + remoteAddr + "\n" + e.getMessage());
+                        e.printStackTrace();
+                        String msg = "یک خطای پیش بینی نشده در هنگام دانلود رخ داده است. لطفا دوباره تلاش کنید.";
+                        if (e.getMessage().toLowerCase().contains("time"))
+                            msg = "مدت زمان زیادی برای دانلود سپری شد. احتمالا اینترنت شما ضعیف است یا مشکلی در سرور وجود دارد.";
+                        String msgToShow = msg;
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                projectStatics.showDialog(context, "خطا در دانلود", msgToShow, getResources().getString(R.string.ok), null, "", null);
+                                holder.progressBarDet.setVisibility(View.GONE);
+                            }
+                        });
+                        TTExceptionLogSQLite.insert(step + "-" + remoteAddr + "--"+ e.getMessage(),stktrc2k(e) , PrjConfig.frmMapSelect, 400);
+
+                    }
+                    isDownloading = false;
+                }
+            });
+            thread.start();
+        }
+
 
         public void doDownloadInBackground(String remoteAddr, String tempDownloadDirectoryName, String fileName, String mapsFolderName, NbMap currentObj, NbMapViewHolder holder, Context context) {//, Button view, ProgressBar progressBarDet, ProgressBar progressBarIndet,, Button btnMore
             Handler handler = new Handler(Looper.getMainLooper());

@@ -203,7 +203,7 @@ public class MainActivity extends MainActivityManager {
         if (intent.getExtras() != null && intent.getExtras().containsKey("ChanalId")) {
             //برای زمانی که روی نوتیفیکیشن مربوط به ثبت ترک کلیک میکنه میخوایم که ترک ها لود بشه حتما
             String st = intent.getExtras().getString("ChanalId");
-            appExistsBeforeAndShouldReloadAll_ReReadPois = true;
+            //appExistsBeforeAndShouldReloadAll_ReReadPois = true; 1402-09-14 POIHIDE
             appExistsBeforeAndShouldReloadAll_ReReadDialogMap = true;
         }
     }
@@ -212,6 +212,13 @@ public class MainActivity extends MainActivityManager {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         onCreateIsCalling = true;
+
+        //Check prev versions POIHIDE
+        if (savedInstanceState != null) {
+            savedInstanceState.getInt(REDRAW_POIS_ON_STATE, 1);
+        }
+        appExistsBeforeAndShouldReloadAll_ReReadPois = true; //POIHIDE
+
 
 
         //GPXFile.DeleteAllNbPois();
@@ -750,7 +757,10 @@ public class MainActivity extends MainActivityManager {
             TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmMainActivity, 1506);
         }
     }
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 //1400-01-03
 //    public boolean isGPSEnabled(Context mContext) {
 //        LocationManager locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
@@ -1140,10 +1150,11 @@ public class MainActivity extends MainActivityManager {
     public void locationChangedFromMapPage(Location location) {
 
     }
-
+    private static final String REDRAW_POIS_ON_STATE = "redraw";
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putInt(REDRAW_POIS_ON_STATE, 1);//POIHIDE
 //        getSupportFragmentManager().putFragment(savedInstanceState, "mapPage", mapPage);
 //        getSupportFragmentManager().putFragment(savedInstanceState, "home", home);
 
