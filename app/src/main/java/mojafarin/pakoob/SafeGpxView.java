@@ -39,6 +39,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509ExtendedTrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import bo.NewClasses.InsUpdRes;
 import bo.NewClasses.SimpleRequest;
@@ -591,6 +592,26 @@ public class SafeGpxView extends HFragment {
                     sslContext.init(null, trustAllCerts, null);
 
                     HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
+                }
+                else{
+                    TrustManager[] trustAllCerts = new TrustManager[]{
+                            new X509TrustManager() {
+                                public X509Certificate[] getAcceptedIssuers() {
+                                    return new X509Certificate[0];
+                                }
+
+                                public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                                }
+
+                                public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                                }
+                            }
+                    };
+
+                    // Install the all-trusting trust manager
+                    SSLContext sc = SSLContext.getInstance("TLS");
+                    sc.init(null, trustAllCerts, new java.security.SecureRandom());
+                    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
                 }
 
 
