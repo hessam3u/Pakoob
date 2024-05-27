@@ -208,7 +208,7 @@ public class RouteDesignMode {
         if (editingRoute == null || editingRoute.Name == null || editingRoute.Name.length() == 0){
             data.Color = GPXFile.RandomColors.get(rand.nextInt(GPXFile.colorCount));
             Calendar now = Calendar.getInstance();
-            data.Name = activity.getResources().getString(R.string.Route) + " " + MyDate.CalendarToPersianDateString(now, MyDate.DateToStringFormat.yyyymmdd, "")//Integer.toString(jalaliDate.getYear())+ Integer.toString(jalaliDate.getMonthPersian().getValue())+ Integer.toString(jalaliDate.getDay())
+            data.Name = activity.getResources().getString(R.string.Design) + " " + MyDate.CalendarToPersianDateString(now, MyDate.DateToStringFormat.yyyymmdd, "")//Integer.toString(jalaliDate.getYear())+ Integer.toString(jalaliDate.getMonthPersian().getValue())+ Integer.toString(jalaliDate.getDay())
                     +"-"+ MyDate.CalendarToTimeString(now, MyDate.TimeToStringFormat.HourMinSec, "");//Integer.toString(now.get(Calendar.HOUR_OF_DAY))+ Integer.toString(now.get(Calendar.MINUTE))+ Integer.toString(now.get(Calendar.SECOND));
         }
         else{

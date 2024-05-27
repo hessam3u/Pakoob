@@ -148,12 +148,21 @@ public class MainActivity extends MainActivityManager {
                                 }
                                 , ""
                                 , null);
-                    } else if (buyType == NbMap.Enums.NbBuyType_Map) {
+                    } else if (buyType == NbMap.Enums.NbBuyType_GPX) {
                         projectStatics.showDialog(MainActivity.this
                                 , getResources().getString(R.string.afterBuyGPX_title)
                                 , getResources().getString(R.string.afterBuyGPX_desc)
                                 , getResources().getString(R.string.ok)
-                                , null
+                                , view -> {
+                                    if (currentFragment instanceof SafeGpxView){
+                                        SafeGpxView tmp = (SafeGpxView) currentFragment;
+                                        tmp.reOpenForDownloadAfterBuy();
+                                    }
+                                    else{
+                                        SafeGpxView frm = SafeGpxView.getInstance(Integer.valueOf(goodId_NbMapId), PrjConfig.frmMainActivity);
+                                        showFragment(frm);
+                                    }
+                                }
                                 , ""
                                 , null);
                     }

@@ -2,23 +2,20 @@ package mojafarin.pakoob.mainactivitymodes;
 
 import static utils.HFragment.stktrc2k;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.PowerManager;
-import android.telecom.ConnectionService;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.core.app.ActivityCompat;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.Lifecycle;
 
 import com.github.eloyzone.jalalicalendar.JalaliDate;
 import com.google.android.gms.maps.model.JointType;
@@ -27,7 +24,6 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -47,7 +43,6 @@ import mojafarin.pakoob.TripComputer;
 import mojafarin.pakoob.app;
 import utils.MyDate;
 import utils.PrjConfig;
-import utils.hutilities;
 import utils.projectStatics;
 
 public class DialogRecordTrack {
@@ -73,16 +68,7 @@ public class DialogRecordTrack {
     TextView lblFinishRecording;
     FloatingActionButton btnGoToTripComputer, btnPlayPause,btnFinishRecording;
 
-    public void initializeComponentes() {
-        color_of_currentTrack = Color.CYAN;//Color.parseColor();
-
-        pnlRecordTrack = activity.findViewById(R.id.pnlRecordTrack);
-        btnGoToTripComputerParent = activity.findViewById(R.id.btnGoToTripComputerParent);
-        lblFinishRecording = activity.findViewById(R.id.lblFinishRecording);
-        btnGoToTripComputer = activity.findViewById(R.id.btnGoToTripComputer);
-        btnPlayPause = activity.findViewById(R.id.btnPlayPause);
-        btnFinishRecording = activity.findViewById(R.id.btnFinishRecording);
-
+    public void initializeComponentsOnResume(){
         //btnGoToTripComputer.setImageBitmap(projectStatics.textAsBitmapFontello("\uE811", 80, Color.BLACK, activity));
         //btnGoToTripComputer.setImageResource(R.drawable.ic_trip_computer);
         btnGoToTripComputer.setOnClickListener(view -> {
@@ -109,17 +95,33 @@ public class DialogRecordTrack {
         });
         //btnFinishRecording.setImageBitmap(projectStatics.textAsBitmapFontello("\uF11E", 80, Color.GREEN, activity));
         btnFinishRecording.setOnClickListener(view -> {
+            btnFinishRecording_Click();
+        });
+    }
+    public void initializeComponents() {
+        color_of_currentTrack = Color.CYAN;//Color.parseColor();
+        color_of_currentTrack = Color.CYAN;//Color.parseColor();
 
-            try {
-                if (getIsRecordingForceReRead()) {
+        pnlRecordTrack = activity.findViewById(R.id.pnlRecordTrack);
+        btnGoToTripComputerParent = activity.findViewById(R.id.btnGoToTripComputerParent);
+        lblFinishRecording = activity.findViewById(R.id.lblFinishRecording);
+        btnGoToTripComputer = activity.findViewById(R.id.btnGoToTripComputer);
+        btnPlayPause = activity.findViewById(R.id.btnPlayPause);
+        btnFinishRecording = activity.findViewById(R.id.btnFinishRecording);
+        initializeComponentsOnResume();
+    }
+    public void btnFinishRecording_Click(){
 
-                    projectStatics.showDialog(activity
-                            , activity.getResources().getString(R.string.StopTrackRecording_Title)
-                            , activity.getResources().getString(R.string.StopTrackRecording_Desc)
-                            , activity.getResources().getString(R.string.ok), view1 -> {
-                                try {
+        try {
+            if (getIsRecordingForceReRead()) {
 
-                                    List<NbCurrentTrack> trackPointsInDb = NbCurrentTrackSQLite.selectAll();
+                projectStatics.showDialog(activity
+                        , activity.getResources().getString(R.string.StopTrackRecording_Title)
+                        , activity.getResources().getString(R.string.StopTrackRecording_Desc)
+                        , activity.getResources().getString(R.string.ok), view1 -> {
+                            try {
+
+                                List<NbCurrentTrack> trackPointsInDb = NbCurrentTrackSQLite.selectAll();
                                 int trkSize =trackPointsInDb.size();
                                 if ( trkSize== 0){
                                     Toast.makeText(mapPage.getContext(), mapPage.getString(R.string.currentTrackIsTooShortToSave), Toast.LENGTH_LONG).show();
@@ -153,35 +155,35 @@ public class DialogRecordTrack {
                                     return;
                                 }
                                 NbPoi saved = null;
-                                    saved = GPXFile.SaveDesignedRouteToDb(0, poiType, data, activity);
+                                saved = GPXFile.SaveDesignedRouteToDb(0, poiType, data, activity);
 
                                 if (saved.NbPoiId != 0) {
                                     //Not working after fragmenting...
                                     activity.openEditTrack(saved.NbPoiId, "MainActivity", 0, null);
                                     discardTrackPanel();
                                 }
-                                } catch (Exception ex) {
-                                    ex.printStackTrace();
-                                    projectStatics.showDialog(activity
-                                            , activity.getResources().getString(R.string.vali_SaveInFileError)
-                                            , activity.getResources().getString(R.string.vali_SaveInFileError_Desc) + ex.getMessage()
-                                            , activity.getResources().getString(R.string.ok)
-                                            , null
-                                            , ""
-                                            , null);
-                                    Log.e("خطا", ex.getMessage());
-                                    ex.printStackTrace();
-                                    TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmTrackRecording, 112);
-                                }
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                                projectStatics.showDialog(activity
+                                        , activity.getResources().getString(R.string.vali_SaveInFileError)
+                                        , activity.getResources().getString(R.string.vali_SaveInFileError_Desc) + ex.getMessage()
+                                        , activity.getResources().getString(R.string.ok)
+                                        , null
+                                        , ""
+                                        , null);
+                                Log.e("خطا", ex.getMessage());
+                                ex.printStackTrace();
+                                TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmTrackRecording, 112);
                             }
-                            , activity.getResources().getString(R.string.cancel), null);
+                        }
+                        , activity.getResources().getString(R.string.cancel), null);
 
 
-                }
-                else{
-                    Context context = mapPage.getContext();
-                    //1402-03-21
-                    //در راستای حذف دسترسی در پس زمینه کامنت شد
+            }
+            else{
+                Context context = mapPage.getContext();
+                //1402-03-21
+                //در راستای حذف دسترسی در پس زمینه کامنت شد
 //                    if (Build.VERSION.SDK_INT >= 29) {
 //                        if (ActivityCompat.checkSelfPermission((Activity) context, Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 //                            if (Build.VERSION.SDK_INT == 29) {
@@ -199,23 +201,22 @@ public class DialogRecordTrack {
 //                            }
 //                        }
 //                    }
-                    this.startRecording();
-                    Toast.makeText(context.getApplicationContext(), "ذخیره مسیر آغاز شد...", Toast.LENGTH_LONG).show();
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                projectStatics.showDialog(activity
-                        , activity.getResources().getString(R.string.vali_SaveInFileError)
-                        , activity.getResources().getString(R.string.vali_SaveInFileError_Desc) + ex.getMessage()
-                        , activity.getResources().getString(R.string.ok)
-                        , null
-                        , ""
-                        , null);
-                Log.e("خطا", ex.getMessage());
-                ex.printStackTrace();
-                TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmTrackRecording, 111);
+                this.startRecording();
+                Toast.makeText(context.getApplicationContext(), "ذخیره مسیر آغاز شد...", Toast.LENGTH_LONG).show();
             }
-        });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            projectStatics.showDialog(activity
+                    , activity.getResources().getString(R.string.vali_SaveInFileError)
+                    , activity.getResources().getString(R.string.vali_SaveInFileError_Desc) + ex.getMessage()
+                    , activity.getResources().getString(R.string.ok)
+                    , null
+                    , ""
+                    , null);
+            Log.e("خطا", ex.getMessage());
+            ex.printStackTrace();
+            TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmTrackRecording, 111);
+        }
     }
 
     public static void checkPowerSavingMode(Activity activity) {
@@ -281,7 +282,7 @@ public class DialogRecordTrack {
         checkPowerSavingMode(activity);
 
         if (btnFinishRecording == null)
-            initializeComponentes();
+            initializeComponents();
         lastLocation = null;
         //pnlRecordTrack.setVisibility(View.VISIBLE);
         setVisibilityAndEnvironment(true);
@@ -294,7 +295,7 @@ public class DialogRecordTrack {
     public void onResumeRecordingPanel(LatLng lastLocation) {
         setIsRecordPanelActive(true);
         if (btnFinishRecording == null)
-            initializeComponentes();
+            initializeComponents();
         this.lastLocation = lastLocation;
         //pnlRecordTrack.setVisibility(View.VISIBLE);
         setVisibilityAndEnvironment(true);
@@ -428,4 +429,5 @@ public class DialogRecordTrack {
         app.session.setIsTrackRecording(active ? 1 : 2);
         this.IsRecording = active ? 1 : 2;
     }
+
 }

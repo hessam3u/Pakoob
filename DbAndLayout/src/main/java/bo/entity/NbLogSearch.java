@@ -72,5 +72,7 @@ public class NbLogSearch {
     public static final byte CommandType_OpenTrackPage = 6;
     public static final byte CommandType_OpenWeatherShow = 7;
     public static final byte CommandType_SafeGpxSearch = 8;
+    public static final byte CommandType_MapDownload = 9;
+    public static final byte CommandType_GPXDownload = 10;
 
 }

@@ -1,5 +1,6 @@
 package mojafarin.pakoob;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -46,11 +47,13 @@ import bo.NewClasses.SimpleRequest;
 import bo.dbConstantsTara;
 import bo.entity.BuyMapRequestDTO;
 import bo.entity.DownloadRequest;
+import bo.entity.NbLogSearch;
 import bo.entity.NbMap;
 import bo.entity.NbPoi;
 import bo.entity.NbSafeGpx;
 import bo.entity.NbSafeGpxList;
 import bo.entity.SearchRequestDTO;
+import bo.sqlite.NbLogSearchSQLite;
 import bo.sqlite.NbPoiSQLite;
 import bo.sqlite.TTExceptionLogSQLite;
 import maptools.GPXFile;
@@ -379,6 +382,15 @@ public class SafeGpxView extends HFragment {
         return Color.rgb((int)red, (int)green, (int)blue);
     }
 
+    public void reOpenForDownloadAfterBuy(){
+        btnBuyAndDownload.setVisibility(View.GONE);
+        btnDownload.setVisibility(View.VISIBLE);
+        currentObj.BuyStatus = NbMap.Enums.BuyStatusTypes_Done;
+        Toast.makeText(context, getString(R.string.downloadStarted), Toast.LENGTH_LONG).show();
+        btnOrder_Click(currentObj);
+    }
+
+    public AlertDialog dialog_getdiscount = null;
     boolean isDownloading = false;
     public Intent intent = null;
     public boolean btnOrder_Click(NbSafeGpx currentObj) {
@@ -401,21 +413,29 @@ public class SafeGpxView extends HFragment {
         isDownloading = true;;
 
         if (currentObj.BuyStatus == NbMap.Enums.BuyStatusTypes_Done) {
+            //NbLogSearchSQLite.insert(NbLogSearch.getInstance(NbLogSearch.CommandType_GPXDownload, "MAP_ID:" +currentObj.NbSafeGPXId, 2, 0, 0));
             DoDownload(currentObj);
         } else if (currentObj.BuyStatus == NbMap.Enums.BuyStatusTypes_None) {
-            DoBuyRequest(currentObj, progressBarIndet);
+            AlertDialog.Builder alertDialogBuilder = DialogGetDisCopon.GetBuilder(context, view -> {
+                DoBuyRequest(currentObj, DialogGetDisCopon.GetDiscountCode(dialog_getdiscount), progressBarIndet);
+                dialog_getdiscount.dismiss();
+            }, null);
+
+            dialog_getdiscount = alertDialogBuilder.create();
+            dialog_getdiscount.show();
+            projectStatics.SetDialogButtonStylesAndBack(dialog_getdiscount, this.context, projectStatics.getIranSans_FONT(context), 18);
         }
 
         return true;
     }
 
-    private boolean DoBuyRequest(NbSafeGpx currentObj, ProgressBar progressBar) {
+    private boolean DoBuyRequest(NbSafeGpx currentObj, String DiscountCode, ProgressBar progressBar) {
         if (!hutilities.isInternetConnected(context)) {
             projectStatics.showDialog(context, this.getResources().getString(com.pakoob.tara.R.string.NoInternet), this.getResources().getString(com.pakoob.tara.R.string.NoInternet_Desc), this.getResources().getString(com.pakoob.tara.R.string.ok), view -> {}, "", null);
             return false;
         }
         BuyMapRequestDTO buyRequest = new BuyMapRequestDTO();
-        buyRequest.DiscountCode = "";
+        buyRequest.DiscountCode = DiscountCode;
         buyRequest.NBMapId = currentObj.NbSafeGPXId;
         buyRequest.NbBuyType = BuyMapRequestDTO.NbBuyType_Gpx;
         progressBar.setVisibility(View.VISIBLE);
@@ -463,12 +483,19 @@ public class SafeGpxView extends HFragment {
                             ft.addToBackStack(null);
                             DialogFragment dialogFragment = new MapSelect_Dialog_GotoBank();
                             ((MapSelect_Dialog_GotoBank) dialogFragment).link = res.resValue;
+                            String discountMsg = "";
                             ((MapSelect_Dialog_GotoBank) dialogFragment).price = currentObj.Price;
+                            {
+                                String[] parts = res.command.split(";;");
+                                if(parts.length > 0)
+                                    ((MapSelect_Dialog_GotoBank) dialogFragment).price = Double.valueOf(parts[0]);
+                                if(parts.length > 1 && parts[1].length() > 1)
+                                    ((MapSelect_Dialog_GotoBank) dialogFragment).discountMsg = parts[1];
+                            }
+                            ((MapSelect_Dialog_GotoBank) dialogFragment).message = res.message;
 
                             dialogFragment.show(getFragmentManager(), "dialog");
 
-//                                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(res.resValue));
-//                                startActivity(browserIntent);
                         } else {
                             projectStatics.showDialog(context, titleMsg, res.message, getResources().getString(R.string.ok), null, "", null);
                         }

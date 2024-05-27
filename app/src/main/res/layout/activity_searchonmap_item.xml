@@ -30,7 +30,7 @@
             android:orientation="vertical">
             <ImageView
                 android:layout_margin="4dp"
-                android:tint="#AE002095"
+                app:tint="#AE002095"
                 android:src="@drawable/ac_peak1"
                 android:id="@+id/txtImage"
                 android:layout_width="match_parent"
@@ -105,8 +105,8 @@
     <TextView
         android:id="@+id/btnIamFan"
         style="@style/label"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:fontFamily="@font/fontello"

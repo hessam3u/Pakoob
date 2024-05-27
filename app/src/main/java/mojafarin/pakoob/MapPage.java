@@ -251,7 +251,6 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         mainActivity = (MainActivity) context;
         initSensors();
         dialogRecordTrack = new DialogRecordTrack((MainActivity) context, this);
-        dialogRecordTrack.initializeComponentes();
 
 
         sightNGoMode = new SightNGoMode((MainActivity) context, this);
@@ -363,6 +362,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         //1399-09-09 new Version Comment
         btnAdd = v.findViewById(R.id.btnAdd);
         btnAdd.setImageBitmap(projectStatics.textAsBitmapFontello("\uE817", 70, Color.RED, context.getApplicationContext()));
+        btnAdd_init();
         btnAdd.setOnClickListener(view -> {
             btnAdd_Click();
         });
@@ -397,10 +397,6 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             }
         });
 
-
-        routeDesignMode.initRouteDesignPanel();
-//
-        addWaypointMode.initAddWaypointPanel();
 
         scaleView = v.findViewById(R.id.scaleView);
         scaleView.metersOnly();
@@ -462,7 +458,18 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             }
         });
 
+
+        dialogRecordTrack.initializeComponents();
+        routeDesignMode.initRouteDesignPanel();
+        addWaypointMode.initAddWaypointPanel();
+        btnAdd_Events();
+
         super.initializeComponents(v);
+    }
+    //pnlRecordTrack:
+    public FloatingActionButton btnGoToTripComputer, btnPlayPause,btnFinishRecording;
+
+    public void initializeComponentsOnResume(){
     }
 
     public void clearAllSearchResults() {
@@ -1441,10 +1448,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
 
     AlertDialog btnAddDialog = null;
 
-    private void btnAdd_Click() {
-        if (anyDialogIsOpen())
-            return;
-
+    private void btnAdd_init(){
         AlertDialog.Builder builder = new AlertDialog.Builder((MainActivity) context);
         ViewGroup viewGroup = view.findViewById(android.R.id.content);
         View dialogView = LayoutInflater.from((MainActivity) context).inflate(R.layout.dialog_add_on_activitymain, viewGroup, false);
@@ -1456,15 +1460,8 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         btnDialog_SendLocation = dialogView.findViewById(R.id.btnDialog_SendLocation);
         btnDialog_RecordTrack = dialogView.findViewById(R.id.btnDialog_RecordTrack);
 
-        //true||
-        if (dialogRecordTrack.getIsRecordPanelActive()) {
-            btnDialog_RecordTrack.setVisibility(View.GONE);
-        } else {
-            //1402-04 در این نسخه، این دکمه رو کلا غیر فعال کردم که دیده نشه
-            //btnDialog_RecordTrack.setVisibility(View.VISIBLE);
-        }
-
-        btnAddDialog.show();
+    }
+    private void btnAdd_Events(){
 
         btnDialog_PlotRoute.setOnClickListener(view -> {
             if (RouteMode == MAP_CLICK_MODE_ROUTE)
@@ -1514,6 +1511,21 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             Toast.makeText(context.getApplicationContext(), "ذخیره مسیر آغاز شد...", Toast.LENGTH_LONG).show();
             btnAddDialog.dismiss();
         });
+    }
+    private void btnAdd_Click() {
+        if (anyDialogIsOpen())
+            return;
+
+        //true||
+        if (dialogRecordTrack.getIsRecordPanelActive()) {
+            btnDialog_RecordTrack.setVisibility(View.GONE);
+        } else {
+            //1402-04 در این نسخه، این دکمه رو کلا غیر فعال کردم که دیده نشه
+            //btnDialog_RecordTrack.setVisibility(View.VISIBLE);
+        }
+
+        btnAddDialog.show();
+
     }
 
 
@@ -2024,6 +2036,12 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         return false;
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initializeComponentsOnResume();
+    }
     public void onResumeInChild() {
         try {
             Log.e(Tag, "بازگشت" + "OnResume Fired at MapPage" + " LOCATION MANAGER:" + (locationManager != null ? "NOT NULL" : "NULL") + " myLocationListener:" + (myLocationListener != null ? "NOT NULL" : "NULL"));

@@ -109,7 +109,7 @@
     <string name="dialog_readyToGoBank_title">در حال انتقال به بانک جهت پرداخت</string>
     <string name="dialog_readyToGoBank_paydesc"> مبلغ قابل پرداخت  </string>
     <string name="dialog_readyToGoBank_discountCop">در صورتی که کد تخفیف دارید، در کادر زیر وارد نمایید.</string>
-    <string name="dialog_readyToGoBank_paydesc1">"در صورت استفاده از مرورگرهایی مانند کروم، پس از پرداخت در بانک، می بایست گزینه را انتخاب کنید که به شکل صحیحی پرداخت را تکمیل نماید (معمولا با انتخاب گزینه Send Anyway پس از پرداخت). در صورتی که کیف پول شما از قبل مانده داشته باشد از آن مبلغ نیز استفاده خواهد شد."</string>
+    <string name="dialog_readyToGoBank_paydesc1">لطفا روال پرداخت را تا انتها ادامه دهید</string>
     <string name="dialog_readyToGoBank_paydesc_fel"> می‌باشد.</string>
 
     <string name="dialog_ertebatBaServer_Title">"ارتباط با سرور"</string>
@@ -189,6 +189,7 @@
     <string name="SearchHearForTracks">نام قله یا مسیر یا مختصات را جستجو کنید</string>
     <string name="btnUpdate">به روز رسانی</string>
     <string name="btnBuyAndDownload">خرید و دانلود</string>
+    <string name="downloadStarted">در حال دانلود فایل</string>
     <string name="btnRequestTrackToPakoob">ارسال درخواست</string>
     <string name="title_NoTrackToDownload">هیچ مسیری را برای دانلود آماده نکرده اید</string>
     <string name="title_PleaseFillTrackRequestForm">لطفا اطلاعات مسیر مورد نظر خود را وارد کنید:</string>
@@ -222,6 +223,7 @@
     <string name="btnDelete">حذف</string>
     <string name="btnEditOnMap">ویرایش روی نقشه</string>
     <string name="Route">مسیر</string>
+    <string name="Design">طراحی</string>
     <string name="SearchingSatellite">در حال محاسبه موقعیت</string>
     <string name="vali_GeneralError_Title">خطای اعتبارسنجی</string>
     <string name="vali_PleaseEnterName">لطفا نام را وارد کنید</string>
@@ -248,6 +250,10 @@
     <string name="lblShareCurrentLoc_LatLonAndTimeDesc">در متن، علاوه بر مختصات، زمان هم ضمیمه شود</string>
     <string name="lblShareCurrentLoc_GoogleMapLinkAndTime">ارسال لینک گوگل مپ</string>
     <string name="lblShareCurrentLoc_GoogleMapLinkAndTimeDesc">پیام قابل باز شدن در گوگل مپ باشد</string>
+
+    <string name="lblGetDiscount_Title">وارد کردن کپن تخفیف</string>
+    <string name="lblGetDiscount_Desc">در صورتی که کپن تخفیف دارید، آن را در کادر زیر وارد نمایید، در غیر این صورت این کادر را خالی بگذارید و دکمه ادامه را بفشارید</string>
+
 
     <string name="YouAreAddingWaypoint">ثبت نقطه (روی نقشه کلیک کنید یا در کادر زیر وارد نمایید)</string>
     <string name="nameOfWaypoint">نام نقطه</string>
@@ -481,6 +487,7 @@
     <string name="ClubSelected_Desc">باشگاه @@@ به عنوان باشگاه اصلی شما انتخاب گردید. برای تغییر این باشگاه، کافیست در صفحه نخست روی علامت باشگاه انگشت خود را نگه دارید.</string>
 
     <string name="Continue">ادامه</string>
+    <string name="ContinueWithDot">ادامه ...</string>
     <string name="SelectCity_Title">انتخاب شهر</string>
     <string name="SelectCity_Desc"></string>
 
@@ -631,6 +638,7 @@
     <string name="msgMapIsUnavailable_Desc">این نقشه در حال حاضر در سامانه ناموجود است. در صورتی که نیاز مبرم به این نقشه دارید، با پشتیبانی تماس حاصل فرمایید.</string>
     <string name="pleaseEnterTitle">عنوان مورد نیاز است</string>
     <string name="pleaseEnterTitle_Desc">لطفا عنوان مسیر یا قله مورد نظر را وارد نمایید</string>
+    <string name="Pay">پرداخت</string>
 
 
 </resources>

@@ -120,6 +120,7 @@
                 </LinearLayout>
 
                 <RelativeLayout
+                    android:background="@color/colorWhite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -235,6 +236,7 @@
                 <TextView
                     android:id="@+id/lblValidityDesc"
                     style="@style/label_s"
+                    android:padding="@dimen/leftrightMarginMul2"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -251,11 +253,17 @@
 
                     <TextView
                         style="@style/labelB"
+                        android:layout_margin="@dimen/leftrightMargin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right"
                         android:text="@string/SafeGpxDesc" />
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/leftrightMargin"
+                        >
                     <TextView
                         android:id="@+id/lblDesc"
                         style="@style/label"
@@ -265,6 +273,7 @@
                         android:layoutDirection="rtl"
                         android:text="اجرای برنامه های حرفه ای کوهنوردی از مشهد و حومه و برگزاری کلاس های آموزشی در سطح گسترده" />
 
+                </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -276,11 +285,16 @@
 
                     <TextView
                         style="@style/labelB"
+                        android:layout_margin="@dimen/leftrightMargin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right"
                         android:text="@string/ImportantNotes" />
-
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/leftrightMargin"
+                        >
                     <TextView
                         android:id="@+id/lblImportantNotes"
                         style="@style/label"
@@ -290,6 +304,7 @@
                         android:layoutDirection="rtl"
                         android:text="اجرای برنامه های حرفه ای کوهنوردی از مشهد و حومه و برگزاری کلاس های آموزشی در سطح گسترده" />
 
+                </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
