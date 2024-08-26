@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:versionCode="43"
-    android:versionName="2.3.3"
-    android:installLocation="internalOnly"
-    package="mojafarin.pakoob">
+    android:versionCode="45"
+    android:versionName="2.3.5"
+    android:installLocation="internalOnly">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -40,8 +39,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" android:testOnly="false"
-        android:networkSecurityConfig="@xml/network_security_config"
         >
+    <!--        android:networkSecurityConfig="@xml/network_security_config"-->
         <!--        -->
 
         <meta-data

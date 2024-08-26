@@ -30,6 +30,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    namespace 'com.pakoob.tara'
 }
 
 dependencies {
@@ -47,7 +48,7 @@ dependencies {
 
 
     //retrofit and gson and OkHttp
-    implementation 'com.squareup.retrofit2:retrofit:2.7.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.11.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
     implementation 'com.squareup.retrofit2:converter-scalars:2.5.0' //for convert normal text as api result
 
@@ -76,12 +77,12 @@ dependencies {
     implementation 'androidx.preference:preference:1.0.0'
 
     //baraye aks va load kardanesh az internet
-    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.squareup.picasso:picasso:2.8'
     implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
 
 
     //Feature highlight using https://github.com/KeepSafe/TapTargetView
-    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.13.0'
+    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.14.0'
 
     //for pull to refresh
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'

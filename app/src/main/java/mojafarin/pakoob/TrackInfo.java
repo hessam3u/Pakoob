@@ -1,21 +1,11 @@
 package mojafarin.pakoob;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.health.HealthStats;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.google.android.gms.maps.model.LatLng;
-
-import org.w3c.dom.Text;
-
-import java.util.HashMap;
-import java.util.function.DoubleUnaryOperator;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -23,7 +13,7 @@ import bo.entity.NbPoi;
 import bo.sqlite.NbPoiSQLite;
 import maptools.TrackData;
 import maptools.TrackProperties;
-import maptools.hMapTools;
+import maptools.GeoCalcs;
 
 public class TrackInfo extends Fragment {
     long NbPoiId = 0;
@@ -78,22 +68,22 @@ public class TrackInfo extends Fragment {
         tp.initFromTrackData(data);
 
         txtNumberOfPoints.setText(String.valueOf(dataSize));
-        txtDistance.setText(hMapTools.distanceBetweenFriendly(tp.distance));
-        txtAscentTotal.setText(hMapTools.distanceBetweenFriendly(tp.totalAscent));
-        txtDescentTotal.setText(hMapTools.distanceBetweenFriendly(tp.totalDecent));
-        txtAscentTotal1.setText(hMapTools.distanceBetweenFriendly(tp.totalAscent));
-        txtDescentTotal1.setText(hMapTools.distanceBetweenFriendly(tp.totalDecent));
-        txtDistanceAscent.setText(hMapTools.distanceBetweenFriendly(tp.ascentDistance));
-        txtDistanceDescent.setText(hMapTools.distanceBetweenFriendly(tp.descentDistance));
-        txtMaxElevation.setText(hMapTools.distanceBetweenFriendly(tp.maxElevation));
-        txtMinElevation.setText(hMapTools.distanceBetweenFriendly(tp.minElevation));
+        txtDistance.setText(GeoCalcs.distanceBetweenFriendly(tp.distance));
+        txtAscentTotal.setText(GeoCalcs.distanceBetweenFriendly(tp.totalAscent));
+        txtDescentTotal.setText(GeoCalcs.distanceBetweenFriendly(tp.totalDecent));
+        txtAscentTotal1.setText(GeoCalcs.distanceBetweenFriendly(tp.totalAscent));
+        txtDescentTotal1.setText(GeoCalcs.distanceBetweenFriendly(tp.totalDecent));
+        txtDistanceAscent.setText(GeoCalcs.distanceBetweenFriendly(tp.ascentDistance));
+        txtDistanceDescent.setText(GeoCalcs.distanceBetweenFriendly(tp.descentDistance));
+        txtMaxElevation.setText(GeoCalcs.distanceBetweenFriendly(tp.maxElevation));
+        txtMinElevation.setText(GeoCalcs.distanceBetweenFriendly(tp.minElevation));
 
-        txtDuration.setText(hMapTools.timeFriendly(tp.totalTime / 1000, hMapTools.TIME_FRIENDLY_MODE_LONG_EXACT));
-        txtDurationAscent.setText(hMapTools.timeFriendly(tp.ascentMs / 1000, hMapTools.TIME_FRIENDLY_MODE_LONG_EXACT));
-        txtDurationDescent.setText(hMapTools.timeFriendly(tp.decentMs / 1000, hMapTools.TIME_FRIENDLY_MODE_LONG_EXACT));
+        txtDuration.setText(GeoCalcs.timeFriendly(tp.totalTime / 1000, GeoCalcs.TIME_FRIENDLY_MODE_LONG_EXACT));
+        txtDurationAscent.setText(GeoCalcs.timeFriendly(tp.ascentMs / 1000, GeoCalcs.TIME_FRIENDLY_MODE_LONG_EXACT));
+        txtDurationDescent.setText(GeoCalcs.timeFriendly(tp.decentMs / 1000, GeoCalcs.TIME_FRIENDLY_MODE_LONG_EXACT));
 
-        txtAvgSpeed.setText(hMapTools.GetSpeedFriendlyKmPh(tp.distance / (tp.totalTime/1000) ) + "kmh");
-        txtMaxSpeed.setText(hMapTools.GetSpeedFriendlyKmPh(tp.maxSpeed ) + "kmh");
+        txtAvgSpeed.setText(GeoCalcs.GetSpeedFriendlyKmPh(tp.distance / (tp.totalTime/1000) ) + "kmh");
+        txtMaxSpeed.setText(GeoCalcs.GetSpeedFriendlyKmPh(tp.maxSpeed ) + "kmh");
 
         double ascentSlope = Math.atan(tp.totalAscent / (tp.ascentDistance * 1d)) * 180 / Math.PI;
         double descentSlope = Math.atan(tp.totalDecent / (tp.descentDistance* 1d)) * 180 / Math.PI;

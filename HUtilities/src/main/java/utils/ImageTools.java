@@ -133,10 +133,11 @@ public class ImageTools {
             }
 
             @Override
-            public void onBitmapFailed(Drawable errorDrawable) {
-                Log.e("تارگت", "Failed");
-
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                Log.e("تارگت", e.getMessage());
+                e.printStackTrace();
             }
+
             @Override
             public void onPrepareLoad(Drawable placeHolderDrawable) {
                 if (placeHolderDrawable != null) {}

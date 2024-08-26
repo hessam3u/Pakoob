@@ -15,7 +15,8 @@ public class PicassoOnScrollListener extends RecyclerView.OnScrollListener {
 
     public PicassoOnScrollListener(Context context) {
         if(this.sPicasso == null) {
-            this.sPicasso = Picasso.with(context.getApplicationContext());
+            //#PicassoUpdate140303 this.sPicasso = Picasso.with(context.getApplicationContext());
+            this.sPicasso = PicassoTrustAll.getInstance(context);
         }
     }
 

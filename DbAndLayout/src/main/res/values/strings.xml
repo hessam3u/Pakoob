@@ -116,6 +116,7 @@
     <string name="dialog_ertebatBaServer_Desc">"متاسفانه در ارتباط با سرور مشکلی به وجود آمده‌است. لطفا مجددا تلاش نمایید"</string>
 
     <string name="ok">"قبول"</string>
+    <string name="OpenBattrySetting">باز کردن تنظیمات باتری</string>
     <string name="afterBuyGPX_title">خرید مسیر</string>
     <string name="afterBuyGPX_desc">مسیر با موفقیت خریداری شد. شما مجددا به صفحه مربوط به آن هدایت شده و می توانید در بازه یک ماه آینده، آن را دانلود نمایید.</string>
 
@@ -216,8 +217,8 @@
     <string name="currentTrackIsTooShortToSave">به دلیل عدم برداشت مختصاتی، هیچ مسیری ذخیره نگردید</string>
     <string name="endSaveTrack">اتمام\nمسیر</string>
     <string name="discard">انصراف</string>
-    <string name="lblTrack_Title">عنوان:</string>
-    <string name="lblColor">رنگ:</string>
+    <string name="lblTrack_Title">تغییر عنوان:</string>
+    <string name="lblColor">تنظیم رنگ:</string>
     <string name="btnViewPoints">نمایش جدول نقاط</string>
     <string name="btnTrackInfo">جزئیات و آنالیز مسیر</string>
     <string name="btnDelete">حذف</string>
@@ -274,7 +275,7 @@
     <string name="Speed">سرعت</string>
     <string name="CourseAndDistance">گرا \n فاصله</string>
     <string name="SpeedAndTime">سرعت \n مدت</string>
-    <string name="lblBasicInfo">اطلاعات اولیه</string>
+    <string name="lblBasicInfo">اطلاعات مسیر</string>
     <string name="lblPointsCount">تعداد نقطه</string>
     <string name="DurationMoving">مدت حرکت</string>
     <string name="DurationStopped">مدت توقف</string>
@@ -512,7 +513,7 @@
     <string name="WaitUntilSatelliteFound_Title">در جستجوی ماهواره های GPS</string>
     <string name="WaitUntilSatelliteFound_Desc">لطفا تا تثبیت موقعیت مکانی خود صبر کنید. به محض تثبیت موقعیت، شکلک پایین صفحه تغییر شکل خواهد داد.\n در صورتی که مکان دستگاه خاموش است، آن را روشن نمایید.</string>
     <string name="CheckSavingPowerMode_Title">هشدار حالت ذخیره انرژی</string>
-    <string name="CheckSavingPowerMode_Desc">حالت ذخیره انرژی فعال است و این حالت باعث می شود مسیر به شکل تکه تکه و ناپیوسته ذخیره گردد. لطفا این حالت را غیر فعال نمایید</string>
+    <string name="CheckSavingPowerMode_Desc">حالت ذخیره انرژی فعال است و این حالت باعث می شود مسیر به شکل تکه تکه و ناپیوسته ذخیره گردد. در ادامه در قسمت تنظیمات، کمی پایین آمده و در بخش تنظیم باتری، حالت "بدون محدودیت" (در سامسونگ اولین گزینه) را تنظیم کنید. \nدر صورتی که این تنظیم کارساز نبود و مسیر فاصله دار برداشت شد، حالت ذخیره انرژی را غیر فعال نمایید</string>
 
 
     <string name="Home_WeatherAndTracks_Title">هواشناسی نقطه ای و دانلود ترک</string>
@@ -590,9 +591,11 @@
 
 
     <string name="SearchHearOrPressMap">جستجو کنید یا روی نقشه نگه دارید</string>
+    <string name="SearchOnTopOfSelectMap">نام یا شماره نقشه را جستجو کنید</string>
     <string name="showResultOnMap">نمایش نتایج روی نقشه</string>
     <string name="OpenForecast">پیش بینی هوا</string>
     <string name="btnSaveOrEdit_Save">ذخیره نقطه</string>
+    <string name="btnSaveChanges">ذخیره تغییرات</string>
     <string name="btnSaveOrEdit_Edit">ویرایش نقطه</string>
     <string name="OpenRoadRooting">مسیریابی جاده ای</string>
     <string name="DoShow">نمایش</string>
@@ -607,6 +610,7 @@
     <string name="HardnessLevel">درجه سختی</string>
     <string name="Validity">درجه اعتبار از نظر پاکوب</string>
     <string name="SafeGpxDesc">گزارش مسیر</string>
+    <string name="SafeGpxElevChart">نمودار افزایش و کاهش ارتفاع</string>
     <string name="ImportantNotes">نکات مهم مسیر</string>
     <string name="Price">قیمت</string>
     <string name="RequestSentMessage">درخواست مورد نظر به پاکوب ارسال گردید. نتیجه این درخواست به شما اطلاع داده خواهد شد</string>

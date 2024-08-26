@@ -31,6 +31,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import utils.HFragment;
+import utils.PicassoCircleTransform;
+import utils.PicassoTrustAll;
 import utils.PrjConfig;
 import utils.hutilities;
 import utils.projectStatics;
@@ -203,6 +205,7 @@ public class TourShowOne extends HFragment {
             , rowtxtCityName, rowtxtRegDesc, rowbtnRegister, rowtxtPrerequisites, rowtxtDesc_Short, rowtxtNecessaryTools
             , rowtxtSpecialProperty, rowtxtTimeTable;
     TextView txtPrerequisites, txtDesc_Short, txtNecessaryTools, txtSpecialProperty, txtTimeTable;
+    Picasso picassoInstance;
     @Override
     public void initializeComponents(View v) {
         btnBack = v.findViewById(R.id.btnBack);
@@ -292,12 +295,17 @@ public class TourShowOne extends HFragment {
 
         txtPageTitle.setText(currentObj.getName());
 
-        Picasso builder = Picasso.with(context);
-        Log.e("عکس", currentObj.ImageLink);
-        builder.load(currentObj.ImageLink)
-//                .placeholder((R.drawable.ic_launcher_background))  HHH 1400-01-10
-//                .error(R.drawable.ic_launcher_background) HHH 1400-01-10
-                .into(img);
+        //cmt @ 1403-04-22
+//        Picasso builder = Picasso.get();
+//        builder.load(currentObj.ImageLink)
+//                .into(img);
+
+        if (picassoInstance == null)
+            picassoInstance = PicassoTrustAll.getInstance(context);
+        picassoInstance.load(currentObj.ImageLink)
+                .error(R.drawable.ac_peak2)
+              .into(img);
+
         txtClubName.setText(currentObj.ClubName);
         txtTourLengthView.setText(currentObj.getTourLenghtView());
         txtPlaceOfTour.setText(currentObj.PlaceOfTour);

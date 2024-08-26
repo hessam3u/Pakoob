@@ -45,8 +45,14 @@ public interface ApiInterfaceMap {
     @POST("GetAdvs")//:NbAdvList
     Call<ResponseBody> GetAdvs(@Body SimpleRequest inp);// SimpleRequest:ListItemsResult<NbAdv>
 
-    @POST("SearchNbPoi")
-    Call<ResponseBody> SearchNbPoi(@Body SimpleRequest request);//SearchRequestDTO:ListItemsResult<NbPoi>, Filter: Name***LatS,LonW,LatN,LonE***PoiTypeForSearch***MyLat,MyLon***
+    @POST("SearchNbPoi_1")
+    Call<ResponseBody> SearchNbPoi_1(@Body SimpleRequest request);//SearchRequestDTO:ListItemsResult<NbPoi>, Filter: Name***LatS,LonW,LatN,LonE***PoiTypeForSearch***MyLat,MyLon***
+    @POST("SearchLatLon")
+    Call<ResponseBody> SearchLatLon(@Body SimpleRequest request);//SearchRequestDTO:Filter: Lat + %*% + Lon: title + %*% + elev + %*%
+    @POST("ReadOneSafeGpxDataPoints")
+    Call<ResponseBody> ReadOneSafeGpxDataPoints(@Body SimpleRequest request);//SearchRequestDTO (data.Filter=> Id, data.OtherCommand=> count of points or ) :InsUpdResGen<TrackDataCompact>
+    @POST("GetElevationForTrackList")
+    Call<ResponseBody> GetElevationForTrackList(@Body SimpleRequest request);//SearchRequestDTO (data.Filter=> lat,lon;lat,lon;..., data.OtherCommand=>ReadMidlePoints (1 true - 2 false) %;% :InsUpdResGen<TrackDataCompact>
 
     @POST("RequestWeatherForLoc")
     Call<ResponseBody> RequestWeatherForLoc(@Body SimpleRequest request);//SimpleRequest:NbWeather, Request Text: Lat,Lon --- or NbPoiId

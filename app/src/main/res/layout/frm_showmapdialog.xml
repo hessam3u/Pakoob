@@ -2,7 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layoutDirection="rtl">
 
         <LinearLayout style="@style/ToolbarOuter">
@@ -78,14 +78,7 @@
                 <!--    Splitor-->
                 <LinearLayout android:layout_width="match_parent" android:background="@color/wthShowSplitorDay" android:layout_height="1dp" android:orientation="horizontal" android:id="@+id/liSplitorDate"></LinearLayout>
 
-
-<!--                <TextView-->
-<!--                    android:id="@+id/txtSelectedNCCIndex"-->
-<!--                    android:textColor="#00FF00"-->
-<!--                    android:layout_gravity="end|bottom"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"/>-->
-                <FrameLayout
+    <FrameLayout
                     android:id="@+id/mapFrameLayoutChild"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

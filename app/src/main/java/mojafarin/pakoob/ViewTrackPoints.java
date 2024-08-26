@@ -30,6 +30,7 @@ import bo.entity.NbPoiCompact;
 import bo.sqlite.NbPoiSQLite;
 import maptools.TrackData;
 import maptools.hMapTools;
+import maptools.GeoCalcs;
 import utils.MyDate;
 import utils.projectStatics;
 
@@ -160,7 +161,7 @@ public class ViewTrackPoints extends Fragment {
                             textSpacer.setText("");
                         }
                         if (i == 0 && app.currentNorth == hMapTools.NORTH_MAG) {
-                            currentDeclination = hMapTools.GetNewDeclination((float) currentLatLon.latitude, (float) currentLatLon.longitude, hasElevCol ? data.Elev.get(i) : 0);
+                            currentDeclination = GeoCalcs.GetNewDeclination((float) currentLatLon.latitude, (float) currentLatLon.longitude, hasElevCol ? data.Elev.get(i) : 0);
                         }
 
                         // add table row
@@ -304,7 +305,7 @@ public class ViewTrackPoints extends Fragment {
 //                            tv4.setPadding(5, 0, 1, 5);
                             tv4.setBackgroundColor(itemBackgrounds[colCounter % 2]);
                             tv4.setTextColor(Color.parseColor("#000000"));
-                            tv4.setText(hMapTools.LocationToString(currentLatLon, app.CurrentPositionFormat, hMapTools.LocationToStringStyle.TwoLineSmall));
+                            tv4.setText(GeoCalcs.LocationToString(currentLatLon, app.CurrentPositionFormat, GeoCalcs.LocationToStringStyle.TwoLineSmall));
                             tv4.setTextSize(TypedValue.COMPLEX_UNIT_PX, smallTextSize);
                         }
                         tr.addView(tv4);
@@ -332,9 +333,9 @@ public class ViewTrackPoints extends Fragment {
 
                             String courseValue = "0°";
                             if (i > 0) {
-                                distanceInMeter = hMapTools.distanceBetweenMeteres(prevLatLon.latitude, prevLatLon.longitude, currentLatLon.latitude, currentLatLon.longitude);
-                                courseValue = ((int) (hMapTools.GetAzimuthInDegree(prevLatLon, currentLatLon) + currentDeclination)) + "°"
-                                        + "\n" + hMapTools.distanceBetweenFriendly(distanceInMeter);
+                                distanceInMeter = GeoCalcs.distanceBetweenMeteres(prevLatLon.latitude, prevLatLon.longitude, currentLatLon.latitude, currentLatLon.longitude);
+                                courseValue = ((int) (GeoCalcs.GetAzimuthInDegree(prevLatLon, currentLatLon) + currentDeclination)) + "°"
+                                        + "\n" + GeoCalcs.distanceBetweenFriendly(distanceInMeter);
                             }
 //                            if (i + 1 < rowCount){
 //                                 +"°";
@@ -367,8 +368,8 @@ public class ViewTrackPoints extends Fragment {
 
                                 String speedValue = "0°";
                                 if (i > 0) {
-                                    speedValue = (prevTimeMilis != 0 && currentTimeMilis != 0 ? hMapTools.GetSpeedFriendlyKmPh(distanceInMeter / ((currentTimeMilis - prevTimeMilis) / 1000)) : "0") + "km/h"
-                                            + (prevTimeMilis != 0 && currentTimeMilis != 0 ? "\n" + hMapTools.timeBetweenFriendly(prevTimeMilis, currentTimeMilis, hMapTools.TIME_FRIENDLY_MODE_SMALL) : "");
+                                    speedValue = (prevTimeMilis != 0 && currentTimeMilis != 0 ? GeoCalcs.GetSpeedFriendlyKmPh(distanceInMeter / ((currentTimeMilis - prevTimeMilis) / 1000)) : "0") + "km/h"
+                                            + (prevTimeMilis != 0 && currentTimeMilis != 0 ? "\n" + GeoCalcs.timeBetweenFriendly(prevTimeMilis, currentTimeMilis, GeoCalcs.TIME_FRIENDLY_MODE_SMALL) : "");
                                 }
 //                            if (i + 1 < rowCount){
 //                                 +"°";

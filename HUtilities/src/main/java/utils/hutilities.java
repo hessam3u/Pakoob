@@ -1,5 +1,7 @@
 package utils;
 
+import static android.content.Context.POWER_SERVICE;
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -20,6 +22,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.PowerManager;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -626,5 +629,19 @@ public class hutilities {
     public static String ReplaceInvalidFileChars(String source, String replaceWith){
         //Tested with https://regex101.com/ at 1401-02-05
         return source.replaceAll("[^ء-ی^a-zA-Z0-9\\.\\-]", replaceWith);
+    }
+    public static boolean requestIgnoreBatteryOptimizations(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PowerManager pm = (PowerManager) context.getSystemService(POWER_SERVICE);
+            String packageName = context.getPackageName();
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                intent.setData(Uri.parse("package:" + packageName));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // Add this flag
+                context.startActivity(intent);
+                return false;
+            }
+        }
+        return true;
     }
 }

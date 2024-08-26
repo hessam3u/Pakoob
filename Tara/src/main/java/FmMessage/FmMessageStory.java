@@ -45,6 +45,7 @@ import utils.MainActivityManager;
 import utils.MyDate;
 import utils.PicassoCircleTransform;
 import utils.PicassoOnScrollListener;
+import utils.PicassoTrustAll;
 import utils.PrjConfig;
 import utils.PrjEnums;
 import utils.RecyclerTouchListener;
@@ -192,15 +193,22 @@ public class FmMessageStory extends HFragment {
 //        });
 
         txtAvatar = v.findViewById(R.id.txtAvatar);
-        Picasso builder = Picasso.with(context);
-        builder.load(recSide.Avatar).tag(PicassoOnScrollListener.TAG)//.config(Bitmap.Config.RGB_565).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                //.placeholder((R.drawable.ic_launcher_background)) HHH 1400-01-10
-                //.error(R.drawable.ic_launcher_background)  HHH 1400-01-10
+
+        //cmt at 1403-04-22
+//        Picasso builder = Picasso.get();//#PicassoUpdate140303 with(context)
+//        builder.load(recSide.Avatar).tag(PicassoOnScrollListener.TAG)//.config(Bitmap.Config.RGB_565).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+//                .transform(new PicassoCircleTransform()).into(txtAvatar);
+
+        if (picassoInstance == null)
+            picassoInstance = PicassoTrustAll.getInstance(context);
+        picassoInstance.load(recSide.Avatar)
+                .error(R.drawable.ac_hiking)
                 .transform(new PicassoCircleTransform()).into(txtAvatar);
+
 
         super.initializeComponents(v);
     }
-
+    Picasso picassoInstance;
     private void initRecyclerView() {
         rvSearchResult.addOnItemTouchListener(new RecyclerTouchListener(getContext(), rvSearchResult, new RecyclerTouchListener.ClickListener() {
             @Override

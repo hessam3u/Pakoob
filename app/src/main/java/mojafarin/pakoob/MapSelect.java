@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -95,10 +96,18 @@ public class MapSelect extends HFragment {
     LatLng lastLocation = new LatLng(33, 53.51);
     boolean isDownloading = false;
     boolean reloadMapDatabaseAtPageLoad = false;
+    boolean doSearchForLastLocationAtFirstLoad = false;
 
     public static MapSelect getInstance(boolean reloadMapDatabaseAtPageLoad){
         MapSelect res = new MapSelect();
         res.reloadMapDatabaseAtPageLoad = reloadMapDatabaseAtPageLoad;
+        return res;
+    }
+    public static MapSelect getInstance(double latToSearch, double lonToSearch,boolean reloadMapDatabaseAtPageLoad){
+        MapSelect res = new MapSelect();
+        res.reloadMapDatabaseAtPageLoad = reloadMapDatabaseAtPageLoad;
+        res.lastLocation = new LatLng(latToSearch, lonToSearch);
+        res.doSearchForLastLocationAtFirstLoad = true;
         return res;
     }
     @Override
@@ -114,6 +123,11 @@ public class MapSelect extends HFragment {
         initRecyclerView();
 //        initSweepToRefresh();
         initScrollListener();
+
+        if (doSearchForLastLocationAtFirstLoad){
+            txtSearch.setText(String.format(Locale.US, "%.5f", this.lastLocation.latitude) + "," + String.format(Locale.US, "%.5f", this.lastLocation.longitude));
+            btnSearch_Click();
+        }
 
         if (reloadMapDatabaseAtPageLoad){
             app.syncBuyMapDatabase(pageProgressBar, txtSearchResult, context, isSuccessful -> loadDbAtInit(isSuccessful));
@@ -154,7 +168,7 @@ public class MapSelect extends HFragment {
     TextView btnBack;
     LinearLayout divSearch;
     Toolbar toolbar;
-    TextView btnSearch;
+//    TextView btnSearch;
     LinearLayout btnFindByLocation;
 
     EditText txtSearch;
@@ -169,10 +183,10 @@ public class MapSelect extends HFragment {
     @Override
     public void initializeComponents(View v) {
 
-        btnSearch = v.findViewById(R.id.btnSearch);
-        btnSearch.setOnClickListener(view -> {
-            btnSearch_Click();
-        });
+//        btnSearch = v.findViewById(R.id.btnSearch);
+//        btnSearch.setOnClickListener(view -> {
+//            btnSearch_Click();
+//        });
 
         btnBack =v.findViewById(R.id.btnBack);
         btnBack.setOnClickListener(view -> {hutilities.hideKeyboard(context, txtSearch);((AppCompatActivity) context).onBackPressed();});
@@ -226,6 +240,13 @@ public class MapSelect extends HFragment {
         txtSearchResult.setVisibility(View.GONE);
 
         txtSearch = v.findViewById(R.id.txtSearch);
+        txtSearch.setOnEditorActionListener((textView, actionId, keyEvent) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                btnSearch_Click();
+                return true;
+            }
+            return true;
+        });
     }
 
     private void btnSelectLocationOnMap_Click() {

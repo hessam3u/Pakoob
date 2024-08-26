@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import bo.entity.NbCurrentTrack;
+import bo.entity.TrackDataCompact;
 
 public class TrackProperties {
     public int dataSize = 0;
@@ -58,7 +59,7 @@ public class TrackProperties {
         if (cElev < minElevation)
             minElevation = cElev;
 
-        Double diffDistance = hMapTools.distanceBetweenMeteres(pPoint.latitude, pPoint.longitude, cPoint.latitude, cPoint.longitude);
+        Double diffDistance = GeoCalcs.distanceBetweenMeteres(pPoint.latitude, pPoint.longitude, cPoint.latitude, cPoint.longitude);
 
         if (diffDistance.isNaN())
             return;
@@ -110,7 +111,10 @@ public class TrackProperties {
                 pTime = cTime;
             }
 
-            cElev = currentTrack == null?data.Elev.get(i):currentTrack.Elevation;
+            List<Float> elevS ;
+            elevS = currentTrack == null? TrackDataCompact.smoothElevation(data.Elev, 5):null;
+
+            cElev = currentTrack == null?elevS.get(i):currentTrack.Elevation;
             cPoint = currentTrack == null?data.Points.get(i):currentTrack.getLatLon();
             cTime = hasTime &&  currentTrack == null?(data.Time.get(i) != null ? data.Time.get(i).getTimeInMillis():0) :(currentTrack.Time) ;
 
@@ -137,7 +141,7 @@ public class TrackProperties {
             if (cElev < minElevation)
                 minElevation = cElev;
 
-            Double diffDistance = hMapTools.distanceBetweenMeteres(pPoint.latitude, pPoint.longitude, cPoint.latitude, cPoint.longitude);
+            Double diffDistance = GeoCalcs.distanceBetweenMeteres(pPoint.latitude, pPoint.longitude, cPoint.latitude, cPoint.longitude);
             if (diffDistance.isNaN())
                 continue;
             float diffElev = cElev - pElev;

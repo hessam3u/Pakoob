@@ -1,6 +1,11 @@
 package mojafarin.pakoob;
 
 
+import static maptools.GeoCalcs.DegreePrecision;
+import static maptools.GeoCalcs.DegreePrecisionTen;
+import static maptools.GeoCalcs.MinutePrecision;
+import static maptools.GeoCalcs.MinutePrecisionTen;
+import static maptools.GeoCalcs.UtmPrecision;
 import static utils.HFragment.stktrc2k;
 import static utils.HFragment.stktrc2kt;
 
@@ -41,6 +46,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import maptools.GeoCalcs;
 import utils.MyDate;
 import utils.PrjConfig;
 import bo.entity.NbMap;
@@ -53,6 +59,7 @@ import maptools.hMapTools;
 import utils.sessionManager;
 import utils.hutilities;
 
+
 public class app extends Application {
     public static byte APPID = 1;
     public static String key = "af391-dLDLKJ2da-39#*20D)@dlcnLDp";
@@ -61,17 +68,19 @@ public class app extends Application {
     public static String actionBarColor = "000000";//lightblue 200 az https://material.io/design/color/the-color-system.html#tools-for-picking-colors
     public static String CurrencyName = "ریال";
     public static sessionManager session;
-    public static int CurrentPositionFormat = hMapTools.UTM;
+    public static int CurrentPositionFormat = GeoCalcs.UTM;
     public static int currentNorth = hMapTools.NORTH_MAG;
 
     public static ApiInterfaceMap apiMap = ApiClientMap.getClient(60).create(ApiInterfaceMap.class);
     public static List<NbPoiCompact> visiblePOIs = new ArrayList<>();
     public static String tileRoot = "";
-    public static int DegreePrecision = 6;
-    public static float DegreePrecisionTen = 1000000;
-    public static int MinutePrecision = 4;
-    public static float MinutePrecisionTen = 10000;
-    public static int UtmPrecision = 1;
+
+    //Moved to GeoCals:
+    public static int DegreePrecision = GeoCalcs.DegreePrecision;//6;
+    public static float DegreePrecisionTen =  GeoCalcs.DegreePrecisionTen;//1000000;
+    public static int MinutePrecision =  GeoCalcs.MinutePrecision;//4;
+    public static float MinutePrecisionTen = GeoCalcs.MinutePrecisionTen;//10000;
+    public static int UtmPrecision = GeoCalcs.UtmPrecision;//1;
     public static float declination = 0;
     public static long lastDelinationRead = 0;
 
@@ -110,7 +119,7 @@ public class app extends Application {
         visiblePOIs = app.getVisiblePOIs();
 
         currentNorth = app.session.getNorthReference(hMapTools.DEFAULT_NORTH);
-        CurrentPositionFormat = app.session.getPositionFormat(hMapTools.DEFAULT_POSITION_FORMAT);
+        CurrentPositionFormat = app.session.getPositionFormat(GeoCalcs.DEFAULT_POSITION_FORMAT);
 
 
         //TTExceptionLogSQLite.insert("صرفا برای تست تاریخ", "سلام داره تاریخ تست میشه", PrjConfig.frmMapPage, 1010);

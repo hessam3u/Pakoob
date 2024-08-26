@@ -17,11 +17,11 @@ import bo.entity.NbPoi;
 import bo.entity.NbPoiCompact;
 import maptools.DialogGetPosition;
 import maptools.GPXFile;
-import maptools.hMapTools;
 import mojafarin.pakoob.MainActivity;
 import mojafarin.pakoob.MapPage;
 import mojafarin.pakoob.R;
 import mojafarin.pakoob.app;
+import maptools.GeoCalcs;
 import utils.hutilities;
 import utils.projectStatics;
 
@@ -68,7 +68,7 @@ public class AddWaypointMode {
             AddWaypointMarker.setPosition(latLng);
         }
         txtNameOfWaypoint.setText(name);
-        txtLocationOfWaypoint.setText(hMapTools.LocationToString(latLng, app.CurrentPositionFormat, hMapTools.LocationToStringStyle.Inline));
+        txtLocationOfWaypoint.setText(GeoCalcs.LocationToString(latLng, app.CurrentPositionFormat, GeoCalcs.LocationToStringStyle.Inline));
 
         if (ChangeCameraToThere)
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, map.getCameraPosition().zoom));
@@ -131,7 +131,7 @@ public class AddWaypointMode {
                         AddWaypointMarker.setPosition(nPosition);
                         float zoom = map.getCameraPosition().zoom;
                         map.moveCamera(CameraUpdateFactory.newLatLngZoom(nPosition, zoom));
-                        txtLocationOfWaypoint.setText(hMapTools.LocationToString(nPosition, app.CurrentPositionFormat, hMapTools.LocationToStringStyle.Inline));
+                        txtLocationOfWaypoint.setText(GeoCalcs.LocationToString(nPosition, app.CurrentPositionFormat, GeoCalcs.LocationToStringStyle.Inline));
                     }
                     dialog_position.dismiss();
                 }, view -> {

@@ -19,10 +19,10 @@ import java.util.List;
 
 import bo.entity.NbPoi;
 import maptools.MapNavigateToPoint;
-import maptools.hMapTools;
 import mojafarin.pakoob.MainActivity;
 import mojafarin.pakoob.MapPage;
 import mojafarin.pakoob.R;
+import maptools.GeoCalcs;
 import utils.projectStatics;
 
 public class GoToTargetMode {
@@ -68,8 +68,8 @@ public class GoToTargetMode {
     }
 
     public void showNavigation() {
-        TargetNext_DistanceFriendly = hMapTools.distanceBetweenFriendly(MainActivity.currentLatLon.latitude, MainActivity.currentLatLon.longitude, TargetNext_LatLon.latitude, TargetNext_LatLon.longitude);
-        TargetNext_DegreeTo = hMapTools.GetAzimuthInDegree(MainActivity.currentLatLon, TargetNext_LatLon);
+        TargetNext_DistanceFriendly = GeoCalcs.distanceBetweenFriendly(MainActivity.currentLatLon.latitude, MainActivity.currentLatLon.longitude, TargetNext_LatLon.latitude, TargetNext_LatLon.longitude);
+        TargetNext_DegreeTo = GeoCalcs.GetAzimuthInDegree(MainActivity.currentLatLon, TargetNext_LatLon);
         TargetNext_DegreeToWithDeltaAngle = TargetNext_DegreeTo - MapPage.angle  /*+ app.declination1400-01-03 added*/;
         viewNagivateTo.invalidate();
         redrawPolyline();

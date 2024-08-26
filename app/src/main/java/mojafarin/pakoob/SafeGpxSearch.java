@@ -5,16 +5,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
@@ -35,48 +31,31 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.material.textfield.TextInputEditText;
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-import MorphingButton.LinearProgressButton;
 import MorphingButton.MorphingButton;
-import MorphingButton.ProgressGenerator;
 import MorphingButton.IndeterminateProgressButton;
 import bo.NewClasses.InsUpdRes;
 import bo.NewClasses.SimpleRequest;
-import bo.NewClasses.StringContentDTO;
 import bo.dbConstantsTara;
 import bo.entity.BuyMapRequestDTO;
-import bo.entity.CityDTO;
 import bo.entity.NbGpxRequest;
-import bo.entity.NbMap;
 import bo.entity.NbPoi;
 import bo.entity.SearchRequestDTO;
 import bo.entity.NbSafeGpx;
 import bo.entity.NbSafeGpxList;
 import bo.sqlite.TTExceptionLogSQLite;
-import maptools.hMapTools;
-import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
-import pakoob.ClubView_Home;
-import pakoob.SelectCityDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import maptools.GeoCalcs;
 import utils.HFragment;
 import utils.MainActivityManager;
-import utils.PicassoCircleTransform;
-import utils.PicassoOnScrollListener;
 import utils.PicassoTrustAll;
 import utils.PrjConfig;
-import utils.PrjEnums;
 import utils.RecyclerTouchListener;
-import utils.TextFormat;
 import utils.hutilities;
 import utils.projectStatics;
 
@@ -440,19 +419,29 @@ public class SafeGpxSearch extends HFragment {
             ((MainActivityManager) context).showFragment(view);
         }
         else if(currentSelectedClub.IsMapOrGpxOrOther == 1){
-            DoBuyRequest(currentSelectedClub, itemProgressbar );
+            AlertDialog.Builder alertDialogBuilder = DialogGetDisCopon.GetBuilder(context, view -> {
+                DoBuyRequest(currentSelectedClub, DialogGetDisCopon.GetDiscountCode(dialog_getdiscount),itemProgressbar );
+                dialog_getdiscount.dismiss();
+            }, null);
+
+            dialog_getdiscount = alertDialogBuilder.create();
+            dialog_getdiscount.show();
+            projectStatics.SetDialogButtonStylesAndBack(dialog_getdiscount, this.context, projectStatics.getIranSans_FONT(context), 18);
+
+
         }
     }
 
+    public AlertDialog dialog_getdiscount = null;
     boolean isDownloading = false;
-    public boolean DoBuyRequest(NbSafeGpx currentObj, ProgressBar progressBar) {
+    public boolean DoBuyRequest(NbSafeGpx currentObj, String DiscountCode, ProgressBar progressBar) {
         //Same at : SafeGpxSearch - MapSelect
         if (!hutilities.isInternetConnected(context)) {
             projectStatics.showDialog(context, getResources().getString(R.string.NoInternet), getResources().getString(R.string.NoInternet_Desc), getResources().getString(R.string.ok), view -> {}, "", null);
             return false;
         }
         BuyMapRequestDTO buyRequest = new BuyMapRequestDTO();
-        buyRequest.DiscountCode = "";
+        buyRequest.DiscountCode = DiscountCode;
         buyRequest.NBMapId = currentObj.NbSafeGPXId;
         buyRequest.NbBuyType = BuyMapRequestDTO.NbBuyType_Map;
         progressBar.setVisibility(View.VISIBLE);
@@ -503,7 +492,17 @@ public class SafeGpxSearch extends HFragment {
                             ft.addToBackStack(null);
                             DialogFragment dialogFragment = new MapSelect_Dialog_GotoBank();
                             ((MapSelect_Dialog_GotoBank) dialogFragment).link = res.resValue;
+                            String discountMsg = "";
                             ((MapSelect_Dialog_GotoBank) dialogFragment).price = currentObj.Price;
+                            if (res.command.length() > 0)
+                            {
+                                String[] parts = res.command.split(";;");
+                                if(parts.length > 0)
+                                    ((MapSelect_Dialog_GotoBank) dialogFragment).price = Double.valueOf(parts[0]);
+                                if(parts.length > 1 && parts[1].length() > 1)
+                                    ((MapSelect_Dialog_GotoBank) dialogFragment).discountMsg = parts[1];
+                            }
+                            ((MapSelect_Dialog_GotoBank) dialogFragment).message = res.message;
 
                             dialogFragment.show(getFragmentManager(), "dialog");
 
@@ -750,7 +749,7 @@ public static void ReformatBtnFollow(TextView btnFollow, byte FollowingByMe, byt
                     if (currentObj.IsMapOrGpxOrOther == 2){
                         //اگه جی پی ایکس بود
                         txtTitle.setText(currentObj.Name);
-                        lblDistance.setText(hMapTools.distanceBetweenFriendlyInKm(currentObj.TrackLength));
+                        lblDistance.setText(GeoCalcs.distanceBetweenFriendlyInKm(currentObj.TrackLength));
                         itemMainPart.setOnClickListener(view -> {
                             itemClickFunction.onItemClicked(currentObj, position, progressBarIndet);
                         });

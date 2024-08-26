@@ -1,8 +1,13 @@
 package bo.entity;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
+import java.io.IOException;
 import java.util.List;
 
 import bo.NewClasses.ListItemsResult;
@@ -18,4 +23,5 @@ public class NbSafeGpxList extends ListItemsResult
 		String json = hutilities.decryptBytesToString(bts);
 		return gson.fromJson(json, NbSafeGpxList.class);
 	}
+
 }

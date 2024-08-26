@@ -6,7 +6,6 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -22,10 +21,10 @@ import bo.entity.NbPoi;
 import bo.entity.NbPoiCompact;
 import maptools.GPXFile;
 import maptools.TrackData;
-import maptools.hMapTools;
 import mojafarin.pakoob.MainActivity;
 import mojafarin.pakoob.R;
 import mojafarin.pakoob.app;
+import maptools.GeoCalcs;
 import utils.MyDate;
 import utils.hutilities;
 import utils.projectStatics;
@@ -303,12 +302,12 @@ public class RouteDesignMode {
             if (i > 0){
                 LatLng current = currentLatLong;//routeMarkers.get(i).getPosition();
                 LatLng prev = oldLatLong;//routeMarkers.get(i - 1).getPosition();
-                distance += hMapTools.distanceBetweenMeteres(current.latitude, current.longitude, prev.latitude, prev.longitude);
+                distance += GeoCalcs.distanceBetweenMeteres(current.latitude, current.longitude, prev.latitude, prev.longitude);
             }
         }
         txtRoutePointCount.setText(Integer.toString(routeMarkers.size()));
-        txtRouteDistance.setText(hMapTools.distanceBetweenFriendly(distance));
-        txtArea.setText(hMapTools.areaFriendly(hMapTools.calculateArea(latLngs)));
+        txtRouteDistance.setText(GeoCalcs.distanceBetweenFriendly(distance));
+        txtArea.setText(GeoCalcs.areaFriendly(GeoCalcs.calculateArea(latLngs)));
     }
 
     public Polyline getRoutePolyline(List<LatLng> routePoints) {
@@ -331,7 +330,7 @@ public class RouteDesignMode {
                     return;
                 }
                 LatLng currentRoutePoint = routeMarkers.get(routeCurrentIndex).getPosition();
-                String distanceFromCamera = hMapTools.distanceBetweenFriendly(cameraLatLon.latitude, cameraLatLon.longitude, currentRoutePoint.latitude, currentRoutePoint.longitude);
+                String distanceFromCamera = GeoCalcs.distanceBetweenFriendly(cameraLatLon.latitude, cameraLatLon.longitude, currentRoutePoint.latitude, currentRoutePoint.longitude);
                 txtRouteDistancePointToPrev.setText(distanceFromCamera);
             }
         }

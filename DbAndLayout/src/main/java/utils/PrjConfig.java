@@ -4,7 +4,7 @@ public class PrjConfig {
 
 //    public static final boolean IsDebugMode = true;
     public static final boolean IsDebugMode = false;
-//        public static String WebApiAddress = "http://192.168.1.104/NaghshebazWeb";//http://10.0.2.2:52331/api1/tara-
+//        public static String WebApiAddress = "http://192.168.1.106/NaghshebazWeb";//http://10.0.2.2:52331/api1/tara-
     public static String WebApiAddress = "https://pakoob24.ir";
     public static final int frmMainActivity = 1;
     public static final int frmMapSelect = 2;
@@ -34,6 +34,7 @@ public class PrjConfig {
     public static final int frmTripComputer = 115;
     public static final int frmTrackRecording = 116;
     public static final int frmGPXFile = 117;
+    public static final int frmInfoBottomOfMapPage = 118;
 
 
     public static final String MessageSplitor = "*?*/*?/";

@@ -3,7 +3,6 @@ package mojafarin.pakoob.mainactivitymodes;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -25,11 +24,11 @@ import java.util.TimerTask;
 import bo.entity.NbPoi;
 import maptools.GPXFile;
 import maptools.TrackData;
-import maptools.hMapTools;
 import mojafarin.pakoob.MainActivity;
 import mojafarin.pakoob.MapPage;
 import mojafarin.pakoob.R;
 import mojafarin.pakoob.app;
+import maptools.GeoCalcs;
 import utils.MyDate;
 import utils.projectStatics;
 
@@ -147,7 +146,7 @@ public class SightNGoMode {
         double tmpAngle = angle;
         if (isCaptured)
             tmpAngle = angle;
-        LatLng dest = hMapTools.newPointAtDistanceAndDegree(currentLatLon, distanceInMeters, tmpAngle + app.declination);//
+        LatLng dest = GeoCalcs.newPointAtDistanceAndDegree(currentLatLon, distanceInMeters, tmpAngle + app.declination);//
 
         NbPoi poi = new NbPoi();
         poi.Name = "هدف خط نگاه";
@@ -266,7 +265,7 @@ public class SightNGoMode {
             return;
         points = new ArrayList<>();
         points.add(currentLatLon);
-        points.add(hMapTools.newPointAtDistanceAndDegree(currentLatLon, distanceToDraw, angleToDraw + app.declination));
+        points.add(GeoCalcs.newPointAtDistanceAndDegree(currentLatLon, distanceToDraw, angleToDraw + app.declination));
         capturedAngle = angleToDraw;
 
         if (sightnNGoLine == null) {

@@ -51,6 +51,7 @@ import utils.HFragment;
 import utils.MainActivityManager;
 import utils.PicassoCircleTransform;
 import utils.PicassoOnScrollListener;
+import utils.PicassoTrustAll;
 import utils.PrjConfig;
 import utils.PrjEnums;
 import utils.RecyclerTouchListener;
@@ -546,15 +547,21 @@ public static void ReformatBtnFollow(TextView btnFollow, byte FollowingByMe, byt
                         btnFollow_Click(currentObj, context, progressBarIndet, btnFollow, null, null, followingText, followText, parent);
                     });
 
-                    Picasso builder = Picasso.with(context);
-                    builder.load(currentObj.Logo).tag(PicassoOnScrollListener.TAG)//.config(Bitmap.Config.RGB_565).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                            //.placeholder((R.drawable.ic_launcher_background)) HHH 1400-01-10
-                            //.error(R.drawable.ic_launcher_background)  HHH 1400-01-10
+                    //cmt @ 1403-04-22
+//                    Picasso builder = Picasso.get();
+//                    builder.load(currentObj.Logo).tag(PicassoOnScrollListener.TAG)//.config(Bitmap.Config.RGB_565).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+//                            .transform(new PicassoCircleTransform()).into(txt_ct_ImageLinkUri);
+
+                    if (picassoInstance == null)
+                        picassoInstance = PicassoTrustAll.getInstance(context);
+                    picassoInstance.load(currentObj.Logo)
+                            .error(R.drawable.ac_peak2)
                             .transform(new PicassoCircleTransform()).into(txt_ct_ImageLinkUri);
                 }
             }
         }
 
+Picasso picassoInstance;
         final String TAG = "Downloading...";
 
         class TTClubNameDTODiffCallback extends DiffUtil.Callback {

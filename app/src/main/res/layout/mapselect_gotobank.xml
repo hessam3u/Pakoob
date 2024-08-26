@@ -18,12 +18,13 @@
 
     <LinearLayout
         android:id="@+id/linMsg"
-        android:visibility="gone"
         android:layoutDirection="rtl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginBottom="10dp"
+        android:padding="@dimen/leftrightMargin"
+        android:background="#E8F8E0"
         >
         <TextView
             android:id="@+id/lblDiscountMsg"

@@ -243,7 +243,7 @@ public class SelectClubDialogForMyClub extends SelectAnythingDialog {
             String path = context.getFilesDir() + "/" + PrjConfig.PrivateFolder;
             String filename=logo.substring(logo.lastIndexOf("/")+1);
             target = ImageTools.picassoImageTarget(context, path, filename, null);
-            Picasso.with(context).load(logo).into(target);
+            Picasso.get().load(logo).into(target);
 
             return path + File.separator + filename;
         } catch (Exception ex) {

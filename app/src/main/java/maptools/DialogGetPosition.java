@@ -1,20 +1,13 @@
 package maptools;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.NetworkSpecifier;
-import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.textclassifier.TextClassifierEvent;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -23,12 +16,8 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import org.w3c.dom.Text;
-
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.DoubleUnaryOperator;
 
 import mojafarin.pakoob.R;
 import mojafarin.pakoob.app;
@@ -123,7 +112,7 @@ public class DialogGetPosition {
 
 
         //-------------
-        CurrentSpinnerValue = positionFormat == hMapTools.UTM? 3 : positionFormat == hMapTools.DecimalDegrees?2:positionFormat == hMapTools.DegreesDecimalMinutes?1:0;
+        CurrentSpinnerValue = positionFormat == GeoCalcs.UTM? 3 : positionFormat == GeoCalcs.DecimalDegrees?2:positionFormat == GeoCalcs.DegreesDecimalMinutes?1:0;
         cmbPositionFormats.setSelection(CurrentSpinnerValue);
         setPosition(CurrentSpinnerValue, position,
                 cmbNorS_DDMMSS, cmbEorW_DDMMSS, txtN_SS, txtN_MM, txtN_DD, txtE_SS, txtE_MM, txtE_DD, txtUtmEasting, txtUtmNorthing, cmbUtmZoonE, cmbUtmZoonN);

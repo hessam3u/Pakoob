@@ -248,19 +248,42 @@ public class MainActivity extends MainActivityManager {
         initializeComponents();
 
 
-        home = Home.getInstance();
-        if (mapPage == null) {
-            mapPage = MapPage.getInstance(this);
-        }
-        //1 - Show Home at Top Level of Fragments
-        //showFragment(home);
-        //2 - Show Map at Top Level of Fragments
-        //showFragment(mapPage);
+        //Init Home and Map Page - Start ------------------------
+        //داستان این بود که فرگمنت منیجیر، بعد از بازگشت از خواب، باز هم نقشه های قبل رو داخل خود شدش داشت. در نتیجه وقتی من صفحه فرگمنت جدید
+        //رو ایجاد می کردم و اضافه می کردم، می رفت روی صفحه قبلی می شست و اصلا یه وضع گندی میشد
         FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.add(R.id.your_placeholder, home);
-        ft.add(R.id.your_placeholder, mapPage);
-        ft.commit();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        boolean needToAddHome = true;
+        boolean needToAddMap = true;
+        for (Fragment fragment : fragments) {
+            if (fragment instanceof Home) {
+                home =  (Home) fragment;
+                needToAddHome = false;
+                Log.e( "پرپرفر ها", " CALLED0 ");
+            }
+            else if (fragment instanceof MapPage) {
+                mapPage =  (MapPage) fragment;
+                needToAddMap = false;
+                Log.e( "پرپرفر ها", " CALLED1 ");
+
+            }
+        }
+
+        if (needToAddHome || needToAddMap){
+            if (home == null)
+                home = Home.getInstance();
+            if (mapPage == null)
+                mapPage = MapPage.getInstance(this);
+
+            //fragmentManager = getSupportFragmentManager();
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            if (needToAddHome)
+                ft.add(R.id.your_placeholder, home);
+            if (needToAddMap)
+                ft.add(R.id.your_placeholder, mapPage);
+            ft.commit();
+        }
+        //Init Home and Map Page - Start ------------------------
 
 
         //3 - Show Other Pages of needed
@@ -545,6 +568,8 @@ public class MainActivity extends MainActivityManager {
             doBackOnFragmentStacks(fragmentManager);
         }
         int count = myFragments.size();
+        Log.e( "فرفرفر ها", count + " تا ");
+        Log.e( "فرفرفر های دو", fragmentManager.getFragments().size() + " تا ");
         //اگه صفحه دیگه ای باز بود، اون رو مخفی کنیم
         if (count > 0) {
             Fragment peak = myFragments.peek();

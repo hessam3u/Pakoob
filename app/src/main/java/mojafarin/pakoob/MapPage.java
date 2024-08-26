@@ -88,7 +88,6 @@ import com.google.android.gms.maps.model.TileProvider;
 import com.google.android.gms.maps.model.UrlTileProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.squareup.picasso.Picasso;
 import com.takusemba.spotlight.OnSpotlightEndedListener;
 import com.takusemba.spotlight.OnSpotlightStartedListener;
 import com.takusemba.spotlight.SimpleTarget;
@@ -133,6 +132,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import user.CompleteRegister;
 import user.Register;
+import maptools.GeoCalcs;
 import utils.HFragment;
 import utils.MainActivityManager;
 import utils.MyDate;
@@ -849,6 +849,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                         .icon(currentRouteIcon)
                         .flat(true);
                 Marker addedMarker = map.addMarker(markerOptions);//(new MarkerOptions().position(point).title(poi.Name));
+                addedMarker.showInfoWindow();
                 addedMarker.setTag(poi.getNbPoi());
                 poi.marker = addedMarker;
                 return addedMarker;
@@ -1325,15 +1326,15 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
     }
 
     void showLocation() {
-        String infoText = hMapTools.LocationToString(cameraLatLon, app.CurrentPositionFormat, hMapTools.LocationToStringStyle.Inline);
+        String infoText = GeoCalcs.LocationToString(cameraLatLon, app.CurrentPositionFormat, GeoCalcs.LocationToStringStyle.Inline);
         txtPosition.setText(infoText);
     }
 
     void setDownFields() {
         if (cameraLatLon != null && currentLatLon != null && !isLockOnMe) {
-            DistanceValueFormCurrent = hMapTools.distanceBetweenFriendly(cameraLatLon.latitude, cameraLatLon.longitude, currentLatLon.latitude, currentLatLon.longitude);
+            DistanceValueFormCurrent = GeoCalcs.distanceBetweenFriendly(cameraLatLon.latitude, cameraLatLon.longitude, currentLatLon.latitude, currentLatLon.longitude);
             //txtDistanceFromCurrent.setText(DistanceTextFormCurrent + DistanceValueFormCurrent);
-            BearingValueFormCurrent = /*"°" +(app.currentNorth == hMapTools.NORTH_MAG?"m":"t") +*/ Integer.toString((int) (hMapTools.GetAzimuthInDegree(currentLatLon, cameraLatLon) - (app.currentNorth == hMapTools.NORTH_MAG ? app.declination : 0)));
+            BearingValueFormCurrent = /*"°" +(app.currentNorth == hMapTools.NORTH_MAG?"m":"t") +*/ Integer.toString((int) (GeoCalcs.GetAzimuthInDegree(currentLatLon, cameraLatLon) - (app.currentNorth == hMapTools.NORTH_MAG ? app.declination : 0)));
             //txtBearingFromCurrent.setText(BearingTextFormCurrent + "°" + BearingValueFormCurrent);
         } else {
             DistanceValueFormCurrent = "";
@@ -1564,7 +1565,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         btnShareCurrentLoc_JustLatLon.setOnClickListener(view1 -> {
             hutilities.OpenShareBox(
                     getString(R.string.share_YourLocation),
-                    hMapTools.LocationToString(currentLatLon, hMapTools.DecimalDegrees_JustNumber, hMapTools.LocationToStringStyle.Inline),
+                    GeoCalcs.LocationToString(currentLatLon, GeoCalcs.DecimalDegrees_JustNumber, GeoCalcs.LocationToStringStyle.Inline),
                     getString(R.string.shareViaText), context
             );
         });
@@ -1578,9 +1579,9 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             String timeStr = String.format(Locale.ENGLISH, "%02d", now.get(Calendar.HOUR_OF_DAY)) + ":" + String.format(Locale.ENGLISH, "%02d", now.get(Calendar.MINUTE));
             hutilities.OpenShareBox(
                     getString(R.string.share_YourLocation),
-                    hMapTools.LocationToString(currentLatLon, hMapTools.DecimalDegrees_JustNumber, hMapTools.LocationToStringStyle.Inline)
+                    GeoCalcs.LocationToString(currentLatLon, GeoCalcs.DecimalDegrees_JustNumber, GeoCalcs.LocationToStringStyle.Inline)
                             + "\n"
-                            + hMapTools.LocationToString(currentLatLon, hMapTools.DegreesMinuteSeconds, hMapTools.LocationToStringStyle.Inline)
+                            + GeoCalcs.LocationToString(currentLatLon, GeoCalcs.DegreesMinuteSeconds, GeoCalcs.LocationToStringStyle.Inline)
                             + "\n"
                             + getString(R.string.share_SendTime) + ":" + timeStr
                             + "\n"
@@ -1607,7 +1608,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                             + "\n"
                             + getString(R.string.Position) + ":"
                             + "\n"
-                            + hMapTools.LocationToString(currentLatLon, hMapTools.DegreesMinuteSeconds, hMapTools.LocationToStringStyle.Inline)
+                            + GeoCalcs.LocationToString(currentLatLon, GeoCalcs.DegreesMinuteSeconds, GeoCalcs.LocationToStringStyle.Inline)
                             + "\n"
                             + getString(R.string.share_SendTime) + "> " + timeStr
                             + "\n"
@@ -2227,9 +2228,9 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             //اول بررسی این که آیا مختصات وارد کرده یا متن. اگه مختصات بود همینجا مشکل رو حل کنیم
             text = TextFormat.ReplacePersianNumbersWithEnglishOne(text);
             //a. lat/lon
-            LatLng inpLocation = hMapTools.extractLatLonString(text);
+            LatLng inpLocation = GeoCalcs.extractLatLonString(text);
             if (inpLocation == null) {
-                inpLocation = hMapTools.extractUtmString(text);
+                inpLocation = GeoCalcs.extractUtmString(text);
             }
 
             if (inpLocation != null) {
@@ -2264,7 +2265,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                 requestDTO.Filter += Double.toString(currentLatLon.latitude) + "," + Double.toString(currentLatLon.longitude) + "***";//myLatLon
             } else
                 requestDTO.Filter += "***";//myLatLon
-            Call<ResponseBody> call = app.apiMap.SearchNbPoi(SimpleRequest.getInstance(requestDTO));
+            Call<ResponseBody> call = app.apiMap.SearchNbPoi_1(SimpleRequest.getInstance(requestDTO));
 
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
@@ -2353,8 +2354,15 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         NbPoi poi = adapterSearch.data.get(index);
         hutilities.hideKeyboard((Activity) context);
         currentSelectedNbPoiIndex = index;
-
-        performSearchResultPoiClick(poi);
+        if(poi.PoiType ==  NbPoi.Enums.PoiType_Map){
+            //اگه نقشه بود
+            MapSelect ms = MapSelect.getInstance(poi.LatBegin - 0.0001, poi.LonBegin+ 0.0001, false);
+            mainActivity.showFragment(ms);
+            return;
+        } else {
+            //اگه نقطه بود
+            performSearchResultPoiClick(poi);
+        }
     }
 
     public void performSearchResultPoiClick(NbPoi poi) {
@@ -2504,7 +2512,8 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
 //                        ((MainActivityManager) context).showFragment(currentHomeFragment);
                     });
 
-                    Picasso builder = Picasso.with(context);
+                    //در صورت نیاز، از نسخه جدید پیکاسو که در همه فرم ها وجود داره استفاده بشه نه این
+                    //Picasso builder = Picasso.get();
 //                builder.load(currentObj.Logo).tag(PicassoOnScrollListener.TAG)//.config(Bitmap.Config.RGB_565).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 //                        //.placeholder((R.drawable.ic_launcher_background)) HHH 1400-01-10
 //                        //.error(R.drawable.ic_launcher_background)  HHH 1400-01-10
@@ -2580,6 +2589,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                     //.icon(currentRouteIcon)
                     .flat(true);
             Marker marker = map.addMarker(markerOptions);
+            marker.showInfoWindow();
             marker.setTag(poi);
             searchMarkers.add(marker);
             poi.marker = marker;

@@ -12,8 +12,8 @@ android {
         applicationId "mojafarin.pakoob"
         minSdkVersion 19
         targetSdkVersion 33
-        versionCode 43
-        versionName "2.3.3"
+        versionCode 45
+        versionName "2.3.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -38,6 +38,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    namespace 'mojafarin.pakoob'
 
 }
 
@@ -60,7 +61,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
 
     //retrofit and gson and OkHttp
-    implementation 'com.squareup.retrofit2:retrofit:2.7.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.11.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
     implementation 'com.squareup.retrofit2:converter-scalars:2.5.0' //for convert normal text as api result
     implementation("com.squareup.okhttp3:okhttp:4.9.0") //I add this just for setting timeout
@@ -69,7 +70,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
 
     //baraye aks va load kardanesh az internet
-    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.squareup.picasso:picasso:2.8'
     implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
 
 
@@ -117,7 +118,7 @@ dependencies {
 
     //for file Select
     //implementation 'com.github.hedzr:android-file-chooser:v1.2.0-final'//https://android-arsenal.com/details/1/6982
-    implementation 'com.obsez.android.lib.filechooser:filechooser:1.1.19'//https://android-arsenal.com/details/1/6982#!description
+    implementation 'com.github.hedzr:android-file-chooser:v1.2.0-final'//https://android-arsenal.com/details/1/6982#!description
     //implementation 'com.google.android.gms:play-services-location:17.1.0'
 
     //color Picker-Lib Included
@@ -139,4 +140,7 @@ dependencies {
 
     //گوگل مپ خل شده وقتی که صفحه ش باز میشه اپ رو می بنده و خلاص
     implementation 'com.google.maps.android:android-maps-utils:3.4.0'
+
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
 }

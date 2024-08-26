@@ -22,24 +22,33 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
-                <EditText
-                    android:padding="0dp"
-                    style="@style/TextboxNormal_Child"
-                    android:id="@+id/txtSearch"
-                    android:layout_height="50dp"
-                    android:hint="اینجا جستجو کنید"/>
+                    <EditText
+                        android:imeOptions="actionSearch"
+                        android:layout_marginLeft="@dimen/leftrightMargin"
+                        android:padding="0dp"
+                        android:inputType="text"
+                        style="@style/TextboxNormal_Child"
+                        android:id="@+id/txtSearch"
+                        android:layout_height="50dp"
+                        android:hint="@string/SearchOnTopOfSelectMap"/>
                 </com.google.android.material.textfield.TextInputLayout>
-                <TextView
-                    android:id="@+id/btnSearch"
-                    style="@style/ToolbarTextButtons"
-                    android:textSize="24dp"
-                    android:text="&#xE800;"/>
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    style="@style/TextboxNormal_Container_s"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1">-->
+<!--                <EditText-->
+<!--                    android:padding="0dp"-->
+<!--                    style="@style/TextboxNormal_Child"-->
+<!--                    android:id="@+id/txtSearch"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:hint="نام یا شماره نقشه را جستجو کنید"/>-->
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
 <!--                <TextView-->
-<!--                    android:id="@+id/btnFindByLocation"-->
+<!--                    android:id="@+id/btnSearch"-->
 <!--                    style="@style/ToolbarTextButtons"-->
-<!--                    android:text="&#xE810;"/>-->
-
-
+<!--                    android:textSize="24dp"-->
+<!--                    android:text="&#xE800;"/>-->
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
         <View style="@style/ToolbarBottomShadow"/>
@@ -72,16 +81,20 @@
             android:gravity="center"
             android:background="@drawable/bg_roundcorner_greenborder">
             <TextView
+                android:duplicateParentState="true"
+                android:clickable="false"
                 style="@style/ToolbarTextButtons"
                 android:layout_height="30dp"
                 android:text="&#xE810;"/>
             <TextView
+                android:duplicateParentState="true"
+                android:clickable="false"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:gravity="center"
                 style="@style/label"
-                android:text="جستجو روی نقشه"
+                android:text="جستجوی منطقه با کمک نقشه"
                 />
 
         </LinearLayout>

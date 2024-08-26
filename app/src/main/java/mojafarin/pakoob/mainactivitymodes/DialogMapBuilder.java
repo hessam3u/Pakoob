@@ -6,7 +6,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -41,6 +40,7 @@ import androidx.fragment.app.FragmentManager;
 import bo.entity.NbMap;
 import bo.entity.NbPoi;
 import bo.sqlite.TTExceptionLogSQLite;
+import maptools.GeoCalcs;
 import maptools.PersianMapIndex25000;
 import maptools.hMapTools;
 import mojafarin.pakoob.MapPage;
@@ -171,11 +171,11 @@ View v;
 
             if (NbPoi.Enums.PoiType_Folder == poi.PoiType || NbPoi.Enums.PoiType_Track == poi.PoiType || poi.PoiType == NbPoi.Enums.PoiType_Route) {
                 debugStep = 20;
-                double wToE = hMapTools.distanceBetweenMeteres(poi.LatN, poi.LonW, poi.LatN, poi.LonE);
+                double wToE = GeoCalcs.distanceBetweenMeteres(poi.LatN, poi.LonW, poi.LatN, poi.LonE);
                 debugStep = 30;
-                double sToN = hMapTools.distanceBetweenMeteres(poi.LatS, poi.LonW, poi.LatN, poi.LonW);
+                double sToN = GeoCalcs.distanceBetweenMeteres(poi.LatS, poi.LonW, poi.LatN, poi.LonW);
                 debugStep = 40;
-                int zoom = hMapTools.KmToMapZoom(Math.max(wToE, sToN) / 1000) + 3;
+                int zoom = GeoCalcs.KmToMapZoom(Math.max(wToE, sToN) / 1000) + 3;
 
                 LatLng mid = new LatLng(poi.LatS + (poi.LatN - poi.LatS) / 2, poi.LonW + (poi.LonE - poi.LonW) / 2);
                 debugStep = 50;

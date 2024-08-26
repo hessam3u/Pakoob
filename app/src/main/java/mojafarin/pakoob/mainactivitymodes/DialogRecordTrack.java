@@ -1,13 +1,17 @@
 package mojafarin.pakoob.mainactivitymodes;
 
+import static android.content.Context.POWER_SERVICE;
 import static utils.HFragment.stktrc2k;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -43,6 +47,7 @@ import mojafarin.pakoob.TripComputer;
 import mojafarin.pakoob.app;
 import utils.MyDate;
 import utils.PrjConfig;
+import utils.hutilities;
 import utils.projectStatics;
 
 public class DialogRecordTrack {
@@ -66,13 +71,13 @@ public class DialogRecordTrack {
     int IsRecording = 0;
     FrameLayout pnlRecordTrack, btnGoToTripComputerParent;
     TextView lblFinishRecording;
-    FloatingActionButton btnGoToTripComputer, btnPlayPause,btnFinishRecording;
+    FloatingActionButton btnGoToTripComputer, btnPlayPause, btnFinishRecording;
 
-    public void initializeComponentsOnResume(){
+    public void initializeComponentsOnResume() {
         //btnGoToTripComputer.setImageBitmap(projectStatics.textAsBitmapFontello("\uE811", 80, Color.BLACK, activity));
         //btnGoToTripComputer.setImageResource(R.drawable.ic_trip_computer);
         btnGoToTripComputer.setOnClickListener(view -> {
-            ((MainActivity)activity).showFragment(TripComputer.getInstance());
+            ((MainActivity) activity).showFragment(TripComputer.getInstance());
         });
         btnPlayPause.setImageBitmap(pauseImg);
         setViewOfBtnPlay();
@@ -91,13 +96,18 @@ public class DialogRecordTrack {
                 setIsRecording(true);
                 setViewOfBtnPlay();
             }
-            checkPowerSavingMode(activity);
+            try {
+                checkPowerSavingMode(activity);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
         //btnFinishRecording.setImageBitmap(projectStatics.textAsBitmapFontello("\uF11E", 80, Color.GREEN, activity));
         btnFinishRecording.setOnClickListener(view -> {
             btnFinishRecording_Click();
         });
     }
+
     public void initializeComponents() {
         color_of_currentTrack = Color.CYAN;//Color.parseColor();
         color_of_currentTrack = Color.CYAN;//Color.parseColor();
@@ -110,7 +120,8 @@ public class DialogRecordTrack {
         btnFinishRecording = activity.findViewById(R.id.btnFinishRecording);
         initializeComponentsOnResume();
     }
-    public void btnFinishRecording_Click(){
+
+    public void btnFinishRecording_Click() {
 
         try {
             if (getIsRecordingForceReRead()) {
@@ -122,8 +133,8 @@ public class DialogRecordTrack {
                             try {
 
                                 List<NbCurrentTrack> trackPointsInDb = NbCurrentTrackSQLite.selectAll();
-                                int trkSize =trackPointsInDb.size();
-                                if ( trkSize== 0){
+                                int trkSize = trackPointsInDb.size();
+                                if (trkSize == 0) {
                                     Toast.makeText(mapPage.getContext(), mapPage.getString(R.string.currentTrackIsTooShortToSave), Toast.LENGTH_LONG).show();
                                     discardTrackPanel();
                                     return;
@@ -179,8 +190,7 @@ public class DialogRecordTrack {
                         , activity.getResources().getString(R.string.cancel), null);
 
 
-            }
-            else{
+            } else {
                 Context context = mapPage.getContext();
                 //1402-03-21
                 //در راستای حذف دسترسی در پس زمینه کامنت شد
@@ -201,6 +211,11 @@ public class DialogRecordTrack {
 //                            }
 //                        }
 //                    }
+                try {
+                    //hutilities.requestIgnoreBatteryOptimizations(context);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 this.startRecording();
                 Toast.makeText(context.getApplicationContext(), "ذخیره مسیر آغاز شد...", Toast.LENGTH_LONG).show();
             }
@@ -220,17 +235,31 @@ public class DialogRecordTrack {
     }
 
     public static void checkPowerSavingMode(Activity activity) {
-        Log.e("شششش", "ترک زدن"+"پنل فعال است - 251");
+//        if (1==1) return;
+//        boolean isIgnored = hutilities.requestIgnoreBatteryOptimizations(activity.getApplicationContext());
+//        if (isIgnored)
+//            return;
         PowerManager powerManager = (PowerManager)
-                activity.getSystemService(Context.POWER_SERVICE);
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-                && powerManager.isPowerSaveMode()){
-            Log.e("شششش", "ترک زدن"+"پنل فعال است - 252");
-            projectStatics.showDialog(activity, activity.getString(R.string.CheckSavingPowerMode_Title)
-                    , activity.getString(R.string.CheckSavingPowerMode_Desc), activity.getString(R.string.ok),
-                    view -> {
-                //activity.getApplicationContext().startActivity(new Intent("com.android.settings.widget.SettingsAppWidgetProvider"));
+                activity.getSystemService(POWER_SERVICE);
+        String packageName = activity.getPackageName();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+                && powerManager.isPowerSaveMode()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (powerManager.isIgnoringBatteryOptimizations(packageName)){
+                    return;
                 }
+            }
+            projectStatics.showDialog(activity, activity.getString(R.string.CheckSavingPowerMode_Title)
+                    , activity.getString(R.string.CheckSavingPowerMode_Desc), activity.getString(R.string.OpenBattrySetting),
+                    view -> {
+                        //openBatteryOptimizationSettings
+                        Intent intent = new Intent();
+                        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
+                        intent.setData(uri);
+                        activity.startActivity(intent);
+                        //activity.getApplicationContext().startActivity(new Intent("com.android.settings.widget.SettingsAppWidgetProvider"));
+                    }
                     , "", null);
         }
     }
@@ -260,26 +289,30 @@ public class DialogRecordTrack {
         }
     }
 
-    public void setVisibilityAndEnvironment(boolean isRecording){
+    public void setVisibilityAndEnvironment(boolean isRecording) {
         pnlRecordTrack.setVisibility(View.VISIBLE);
 
         btnGoToTripComputer.setVisibility(View.VISIBLE);
         btnGoToTripComputerParent.setVisibility(View.VISIBLE);
-        if (isRecording){
+        if (isRecording) {
             lblFinishRecording.setText(mapPage.getString(R.string.endSaveTrack));
             btnPlayPause.setVisibility(View.VISIBLE);
             //btnGoToTripComputer.setVisibility(View.VISIBLE);
             //btnGoToTripComputerParent.setVisibility(View.VISIBLE);
-        }
-        else{
+        } else {
             lblFinishRecording.setText(mapPage.getString(R.string.startSaveTrack));
             btnPlayPause.setVisibility(View.INVISIBLE);
             //btnGoToTripComputer.setVisibility(View.INVISIBLE);
             //btnGoToTripComputerParent.setVisibility(View.INVISIBLE);
         }
     }
+
     public void startRecording() {
-        checkPowerSavingMode(activity);
+        try {
+            checkPowerSavingMode(activity);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (btnFinishRecording == null)
             initializeComponents();
@@ -315,7 +348,7 @@ public class DialogRecordTrack {
         Log.e("ترک زدن", "تعداد نقطه های بک گراند" + trkSize);
         veryCurrentRoutePoints.clear();
         for (int i = 0; i < trkSize; i++) {
-            NbCurrentTrack currentTrack =backCurrentTrack.get(i);
+            NbCurrentTrack currentTrack = backCurrentTrack.get(i);
             if (currentTrack.IsPause()) //1400-11-04
                 continue;
             LatLng latLng = currentTrack.getLatLon();
@@ -408,6 +441,7 @@ public class DialogRecordTrack {
         IsRecording = app.session.getIsTrackRecording();
         return IsRecording == 1;
     }
+
     public boolean getIsRecordingForceReRead() {
         IsRecording = app.session.getIsTrackRecording();
         return IsRecording == 1;

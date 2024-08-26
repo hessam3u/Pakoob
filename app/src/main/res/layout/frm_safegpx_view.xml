@@ -133,21 +133,96 @@
                         android:background="@drawable/bg_roundcorner_gray_backwhite5"
                         android:padding="1dp"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/ac_hiking" />
+                        android:src="@drawable/ac_hiking"
+
+                        android:foreground="@drawable/img_gradient_for_imageview"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
-                        android:orientation="vertical">
+                        android:layout_marginLeft="@dimen/leftrightMarginMul2"
+                        android:layout_marginRight="@dimen/leftrightMarginMul2"
+                        android:orientation="horizontal">
 
+                    <LinearLayout
+                        android:textDirection="rtl"
+                        android:layout_width="0dp"
+                        android:layout_weight=".33333"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/lblDistanceTitle"
+                            style="@style/label_xs"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:textColor="@color/colorWhite"
+                            android:text="مسافت" />
                         <TextView
                             android:id="@+id/lblDistance"
                             style="@style/label_l"
+                            android:textColor="@color/colorWhite"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/leftrightMarginMul2"
-                            android:text="مسافت 250km" />
+                            android:textAlignment="center"
+                            android:text=" 250km" />
+
+                    </LinearLayout>
+
+                        <LinearLayout
+                            android:textDirection="rtl"
+                            android:layout_width="0dp"
+                            android:layout_weight=".33333"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/lblElevGainTitle"
+                                style="@style/label_xs"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textAlignment="center"
+                                android:textColor="@color/colorWhite"
+                                android:text="افزایش ارتفاع" />
+                            <TextView
+                                android:id="@+id/lblElevGain"
+                                style="@style/label_l"
+                                android:textColor="@color/colorWhite"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textAlignment="center"
+                                android:text="1300m" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:textDirection="rtl"
+                            android:layout_width="0dp"
+                            android:layout_weight=".33333"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/lblElevLossTitle"
+                                style="@style/label_xs"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textAlignment="center"
+                                android:textColor="@color/colorWhite"
+                                android:text="کاهش ارتفاع" />
+                            <TextView
+                                android:id="@+id/lblElevLoss"
+                                style="@style/label_l"
+                                android:textColor="@color/colorWhite"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textAlignment="center"
+                                android:text="2200m" />
+
+                        </LinearLayout>
                     </LinearLayout>
 
                 </RelativeLayout>
@@ -202,6 +277,7 @@
 
                 <LinearLayout
                     android:id="@+id/linValidity"
+                    android:padding="@dimen/leftrightMargin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/leftrightMarginMul2"
@@ -244,6 +320,96 @@
                     android:text="کوهنوردی"
                     android:textColor="@color/colorGrey" />
 
+
+                <LinearLayout
+                    android:id="@+id/linElevChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/leftrightMargin"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/labelB"
+                        android:layout_margin="@dimen/leftrightMargin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="@string/SafeGpxElevChart" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:padding="@dimen/leftrightMargin"
+                        >
+                        <RelativeLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <com.github.mikephil.charting.charts.LineChart
+                                android:id="@+id/chart1"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_above="@+id/seekBar1" />
+
+                            <SeekBar
+                                android:visibility="gone"
+                                android:id="@+id/seekBar2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentLeft="true"
+                                android:layout_margin="8dp"
+                                android:layout_toLeftOf="@+id/tvYMax"
+                                android:layout_marginRight="5dp"
+                                android:max="150"
+                                android:paddingBottom="12dp" />
+
+                            <SeekBar
+                                android:visibility="gone"
+                                android:id="@+id/seekBar1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_above="@+id/seekBar2"
+                                android:layout_margin="8dp"
+                                android:layout_marginBottom="35dp"
+                                android:layout_toLeftOf="@+id/tvXMax"
+                                android:layout_marginRight="5dp"
+                                android:max="500"
+                                android:paddingBottom="12dp" />
+
+                            <TextView
+                                android:visibility="gone"
+                                android:id="@+id/tvXMax"
+                                android:layout_width="50dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/seekBar1"
+                                android:layout_alignParentRight="true"
+                                android:text="دش"
+                                android:layout_marginBottom="15dp"
+                                android:layout_marginRight="10dp"
+                                android:gravity="right"
+                                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                            <TextView
+                                android:visibility="gone"
+                                android:id="@+id/tvYMax"
+                                android:layout_width="50dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/seekBar2"
+                                android:layout_alignParentRight="true"
+                                android:text="دش"
+                                android:layout_marginBottom="15dp"
+                                android:layout_marginRight="10dp"
+                                android:gravity="right"
+                                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
                 <LinearLayout
                     android:id="@+id/linDesc"
                     android:layout_width="match_parent"
@@ -265,6 +431,7 @@
                         android:padding="@dimen/leftrightMargin"
                         >
                     <TextView
+                        android:padding="@dimen/leftrightMargin"
                         android:id="@+id/lblDesc"
                         style="@style/label"
                         android:layout_width="match_parent"
@@ -296,6 +463,7 @@
                         android:padding="@dimen/leftrightMargin"
                         >
                     <TextView
+                        android:padding="@dimen/leftrightMargin"
                         android:id="@+id/lblImportantNotes"
                         style="@style/label"
                         android:layout_width="match_parent"

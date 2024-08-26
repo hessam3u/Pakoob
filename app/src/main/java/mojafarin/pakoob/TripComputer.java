@@ -1,7 +1,6 @@
 package mojafarin.pakoob;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,7 +15,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Calendar;
@@ -29,7 +27,7 @@ import bo.entity.NbCurrentTrack;
 import bo.sqlite.NbCurrentTrackSQLite;
 import bo.sqlite.TTExceptionLogSQLite;
 import maptools.TrackProperties;
-import maptools.hMapTools;
+import maptools.GeoCalcs;
 import utils.HFragment;
 import utils.MainActivityManager;
 import utils.PrjConfig;
@@ -232,7 +230,7 @@ public class TripComputer extends HFragment {
 
         public void setSpecialFields(boolean forceCalculate){
             if (forceCalculate || mainActivity.mapPage.dialogRecordTrack.getIsRecording()){
-                txtDuration.setText(hMapTools.timeFriendly(totalTrackSeconds / 1000, hMapTools.TIME_FRIENDLY_MODE_LONG_EXACT));
+                txtDuration.setText(GeoCalcs.timeFriendly(totalTrackSeconds / 1000, GeoCalcs.TIME_FRIENDLY_MODE_LONG_EXACT));
             }
         }
         public TrackProperties setTrackProperties(boolean forceCalculate){
@@ -249,17 +247,17 @@ public class TripComputer extends HFragment {
                 tp.initFromNbCurrentTrack(oldCurrentTracks);
 
 
-                txtDistance.setText(hMapTools.distanceBetweenFriendly(tp.distance));
-                txtAscentTotal.setText(hMapTools.distanceBetweenFriendly(tp.totalAscent));
-                txtDescentTotal.setText(hMapTools.distanceBetweenFriendly(tp.totalDecent));
-                txtAvgSpeed.setText(hMapTools.GetSpeedFriendlyKmPh(tp.distance / (tp.totalTime/1000) ) + "kmh");
-                txtMaxSpeed.setText(hMapTools.GetSpeedFriendlyKmPh(tp.maxSpeed ) + "kmh");
+                txtDistance.setText(GeoCalcs.distanceBetweenFriendly(tp.distance));
+                txtAscentTotal.setText(GeoCalcs.distanceBetweenFriendly(tp.totalAscent));
+                txtDescentTotal.setText(GeoCalcs.distanceBetweenFriendly(tp.totalDecent));
+                txtAvgSpeed.setText(GeoCalcs.GetSpeedFriendlyKmPh(tp.distance / (tp.totalTime/1000) ) + "kmh");
+                txtMaxSpeed.setText(GeoCalcs.GetSpeedFriendlyKmPh(tp.maxSpeed ) + "kmh");
                 if (tp.maxElevation != TrackProperties.MAX_ELEVATION_DEFAULT)
-                    txtMaxElevation.setText(hMapTools.distanceBetweenFriendly(tp.maxElevation));
+                    txtMaxElevation.setText(GeoCalcs.distanceBetweenFriendly(tp.maxElevation));
                 else
                     txtMaxElevation.setText("-");
                 if (tp.minElevation != TrackProperties.MIN_ELEVATION_DEFAULT)
-                    txtMinElevation.setText(hMapTools.distanceBetweenFriendly(tp.minElevation));
+                    txtMinElevation.setText(GeoCalcs.distanceBetweenFriendly(tp.minElevation));
                 else
                     txtMinElevation.setText("-");
             }

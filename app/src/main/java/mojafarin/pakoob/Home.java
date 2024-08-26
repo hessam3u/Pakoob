@@ -310,7 +310,7 @@ public class Home extends HFragment {
 
         final Target target = ImageTools.picassoImageTarget(context, context.getFilesDir() + "/" + PrjConfig.AdvFolder, filename, imageView);
         imageView.setTag(target);
-        Picasso.with(context).load(rec.PhotoAddress).into(target);
+        Picasso.get().load(rec.PhotoAddress).into(target);//#PicassoUpdate140303 with(context)
     }
 
     public void showOldAdv(NbAdv rec, Resources r) {
@@ -559,7 +559,7 @@ public class Home extends HFragment {
                 showDefaultClubLogo();
                 Log.e("111خواندن عکس", myImageFile.getName() + " پیدا نشد ");
             } else {
-                Picasso.with(context).load(myImageFile).into(imgMyClubLogo);
+                Picasso.get().load(myImageFile).into(imgMyClubLogo);//#PicassoUpdate140303 with(context)
                 Log.e("222خواندن عکس", myImageFile.getName());
             }
 

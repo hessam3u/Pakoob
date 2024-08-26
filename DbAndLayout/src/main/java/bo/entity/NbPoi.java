@@ -205,6 +205,7 @@ public class NbPoi
             case Enums.PoiType_Folder: return rType == 1?R.drawable.ac_twoway:rType == 2? R.color.colorGold:R.drawable.ic_circle_redyellow_line;//??????????
             case Enums.PoiType_Track: return rType == 1?R.drawable.ac_twoway:rType == 2?R.color.colorGold:R.drawable.ic_circle_redyellow_line;//??????????
             case Enums.PoiType_Route: return rType == 1?R.drawable.ac_twoway:rType == 2?R.color.colorGold:R.drawable.ic_circle_redyellow_line;//??????????
+            case Enums.PoiType_Map: return rType == 1?R.drawable.ac_map_pointer:rType == 2?R.color.colorGold:R.drawable.ac_map_pointer;//??????????
             case Enums.PoiType_Waypoint: return rType == 1?R.drawable.ac_waypoint:rType == 2?R.color.colorOrange1:R.drawable.ic_circle_redyellow_line;
             case Enums.PoiType_Peak: return rType == 1?R.drawable.ac_peak1:rType == 2?R.color.colorBlue1:R.drawable.ac_peak1;
             case Enums.PoiType_Shelter1: return rType == 1?R.drawable.ac_shelter1:rType == 2?R.color.colorBrownDark:R.drawable.ac_chador;
@@ -253,6 +254,7 @@ public class NbPoi
         public static final short PoiType_Folder = 1;
         public static final short PoiType_Track = 2;
         public static final short PoiType_Route = 3;
+        public static final short PoiType_Map = 4;
         public static final short PoiType_Waypoint = 100;
         public static final short PoiType_Peak = 101;
         public static final short PoiType_Shelter1 = 103;//Janpanah

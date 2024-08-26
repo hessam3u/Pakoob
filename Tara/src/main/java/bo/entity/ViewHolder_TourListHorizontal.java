@@ -4,6 +4,7 @@ import static utils.HFragment.stktrc2k;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,12 +12,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pakoob.tara.R;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import androidx.recyclerview.widget.RecyclerView;
 import bo.sqlite.TTExceptionLogSQLite;
 import utils.PicassoOnScrollListener;
+import utils.PicassoTrustAll;
 import utils.PrjConfig;
 
 
@@ -33,7 +37,7 @@ public  class ViewHolder_TourListHorizontal extends RecyclerView.ViewHolder {
         itemMainPart = itemView.findViewById(R.id.itemMainPart);
         lblItemTitle = v.findViewById(R.id.lblItemTitle);
         lblItemSbuTitle = v.findViewById(R.id.lblItemSbuTitle);
-        txtImage = v.findViewById(R.id.txtImage);
+        txtImage = (ImageView)v.findViewById(R.id.txtImage);
         this.itemClickFunction = itemClickFunction;
         this.itemLongClickFunction = itemLongClickFunction;
     }
@@ -56,11 +60,11 @@ public  class ViewHolder_TourListHorizontal extends RecyclerView.ViewHolder {
             //Picasso.Builder builder = new Picasso.Builder(context);
             //builder.downloader(new OkHttp3Downloader(context));
             //builder.build().load(...) --------> ghablan intori bood, ama singleton kardamesh ke break nashe
-            Picasso builder = Picasso.with(context);
-            builder.load(clubTour.ImageLink).tag(PicassoOnScrollListener.TAG)
-                    //.config(Bitmap.Config.RGB_565).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                    //.placeholder((R.drawable.ic_launcher_background)) HHH 1400-01-10
-                    //.error(R.drawable.ic_launcher_background)  HHH 1400-01-10
+
+            if (picassoInstance == null)
+                picassoInstance = PicassoTrustAll.getInstance(context);
+            picassoInstance.load(clubTour.ImageLink)
+                    .error(R.drawable.ac_peak2)
                     .into(this.txtImage);
         } catch (Exception ex) {
             TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frm_Component_TourListHorizontal, 100);
@@ -69,4 +73,5 @@ public  class ViewHolder_TourListHorizontal extends RecyclerView.ViewHolder {
             ex.printStackTrace();
         }
     }
+    Picasso picassoInstance;
 }

@@ -80,6 +80,10 @@ public class NbSafeGpx
     public String ImportantNotes;
     @SerializedName(value="TrackLength", alternate = {"trackLength"})
     public int TrackLength;
+    @SerializedName(value="ElevGain", alternate = {"elevGain"})
+    public float ElevGain;
+    @SerializedName(value="ElevLoss", alternate = {"elevLoss"})
+    public float ElevLoss;
     @SerializedName(value="Priority", alternate = {"priority"})
     public int Priority;
     @SerializedName(value="ValidityDesc", alternate = {"validityDesc"})
@@ -90,6 +94,30 @@ public class NbSafeGpx
     public byte ContentType2;
     @SerializedName(value="ContentType3", alternate = {"contentType3"})
     public byte ContentType3;
+
+    @SerializedName(value="StartLat", alternate = {"startLat"})
+    public double StartLat;
+    @SerializedName(value="StartLon", alternate = {"startLon"})
+    public double StartLon;
+    @SerializedName(value="EndLat", alternate = {"endLat"})
+    public double EndLat;
+    @SerializedName(value="EndLon", alternate = {"endLon"})
+    public double EndLon;
+    @SerializedName(value="TrackRoundType", alternate = {"trackRoundType"})
+    public byte TrackRoundType;
+    @SerializedName(value="TimeNeeded", alternate = {"timeNeeded"})
+    public float TimeNeeded;
+    @SerializedName(value="DaysNeeded", alternate = {"daysNeeded"})
+    public float DaysNeeded;
+    @SerializedName(value="StartElev", alternate = {"startElev"})
+    public int StartElev;
+    @SerializedName(value="EndElev", alternate = {"endElev"})
+    public int EndElev;
+    @SerializedName(value="MinElev", alternate = {"minElev"})
+    public int MinElev;
+    @SerializedName(value="MaxElev", alternate = {"maxElev"})
+    public int MaxElev;
+
     public Calendar getFileVersionDate(){return MyDate.CalendarFromCSharpSQLString(this.FileVersionDate);}
     public String getFileVersionDateView(){return MyDate.sQLStringToPersianSrting(this.FileVersionDate, MyDate.DateToStringFormat.yyyymmdd, MyDate.TimeToStringFormat.None, "");}
     public void setFileVersionDate(Calendar value){this.FileVersionDate = MyDate.CalendarToCSharpSQLString(value);}

@@ -31,6 +31,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    namespace 'pakoob.DbAndLayout'
 }
 
 dependencies {
@@ -38,6 +39,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.1.0'
     implementation project(path: ':HUtilities')
+    implementation project(':maptools')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -46,13 +48,12 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
 
     //retrofit and gson and OkHttp
-    implementation 'com.squareup.retrofit2:retrofit:2.7.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.11.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
     implementation 'com.squareup.retrofit2:converter-scalars:2.5.0' //for convert normal text as api result
     implementation("com.squareup.okhttp3:okhttp:4.9.0") //I add this just for setting timeout and for setting SSL problems 1401-04-19
 
     implementation 'com.github.eloyzone:jalali-calendar:1.0.0'
-
 
     //to use Room and SQLite Commented at 1401-03-04
 //    def lifecycle_version = "2.4.2"
@@ -74,7 +75,7 @@ dependencies {
 
 
     //baraye aks va load kardanesh az internet
-    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.squareup.picasso:picasso:2.8'
     implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
 
 }

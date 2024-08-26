@@ -4,8 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
-import com.jakewharton.picasso.OkHttp3Downloader;
-import com.squareup.picasso.OkHttpDownloader;
+import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import javax.net.ssl.HostnameVerifier;

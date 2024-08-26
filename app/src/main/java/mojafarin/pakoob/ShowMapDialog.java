@@ -1,12 +1,8 @@
 package mojafarin.pakoob;
 
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.icu.text.CaseMap;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -37,25 +28,18 @@ import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.android.gms.maps.model.TileProvider;
 import com.google.android.gms.maps.model.UrlTileProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.tabs.TabLayout;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 
-import bo.entity.NbCurrentTrack;
 import bo.entity.NbMap;
 import bo.entity.NbPoi;
-import bo.sqlite.NbCurrentTrackSQLite;
 import bo.sqlite.TTExceptionLogSQLite;
+import maptools.GeoCalcs;
 import maptools.PersianMapIndex25000;
-import maptools.TrackProperties;
 import maptools.hMapTools;
 import utils.HFragment;
 import utils.MainActivityManager;
@@ -194,11 +178,11 @@ public class ShowMapDialog extends HFragment {
 
             if (NbPoi.Enums.PoiType_Folder == poi.PoiType || NbPoi.Enums.PoiType_Track == poi.PoiType || poi.PoiType == NbPoi.Enums.PoiType_Route) {
                 debugStep = 20;
-                double wToE = hMapTools.distanceBetweenMeteres(poi.LatN, poi.LonW, poi.LatN, poi.LonE);
+                double wToE = GeoCalcs.distanceBetweenMeteres(poi.LatN, poi.LonW, poi.LatN, poi.LonE);
                 debugStep = 30;
-                double sToN = hMapTools.distanceBetweenMeteres(poi.LatS, poi.LonW, poi.LatN, poi.LonW);
+                double sToN = GeoCalcs.distanceBetweenMeteres(poi.LatS, poi.LonW, poi.LatN, poi.LonW);
                 debugStep = 40;
-                int zoom = hMapTools.KmToMapZoom(Math.max(wToE, sToN) / 1000) + 3;
+                int zoom = GeoCalcs.KmToMapZoom(Math.max(wToE, sToN) / 1000) + 3;
 
                 LatLng mid = new LatLng(poi.LatS + (poi.LatN - poi.LatS) / 2, poi.LonW + (poi.LonE - poi.LonW) / 2);
                 debugStep = 50;

@@ -15,8 +15,10 @@ import com.pakoob.tara.R;
 import com.squareup.picasso.Picasso;
 
 import androidx.recyclerview.widget.RecyclerView;
+
 import bo.sqlite.TTExceptionLogSQLite;
 import utils.PicassoOnScrollListener;
+import utils.PicassoTrustAll;
 import utils.PrjConfig;
 
 
@@ -46,6 +48,8 @@ public class ViewHolder_TourList extends RecyclerView.ViewHolder {
         txt_ct_ImageLinkUri = v.findViewById(R.id.txtImage);
     }
 
+    Picasso picassoInstance;
+
     public void DoBind(TTClubTour clubTour, int position, Context context) {
         try {
             this.txt_ct_Name.setText(clubTour.getName());
@@ -66,14 +70,16 @@ public class ViewHolder_TourList extends RecyclerView.ViewHolder {
                 });
             }
 
-            //Picasso.Builder builder = new Picasso.Builder(context);
-            //builder.downloader(new OkHttp3Downloader(context));
-            //builder.build().load(...) --------> ghablan intori bood, ama singleton kardamesh ke break nashe
-            Picasso builder = Picasso.with(context);
-            builder.load(clubTour.ImageLink).tag(PicassoOnScrollListener.TAG)//.config(Bitmap.Config.RGB_565).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                    //.placeholder((R.drawable.ic_launcher_background)) HHH 1400-01-10
-                    //.error(R.drawable.ic_launcher_background)  HHH 1400-01-10
+//            Picasso builder = Picasso.get();//#PicassoUpdate140303 with(context)
+//            builder.load(clubTour.ImageLink).tag(PicassoOnScrollListener.TAG)//.config(Bitmap.Config.RGB_565).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+//                    .into(this.txt_ct_ImageLinkUri);
+
+            if (picassoInstance == null)
+                picassoInstance = PicassoTrustAll.getInstance(context);
+            picassoInstance.load(clubTour.ImageLink)
+                    .error(R.drawable.ac_peak2)
                     .into(this.txt_ct_ImageLinkUri);
+
         } catch (Exception ex) {
             TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frm_Component_TourListVer, 100);
             Log.d("بازکردن", "Bind Ver Tour: " + ex.getMessage() + ex.getStackTrace());

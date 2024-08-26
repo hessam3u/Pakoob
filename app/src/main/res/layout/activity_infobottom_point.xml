@@ -30,6 +30,7 @@
                 android:layout_marginBottom="8dp">
 
                 <TextView
+                    android:textDirection="rtl"
                     android:id="@+id/txtSelectedName"
                     style="@style/label_l"
                     android:layout_width="0dp"
@@ -39,17 +40,16 @@
                     android:text="نقطه انتخاب شده" />
 
                 <TextView
-                    android:id="@+id/txtProvinceName"
-                    style="@style/label_s"
+                    android:id="@+id/txtElevation"
+                    style="@style/label"
                     android:layout_width="0dp"
-                    android:layout_weight=".42"
+                    android:layout_weight=".65"
                     android:layout_height="wrap_content"
-                    android:gravity="left"
-                    android:text="" />
+                    android:gravity="left"/>
 
             </LinearLayout>
             <ProgressBar
-                android:id="@+id/progressBarTopOfClubViewHome"
+                android:id="@+id/progressFromServer"
                 android:layout_width="match_parent"
                 android:layout_marginTop="2dp"
                 android:layout_height="4dp"
@@ -59,6 +59,22 @@
                 android:visibility="invisible"
                 style="?android:attr/progressBarStyleHorizontal"
                 />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:id="@+id/txtTitleFromServer"
+                    style="@style/label_l"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"/>
+
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

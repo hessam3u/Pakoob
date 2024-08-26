@@ -1,5 +1,6 @@
 package mojafarin.pakoob;
 
+import static mojafarin.pakoob.SafeGpxView.setupLineChartForElevation;
 import static utils.HFragment.stktrc2k;
 
 import android.content.Context;
@@ -30,8 +31,9 @@ import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.OnColorSelectedListener;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
+import com.github.mikephil.charting.charts.LineChart;
 import com.google.android.gms.maps.model.LatLng;
-import com.obsez.android.lib.filechooser.ChooserDialog;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -48,6 +50,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import bo.NewClasses.SimpleRequest;
+import bo.entity.SearchRequestDTO;
+import bo.entity.TrackDataCompact;
+import bo.entity.TrackDataCompactRes;
+import maptools.GeoCalcs;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import utils.MainActivityManager;
 import utils.PrjConfig;
 import bo.entity.NbPoi;
@@ -56,7 +67,6 @@ import bo.sqlite.NbPoiSQLite;
 import bo.sqlite.TTExceptionLogSQLite;
 import maptools.GPXFile;
 import maptools.TrackData;
-import maptools.hMapTools;
 import utils.CustomTypeFaceSpan;
 import utils.MyDate;
 import utils.hutilities;
@@ -90,7 +100,7 @@ public class EditTrack extends Fragment {
 
         initializeComponents(view);
         fillForm();
-        doCalculations();
+        doCalculations(data);
     }
 
     private void fillForm() {
@@ -101,9 +111,15 @@ public class EditTrack extends Fragment {
         SampleLine mydrawing = new SampleLine(currentObj.Color);
         btnSelectColor.setImageDrawable(mydrawing);
         CurrentColor = currentObj.Color;
+        if (data.hasZeroElevation()){
+            readElevationInBackground();
+        }
+        else{
+            SafeGpxView.setDataForElevationChart(chart, data, context);
+        }
     }
 
-    void doCalculations() {
+    void doCalculations(TrackData data) {
         try {
             //1:
             LatLng cPoint = null;
@@ -128,18 +144,20 @@ public class EditTrack extends Fragment {
             float maxElevation = -1000000;
             float minElevation = 1000000;
 
-            boolean hasTime = data.Time.size() > 0;
+            int processedDataSize= data.Points.size();
+            boolean hasTime = data.Time.size() > 0 && data.Time.size() == processedDataSize;
             boolean hasElev = false;
+            data.calcSmoothedElevation(true);
 
             boolean TrackIsPaused = false;
-            for (int i = 0; i < dataSize; i++) {
+            for (int i = 0; i < processedDataSize; i++) {
                 if (i > 0 && !TrackIsPaused) {//1400-11-04  && !TrackIsPaused
                     pElev = cElev;
                     pPoint = cPoint;
                     pTime = cTime;
                 }
 
-                cElev = data.Elev.get(i);
+                cElev = data.ElevSmoothed.get(i);
                 cPoint = data.Points.get(i);
                 cTime = hasTime && data.Time.get(i) != null ? data.Time.get(i).getTimeInMillis() : 0;
 
@@ -167,7 +185,7 @@ public class EditTrack extends Fragment {
                 if (cElev < minElevation)
                     minElevation = cElev;
 
-                Double diffDistance = hMapTools.distanceBetweenMeteres(pPoint.latitude, pPoint.longitude, cPoint.latitude, cPoint.longitude);
+                Double diffDistance = GeoCalcs.distanceBetweenMeteres(pPoint.latitude, pPoint.longitude, cPoint.latitude, cPoint.longitude);
 
                 if (diffDistance.isNaN())
                     continue;
@@ -200,16 +218,16 @@ public class EditTrack extends Fragment {
 
             }
             txtNumberOfPoints.setText(String.valueOf(dataSize));
-            txtDistance.setText(hMapTools.distanceBetweenFriendly(distance));
+            txtDistance.setText(GeoCalcs.distanceBetweenFriendly(distance));
             if (hasElev) {
-                txtAscentTotal.setText(hMapTools.distanceBetweenFriendly(totalAscent));
-                txtDescentTotal.setText(hMapTools.distanceBetweenFriendly(totalDecent));
-                txtAscentTotal1.setText(hMapTools.distanceBetweenFriendly(totalAscent));
-                txtDescentTotal1.setText(hMapTools.distanceBetweenFriendly(totalDecent));
-                txtDistanceAscent.setText(hMapTools.distanceBetweenFriendly(ascentDistance));
-                txtDistanceDescent.setText(hMapTools.distanceBetweenFriendly(descentDistance));
-                txtMaxElevation.setText(hMapTools.distanceBetweenFriendly(maxElevation));
-                txtMinElevation.setText(hMapTools.distanceBetweenFriendly(minElevation));
+                txtAscentTotal.setText(GeoCalcs.distanceBetweenFriendly(totalAscent));
+                txtDescentTotal.setText(GeoCalcs.distanceBetweenFriendly(totalDecent));
+                txtAscentTotal1.setText(GeoCalcs.distanceBetweenFriendly(totalAscent));
+                txtDescentTotal1.setText(GeoCalcs.distanceBetweenFriendly(totalDecent));
+                txtDistanceAscent.setText(GeoCalcs.distanceBetweenFriendly(ascentDistance));
+                txtDistanceDescent.setText(GeoCalcs.distanceBetweenFriendly(descentDistance));
+                txtMaxElevation.setText(GeoCalcs.distanceBetweenFriendly(maxElevation));
+                txtMinElevation.setText(GeoCalcs.distanceBetweenFriendly(minElevation));
 
                 double ascentSlope = Math.atan(totalAscent / (ascentDistance * 1d)) * 180 / Math.PI;
                 double descentSlope = Math.atan(totalDecent / (descentDistance * 1d)) * 180 / Math.PI;
@@ -217,17 +235,17 @@ public class EditTrack extends Fragment {
                 txtSlopeDescent.setText(((int) (descentSlope * 100) / 100d) + "°");
             }
             if (hasTime) {
-                txtDuration.setText(hMapTools.timeFriendly(totalTime / 1000, hMapTools.TIME_FRIENDLY_MODE_LONG_EXACT));
-                txtDurationAscent.setText(hMapTools.timeFriendly(ascentMs / 1000, hMapTools.TIME_FRIENDLY_MODE_LONG_EXACT));
-                txtDurationDescent.setText(hMapTools.timeFriendly(decentMs / 1000, hMapTools.TIME_FRIENDLY_MODE_LONG_EXACT));
+                txtDuration.setText(GeoCalcs.timeFriendly(totalTime / 1000, GeoCalcs.TIME_FRIENDLY_MODE_LONG_EXACT));
+                txtDurationAscent.setText(GeoCalcs.timeFriendly(ascentMs / 1000, GeoCalcs.TIME_FRIENDLY_MODE_LONG_EXACT));
+                txtDurationDescent.setText(GeoCalcs.timeFriendly(decentMs / 1000, GeoCalcs.TIME_FRIENDLY_MODE_LONG_EXACT));
 
-                txtAvgSpeed.setText(hMapTools.GetSpeedFriendlyKmPh(distance / (totalTime / 1000)) + "kmh");
-                txtMaxSpeed.setText(hMapTools.GetSpeedFriendlyKmPh(maxSpeed) + "kmh");
+                txtAvgSpeed.setText(GeoCalcs.GetSpeedFriendlyKmPh(distance / (totalTime / 1000)) + "kmh");
+                txtMaxSpeed.setText(GeoCalcs.GetSpeedFriendlyKmPh(maxSpeed) + "kmh");
 
 //TimeZone timeZone = TimeZone.getTimeZone("IST");
                 TimeZone timeZone = TimeZone.getDefault();
                 Calendar start = data.Time.get(0);
-                Calendar end = data.Time.get(dataSize - 1);
+                Calendar end = data.Time.get(processedDataSize - 1);
                 //1400-11-16 some times, some time parts are missing
                 if (end != null && start != null) {
                     start.setTimeZone(timeZone);
@@ -246,9 +264,9 @@ public class EditTrack extends Fragment {
 
     TextView btnMore;
     Toolbar toolbar;
-    TextView btnExport, btnSave;
+    TextView btnExport, btnSave, btnExportGpxOnMiddle, btnSaveTrackOnMiddle;
     TextView btnBack, btnTrackInfo, btnEditOnMap, btnViewPoints, btnDelete, txtPageTitle;
-    EditText txtTitle;
+    TextInputEditText txtTitle;
     ImageView btnSelectColor;
 
     private void initializeComponents(View v) {
@@ -266,6 +284,10 @@ public class EditTrack extends Fragment {
         txtPageTitle = v.findViewById(R.id.txtPageTitle);
         btnExport = v.findViewById(R.id.btnExportGPX);
         btnSave = v.findViewById(R.id.btnSave);
+        btnSaveTrackOnMiddle = v.findViewById(R.id.btnSaveTrackOnMiddle);
+        btnExportGpxOnMiddle = v.findViewById(R.id.btnExportGpxOnMiddle);
+        btnExportGpxOnMiddle.setOnClickListener(view -> {btnExportGPX_Click();});
+        btnSaveTrackOnMiddle.setOnClickListener(view -> {btnSave_Click();});
 
         btnSelectColor = v.findViewById(R.id.btnSelectColor);
 
@@ -306,8 +328,12 @@ public class EditTrack extends Fragment {
             btnMore_Click();
         });
         initializeComponents_ForCalculations(v);
+
+        chart = v.findViewById(R.id.chart1);
+        chart = setupLineChartForElevation(chart);
     }
 
+    private LineChart chart;
     LinearLayout divSlopeCalculations;
     TextView txtNumberOfPoints, txtDistance, txtDuration, txtDurationMoving, txtDurationStopped, txtAvgSpeed, txtMaxSpeed, txtAvgSpeedMoving, txtDescentTotal, txtAscentTotal, txtMaxElevation, txtMinElevation, txtStartTime, txtEndTime;
     TextView txtAscentTotal1, txtDescentTotal1, txtDurationAscent, txtDistanceAscent, txtAvgSpeedAscent, txtSlopeAscent, txtDistanceDescent, txtDurationDescent, txtAvgSpeedDescent, txtSlopeDescent;
@@ -662,6 +688,93 @@ public class EditTrack extends Fragment {
             return false;
         }
         return true;
+    }
+
+    TrackDataCompact trkDataServer;
+boolean isInBackgroundLoading = false;
+    void readElevationInBackground() {
+        if (!hutilities.isInternetConnected(context)) {
+//            projectStatics.showDialog(context, this.getResources().getString(com.pakoob.tara.R.string.NoInternet), this.getResources().getString(com.pakoob.tara.R.string.NoInternet_Desc), this.getResources().getString(com.pakoob.tara.R.string.ok), view -> {
+//            }, "", null);
+            chart.setNoDataText("برای نمایش اطلاعات ارتفاعی، نیاز به اتصال اینترنت است");
+            return;
+        }
+        isInBackgroundLoading = true;
+
+        //progressBarPage_SetVisibility(View.VISIBLE);
+
+        SearchRequestDTO requestDTO = new SearchRequestDTO();
+        String str = "";
+        for (int i = 0; i < data.Points.size(); i++) {
+            LatLng pt = data.Points.get(i);
+            str += pt.latitude + "," + pt.longitude + ";";
+        }
+        requestDTO.Filter = str ;
+        requestDTO.OtherCommand = 1 + "%;%";
+
+        Call<ResponseBody> call = app.apiMap.GetElevationForTrackList(SimpleRequest.getInstance(requestDTO));
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (!isAdded()) return;
+                boolean readCompleted = false;
+                try {
+                    if (response.isSuccessful()) {
+                        TrackDataCompactRes result = TrackDataCompactRes.fromBytes(response.body().bytes());
+                        if (!result.isOk) {
+//                            backgroundMessage = result.message != null ? result.message : "";
+                        } else {
+//                            backgroundMessage = "";
+                        }
+                        if (result.obj.Points.size() > 0) {
+                            trkDataServer = result.obj;
+                            readCompleted = true;
+                        }
+//                        else if (backgroundMessage.length() == 0) {
+//                            backgroundMessage = getResources().getString(R.string.NothingToShow);
+//                        }
+//                        txtSearchResult_SetText(backgroundMessage);
+
+
+                        if (readCompleted ) {
+                            data.Elev = trkDataServer.Elev;
+                            data.Points = trkDataServer.Points;
+                            data.ElevSmoothed = null;
+                            doCalculations(data);
+                            SafeGpxView.setDataForElevationChart(chart, trkDataServer, context);
+                            //Log.e("DDDDD", String.valueOf(readCompleted && initCompleted) + " ---Size:  "+ result.resList.size());
+                            //showHideEverythingForLoading(false);
+                        }
+                    } else {
+                        projectStatics.ManageCallResponseErrors(true, PrjConfig.frmSafeGpxView, 100, context, response.code());
+//                        backgroundMessage = getResources().getString(R.string.NothingToShow);
+//                        txtSearchResult_SetText(backgroundMessage);
+                    }
+                } catch (Exception ex) {
+                    Log.e("ReadFromServer", "Exception221 On First Read: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
+
+//                progressBarPage_SetVisibility(View.GONE);
+//                if (readCompleted)
+//                    showHideEverythingForLoading(false);
+                isInBackgroundLoading = false;
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                projectStatics.ManageCallExceptions(true, PrjConfig.frmSafeGpxView, 100, t, context);
+                if (!isAdded()) return;
+                Log.e("ReadFromServer", "Exception On First Read: " + t.getMessage());
+                t.printStackTrace();
+//                progressBarPage_SetVisibility(View.GONE);
+//                backgroundMessage = getResources().getString(R.string.NothingToShow);
+//                txtSearchResult_SetText(backgroundMessage);
+                isInBackgroundLoading = false;
+            }
+        });
     }
 
     Context context;
