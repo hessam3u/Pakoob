@@ -137,21 +137,28 @@ double distance = 0;
     public List<Float> calcSmoothedElevation(boolean forceRecalculate){
         if (!forceRecalculate && ElevSmoothed != null)
             return ElevSmoothed;
-        this.ElevSmoothed = smoothElevation(this.Elev, 5);
+        this.ElevSmoothed = smoothElevation(this.Elev, 5, true);
         return this.ElevSmoothed;
     }
-    public static List<Float> smoothElevation(List<Float> elevations, int windowSize) {
+    public static List<Float> smoothElevation(List<Float> elevations, int windowSize, boolean skipZeros) {
         List<Float> smoothed = new ArrayList<>();
         int halfWindowSize = windowSize / 2;
+        int elevSize = elevations.size();
         for (int i = 0; i < elevations.size(); i++) {
             float sum = 0;
             int count = 0;
 
-            for (int j = Math.max(0, i - halfWindowSize); j <= Math.min(elevations.size() - 1, i + halfWindowSize); j++) {
-                sum += elevations.get(j);
-                count++;
+            for (int j = Math.max(0, i - halfWindowSize); j <= Math.min(elevSize - 1, i + halfWindowSize); j++) {
+                float elev = elevations.get(j);
+                if (skipZeros && elev == 0){
+                    continue;
+                }
+                else {
+                    sum += elev;
+                    count++;
+                }
             }
-            smoothed.add(sum / count);
+            smoothed.add(count> 0?(sum / count): 0);
         }
         return smoothed;
     }

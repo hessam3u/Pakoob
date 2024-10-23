@@ -112,7 +112,7 @@ public class TrackProperties {
             }
 
             List<Float> elevS ;
-            elevS = currentTrack == null? TrackDataCompact.smoothElevation(data.Elev, 5):null;
+            elevS = currentTrack == null? TrackDataCompact.smoothElevation(data.Elev, 5, true):null;
 
             cElev = currentTrack == null?elevS.get(i):currentTrack.Elevation;
             cPoint = currentTrack == null?data.Points.get(i):currentTrack.getLatLon();

@@ -1034,6 +1034,10 @@ public class MainActivity extends MainActivityManager {
                     dbConstantsTara.appDB.TTClubTourCategoryDao().deleteAll();
                     dbConstantsTara.appDB.CityDao().deleteAll();
                     dbConstantsTara.appDB.FmMessageDao().deleteAll();
+                    dbConstantsMap.appDB.NbPoiDao().deleteAll();
+                    dbConstantsMap.appDB.NbCurrentTrackDao().deleteAll();
+                    dbConstantsMap.appDB.NbMapDao().deleteAll();
+
 
                     //Start Deleting Files
                     hMapTools.deleteMapsFolder(current);

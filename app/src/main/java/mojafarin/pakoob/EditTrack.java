@@ -157,8 +157,12 @@ public class EditTrack extends Fragment {
                     pTime = cTime;
                 }
 
-                cElev = data.ElevSmoothed.get(i);
                 cPoint = data.Points.get(i);
+                if (cPoint.longitude == 0 && cPoint.longitude == 0){
+                    cPoint = pPoint;
+                    continue;
+                }
+                cElev = data.ElevSmoothed.get(i);
                 cTime = hasTime && data.Time.get(i) != null ? data.Time.get(i).getTimeInMillis() : 0;
 
                 //1400-11-04 find Pause Track
@@ -190,6 +194,7 @@ public class EditTrack extends Fragment {
                 if (diffDistance.isNaN())
                     continue;
                 float diffElev = cElev - pElev;
+
                 long diffTime = cTime - pTime;
                 if (diffTime < 1000)//1401-10
                     diffTime = 0;

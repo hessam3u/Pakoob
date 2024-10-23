@@ -71,6 +71,7 @@ import bo.entity.SearchRequestDTO;
 import bo.entity.TrackDataCompact;
 import bo.entity.TrackDataCompactRes;
 import bo.sqlite.TTExceptionLogSQLite;
+import kotlin.coroutines.Continuation;
 import maptools.GPXFile;
 import maptools.hMapTools;
 import okhttp3.ResponseBody;
@@ -556,6 +557,7 @@ public class SafeGpxView extends HFragment {
         trkData.calcSmoothedElevation(true);
         float pElev = trkData.ElevSmoothed.get(0);
         LatLng pLoc = trkData.Points.get(0);
+
         float totalDistance = 0;
         float minElev = pElev;
         float maxElev = pElev;
@@ -565,7 +567,9 @@ public class SafeGpxView extends HFragment {
         for (int i = 1; i < trkData.Points.size(); i++) {
             float elev = trkData.ElevSmoothed.get(i);
             LatLng loc = trkData.Points.get(i);
-
+            if (loc.latitude == 0 && loc.longitude == 0){
+                continue;
+            }
             double cDistance = GeoCalcs.distanceBetweenMeteres(loc.latitude, loc.longitude, pLoc.latitude, pLoc.longitude);
             totalDistance += cDistance;
             if (elev > maxElev)

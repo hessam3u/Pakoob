@@ -7,7 +7,7 @@ buildscript {
         persianDate = '0.8'
 
         libraryMinSdk = 21
-        libraryTargetSdk = 33
+        libraryTargetSdk = 34
         libraryCompileSdkVersion = 33
     }
     repositories {
