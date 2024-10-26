@@ -1,5 +1,7 @@
 package user;
 
+import static android.content.Context.RECEIVER_NOT_EXPORTED;
+
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
@@ -47,6 +49,7 @@ import bo.entity.ConfirmSms2DTO;
 import bo.entity.MobileInfoDTO;
 import bo.entity.PersonalInfoDTO;
 import bo.NewClasses.SimpleRequest;
+import bo.sqlite.TTExceptionLogSQLite;
 import mojafarin.pakoob.MainActivity;
 import mojafarin.pakoob.R;
 import mojafarin.pakoob.app;
@@ -55,15 +58,16 @@ import pakoob.SelectClubDialogForMyClub;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import utils.HFragment;
 import utils.MainActivityManager;
 import utils.PrjConfig;
 import utils.hutilities;
 import utils.projectStatics;
 
-public class Register extends Fragment {
+public class Register extends HFragment {
     static final int ENTER_MOBILE = 1;
     static final int ENTER_Code = 2;
-    int state = ENTER_MOBILE ;
+    int state = ENTER_MOBILE;
     String mobileEntered = "";
     long countDownInSec = 120;
     CountDownTimer countDownTimer;
@@ -75,22 +79,31 @@ public class Register extends Fragment {
     TextView lblTitle, lblDesc;
     ProgressBar loadingForDialog;
     LinearLayout divOtherButtons;
-    public Register(String _mode){
+
+    public Register(String _mode) {
         mode = _mode;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {//4th Event
         super.onViewCreated(view, savedInstanceState);
-
-        InitializeComponents(view);
-
-        //پیامک سیستمی - بخش اول
-        IntentFilter intentFilter = new IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            context.registerReceiver(smsVerificationReceiver, intentFilter, SmsRetriever.SEND_PERMISSION, null);
-
-    //dbConstantsTara.initFiltersAsync();
+        int step = 1;
+        try {
+            InitializeComponents(view);
+            step = 2;
+            //پیامک سیستمی - بخش اول
+            IntentFilter intentFilter = new IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION);
+            step = 3;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                context.registerReceiver(smsVerificationReceiver, intentFilter, Context.RECEIVER_NOT_EXPORTED);
+            step = 4;
+            //dbConstantsTara.initFiltersAsync();
+        }
+        catch (Exception ex){
+            TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frm_PleaseRegister, 100);
+            Log.d("بازکردن", "Bind Ver Tour: " + ex.getMessage() + ex.getStackTrace());
+            ex.printStackTrace();
+        }
     }
 
     private void InitializeComponents(View v) {
@@ -99,17 +112,18 @@ public class Register extends Fragment {
         txtInput = v.findViewById(R.id.txtInput);
         lblDesc = v.findViewById(R.id.lblDesc);
         lblTitle = v.findViewById(R.id.lblTitle);
-        loadingForDialog =  v.findViewById(R.id.loadingForDialog);
+        loadingForDialog = v.findViewById(R.id.loadingForDialog);
         divOtherButtons = v.findViewById(R.id.divOtherButtons);
         btnCounter = v.findViewById(R.id.btnCounter);
-        btnBackToMobile= v.findViewById(R.id.btnBackToMobile);
-        btnNeedHelpInSendingCode= v.findViewById(R.id.btnNeedHelpInSendingCode);
+        btnBackToMobile = v.findViewById(R.id.btnBackToMobile);
+        btnNeedHelpInSendingCode = v.findViewById(R.id.btnNeedHelpInSendingCode);
 
-        btnNeedHelpInSendingCode.setOnClickListener(view -> { showNeedHelpDialog();});
-        if (mode.equals("start")){
+        btnNeedHelpInSendingCode.setOnClickListener(view -> {
+            showNeedHelpDialog();
+        });
+        if (mode.equals("start")) {
             btnSkip.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             btnSkip.setOnClickListener(view -> {
                 hutilities.hideKeyboard(context, txtInput);
                 if (mode.equals("menu")) {
@@ -126,8 +140,7 @@ public class Register extends Fragment {
         btnLogin.setOnClickListener(view -> {
             if (state == ENTER_MOBILE) {
                 clickButtonForState1();
-            }
-            else if(state == ENTER_Code){
+            } else if (state == ENTER_Code) {
                 clickButtonForState2();
             }
         });
@@ -149,35 +162,40 @@ public class Register extends Fragment {
         //*********** Baraye focus kardan va namayeshe keyboard
         hutilities.showKeyboard(context, txtInput);
         txtInput.addTextChangedListener(new TextWatcher() {
-            @Override public void afterTextChanged(Editable s) {}
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {txtInput_TextChanged( s, start, before, count);}
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                txtInput_TextChanged(s, start, before, count);
+            }
         });
     }
 
     private void showNeedHelpDialog() {
-        projectStatics.showDialog(context,getResources().getString(R.string.NotGettingSMS), getResources().getString(R.string.NotGettingSMS_Desc), getResources().getString(R.string.SendRequest), view -> {
+        projectStatics.showDialog(context, getResources().getString(R.string.NotGettingSMS), getResources().getString(R.string.NotGettingSMS_Desc), getResources().getString(R.string.SendRequest), view -> {
             app.DoSendProblem(PrjConfig.PROBLEM_CODE_ConfirmSMS, mobileEntered, context, res -> {
-                Log.e("بازگشت مشکل", res == null?"NULL": (res.isOk? "ISOK":"NOOK:" + res.command));
-                if (res == null){
+                Log.e("بازگشت مشکل", res == null ? "NULL" : (res.isOk ? "ISOK" : "NOOK:" + res.command));
+                if (res == null) {
                     //failure or No Internet
                     Toast.makeText(context, R.string.NoInternet_Desc, Toast.LENGTH_LONG);
-                }
-                else if (!res.isOk){
-                    if (res.command == "-1"){
+                } else if (!res.isOk) {
+                    if (res.command == "-1") {
                         //No Internet
                         Toast.makeText(context, R.string.NoInternet_Desc, Toast.LENGTH_LONG);
-                    }
-                    else if (res.command == "0"){
+                    } else if (res.command == "0") {
                         //Exception, Less Possible
                         Toast.makeText(context, R.string.dialog_UnknownErrorDesc, Toast.LENGTH_LONG);
-                    }
-                    else {
+                    } else {
                         //Response Problem
                         Toast.makeText(context, R.string.dialog_ertebatBaServer_Desc, Toast.LENGTH_LONG);
                     }
-                }
-                else{
+                } else {
                     //OK Everything
                     Toast.makeText(context, R.string.SendRequest_Completed, Toast.LENGTH_LONG);
                 }
@@ -185,7 +203,7 @@ public class Register extends Fragment {
         }, getResources().getString(R.string.cancel), null);
     }
 
-    private void txtInput_TextChanged(CharSequence s, int start, int before, int count){
+    private void txtInput_TextChanged(CharSequence s, int start, int before, int count) {
         int len = s.length();
         if (state == ENTER_MOBILE) {
             if (len == 11 || (len == 10 && s.charAt(0) == '9')) {
@@ -199,8 +217,7 @@ public class Register extends Fragment {
             } else {
                 setMaxLength_txtInput(11);
             }
-        }
-        else if(state == ENTER_Code){
+        } else if (state == ENTER_Code) {
             setMaxLength_txtInput(5);
             if (len == 5) {
                 setEnable_btnLogin(true);
@@ -209,14 +226,15 @@ public class Register extends Fragment {
             }
         }
     }
+
     private void clickButtonForState2() {
-        if(!hutilities.isInternetConnected(context)){
-            projectStatics.showDialog(context, getResources().getString(R.string.NoInternet),  getResources().getString(R.string.NoInternet_Desc),  getResources().getString(R.string.ok), null, "", null);
+        if (!hutilities.isInternetConnected(context)) {
+            projectStatics.showDialog(context, getResources().getString(R.string.NoInternet), getResources().getString(R.string.NoInternet_Desc), getResources().getString(R.string.ok), null, "", null);
             return;
         }
         btnLogin.setEnabled(false);
 
-        hutilities.showHideLoading(true, loadingForDialog, (Activity)context);
+        hutilities.showHideLoading(true, loadingForDialog, (Activity) context);
         ConfirmSms2DTO obj = new ConfirmSms2DTO();
         obj.info = MobileInfoDTO.instance();
         obj.Mobile = mobileEntered;
@@ -235,48 +253,48 @@ public class Register extends Fragment {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (!isAdded()) return;
-                hutilities.showHideLoading(false, loadingForDialog, (Activity)context);
+                hutilities.showHideLoading(false, loadingForDialog, (Activity) context);
                 try {
                     Log.e("کانفریم", " ارسال شد کد تایید" + response.code());
-                    if(response.code() == 200) {
+                    if (response.code() == 200) {
                         PersonalInfoDTO res = PersonalInfoDTO.fromBytes(response.body().bytes());
                         Log.e("کانفریم", "شماره مشتری بازگردانده شده" + res.CCustomerId);
-                        if (res.CCustomerId  > 0) {
+                        if (res.CCustomerId > 0) {
                             countDownTimer.cancel();
-                            hutilities.hideKeyboard(context,txtInput);
+                            hutilities.hideKeyboard(context, txtInput);
                             //goto State 2 and Enter code
                             app.session.setCCustomer(res);
                             app.session.setSession(res.data);
 
                             dbConstantsTara.session.setMyClubName(res.ClubName);
                             dbConstantsTara.session.setMyClubNameIds(res.Int4);
-                            Log.e("لوگو", res.ClubLogo != null? res.ClubLogo:"");
+                            Log.e("لوگو", res.ClubLogo != null ? res.ClubLogo : "");
                             dbConstantsTara.session.setMyClubLogo(SelectClubDialogForMyClub.saveClubLogo(context, res.ClubLogo));
 
                             app.doSyncsAndRedesignAfterLogin(getContext(), ((MainActivity) context), true);
 
                             btnLogin.setEnabled(true);
 
-                            if (false && (res.Name.length() > 0 || res.Family.length() > 0)){
+                            if (false && (res.Name.length() > 0 || res.Family.length() > 0)) {
                                 //Means that he filled the next form previously
                                 projectStatics.showDialog(context, context.getString(R.string.welcomeback), context.getString(R.string.welcomeback_desc)
-                                    , context.getString(R.string.ok), view ->
+                                        , context.getString(R.string.ok), view ->
                                         {
                                             //Same CODE in : CompleteRegister-Register
-                                            if (true || mode.equals("clubsearch") || mode.equals("clubview") || mode.equals("start")){
+                                            if (true || mode.equals("clubsearch") || mode.equals("clubview") || mode.equals("start")) {
                                                 //Bere be safheye asli va hame chi refresh she
-                                                ((MainActivityManager)context).backToHome();
-                                            }
-                                            else
-                                                ((MainActivityManager)context).onBackPressed();
+                                                ((MainActivityManager) context).backToHome();
+                                            } else
+                                                ((MainActivityManager) context).onBackPressed();
                                         }, "", null);
 
                                 return;
-                            }
-                            else {//if (mode.equals("start") || mode.equals("menu")) {
+                            } else {//if (mode.equals("start") || mode.equals("menu")) {
                                 //First Login
                                 projectStatics.showDialog(context, context.getString(R.string.welcomeInFirstLogin), context.getString(R.string.welcomeInFirstLogin_desc)
-                                        , context.getString(R.string.ok), view -> {((MainActivityManager)context).showFragment(new CompleteRegister("noback"), true);}, "", null);
+                                        , context.getString(R.string.ok), view -> {
+                                            ((MainActivityManager) context).showFragment(new CompleteRegister("noback"), true);
+                                        }, "", null);
                             }
 //                            else if(mode.equals("MapSelect")){
 //                                ((MainActivityManager)context).showFragment(new CompleteRegister(mode), true);
@@ -299,8 +317,7 @@ public class Register extends Fragment {
                                     , context.getResources().getString(pakoob.DbAndLayout.R.string.ok)
                                     , null, "", null);
                         }
-                    }
-                    else{
+                    } else {
                         btnLogin.setEnabled(true);
                         projectStatics.ManageCallResponseErrors(true, PageIds_PA.register, 110, context, response.code());
                     }
@@ -310,27 +327,28 @@ public class Register extends Fragment {
                     e.printStackTrace();
                 }
             }
+
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 projectStatics.ManageCallExceptions(true, PageIds_PA.register, 100, t, context);
                 if (!isAdded()) return;
                 btnLogin.setEnabled(true);
-                hutilities.showHideLoading(false, loadingForDialog, (Activity)context);
+                hutilities.showHideLoading(false, loadingForDialog, (Activity) context);
             }
         });
     }
 
-    void clickButtonForState1(){
-        if(!hutilities.isInternetConnected(context)){
-            projectStatics.showDialog(context, getResources().getString(R.string.NoInternet),  getResources().getString(R.string.NoInternet_Desc),  getResources().getString(R.string.ok), null, "", null);
+    void clickButtonForState1() {
+        if (!hutilities.isInternetConnected(context)) {
+            projectStatics.showDialog(context, getResources().getString(R.string.NoInternet), getResources().getString(R.string.NoInternet_Desc), getResources().getString(R.string.ok), null, "", null);
             return;
         }
-        hutilities.showHideLoading(true, loadingForDialog, (Activity)context);
+        hutilities.showHideLoading(true, loadingForDialog, (Activity) context);
         ConfirmSms2DTO obj = new ConfirmSms2DTO();
         obj.info = MobileInfoDTO.instance();
         if (state == ENTER_MOBILE)
             obj.Mobile = mobileEntered = txtInput.getText().toString();
-        else if(state == ENTER_Code)
+        else if (state == ENTER_Code)
             obj.Mobile = mobileEntered;
         obj.TempDeviceId = app.session.getTempDeviceId();
         obj.ConfirmType = 1;
@@ -347,9 +365,9 @@ public class Register extends Fragment {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (!isAdded()) return;
-                hutilities.showHideLoading(false, loadingForDialog, (Activity)context);
+                hutilities.showHideLoading(false, loadingForDialog, (Activity) context);
                 try {
-                    if(response.code() == 200) {
+                    if (response.code() == 200) {
                         ConfirmSms2DTO res = ConfirmSms2DTO.fromBytes(response.body().bytes());
 
                         if (res.ConfirmStatus == 1) {
@@ -357,7 +375,8 @@ public class Register extends Fragment {
                             setNewState(ENTER_Code);
                             //Sms rec function start
                             Task<Void> task = SmsRetriever.getClient(context).startSmsUserConsent(null /*null or senderPhoneNumber */);
-
+                            task.addOnSuccessListener(aVoid -> Log.d("SMS", "SMS Retriever started successfully."))
+                                    .addOnFailureListener(e -> Log.e("SMS", "Failed to start SMS Retriever."));
                             initCountDownTimer();
                             countDownTimer.start();
                         } else {
@@ -368,8 +387,7 @@ public class Register extends Fragment {
 
                             Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
                         }
-                    }
-                    else{
+                    } else {
                         projectStatics.ManageCallResponseErrors(true, PageIds_PA.register, 150, context, response.code());
                     }
                 } catch (IOException e) {
@@ -377,13 +395,14 @@ public class Register extends Fragment {
                     e.printStackTrace();
                 }
             }
+
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 projectStatics.ManageCallExceptions(true, PageIds_PA.register, 100, t, context);
                 if (!isAdded()) return;
                 Log.e("کانفریم", t.getMessage());
                 t.printStackTrace();
-                hutilities.showHideLoading(false, loadingForDialog, (Activity)context);
+                hutilities.showHideLoading(false, loadingForDialog, (Activity) context);
                 //projectStatics.showDialog(context, "خطا", t.getMessage() + " " + t.getStackTrace(), "قبول", null, "", null);
             }
         });
@@ -419,6 +438,7 @@ public class Register extends Fragment {
             }
         }
     };
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -434,7 +454,7 @@ public class Register extends Fragment {
                     Log.e("پیامک سیستمی", "پیام: " + message);
                     Pattern p = Pattern.compile("\\d+");
                     Matcher m = p.matcher(message);
-                    if (m.find()){
+                    if (m.find()) {
                         String code = m.group();
                         Log.e("پیامک سیستمی", "عدد: " + code);
                         txtInput.setText(code);
@@ -451,25 +471,24 @@ public class Register extends Fragment {
     //انتهای پیامک سیستمی - بخش دوم
 
 
-
-    void setEnable_btnLogin(boolean enable){
-        if (enable){
+    void setEnable_btnLogin(boolean enable) {
+        if (enable) {
             btnLogin.setAlpha(1f);
             btnLogin.setClickable(true);
-        }
-        else{
+        } else {
 
             btnLogin.setAlpha(.5f);
             btnLogin.setClickable(false);
         }
     }
-    void setMaxLength_txtInput(int len){
+
+    void setMaxLength_txtInput(int len) {
         InputFilter[] filterArray = new InputFilter[1];
         filterArray[0] = new InputFilter.LengthFilter(len);
         txtInput.setFilters(filterArray);
     }
 
-    void setNewState(int newState){
+    void setNewState(int newState) {
         state = newState;
         if (newState == ENTER_MOBILE) {
             btnLogin.setText("ادامه...");
@@ -478,11 +497,10 @@ public class Register extends Fragment {
             txtInput.setHint("09121112233");
             divOtherButtons.setVisibility(View.GONE);
             //txtInput.setText("");
-        }
-        else if (newState == ENTER_Code){
+        } else if (newState == ENTER_Code) {
             btnLogin.setText("ثبت نام/ورود");
             lblTitle.setText("ورود کد تایید");
-            lblDesc.setText("لطفا کد ارسالی به "+mobileEntered+" را وارد نمایید");
+            lblDesc.setText("لطفا کد ارسالی به " + mobileEntered + " را وارد نمایید");
             txtInput.setHint("");
             txtInput.setText("");
             divOtherButtons.setVisibility(View.VISIBLE);
@@ -493,15 +511,16 @@ public class Register extends Fragment {
 
     String counterDefaultText = "ارسال کد تا ";
     String counterDefaultSendAgain = "ارسال مجدد کد";
-    void initCountDownTimer(){
-        countDownTimer= new CountDownTimer(countDownInSec * 1000 + 1000, 1000) {
+
+    void initCountDownTimer() {
+        countDownTimer = new CountDownTimer(countDownInSec * 1000 + 1000, 1000) {
             @Override
             public void onTick(long l) {
                 Long timeleftinmilliseconds = l;
-                int minutes = (int) (timeleftinmilliseconds/1000)/60;
-                int second = (int) (timeleftinmilliseconds/1000)%60;
-                String timeletfFormated  = String.format(Locale.getDefault(), "%02d:%02d", minutes, second);
-                btnCounter.setText(counterDefaultText + timeletfFormated );
+                int minutes = (int) (timeleftinmilliseconds / 1000) / 60;
+                int second = (int) (timeleftinmilliseconds / 1000) % 60;
+                String timeletfFormated = String.format(Locale.getDefault(), "%02d:%02d", minutes, second);
+                btnCounter.setText(counterDefaultText + timeletfFormated);
                 btnCounter.setClickable(false);
             }
 
@@ -516,45 +535,48 @@ public class Register extends Fragment {
                 btnCounter.setClickable(true);
 
                 //Namayeshe Payam
-                    LinearLayout linearLayout  = new LinearLayout(context);
-                    linearLayout .setOrientation(LinearLayout.VERTICAL);
-                    linearLayout.setPadding(25, 35, 25, 35);
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    params.setMargins(16, 16, 16, 16);
-                    TextView textView = new TextView(context);
-                    textView.setText("مدت اعتبار کد تایید به پایان رسید. در صورتی که پیامک تایید را دریافت نکرده اید، دوباره تلاش نمایید و در صورتی که چند بار تلاش ناموفق داشته اید، " +
-                            "می توانید در ساعت های آینده، مجددا درخواست کد تایید دهید.");
-                    textView.setLayoutParams(params);
-                    textView.setTextSize(18);
+                LinearLayout linearLayout = new LinearLayout(context);
+                linearLayout.setOrientation(LinearLayout.VERTICAL);
+                linearLayout.setPadding(25, 35, 25, 35);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                params.setMargins(16, 16, 16, 16);
+                TextView textView = new TextView(context);
+                textView.setText("مدت اعتبار کد تایید به پایان رسید. در صورتی که پیامک تایید را دریافت نکرده اید، دوباره تلاش نمایید و در صورتی که چند بار تلاش ناموفق داشته اید، " +
+                        "می توانید در ساعت های آینده، مجددا درخواست کد تایید دهید.");
+                textView.setLayoutParams(params);
+                textView.setTextSize(18);
 
-                    LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    params2.setMargins(16, 48, 16, 16);
-                    Button button = new Button(context);
-                    button.setText("ارسال مجدد");
-                    button.setLayoutParams(params2);
-                    button.setTextSize(16);
-                    button.setTextColor(getResources().getColor(android.R.color.white));
+                LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                params2.setMargins(16, 48, 16, 16);
+                Button button = new Button(context);
+                button.setText("ارسال مجدد");
+                button.setLayoutParams(params2);
+                button.setTextSize(16);
+                button.setTextColor(getResources().getColor(android.R.color.white));
 //                    button.setWidth(350);
 //                    button.setHeight(40);
-                    button.setGravity(Gravity.CENTER);
-                    GradientDrawable shape =  new GradientDrawable();
-                    shape.setCornerRadius( 20 );
-                    shape.setColor(getResources().getColor(R.color.colorAccent));
-                    button.setBackground(shape);
-                    button.setPadding(70, 5, 70, 5);
-                    //button.setBackgroundColor(Color.RED);
+                button.setGravity(Gravity.CENTER);
+                GradientDrawable shape = new GradientDrawable();
+                shape.setCornerRadius(20);
+                shape.setColor(getResources().getColor(R.color.colorAccent));
+                button.setBackground(shape);
+                button.setPadding(70, 5, 70, 5);
+                //button.setBackgroundColor(Color.RED);
 
-                    linearLayout.addView(textView);
-                    linearLayout.addView(button);
-                    projectStatics.setCustomTypeface(linearLayout, "IranSans", context);
+                linearLayout.addView(textView);
+                linearLayout.addView(button);
+                projectStatics.setCustomTypeface(linearLayout, "IranSans", context);
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AppTheme_NoActionBar));
-                    builder.setView(linearLayout);
+                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AppTheme_NoActionBar));
+                builder.setView(linearLayout);
 
-                    AlertDialog alert = builder.create();
-                    button.setOnClickListener(view -> {clickButtonForState1();alert.hide();});
+                AlertDialog alert = builder.create();
+                button.setOnClickListener(view -> {
+                    clickButtonForState1();
+                    alert.hide();
+                });
 
-                if(!((Activity) context).isFinishing())//َAdded 1399-12-05 for exception : Unable to add window -- token android.os.BinderProxy@2a60a53d is not valid; is your activity running?
+                if (!((Activity) context).isFinishing())//َAdded 1399-12-05 for exception : Unable to add window -- token android.os.BinderProxy@2a60a53d is not valid; is your activity running?
                 {
                     alert.show();
                 }
@@ -565,15 +587,18 @@ public class Register extends Fragment {
     }
 
     Context context;
+
     @Override
     public void onAttach(Context _context) { //1st Event
         super.onAttach(context);
         this.context = _context;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {//2nd Event
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
         return inflater.inflate(R.layout.frm_user_register, parent, false);

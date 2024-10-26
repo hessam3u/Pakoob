@@ -35,6 +35,7 @@ public class PrjConfig {
     public static final int frmTrackRecording = 116;
     public static final int frmGPXFile = 117;
     public static final int frmInfoBottomOfMapPage = 118;
+    public static final int frm_PleaseRegister = 119;
 
 
     public static final String MessageSplitor = "*?*/*?/";

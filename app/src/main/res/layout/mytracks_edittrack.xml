@@ -93,7 +93,7 @@
                     android:textSize="@dimen/login_textSizeNormal"
                     android:imeOptions="actionNext"
                     android:singleLine="true"
-                    android:maxLength="25"
+                    android:maxLength="60"
                     android:inputType="text"
                     android:gravity="right"
                     />
