@@ -434,7 +434,7 @@ public class EditTrack extends Fragment {
             debugStep = 40;
             if (compactItem.polyLine != null) {
                 compactItem.polyLine.setColor(poi.Color);
-                compactItem.polyLine.setTag(poi.Name);
+                compactItem.polyLine.setTag(poi.NbPoiId);
             }
             debugStep = 50;
             if (adapter != null) {
