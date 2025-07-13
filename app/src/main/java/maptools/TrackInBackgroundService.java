@@ -57,19 +57,20 @@ public class TrackInBackgroundService extends Service {
             RecordTrack_NotificationTitle_Desc = "ثبت مسیر حرکت شما در حال انجام است. لطفا برای مدیریت آن، روی این پیام ضربه بزنید";
         }
         context = getApplicationContext();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startMyOwnForeground();
-            Log.e("پیام ترک زدن", "انجام شد - جدید");
-        }
-        else {
-
-            Notification notification = getNotificationObj();
-            //NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            //notificationManager.notify(IdOfNotification, notification);
-
-            startForeground(1, notification);
-            Log.e("پیام ترک زدن", "انجام شد");
-        }
+        //انتقال به onStartCommand به درخواست جی پی تی
+        //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            startMyOwnForeground();
+//            Log.e("پیام ترک زدن", "انجام شد - جدید");
+//        }
+//        else {
+//
+//            Notification notification = getNotificationObj();
+//            //NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//            //notificationManager.notify(IdOfNotification, notification);
+//
+//            startForeground(1, notification);
+//            Log.e("پیام ترک زدن", "انجام شد");
+//        }
     }
 
     Notification getNotificationObj(){
@@ -122,15 +123,7 @@ public class TrackInBackgroundService extends Service {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         assert manager != null;
         manager.createNotificationChannel(chan);
-
-//        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID);
-//        Notification notification = notificationBuilder.setOngoing(true)
-//                .setContentTitle("App is running in background")
-//                .setPriority(NotificationManager.IMPORTANCE_MIN)
-//                .setCategory(Notification.CATEGORY_SERVICE)
-//                .build();
         Notification notification = getNotificationObj();
-
 
         startForeground(IdOfNotification, notification);
     }
@@ -139,6 +132,20 @@ public class TrackInBackgroundService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startMyOwnForeground();
+            Log.e("پیام ترک زدن", "انجام شد - جدید");
+        }
+        else {
+
+            Notification notification = getNotificationObj();
+            //NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            //notificationManager.notify(IdOfNotification, notification);
+
+            startForeground(1, notification);
+            Log.e("پیام ترک زدن", "انجام شد");
+        }
+
         //startTimer();
         startGettingLocation();
         return START_STICKY;

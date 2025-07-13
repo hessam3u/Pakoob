@@ -2,10 +2,10 @@ plugins {
     id 'com.android.library'
 }
 android {
-    compileSdkVersion 33
+    compileSdkVersion 35
 
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 34
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -60,7 +60,7 @@ dependencies {
 //    annotationProcessor "android.arch.persistence.room:compiler:$lifecycle_version"
 
     //to use Room and SQLite 1401-03-04
-    def room_version = "2.4.2"
+    def room_version = "2.7.2"
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     // optional - RxJava2 support for Room

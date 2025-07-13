@@ -1,16 +1,14 @@
-apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
-
+plugins {
+    id 'com.android.application'
+    id 'com.google.gms.google-services'
+}
 android {
-    compileSdkVersion 33
-    lintOptions {//1399-12-11 added for error : Execution failed for task ':app:lintVitalRelease'.
-        checkReleaseBuilds false
-    }
+    compileSdkVersion 35
 
     defaultConfig {
         multiDexEnabled true
         applicationId "mojafarin.pakoob"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 34
         versionCode 48
         versionName "2.3.8"
@@ -39,9 +37,11 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     namespace 'mojafarin.pakoob'
+    lint {
+        checkReleaseBuilds false
+    }
 
 }
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -88,7 +88,7 @@ dependencies {
 //    annotationProcessor "android.arch.persistence.room:compiler:$lifecycle_version"
 
     //to use Room and SQLite 1401-03-04
-    def room_version = "2.4.2"
+    def room_version = "2.7.2"
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     // optional - RxJava2 support for Room

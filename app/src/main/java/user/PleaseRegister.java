@@ -44,7 +44,7 @@ public class PleaseRegister extends Fragment {
     }
 
     private void initializeComponents(View v) {
-        //btnSkip = findViewById(R.id.btnSkip);
+        btnSkip = v.findViewById(R.id.btnSkip);
         btnLogin = v.findViewById(R.id.btnLogin);
 
         //        btnSkip.setOnClickListener(view -> {
@@ -58,6 +58,9 @@ public class PleaseRegister extends Fragment {
 //            intent.putExtra("mode", "start");
 //            startActivity(intent);
 //            finish();
+        });
+        btnSkip.setOnClickListener(view -> {
+            ((MainActivity) context).backToHome();
         });
     }
     public boolean onBackPressed() {

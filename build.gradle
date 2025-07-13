@@ -9,16 +9,19 @@ buildscript {
         libraryMinSdk = 21
         libraryTargetSdk = 34
         libraryCompileSdkVersion = 33
+        agp_version = '8.10'
     }
     repositories {
         google()
-        jcenter()
+        mavenCentral()
+        //jcenter() در تغییرات خرداد 1404 این چون قدیمی شده کامنت میشه
 
         //for file Select and MultiSelect of Abumoallim:
-        maven { url 'https://jitpack.io' }
+        //maven { url 'https://jitpack.io' } در به روز رسانی خرداد 1404 این از رده خارج شده
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.5.0'
+        //برای آپدیت خرداد 1404 لازم بود
+        classpath 'com.android.tools.build:gradle:8.10.1'
         
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -31,12 +34,12 @@ buildscript {
 
 allprojects {
     repositories {
-        google()
-        jcenter()
-        maven { url "https://jitpack.io" }
-        flatDir {
-            dirs 'libs'
-        }
+        //google() //در تغییرات 1404 به دلیل اصلاح فایل ستینگز و قسمت RepositoriesMode این به پروژه ها منتقل شد
+        //jcenter() در تغییرات خرداد 1404 این چون قدیمی شده کامنت میشه
+        //maven { url 'https://jitpack.io' } در به روز رسانی خرداد 1404 این از رده خارج شده
+//        flatDir { //در تغییرات 1404 به دلیل اصلاح فایل ستینگز و قسمت RepositoriesMode این به پروژه ها منتقل شد و فرستادمش توی اپ
+//            dirs 'libs'
+//        }
     }
 }
 

@@ -84,8 +84,15 @@ public class InfoBottomPoint extends BottomSheetDialogFragment {
         btnRoadRooting.setOnClickListener(view1 -> {
             NbLogSearchSQLite.insert(NbLogSearch.getInstance(NbLogSearch.CommandType_OpenCityRouting, "", this.poi.LatS, this.poi.LonW, 0));
 
-            Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                    Uri.parse("http://maps.google.com/maps?saddr=" + this.poi.LatS + "," + this.poi.LonW + "&daddr=" + this.poi.LatS + "," + this.poi.LonW));
+            //نسخه قدیمی اینطوری بود که فقط گوگل مپ باز میشد
+//            Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+//                    Uri.parse("http://maps.google.com/maps?saddr=" + this.poi.LatS + "," + this.poi.LonW + "&daddr=" + this.poi.LatS + "," + this.poi.LonW));
+
+            String uri = "geo:" + this.poi.LatS + "," + this.poi.LonW + "?q=" + this.poi.LatS + "," + this.poi.LonW;
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+
             startActivity(intent);
         });
         btnDownloadTracks = view.findViewById(R.id.btnDownloadTracks);
