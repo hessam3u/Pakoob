@@ -433,8 +433,17 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                 setBtnGotoCurrentLocation();
 
             } else {
-                projectStatics.showDialog(context, getResources().getString(R.string.WaitUntilSatelliteFound_Title)
-                        , getResources().getString(R.string.WaitUntilSatelliteFound_Desc), getResources().getString(R.string.ok), null, "", null);
+                //آیا اصلا دسترسی به مکان رو به اپ دادی؟
+                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    projectStatics.showDialog(context, getResources().getString(R.string.FineLocationDenied_Title), getResources().getString(R.string.FineLocationDenied_Desc), getResources().getString(R.string.ok), myView -> {hutilities.showAppSettingToChangePermission(context);
+                    }, "", null);
+                    return;
+                }
+                else {
+                    //پیام در جستجوی ماهواره نمایش داده بشه
+                    projectStatics.showDialog(context, getResources().getString(R.string.WaitUntilSatelliteFound_Title)
+                            , getResources().getString(R.string.WaitUntilSatelliteFound_Desc), getResources().getString(R.string.ok), null, "", null);
+                }
             }
         });
 
@@ -1558,8 +1567,16 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
 
         btnDialog_SendLocationDialog.show();
         if (currentLatLon == null) {
-            projectStatics.showDialog(context, getResources().getString(R.string.WaitUntilSatelliteFound_Title)
-                    , getResources().getString(R.string.WaitUntilSatelliteFound_Desc), getResources().getString(R.string.ok), null, "", null);
+            //آیا اصلا دسترسی به مکان رو به اپ دادی؟
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                projectStatics.showDialog(context, getResources().getString(R.string.FineLocationDenied_Title), getResources().getString(R.string.FineLocationDenied_Desc), getResources().getString(R.string.ok), view -> {hutilities.showAppSettingToChangePermission(context);
+                }, "", null);
+                return;
+            }
+            else {
+                projectStatics.showDialog(context, getResources().getString(R.string.WaitUntilSatelliteFound_Title)
+                        , getResources().getString(R.string.WaitUntilSatelliteFound_Desc), getResources().getString(R.string.ok), null, "", null);
+            }
             return;
         }
         btnShareCurrentLoc_JustLatLon.setOnClickListener(view1 -> {
