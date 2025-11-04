@@ -25,6 +25,7 @@ import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
@@ -39,6 +40,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -55,6 +57,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -179,24 +183,15 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
     public int IsInAddWaypointMode = 0;
     MainActivity mainActivity;
 
-    //Commented at 1401-04-16
-//    public MapPage(MainActivityManager context) {
-//        this.context = context;
-//        mainActivity = (MainActivity) context;
-//        initSensors();
-//        dialogRecordTrack = new DialogRecordTrack((MainActivity) context, this);
-//    }
+
+    FrameLayout searchFragmentContainer;
+
     public MapPage() {
         Tag = "صفحه_نقشه";
     }
 
     public static MapPage getInstance(MainActivityManager context) {
         MapPage res = new MapPage();
-        //res.context = context;
-        //moved to Initialize Components at 1401-05-10
-//        res.mainActivity = (MainActivity) context;
-//        res.initSensors();
-//        res.dialogRecordTrack = new DialogRecordTrack((MainActivity) context, res);
         return res;
     }
 
@@ -233,17 +228,10 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
     TextView btnMainActivity_GotoHome;
 
     //Start------Search Related Objects
-    EditText txtSearch;
-    private RecyclerView rvSearchResult;
-    private MapPage.NbPoisAdapter adapterSearch;
-    boolean typeSearchMode = false;
-    int currentSelectedNbPoiIndex = -1;
-    private ScrollView scrollSearchMode;
-    LinearLayout divSearch;
-    TextView txtSearchResult;
-    private ProgressBar pageProgressBar;
-    Button btnShowResultOnMap;
+    TextView txtSearch;
     //End------ Search Related Objects
+
+    MapPage_SearchText searchTextPanel;
 
     @Override
     public void initializeComponents(View v) {
@@ -301,58 +289,11 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             //context.showFragment(new Home());
             context.backToHome();
         });
-        txtSearch = v.findViewById(R.id.txtSearch);
-        txtSearch.setOnEditorActionListener((textView, actionId, keyEvent) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                btnSearch_Click();
-                return true;
-            }
-            return true;
+        txtSearch = v.findViewById(R.id.txtSearchReadOnly);
+        txtSearch.setOnClickListener(view1 -> {
+            txtSearch_Click();
         });
-        txtSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (txtSearch.getText().length() == 0) {
-                    clearAllSearchResults();
-                }
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-        });
-
-        txtSearch.setOnFocusChangeListener((view1, hasFocus) -> {
-        });
-        btnShowResultOnMap = v.findViewById(R.id.btnShowResultOnMap);
-        btnShowResultOnMap.setOnClickListener(view1 -> {
-            AddResultsToMap(adapterSearch.data);
-            GoToMapForAllResults();
-        });
-        rvSearchResult = v.findViewById(R.id.rvSearchResult);
-        rvSearchResult.setLayoutManager(new LinearLayoutManager(context));
-        rvSearchResult.setHasFixedSize(true);
-        rvSearchResult.setItemAnimator(new DefaultItemAnimator());
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);//TourList.this bayad mibood
-        rvSearchResult.setLayoutManager(layoutManager);
-        //For Scrolling inside NestedScrollView
-        //rvSearchResult.setNestedScrollingEnabled(false);
-        initRecyclerView();
-//            //baraye namayeshe joda konandeh
-        rvSearchResult.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));//parentActivity -> getActivity -> this bood
-
-        //rvSearchResult.setAdapter(adapterSearch);
-        initAdapterSearch(new ArrayList<>());
-        pageProgressBar = v.findViewById(R.id.progressBar);
-        scrollSearchMode = v.findViewById(R.id.scrollSearchMode);
-        divSearch = v.findViewById(R.id.divSearch);
-        divSearch.setVisibility(View.GONE);
-        txtSearchResult = v.findViewById(R.id.txtSearchResult);
-        txtSearchResult.setVisibility(View.GONE);
+        searchFragmentContainer = view.findViewById(R.id.searchFragmentContainer);
 
         btnSelectLayer = v.findViewById(R.id.btnSelectLayer);
         btnSelectLayer.setImageBitmap(projectStatics.textAsBitmapFontello("\uE820", 85, Color.BLUE, context.getApplicationContext()));
@@ -437,7 +378,6 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                 if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     projectStatics.showDialog(context, getResources().getString(R.string.FineLocationDenied_Title), getResources().getString(R.string.FineLocationDenied_Desc), getResources().getString(R.string.ok), myView -> {hutilities.showAppSettingToChangePermission(context);
                     }, "", null);
-                    return;
                 }
                 else {
                     //پیام در جستجوی ماهواره نمایش داده بشه
@@ -475,6 +415,46 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
 
         super.initializeComponents(v);
     }
+
+    private void txtSearch_Click() {
+        FragmentManager fm = getChildFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+
+        if (searchTextPanel == null) {
+            searchTextPanel = MapPage_SearchText.getInstance(txtSearch.getText().toString()
+                    , view2 -> {
+                        //ClickFor_مختصات_مستقیم
+                        Do_ClickFor_مختصات_مستقیم();
+                        hideSearchFragmentContainer(ft);
+                    }, view2 -> {
+                        //OneLocationClick
+                        Do_ClickFor_نقطه_داخل_دیتابیس();
+                        hideSearchFragmentContainer(ft);
+
+                    }, view2 -> {
+                        //Show All Locations On Map
+                        Do_ClickFor_نمایش_همه_نقاط_جستجوی_متن_روی_نقشه();
+                        hideSearchFragmentContainer(ft);
+                    }, view2 -> {
+                        //Back Pressed
+                        hideSearchFragmentContainer(ft);
+                        txtSearch.setText(searchTextPanel.selectedText.length() > 0?searchTextPanel.selectedText:getText(R.string.SearchHearOrPressMap));
+                    });
+//
+            ft.add(R.id.searchFragmentContainer, searchTextPanel, "SearchFragmentTag").commit();
+            searchFragmentContainer.setVisibility(View.VISIBLE);
+        }
+        else{
+            searchTextPanel.reInit();
+            ft.show(searchTextPanel);
+            searchFragmentContainer.setVisibility(View.VISIBLE);
+        }
+    }
+    public void hideSearchFragmentContainer(FragmentTransaction ft){
+        ft.hide(searchTextPanel);
+        searchFragmentContainer.setVisibility(View.GONE);
+    }
+
     //pnlRecordTrack:
     public FloatingActionButton btnGoToTripComputer, btnPlayPause,btnFinishRecording;
 
@@ -486,7 +466,6 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         for (int i = 0; i < sz; i++) {
             searchMarkers.get(i).remove();
         }
-        adapterSearch.setData(new ArrayList<>());
     }
 
     @Override
@@ -630,7 +609,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                 map.setMyLocationEnabled(false); //1399-12-07 changed to false, because of MyLocationIcon
             }
             map.getUiSettings().setCompassEnabled(true);//Removed after Custom Zoom and My Location
-            ImageView compass = (ImageView) mapFragment.getView().findViewWithTag("GoogleMapCompass");
+            ImageView compass = mapFragment.getView().findViewWithTag("GoogleMapCompass");
             compass.setOnClickListener(view1 ->
             {
                 compass_Clicked();
@@ -683,7 +662,6 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             map.setOnMapClickListener(latLng -> {
                 if (IsInAddWaypointMode == MAP_CLICK_MODE_WAYPOINT) {
                     addWaypointMode.mapOnClick_Waypoint(latLng, false);
-                    return;
                 }
 //            if (RouteMode == MAP_CLICK_MODE_ROUTE)//1399-12-02
 //                mapOnClick_Route(latLng);
@@ -722,6 +700,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                     for (int i = 0; i < routeSize && !find; i++) {
                         if (routeDesignMode.routeMarkerIds.get(i).equals(clickedId)) {
                             find = true;
+                            break;
                         }
                     }
                     if (find) {
@@ -880,7 +859,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                 List<Object> added = addPOIToMapRecursive(childs.get(i), map, context);
                 res.addAll(added);
             }
-        } else if (true || poi.PoiType == NbPoi.Enums.PoiType_Track || poi.PoiType == NbPoi.Enums.PoiType_Route) {
+        } else if (true) {
             res.add(addPOIToMap(NbPoiCompact.getInstance(poi), map, false, context));
             //No Need to app.visiblePOIs.add(compact);
         }
@@ -1044,11 +1023,11 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
 
         boolean isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if (!isGpsEnabled) {
-            projectStatics.showDialog((MainActivity) context
+            projectStatics.showDialog(context
                     , getResources().getString(R.string.locationIsOff)
                     , getResources().getString(R.string.locationIsOff_Desc)
                     , getResources().getString(R.string.ok), view -> {
-                        hutilities.showSettingTpAccessLocation((MainActivity) context);
+                        hutilities.showSettingTpAccessLocation(context);
                     }, getResources().getString(R.string.cancel), null);
         }
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -1286,7 +1265,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         setDownFields();
 
         viewCenterPointer.invalidate();
-        if (goToTargetMode.Navigating && currentLatLon != null) {
+        if (GoToTargetMode.Navigating && currentLatLon != null) {
             goToTargetMode.showNavigation();
         }
     }
@@ -1357,7 +1336,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
     //Add for Autorotate part 1
     //https://stackoverflow.com/questions/14320015/android-maps-auto-rotate
     void initSensors() {
-        mSensorManager = (SensorManager) context.getSystemService(context.SENSOR_SERVICE);
+        mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         mRotVectSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
 
         PackageManager pm = context.getPackageManager();
@@ -1371,7 +1350,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
     //Add for Autorotate part 2
     SensorManager mSensorManager = null;
     Sensor mRotVectSensor = null;
-    private float[] mRotationMatrix = new float[16];
+    private final float[] mRotationMatrix = new float[16];
     public static double angle = 0;
     public static double angleY = 0;
     public static double angleZ = 0;
@@ -1384,7 +1363,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
 //if(1== 1)return;
         if (event.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR) {
             //Log.e(Tag, "onSensorChanged Called");
-            if (true || isTrackUp || IsInSightNGoMode || goToTargetMode.Navigating) {
+            if (true) {
                 SensorManager.getRotationMatrixFromVector(
                         mRotationMatrix, event.values);
                 float[] orientation = new float[3];
@@ -1405,7 +1384,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                     angle = Math.toDegrees(orientation[0]);
             }
 
-            if (goToTargetMode.Navigating && currentLatLon != null) {
+            if (GoToTargetMode.Navigating && currentLatLon != null) {
                 goToTargetMode.showNavigation();
             }
 
@@ -1459,9 +1438,9 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
     AlertDialog btnAddDialog = null;
 
     private void btnAdd_init(){
-        AlertDialog.Builder builder = new AlertDialog.Builder((MainActivity) context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         ViewGroup viewGroup = view.findViewById(android.R.id.content);
-        View dialogView = LayoutInflater.from((MainActivity) context).inflate(R.layout.dialog_add_on_activitymain, viewGroup, false);
+        View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_add_on_activitymain, viewGroup, false);
         builder.setView(dialogView);
         btnAddDialog = builder.create();
         btnDialog_PlotRoute = dialogView.findViewById(R.id.btnDialog_PlotRoute);
@@ -1497,6 +1476,29 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             btnDialog_SendLocation_Click();
         });
         btnDialog_RecordTrack.setOnClickListener(view -> {
+
+
+            //دسترسی به مکان در پس زمینه
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) { // Android 14 یا بالاتر
+                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.FOREGROUND_SERVICE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+                    projectStatics.showDialog((MainActivity) context
+                            , getResources().getString(R.string.RequestBackgroundLocationInAndroid34_Title)
+                            , getResources().getString(R.string.RequestBackgroundLocationInAndroid34_Title_Desc)
+                            , getResources().getString(R.string.ok), view1 -> {
+
+                                ActivityCompat.requestPermissions(context,
+                                        new String[]{Manifest.permission.FOREGROUND_SERVICE_LOCATION},
+                                        1002);
+
+                            }
+                            , "", null);
+
+                    return;
+                }
+            }
+
             //************* Same in  DialogRecordTrack.btnFinishRecording.setOnClickListener, MapPage. btnDialog_RecordTrack.setOnClickListener
             //1402-03-21
             //در راستای حذف دسترسی در پس زمینه کامنت شد
@@ -1547,18 +1549,16 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             return true;
         if (btnAddWaypointDialog != null && btnAddWaypointDialog.isShowing())
             return true;
-        if (btnDialog_SendLocationDialog != null && btnDialog_SendLocationDialog.isShowing())
-            return true;
-        return false;
+        return btnDialog_SendLocationDialog != null && btnDialog_SendLocationDialog.isShowing();
     }
 
 
     private void btnDialog_SendLocation_Click() {
         if (anyDialogIsOpen())
             return;
-        AlertDialog.Builder builder = new AlertDialog.Builder((MainActivity) context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         ViewGroup viewGroup = view.findViewById(android.R.id.content);
-        View dialogView = LayoutInflater.from((MainActivity) context).inflate(R.layout.dialog_add_on_activitymain_shareloctype, viewGroup, false);
+        View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_add_on_activitymain_shareloctype, viewGroup, false);
         builder.setView(dialogView);
         btnDialog_SendLocationDialog = builder.create();
         btnShareCurrentLoc_JustLatLon = dialogView.findViewById(R.id.btnShareCurrentLoc_JustLatLon);
@@ -1641,9 +1641,9 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         if (anyDialogIsOpen())
             return;
 
-        AlertDialog.Builder builder = new AlertDialog.Builder((MainActivity) context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         ViewGroup viewGroup = view.findViewById(android.R.id.content);
-        View dialogView = LayoutInflater.from((MainActivity) context).inflate(R.layout.dialog_add_on_activitymain_waypointtype, viewGroup, false);
+        View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_add_on_activitymain_waypointtype, viewGroup, false);
         builder.setView(dialogView);
         btnAddWaypointDialog = builder.create();
         btnDialog_AddPOI_InCustomLocation = dialogView.findViewById(R.id.btnDialog_AddPOI_InCustomLocation);
@@ -1655,7 +1655,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         btnDialog_AddPOI_InYourLocation.setOnClickListener(myView -> {
             //اعتبارسنجی تثبیت موقعیت
             if (currentLatLon == null) {
-                projectStatics.showDialog((MainActivity) context
+                projectStatics.showDialog(context
                         , getResources().getString(R.string.vali_NoCurrectLocation)
                         , getResources().getString(R.string.vali_NoCurrectLocation_Desc)
                         , getResources().getString(R.string.ok), vv -> {
@@ -1730,7 +1730,6 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
     public void btnAddWaypoint_Click(LatLng point) {
         if (IsInAddWaypointMode == MAP_CLICK_MODE_WAYPOINT) {
             //alertDialog.dismiss();
-            return;
         } else {
             IsInAddWaypointMode = MAP_CLICK_MODE_WAYPOINT;
             addWaypointMode.pnlAddWaypoint.setVisibility(View.VISIBLE);
@@ -1778,7 +1777,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                 break;
             }
             case R.id.menu_profile: {
-                if (false && hutilities.CCustomerId != 0) {
+                if (false) {
                     context.showFragment(new CompleteRegister("menu"));
 //                    Intent intent = new Intent(getApplicationContext(), CompleteRegister.class);
 //                    intent.putExtra("mode", "menu");
@@ -1809,7 +1808,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             }
 
             case R.id.nv_exit_user: {
-                app.session.logoutUser((MainActivity) context);
+                app.session.logoutUser(context);
                 break;
             }
             case R.id.nv_exit_app: {
@@ -1817,7 +1816,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                         , getResources().getString(R.string.AreYouSureToExit_Title)
                         , getResources().getString(R.string.AreYouSureToExit_Desc)
                         , getResources().getString(R.string.ok), view -> {
-                            ((MainActivity) context).finish();
+                            context.finish();
                         }
                         , getResources().getString(R.string.cancel), null);
 //                hessamTools.areYouSureToExitActivity(getApplicationContext(), this);
@@ -1904,7 +1903,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                         .zIndex(3));
                 routeBoundsToShow.setPoints(mapBoundsToShow);
             }
-            LatLng sydney = new LatLng((double) ((latN - latS) / 2 + latS), ((lonE - lonW) / 2 + lonW));
+            LatLng sydney = new LatLng((latN - latS) / 2 + latS, ((lonE - lonW) / 2 + lonW));
 //              map.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, zoom));
             isLockOnMe = false;
@@ -2008,9 +2007,10 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             broadcastIntent.setAction("restartservice");
             broadcastIntent.setClass(context, TrackInBackgroundService_Restarter.class);
             context.sendBroadcast(broadcastIntent);
+            Log.d("RECORDING", "Service restarted");
         } else {
             stopTrackRecordingServiceIfRunning();
-
+            Log.d("RECORDING", "Service stopped");
         }
     }
 
@@ -2128,7 +2128,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         int trkPts = oldCurrentTracks.size();
         LatLng lastLatLon = null;
         NbCurrentTrack lastCurrentTrack = null;
-        Log.e(Tag, "ترک زدن" + "بازگشت به ترک زدن - تعداد نقاط فعلی: " + Integer.toString(trkPts));
+        Log.e(Tag, "ترک زدن" + "بازگشت به ترک زدن - تعداد نقاط فعلی: " + trkPts);
         Log.e(Tag, "ترک زدن" + "AAAA66 ");
         if (trkPts > 0) {
             //1400-11-04 Find Last Point and Skip Paused Points
@@ -2170,9 +2170,12 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         } else if (sightNGoMode != null && IsInSightNGoMode) {
             sightNGoMode.btnDiscardSightNGo_Click();
             return false;
-        } else if (scrollSearchMode.getVisibility() == View.VISIBLE) {
-            scrollSearchMode.setVisibility(View.GONE);
-            typeSearchMode = false;
+        } else if (searchFragmentContainer.getVisibility() == View.VISIBLE){
+            FragmentManager fm = getChildFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            searchTextPanel.PerformBeforeBackPressed();
+            txtSearch.setText(searchTextPanel.selectedText.length() > 0?searchTextPanel.selectedText:getText(R.string.SearchHearOrPressMap));
+            hideSearchFragmentContainer(ft);
             return false;
         }
         return super.onBackPressedInChild(); //true
@@ -2239,148 +2242,29 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
     public final int ZoomToShowPoint = 14;
 
     //---------------------- شروع قمست های اضافه جستجو کردن ---------------------
-    private void btnSearch_Click() {
-        String text = txtSearch.getText().toString().trim();
-        try {
-            //اول بررسی این که آیا مختصات وارد کرده یا متن. اگه مختصات بود همینجا مشکل رو حل کنیم
-            text = TextFormat.ReplacePersianNumbersWithEnglishOne(text);
-            //a. lat/lon
-            LatLng inpLocation = GeoCalcs.extractLatLonString(text);
-            if (inpLocation == null) {
-                inpLocation = GeoCalcs.extractUtmString(text);
-            }
-
-            if (inpLocation != null) {
-                NbPoi poi = new NbPoi();
-                poi.NbPoiId = 0l;
-                poi.Name = GPXFile.DoubleToStringForLatLan(inpLocation.latitude) + "," + GPXFile.DoubleToStringForLatLan(inpLocation.longitude);
-                poi.LatBegin = poi.LatS = inpLocation.latitude;
-                poi.LonBegin = poi.LonW = inpLocation.longitude;
-
-                performSearchResultPoiClick(poi);
-                return;
-            }
-
-
-            if (!hutilities.isInternetConnected(context)) {
-                projectStatics.showDialog(context, this.getResources().getString(R.string.NoInternet), this.getResources().getString(R.string.NoInternet_Desc), this.getResources().getString(R.string.ok), view -> {
-                }, "", null);
-                return;
-            }
-            btnShowResultOnMap.setVisibility(View.INVISIBLE);
-            hutilities.hideKeyboard(context, txtSearch);
-            typeSearchMode = true;
-            scrollSearchMode.setVisibility(View.VISIBLE);
-
-            pageProgressBar.setVisibility(View.VISIBLE);
-
-            SearchRequestDTO requestDTO = new SearchRequestDTO();
-            requestDTO.Filter = text + "***";
-            requestDTO.Filter += "***";//Bounds
-            requestDTO.Filter += "***";//PoiType
-            if (currentLatLon != null && currentLatLon.latitude != 0 && currentLatLon.longitude != 0) {
-                requestDTO.Filter += Double.toString(currentLatLon.latitude) + "," + Double.toString(currentLatLon.longitude) + "***";//myLatLon
-            } else
-                requestDTO.Filter += "***";//myLatLon
-            Call<ResponseBody> call = app.apiMap.SearchNbPoi_1(SimpleRequest.getInstance(requestDTO));
-
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if (!isAdded()) return;
-                    try {
-                        divSearch.setVisibility(View.VISIBLE);
-                        pageProgressBar.setVisibility(View.GONE);
-                        if (response.isSuccessful()) {
-
-                            NbPoiList result = NbPoiList.fromBytes(response.body().bytes());
-                            if (!result.isOk) {
-                                txtSearchResult.setVisibility(View.VISIBLE);
-                                divSearch.setVisibility(View.GONE);
-                                txtSearchResult.setText(result.message);
-                            } else {
-                                txtSearchResult.setVisibility(View.GONE);
-                                divSearch.setVisibility(View.VISIBLE);
-                            }
-                            int resSize = result.resList.size();
-                            if (result.resList.size() > 0) {
-                                //Added 1401-07-05 برای رفع باگ نوشتن دکمه ذخیره و ویرایش
-                                for (int i = 0; i < resSize; i++) {
-                                    result.resList.get(i).NbPoiId = 0l;
-                                }
-                                btnShowResultOnMap.setVisibility(View.VISIBLE);
-                                rvSearchResult.setVisibility(View.VISIBLE);
-                                initAdapterSearch(result.resList);
-                                AddResultsToMap(adapterSearch.data);
-                            } else {
-                                txtSearchResult.setVisibility(View.VISIBLE);
-                                divSearch.setVisibility(View.GONE);
-                                txtSearchResult.setText(R.string.NoItemFoundInSearch);
-                            }
-                        } else {
-                            txtSearchResult.setVisibility(View.VISIBLE);
-                            divSearch.setVisibility(View.GONE);
-                            txtSearchResult.setText("متاسفانه در برقراری ارتباط با سرور مشکلی به وجود آمده است. لطفا بعدا مجددا تلاش نمایید.");
-                            Log.e(Tag, "MY_ERROR" + "ResponseCODE: " + response.code());
-                        }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                        Log.e(Tag, "MY_ERROR" + ex.getMessage());
-                        TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frm_SearchOnMap, 100);
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    TTExceptionLogSQLite.insert(t.getMessage(), stktrc2kt(t), PrjConfig.frm_SearchOnMap, 100);
-                    if (!isAdded()) return;
-                    divSearch.setVisibility(View.VISIBLE);
-                    pageProgressBar.setVisibility(View.GONE);
-                    txtSearchResult.setVisibility(View.VISIBLE);
-                    divSearch.setVisibility(View.GONE);
-                    txtSearchResult.setText("متاسفانه مشکلی در برقراری ارتباط با سرور به وجود آمده است. لطفا بعدا مجددا تلاش نمایید.");
-
-                }
-            });
-
-        } catch (Exception ex) {
-            projectStatics.showDialog(context, getString(R.string.ProblemInSearch), getString(R.string.ProblemInSearch_DESC)
-                    , getString(R.string.accept), null, "", null);
-            Log.e(Tag, "خطا" + " text " + ex.getMessage());
-            TTExceptionLogSQLite.insert(ex.getMessage(), "Searched: " + text + " - " + stktrc2k(ex), PrjConfig.frmMapPage, 1006);
-            ex.printStackTrace();
-        }
+    public void Do_ClickFor_مختصات_مستقیم(){
+        txtSearch.setText(searchTextPanel.selectedText.length() > 0?searchTextPanel.selectedText:getText(R.string.SearchHearOrPressMap));
+        performSearchResultPoiClick(searchTextPanel.selectedPoi);
     }
-
-    void initAdapterSearch(List<NbPoi> result) {
-        if (true || adapterSearch == null) {
-
-            MapPage.NbPoisAdapter.OnItemClickListener itemClickListener = (post, Position) -> {
-                RecyclerView_ItemClicked(post, Position);
-            };
-            adapterSearch = new MapPage.NbPoisAdapter(context, "full", itemClickListener);
-            adapterSearch.setData(result);
-            rvSearchResult.setAdapter(adapterSearch);
-        }
-        if (rvSearchResult.getAdapter() == null) {
-
-        }
+    public void Do_ClickFor_نمایش_همه_نقاط_جستجوی_متن_روی_نقشه(){
+        txtSearch.setText(searchTextPanel.selectedText.length() > 0?searchTextPanel.selectedText:getText(R.string.SearchHearOrPressMap));
+        AddResultsToMap(searchTextPanel.ResultList);
+        GoToMapForAllResults();
     }
-
-    public void RecyclerView_ItemClicked(NbPoi current, int index) {
-        NbPoi poi = adapterSearch.data.get(index);
-        hutilities.hideKeyboard((Activity) context);
-        currentSelectedNbPoiIndex = index;
+    public void Do_ClickFor_نقطه_داخل_دیتابیس(){
+        txtSearch.setText(searchTextPanel.selectedText.length() > 0?searchTextPanel.selectedText:getText(R.string.SearchHearOrPressMap));
+        NbPoi poi = searchTextPanel.selectedPoi;
         if(poi.PoiType ==  NbPoi.Enums.PoiType_Map){
             //اگه نقشه بود
             MapSelect ms = MapSelect.getInstance(poi.LatBegin - 0.0001, poi.LonBegin+ 0.0001, false);
+
             mainActivity.showFragment(ms);
-            return;
         } else {
             //اگه نقطه بود
             performSearchResultPoiClick(poi);
         }
     }
+
 
     public void performSearchResultPoiClick(NbPoi poi) {
 
@@ -2391,37 +2275,15 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             position = new LatLng(poi.LatS, poi.LonW);
         }
 
-        scrollSearchMode.setVisibility(View.GONE);
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(position, ZoomToShowPoint));
         isLockOnMe = false;
 
         poiClicked_marker(poi);
     }
 
-    private void initRecyclerView() {
-        rvSearchResult.addOnItemTouchListener(new RecyclerTouchListener(getContext(), rvSearchResult, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                //1400-01-12 commented
-//                Intent i = new Intent(getContext(), TourShowOne.class);
-//                i.putExtra("ix", position);
-//                i.putExtra("isMyClubTours", 0);
-//                startActivity(i);
-
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-                //TTClubTour selectedTour = dbConstantsTara.getTours().get(position);
-                //Toast.makeText(getContext(), selectedTour.getName() + " is long selected!", Toast.LENGTH_SHORT).show();
-
-            }
-        }));
-    }
-
     public static class NbPoisAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private List<NbPoi> data;
-        private Context context;
+        private final Context context;
         private LayoutInflater layoutInflater;
 
         MapPage.NbPoisAdapter.OnItemClickListener itemClickFunction;
@@ -2476,8 +2338,8 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
 
 
         //من اضافه کردم
-        public abstract interface OnItemClickListener {
-            public abstract void onItemClicked(NbPoi post, int Position);
+        public interface OnItemClickListener {
+            void onItemClicked(NbPoi post, int Position);
         }
 
         class NbPoiViewHolder extends RecyclerView.ViewHolder {
@@ -2615,7 +2477,6 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
 
     public void GoToMapForAllResults() {
         try {
-            scrollSearchMode.setVisibility(View.GONE);
             LatLngBounds bounds = builder.build();
             int padding = 80; // offset from edges of the map in pixels
             CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 600, 800, padding);

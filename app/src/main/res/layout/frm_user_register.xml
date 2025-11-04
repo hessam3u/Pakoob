@@ -74,15 +74,13 @@
 <!--                android:layout_centerHorizontal="true"-->
 <!--                />-->
             <Button
-                android:layout_marginRight="@dimen/leftrightMarginMul2"
                 android:id="@+id/btnSkip"
-                android:text="الان نه!"
+                style="@style/btnCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/btnCancel"
+                android:layout_marginRight="@dimen/leftrightMarginMul2"
                 android:layout_toLeftOf="@+id/viewSplit1"
-                >
-            </Button>
+                android:text="الان نه!"></Button>
         </LinearLayout>
 
 <!--        android:visibility="gone"-->

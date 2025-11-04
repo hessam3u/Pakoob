@@ -13,6 +13,14 @@ public class MainActivityManager extends AppCompatActivity{
     public void showFragment(Fragment mFragment){
 
     }
+    //برای نمایش مجدد دادن فرگمنت هایی که حالت پاپ آپ دارن استفاده میشه
+    public void ShowChidFragmentAgain(Fragment mFragment){
+
+    }
+    //برای مخفی کردن فرگمنت هایی که حالت پاپ آپ دارن استفاده میشه
+    public void HideChildFragment(Fragment mFragment){
+
+    }
     public void showFragment(Fragment mFragment, boolean closeCurrent){
 
     }

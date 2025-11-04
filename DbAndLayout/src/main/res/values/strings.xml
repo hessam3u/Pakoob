@@ -327,6 +327,8 @@
     <string name="DownloadFolder">دانلودها (Downloads)</string>
 
     <string name="Warning">هشدار</string>
+    <string name="Attention">توجه</string>
+    <string name="PleaseEnterLongerTextToSearch">متن جستجو می بایست بیشتر از 1 حرف داشته باشد</string>
     <string name="TooManyPointsToEditOnMap">تعداد نقطه‌های این مسیر زیاد بوده و امکان ویرایش آن روی نقشه در نسخه فعلی میسر نخواهد بود.</string>
     <string name="ErrorInSave">خطای ذخیره سازی</string>
     <string name="ErrorInSave_Desc">متاسفانه خطایی ناشناخته در هنگام ذخیره سازی به وجود آمده است.</string>
@@ -395,15 +397,15 @@
     <string name="dialog_fileImportedWithXXXName">فایل با نام XXX دریافت و در لیست قرار گرفت</string>
     <string name="RecordTrack_NotificationTitle">ثبت مسیر</string>
     <string name="RecordTrack_NotificationTitle_Desc">ثبت مسیر حرکت شما در حال انجام‌است. لطفا برای مدیریت آن، روی این پیام ضربه بزنید</string>
-    <string name="RequestBackgroundLocationInAndroid29_Title">درخواست مجوز دسترسی</string>
-    <string name="RequestBackgroundLocationInAndroid29_Title_Desc">برای دسترسی به موقعیت مکانی شما در پس زمینه، می‌بایست با رفتن به تنظیمات مربوط به برنامه و در قسمت مجوزهای دسترسی به مکان (Location)، این مجوز (گزینه همه زمان‌ها یا Allow all the time) را برای پاکوب فعال نمایید.\n در غیر این صورت ممکن است زمانی که برنامه را برای چند دقیقه استفاده نمی‌کنید، مسیر شما را موقتا ذخیره نکند.</string>
+    <string name="RequestBackgroundLocationInAndroid34_Title">درخواست مجوز دسترسی</string>
+    <string name="RequestBackgroundLocationInAndroid34_Title_Desc">در صفحه بعد، برای ثبت مسیر، لطفا مجوز این کار را به اپلیکیشن بدهید</string>
     <string name="locationPermission_Denied">مجوز دسترسی به موقعیت مکانی</string>
     <string name="locationPermission_Desc">برای استفاده از امکان مسیریابی و نقشه، در صفحه بعد مجوز استفاده از مکان را بدهید</string>
-    <string name="locationPermission_Denied_Desc">شما قبلا مجوز دسترسی به موقعیت مکانی برای این اپلکیشن را رد کرده اید. لطفا برای ادامه کار، از تنظیمات دستگاه، بخش برنامه‌ها، این برنامه را پیدا کرده و به آن مجوز (Permission) دسترسی به مکان را بدهید.</string>
+    <string name="locationPermission_Denied_Desc">شما قبلا مجوز دسترسی به موقعیت مکانی برای این اپلکیشن را رد کرده اید. لطفا برای ادامه کار، از تنظیمات دستگاه، بخش برنامه‌ها، این برنامه را پیدا کرده و به آن مجوز ( (Permission سپس بخش Location)) دسترسی به مکان را بدهید.</string>
     <string name="StoragePermission_Denied">مجوزدسترسی به فایل‌ها</string>
     <string name="StoragePermission_Denied_Desc">شما قبلا مجوز دسترسی به فایل‌ها را رد کرده اید. لطفا در صفحه ای که باز می‌شود در بخش مجوزها (Permission) مجوز دسترسی به حافظه را به این اپلیکیشن بدهید</string>
     <string name="FineLocationDenied_Title">مجوز دسترسی</string>
-    <string name="FineLocationDenied_Desc">شما مجوز دسترسی به موقعیت مکان در این اپ را ارائه نداده اید و در نتیجه امکان استفاده از مکان وجود ندارد. لطفا از طریق تنظیمات-برنامه ها-پاکوب-مجوز دسترسی به موقعیت مکانی دقیق را به پاکوب بدهید</string>
+    <string name="FineLocationDenied_Desc">شما مجوز دسترسی به موقعیت مکان در این اپ را ارائه نداده اید و در نتیجه امکان استفاده از مکان وجود ندارد. لطفا از طریق تنظیمات-برنامه ها-پاکوب-مجوز دسترسی (Permission سپس بخش Location) به موقعیت مکانی دقیق را به پاکوب بدهید</string>
 
     <string name="featureCommingSoon_Title">به زودی</string>
     <string name="featureCommingSoon_Desc">این امکان به زودی و در نسخه های آتی فعال سازی خواهد شد</string>
@@ -591,6 +593,7 @@
 
 
     <string name="SearchHearOrPressMap">جستجو کنید یا روی نقشه نگه دارید</string>
+    <string name="SearchHearForMapPage">قله، شهر، نقشه، جاذبه و...</string>
     <string name="SearchOnTopOfSelectMap">نام یا شماره نقشه را جستجو کنید</string>
     <string name="showResultOnMap">نمایش نتایج روی نقشه</string>
     <string name="OpenForecast">پیش بینی هوا</string>

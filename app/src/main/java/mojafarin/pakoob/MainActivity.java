@@ -558,6 +558,23 @@ public class MainActivity extends MainActivityManager {
         home.onFragmentShown();
     }
 
+    //برای نمایش مجدد فرگمنت هایی که حالت پاپ آپ دارن استفاده میشه
+    @Override
+    public void ShowChidFragmentAgain(Fragment mFragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.show(mFragment);
+        ft.commit();
+    }
+    //برای مخفی کردن فرگمنت هایی که حالت پاپ آپ دارن استفاده میشه
+    @Override
+    public void HideChildFragment(Fragment mFragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.hide(mFragment);
+        ft.commit();
+    }
+
     @Override
     public void showFragment(Fragment mFragment, boolean closeCurrent) {
         showHideMainActivityOnNavigation(false);

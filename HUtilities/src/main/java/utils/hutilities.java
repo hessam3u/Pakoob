@@ -302,6 +302,12 @@ public class hutilities {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
+    public static void showKeyboardInsideFragment(Context activity, EditText editText){
+        editText.post(() -> {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+        });
+    }
 
 
     //used for Add Margin Programatically like : vp.setMargins(0, 0, 0, px/4);

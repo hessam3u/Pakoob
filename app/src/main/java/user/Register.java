@@ -98,8 +98,7 @@ public class Register extends HFragment {
                 context.registerReceiver(smsVerificationReceiver, intentFilter, Context.RECEIVER_NOT_EXPORTED);
             step = 4;
             //dbConstantsTara.initFiltersAsync();
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frm_PleaseRegister, 100);
             Log.d("بازکردن", "Bind Ver Tour: " + ex.getMessage() + ex.getStackTrace());
             ex.printStackTrace();
@@ -121,21 +120,18 @@ public class Register extends HFragment {
         btnNeedHelpInSendingCode.setOnClickListener(view -> {
             showNeedHelpDialog();
         });
-        if (mode.equals("start")) {
-            btnSkip.setVisibility(View.GONE);
-        } else {
-            btnSkip.setOnClickListener(view -> {
-                hutilities.hideKeyboard(context, txtInput);
-                if (mode.equals("menu")) {
-                    ((MainActivityManager) context).onBackPressed();
-                } else {
-                    ((MainActivityManager) context).onBackPressed();
+
+        btnSkip.setOnClickListener(view -> {
+            hutilities.hideKeyboard(context, txtInput);
+            if (mode.equals("menu")) {
+                ((MainActivityManager) context).onBackPressed();
+            } else {
+                ((MainActivityManager) context).onBackPressed();
 //                Intent intent = new Intent(this, MainActivity.class);
 //                startActivity(intent);
 //                finish();
-                }
-            });
-        }
+            }
+        });
 
         btnLogin.setOnClickListener(view -> {
             if (state == ENTER_MOBILE) {

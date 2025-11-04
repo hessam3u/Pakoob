@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"
+    ?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layoutDirection="rtl">
+
+
+    <LinearLayout style="@style/ToolbarOuter">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarOfPage"
+            app:contentInsetLeft="0dp" app:contentInsetStart="0dp" app:contentInsetRight="0dp" app:contentInsetEnd="0dp"
+            style="@style/ToolbarStyle">
+
+            <LinearLayout
+                android:id="@+id/toolbarNormal"
+                style="@style/ToolbarContainer">
+                <TextView
+                    android:id="@+id/btnBack"
+                    style="@style/ToolbarBackButton"/>
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextboxNormal_Container_s"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+                    <EditText
+                        android:imeOptions="actionSearch"
+                        android:layout_marginLeft="@dimen/leftrightMargin"
+                        android:padding="0dp"
+                        android:inputType="text"
+                        style="@style/TextboxNormal_Child"
+                        android:id="@+id/txtSearch"
+                        android:layout_height="50dp"
+                        android:hint="@string/SearchOnTopOfSelectMap"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <!--                <com.google.android.material.textfield.TextInputLayout-->
+                <!--                    style="@style/TextboxNormal_Container_s"-->
+                <!--                    android:layout_width="0dp"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_weight="1">-->
+                <!--                <EditText-->
+                <!--                    android:padding="0dp"-->
+                <!--                    style="@style/TextboxNormal_Child"-->
+                <!--                    android:id="@+id/txtSearch"-->
+                <!--                    android:layout_height="50dp"-->
+                <!--                    android:hint="نام یا شماره نقشه را جستجو کنید"/>-->
+                <!--                </com.google.android.material.textfield.TextInputLayout>-->
+                <!--                <TextView-->
+                <!--                    android:id="@+id/btnSearch"-->
+                <!--                    style="@style/ToolbarTextButtons"-->
+                <!--                    android:textSize="24dp"-->
+                <!--                    android:text="&#xE800;"/>-->
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+        <View style="@style/ToolbarBottomShadow"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:background="@color/colorWhite"
+        android:id="@+id/scrollSearchMode"
+        android:layout_marginTop="@dimen/myMinActionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="60dp"
+                android:visibility="gone" />
+            <TextView
+                style="@style/label_s"
+                android:id="@+id/txtSearchResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/leftrightMargin"
+                android:layout_gravity="center"
+                android:text="نتیجه جستجو"/>
+            <LinearLayout
+                android:id="@+id/divSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <View style="@style/ToolbarBottomShadow"/>
+                <Button
+                    android:layout_marginRight="@dimen/leftrightMarginMul2"
+                    android:id="@+id/btnShowResultOnMap"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/showResultOnMap"
+                    style="@style/btnLinkNew"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvSearchResult"
+                    android:padding="4dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="@dimen/myMinActionBarSize"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
