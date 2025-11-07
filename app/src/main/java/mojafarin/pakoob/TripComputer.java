@@ -131,7 +131,6 @@ public class TripComputer extends HFragment {
 
         @Override
         public Fragment getItem(int position) {
-            Log.d("تب", "فراخوانی شد");
             switch (position) {
                 default:
                 case 0: {

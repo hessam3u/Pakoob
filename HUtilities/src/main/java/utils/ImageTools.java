@@ -96,7 +96,7 @@ public class ImageTools {
     //برای ذخیره یک عکس توسط پیکاسو استفاده میشه
     //منبع : https://www.codexpedia.com/android/android-download-and-save-image-through-picasso/
     public static Target picassoImageTarget(Context context, final String imageDir, final String imageName, ImageView imgView) {
-        Log.e("تارگت", " Started - " + imageDir);
+        Log.e("PiccassoTarget", " Started - " + imageDir);
         final File directory = new File(imageDir);
         if (!directory.exists())
             directory.mkdir();
@@ -104,7 +104,7 @@ public class ImageTools {
         return new Target() {
             @Override
             public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
-                Log.e("تارگت", " picassoImageTarget");
+                Log.e("PiccassoTarget", " picassoImageTarget");
                 if (imgView != null)
                     imgView.setImageBitmap(bitmap);
                 new Thread(new Runnable() {
@@ -116,17 +116,17 @@ public class ImageTools {
                             fos = new FileOutputStream(myImageFile);
                             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
                         } catch (IOException e) {
-                            Log.e("تارگت", " خطای تارگت به شرح زیر هست:");
+                            Log.e("PiccassoTarget", " خطای تارگت به شرح زیر هست:");
                             e.printStackTrace();
                         } finally {
                             try {
                                 fos.close();
                             } catch (IOException e) {
-                                Log.e("تارگت", " خطای بستن تارگت به شرح زیر هست:");
+                                Log.e("PiccassoTarget", " خطای بستن تارگت به شرح زیر هست:");
                                 e.printStackTrace();
                             }
                         }
-                        Log.e("تارگت", "image saved to >>>" + myImageFile.getAbsolutePath());
+                        Log.e("PiccassoTarget", "image saved to >>>" + myImageFile.getAbsolutePath());
 
                     }
                 }).start();
@@ -134,14 +134,14 @@ public class ImageTools {
 
             @Override
             public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-                Log.e("تارگت", e.getMessage());
+                Log.e("PiccassoTarget", e.getMessage());
                 e.printStackTrace();
             }
 
             @Override
             public void onPrepareLoad(Drawable placeHolderDrawable) {
                 if (placeHolderDrawable != null) {}
-                Log.i("تارگت", "Preload");
+                Log.i("PiccassoTarget", "Preload");
             }
         };
     }

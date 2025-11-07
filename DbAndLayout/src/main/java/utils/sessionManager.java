@@ -223,8 +223,8 @@ public class sessionManager {
     }
 
 
-    public static LatLng emptyLocation = new LatLng(33, 53.51);
-    public static float emptyZoom = 6f;
+    public static LatLng emptyLocation = new LatLng(35.954652, 52.110038);
+    public static float emptyZoom = 14f;
     public LatLng getLastAproxLocation(){
         String st = pref.getString(k_LastAproxLocation, "");
         if (st.equals(""))
@@ -311,7 +311,7 @@ public class sessionManager {
         Gson gson = new Gson();
         String json = pref.getString(k_CCustomer, "");
 
-        Log.e("الف",  String.valueOf(json));
+        Log.e("APP",  "CC From JSON : " + String.valueOf(json));
         PersonalInfoDTO res;
         if (json.equals("")) {
             res = new PersonalInfoDTO();
@@ -336,6 +336,14 @@ public class sessionManager {
     }
     public void setOpenHomeAtStartup(int value){
         editor.putInt(k_OpenHomeAtStartup, value);
+        editor.commit();
+    }
+    public Boolean getAsked_notification_permission(){
+        Boolean res = pref.getBoolean("asked_notification_permission", false);
+        return res;
+    }
+    public void setAsked_notification_permission(Boolean value){
+        editor.putBoolean("asked_notification_permission", value);
         editor.commit();
     }
 

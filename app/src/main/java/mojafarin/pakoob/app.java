@@ -14,6 +14,7 @@ import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 import android.view.View;
@@ -42,6 +43,8 @@ import bo.entity.TTExceptionLog;
 import bo.sqlite.NbLogSearchSQLite;
 import bo.sqlite.NbMapSQLite;
 import bo.sqlite.TTExceptionLogSQLite;
+import maptools.LocationRepository;
+import maptools.LocationTrackingService;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -90,6 +93,10 @@ public class app extends Application {
 
     public static boolean FirebaseInited = false;
 
+    public static LocationRepository repo;
+    public static LocationTrackingService mTrackInBackgroundService;
+    public static Intent mServiceIntent;
+
     public static boolean isFirstTimeRunning_ForLocationReadingInMapPage = false;
     @Override
     public void onCreate() {
@@ -99,11 +106,12 @@ public class app extends Application {
         Context context = getApplicationContext();
         session = new sessionManager(context);
         isFirstTimeRunning_ForLocationReadingInMapPage = app.session.getVisitCounter() == 0;
+        repo = LocationRepository.getInstance();
 
         if (!PrjConfig.IsDebugMode)
             PrjConfig.WebApiAddress = session.getWebApiAddress();
 
-        Log.e("اپی",  PrjConfig.WebApiAddress);
+        Log.e("API",  PrjConfig.WebApiAddress);
         app.session.getCCustomer(); // Need to fill hutilities.CCustomerId
         // Required initialization logic here!
 

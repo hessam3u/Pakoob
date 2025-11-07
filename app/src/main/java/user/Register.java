@@ -399,7 +399,7 @@ public class Register extends HFragment {
                 Log.e("کانفریم", t.getMessage());
                 t.printStackTrace();
                 hutilities.showHideLoading(false, loadingForDialog, (Activity) context);
-                //projectStatics.showDialog(context, "خطا", t.getMessage() + " " + t.getStackTrace(), "قبول", null, "", null);
+                //projectStatics.showDialog(context, Tag, "خطای اکسپشن : " + t.getMessage() + " " + t.getStackTrace(), "قبول", null, "", null);
             }
         });
     }

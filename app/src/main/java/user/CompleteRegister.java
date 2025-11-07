@@ -212,11 +212,6 @@ public class CompleteRegister extends HFragment {
             dialogBuilder.alertDialog.show();
         });
 
-        //اولین جایی که درخواست مجوز مکان داده میشه اینجاست
-        if (app.isFirstTimeRunning_ForLocationReadingInMapPage){
-            //اگر اولین بار بود که اپ باز میشد، پرمیشن گرفته بشه
-            MainActivity.saveAndSendInitLocation(context);
-        }
 
         super.initializeComponents(v);
     }

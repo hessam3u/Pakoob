@@ -1,14 +1,13 @@
 package mojafarin.pakoob;
 
+import static java.security.AccessController.getContext;
 import static utils.HFragment.stktrc2k;
 
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import MorphingButton.MorphingButton;
 import bo.NewClasses.InsUpdRes;
 import bo.dbConstantsMap;
 import bo.dbConstantsTara;
@@ -16,13 +15,13 @@ import bo.entity.FmMessage;
 import bo.entity.NbMap;
 import bo.entity.NbPoi;
 import bo.sqlite.TTExceptionLogSQLite;
+import maptools.LocationTrackingService;
 import pakoob.ClubView_Home;
 import pakoob.TourShowOne;
 import utils.HFragment;
 import utils.MyDate;
 import utils.PrjConfig;
 import bo.entity.MobileInfoDTO;
-import bo.NewClasses.StringContentDTO;
 import mojafarin.pakoob.mainactivitymodes.DialogMapBuilder;
 import FmMessage.SideList;
 import maptools.hMapTools;
@@ -35,13 +34,13 @@ import utils.MainActivityManager;
 import utils.hutilities;
 import utils.projectStatics;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Criteria;
@@ -49,16 +48,14 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 
 //import com.airbnb.deeplinkdispatch.DeepLink;
 import com.google.android.gms.maps.GoogleMap;
@@ -73,9 +70,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.Stack;
-import java.util.concurrent.ConcurrentNavigableMap;
 
 //@DeepLink("naghshebaz://payok/{id}")
 public class MainActivity extends MainActivityManager {
@@ -110,6 +105,7 @@ public class MainActivity extends MainActivityManager {
 
     byte buyType = 0;
     String goodId_NbMapId, buyId;
+    boolean goDirectlyToMapPage = false;
 
     void processIntent(Intent intent) {
         if (intent.getData() != null) {
@@ -169,7 +165,8 @@ public class MainActivity extends MainActivityManager {
                 } catch (Exception ex) {
                     int x = 0;
                 }
-            } else if (data.contains("content")) {
+            }
+            else if (data.contains("content")) {
                 String action = intent.getAction();
                 recievedFileName = "";
                 inputStream = null;
@@ -208,6 +205,12 @@ public class MainActivity extends MainActivityManager {
 
                 intent.setData(null);
             }
+            else{
+
+            }
+        } if ("Location_Tracking_Service".equals(intent.getAction())){
+            //در حال ثبت مسیر یا فرایندی مشابه هست، صاف بره به صفحه نقشه و مسیریابی
+            goDirectlyToMapPage = true;
         }
         if (intent.getExtras() != null && intent.getExtras().containsKey("ChanalId")) {
             //برای زمانی که روی نوتیفیکیشن مربوط به ثبت ترک کلیک میکنه میخوایم که ترک ها لود بشه حتما
@@ -227,8 +230,6 @@ public class MainActivity extends MainActivityManager {
             savedInstanceState.getInt(REDRAW_POIS_ON_STATE, 1);
         }
         appExistsBeforeAndShouldReloadAll_ReReadPois = true; //POIHIDE
-
-
 
         //GPXFile.DeleteAllNbPois();
         //GPXFile.ParseFile("",MainActivity.this);
@@ -285,40 +286,24 @@ public class MainActivity extends MainActivityManager {
         }
         //Init Home and Map Page - Start ------------------------
 
-
         //3 - Show Other Pages of needed
         int visitCounter = app.session.getVisitCounter();
-        if (!app.session.isLoggedIn()) {
+
+
+        //1404-08 درست کار نکرد، فعلا کامنتش کردم. خطا میداد که کانتکست نال هست
+//        if(goDirectlyToMapPage){
+//            backToMapPage();
+//        }
+//        else
+            if (!app.session.isLoggedIn()) {
             showFragment(new PleaseRegister());
-        } else if (app.session.getOpenHomeAtStartup() == 1) {
+        }
+        else if (app.session.getOpenHomeAtStartup() == 1) {
             backToHome();
         }
 
         if (!app.isFirstTimeRunning_ForLocationReadingInMapPage)
             saveAndSendInitLocation(getApplicationContext());
-
-        //Check NotificationPermission
-//        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
-//        boolean areNotificationsEnabled = notificationManagerCompat.areNotificationsEnabled();
-//        if (!areNotificationsEnabled){
-//            projectStatics.showDialog(this
-//                    , this.getResources().getString(R.string.notifPermission_DeniedTitle)
-//                    , this.getResources().getString(R.string.notifPermission_Desc)
-//                    , this.getResources().getString(R.string.ok), view -> {
-//                        hutilities.showAppSettingToChangePermission(this);
-//                    }, "", null);
-//        }
-        if (ActivityCompat.checkSelfPermission((Activity) this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) this, new String[]{
-                    Manifest.permission.POST_NOTIFICATIONS
-            }, PrjConfig.POST_NOTIFICATIONS_REQUEST_CODE);
-        }
-
-
-        //commented at ver 29 and moved into ps
-//        if (visitCounter % 5 == 0)
-//            app.DoSyncExceptions(MainActivity.this);
-
 
         //همزمان در oncreate-onNewIntent
         Bundle extras = intent.getExtras();
@@ -331,12 +316,6 @@ public class MainActivity extends MainActivityManager {
         doCheckVersion();
 
         //1402-04 انتقال دسترسی به مکان به صفحه نقشه
-//        // check permission
-//        if (ActivityCompat.checkSelfPermission((Activity) this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions((Activity) this, new String[]{
-//                    Manifest.permission.ACCESS_FINE_LOCATION
-//            }, PrjConfig.Location_FINE_PERMISSION_REQUEST_CODE);
-//        }
 
         //Also call when login
         initFirebase();
@@ -489,7 +468,7 @@ public class MainActivity extends MainActivityManager {
         int backStackCount = myFragments.size();
 
         int counter = backStackCount;
-        Log.e("1شش", Integer.toString(backStackCount));
+        Log.e(Tag, "Back Stack Count : " + Integer.toString(backStackCount));
         while (counter > 0) {
             counter--;
             Fragment top = myFragments.pop();
@@ -519,7 +498,7 @@ public class MainActivity extends MainActivityManager {
         int backStackCount = myFragments.size();
 
         int counter = backStackCount;
-        Log.e("1شش", Integer.toString(backStackCount));
+        Log.e(Tag, "Back Stack Count : " + Integer.toString(backStackCount));
         while (counter > 0) {
             counter--;
             ft.remove(myFragments.pop());
@@ -585,8 +564,8 @@ public class MainActivity extends MainActivityManager {
             doBackOnFragmentStacks(fragmentManager);
         }
         int count = myFragments.size();
-        Log.e( "فرفرفر ها", count + " تا ");
-        Log.e( "فرفرفر های دو", fragmentManager.getFragments().size() + " تا ");
+        Log.e( Tag, "count of myFragments : " + count + " تا ");
+        Log.e( Tag, "count of fragmentManager : " + fragmentManager.getFragments().size() + " تا ");
         //اگه صفحه دیگه ای باز بود، اون رو مخفی کنیم
         if (count > 0) {
             Fragment peak = myFragments.peek();
@@ -613,7 +592,7 @@ public class MainActivity extends MainActivityManager {
 
     void doBackOnFragmentStacks(FragmentManager fragmentManager) {
         int backStackCount = myFragments.size();
-        Log.e("ششششش", Integer.toString(backStackCount));
+        Log.e(Tag, "BackCount(A): " + Integer.toString(backStackCount));
         FragmentTransaction ft = fragmentManager.beginTransaction();
 
         if (backStackCount > 0) {
@@ -667,7 +646,7 @@ public class MainActivity extends MainActivityManager {
             FragmentManager fragmentManager = getSupportFragmentManager();
             Fragment fr = currentFragment;//fragmentManager.findFragmentById(R.id.your_placeholder);
             int backStackCount = myFragments.size();
-            Log.e("بک کانت", Integer.toString(backStackCount));
+            Log.e(Tag, "BackCount(B): " + Integer.toString(backStackCount));
             if (backStackCount > 0) {
                 boolean backAllowed = true;
                 if (fr instanceof HFragment) {
@@ -707,7 +686,7 @@ public class MainActivity extends MainActivityManager {
             }
 
         } catch (Exception ex) {
-            Log.e("خطا", ex.getMessage());
+            Log.e(Tag, "خطای اکسپشن : " + ex.getMessage());
             ex.printStackTrace();
             TTExceptionLogSQLite.insert(ex.getMessage(),stktrc2k(ex), PrjConfig.frmMainActivity, 1500);
         }
@@ -767,8 +746,14 @@ public class MainActivity extends MainActivityManager {
         try {
             if (mapPage != null)
                 mapPage.onResumeInChild();
+
+//            if (!MainActivity.isTrackingServiceBound) {
+//                Intent serviceIntent = new Intent(this, LocationTrackingService.class);
+//                this.bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE);
+//            }
+
         } catch (Exception ex) {
-            Log.e("خطا", ex.getMessage());
+            Log.e(Tag, "خطای اکسپشن : " + ex.getMessage());
             ex.printStackTrace();
             TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmMainActivity, 1501);
         }
@@ -803,14 +788,10 @@ public class MainActivity extends MainActivityManager {
             if (mapPage != null)
                 mapPage.onPauseInChild();
         } catch (Exception ex) {
-            Log.e("خطا", ex.getMessage());
+            Log.e(Tag, "خطای اکسپشن : " + ex.getMessage());
             ex.printStackTrace();
             TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmMainActivity, 1506);
         }
-    }
-    @Override
-    protected void onStop() {
-        super.onStop();
     }
 //1400-01-03
 //    public boolean isGPSEnabled(Context mContext) {
@@ -841,6 +822,7 @@ public class MainActivity extends MainActivityManager {
                         //Do something...
                         //از اینجا به بعد آزاد هست که هر کاری بکنه
                         app.isFirstTimeRunning_ForLocationReadingInMapPage = false;
+                        Log.e(Tag, "   رفتن به چک لوکیشن");
                         mapPage.checkLocation(false);
                     } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                         //if permission denied previously
@@ -871,22 +853,22 @@ public class MainActivity extends MainActivityManager {
                 }
                 break;
             }
-            case PrjConfig.POST_NOTIFICATIONS_REQUEST_CODE: {
-                if (grantResults.length > 0) {
-                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                        //Do something...
-                    } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                        //if permission denied previously
-                        projectStatics.showDialog(this
-                                , this.getResources().getString(R.string.notifPermission_DeniedTitle)
-                                , this.getResources().getString(R.string.notifPermission_Desc)
-                                , this.getResources().getString(R.string.ok), view -> {
-                                    hutilities.showAppSettingToChangePermission(this);
-                                }, "", null);
-                    }
-                }
-                break;
-            }
+//            case PrjConfig.POST_NOTIFICATIONS_REQUEST_CODE: {
+//                if (grantResults.length > 0) {
+//                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                        //Do something...
+//                    } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+//                        //if permission denied previously
+//                        projectStatics.showDialog(this
+//                                , this.getResources().getString(R.string.notifPermission_DeniedTitle)
+//                                , this.getResources().getString(R.string.notifPermission_Desc)
+//                                , this.getResources().getString(R.string.ok), view -> {
+//                                    hutilities.showAppSettingToChangePermission(this);
+//                                }, "", null);
+//                    }
+//                }
+//                break;
+//            }
         }
         //New Record Track:
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -1237,4 +1219,50 @@ public class MainActivity extends MainActivityManager {
 //        int myInt = savedInstanceState.getInt("MyInt");
 //        String myString = savedInstanceState.getString("MyString");
     }
+
+    public MainActivity(){
+        Tag = "MainActiviry";
+    }
+
+
+    //------ قسمت های مربوط به سرویس لوکیشن در 1404-08 ----------
+
+    public static boolean isTrackingServiceBound = false;
+    public static boolean isTrackingServiceRunning = false;
+
+    public static ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            LocationTrackingService.LocalBinder binder = (LocationTrackingService.LocalBinder) service;
+            app.mTrackInBackgroundService = binder.getService();
+            Log.e("TrkService", "سریس سابق شناسایی شد");
+            isTrackingServiceBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            isTrackingServiceBound = false;
+        }
+    };
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // سعی کن دوباره bind بشی در صورت وجود سرویس
+        if (!MainActivity.isTrackingServiceBound) {
+            Intent intent = new Intent(this, LocationTrackingService.class);
+            bindService(intent, connection, Context.BIND_AUTO_CREATE);
+            MainActivity.isTrackingServiceBound = true;
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (isTrackingServiceBound && !isTrackingServiceRunning) {
+            unbindService(connection);//این خط منجر به بسته شدن کامل سرویس میشه
+            isTrackingServiceBound = false;
+        }
+    }
+
+    //------ اتمام قسمت های مربوط به سرویس لوکیشن در 1404-08 ----------
 }

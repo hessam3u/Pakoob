@@ -117,6 +117,7 @@
 
     <string name="ok">"قبول"</string>
     <string name="OpenBattrySetting">باز کردن تنظیمات باتری</string>
+    <string name="OpenSetting">باز کردن تنظیمات</string>
     <string name="afterBuyGPX_title">خرید مسیر</string>
     <string name="afterBuyGPX_desc">مسیر با موفقیت خریداری شد. شما مجددا به صفحه مربوط به آن هدایت شده و می توانید در بازه یک ماه آینده، آن را دانلود نمایید.</string>
 
@@ -400,7 +401,7 @@
     <string name="RequestBackgroundLocationInAndroid34_Title">درخواست مجوز دسترسی</string>
     <string name="RequestBackgroundLocationInAndroid34_Title_Desc">در صفحه بعد، برای ثبت مسیر، لطفا مجوز این کار را به اپلیکیشن بدهید</string>
     <string name="locationPermission_Denied">مجوز دسترسی به موقعیت مکانی</string>
-    <string name="locationPermission_Desc">برای استفاده از امکان مسیریابی و نقشه، در صفحه بعد مجوز استفاده از مکان را بدهید</string>
+    <string name="locationPermission_Desc">برای استفاده از امکان مسیریابی و نقشه، در صفحه بعد گزینه اول را انتخاب کنید</string>
     <string name="locationPermission_Denied_Desc">شما قبلا مجوز دسترسی به موقعیت مکانی برای این اپلکیشن را رد کرده اید. لطفا برای ادامه کار، از تنظیمات دستگاه، بخش برنامه‌ها، این برنامه را پیدا کرده و به آن مجوز ( (Permission سپس بخش Location)) دسترسی به مکان را بدهید.</string>
     <string name="StoragePermission_Denied">مجوزدسترسی به فایل‌ها</string>
     <string name="StoragePermission_Denied_Desc">شما قبلا مجوز دسترسی به فایل‌ها را رد کرده اید. لطفا در صفحه ای که باز می‌شود در بخش مجوزها (Permission) مجوز دسترسی به حافظه را به این اپلیکیشن بدهید</string>
@@ -410,7 +411,8 @@
     <string name="featureCommingSoon_Title">به زودی</string>
     <string name="featureCommingSoon_Desc">این امکان به زودی و در نسخه های آتی فعال سازی خواهد شد</string>
     <string name="notifPermission_DeniedTitle">ارسال اعلان و پیام های مفید</string>
-    <string name="notifPermission_Desc">مایلی که پیام ها و اعلان های مرتبط به مسیرهای بهینه و اعلام برنامه ها بهت برسه؟ لطفا در قسمت بالای صفحه بعد، مجوز دسترسی به اعلان ها رو به اپ پاکوب بده و تیک کنار اعلان ها (Notifications) رو بزن.</string>
+    <string name="notifPermission_Desc_After">مایلی که پیام ها و اعلان های مرتبط به مسیرهای بهینه و اعلام برنامه ها بهت برسه؟ لطفا در قسمت بالای صفحه بعد، مجوز دسترسی به اعلان ها رو به اپ پاکوب بده و تیک کنار اعلان ها (Notifications) رو بزن.</string>
+    <string name="notifPermission_Desc_Before">مایلی که پیام ها و اعلان های مرتبط به مسیرهای بهینه و اعلام برنامه ها بهت برسه؟ لطفا در صفحه بعد، مجوز دسترسی به اعلان ها رو به اپ پاکوب بده </string>
 
     <string name="shareViaText">اشتراک گذاری از طریق</string>
     <string name="share_YourLocation">مکان فعلی</string>

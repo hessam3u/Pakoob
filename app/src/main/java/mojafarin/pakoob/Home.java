@@ -1,15 +1,20 @@
 package mojafarin.pakoob;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.net.Uri;
 import android.nfc.Tag;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -20,6 +25,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.Projection;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -38,8 +44,12 @@ import java.util.TimerTask;
 
 import FmMessage.SideList;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -76,6 +86,7 @@ public class Home extends HFragment {
 
     public Home() {
         app.session.setOpenHomeAtStartup(1);
+        Tag = "Home";
     }
     public static Home getInstance(){
         Home res = new Home();
@@ -91,6 +102,14 @@ public class Home extends HFragment {
         initializeComponents(view);
         try {
             fillForm();
+
+            //رفت به onResume
+//            if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+//                ActivityCompat.requestPermissions(context, new String[]{
+//                        Manifest.permission.POST_NOTIFICATIONS
+//                }, PrjConfig.POST_NOTIFICATIONS_REQUEST_CODE);
+//            }
+
         } catch (Exception ex) {
             Log.e("خطا در لود", ex.getMessage());
             ex.printStackTrace();
@@ -106,6 +125,65 @@ public class Home extends HFragment {
 //            });
 //        }
     }
+    private void askNotificationPermissionIfNeeded() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(requireContext(),
+                    Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                // نمایش دیالوگ توضیحی قبل از درخواست واقعی
+                projectStatics.showDialog(context, getResources().getString(R.string.notifPermission_DeniedTitle)
+                        , getResources().getString(R.string.notifPermission_Desc_Before)
+                        , getResources().getString(R.string.ok)
+                        , view -> {
+                            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+                        }, context.getString(R.string.Later), view -> {
+                            app.session.setAsked_notification_permission(true);
+                        });
+
+            } else {
+                // قبلاً اجازه داده شده
+                app.session.setAsked_notification_permission(true);
+            }
+        } else {
+            // برای اندرویدهای پایین نیازی نیست
+            app.session.setAsked_notification_permission(true);
+        }
+    }
+
+    private void showGoToSettingsDialog() {
+        projectStatics.showDialog(context, getResources().getString(R.string.notifPermission_DeniedTitle)
+                , getResources().getString(R.string.notifPermission_Desc_After)
+                , getResources().getString(R.string.OpenSetting)
+                , view -> {
+                    openAppNotificationSettings();
+                }, context.getString(R.string.Later), view -> {});
+    }
+
+    private void openAppNotificationSettings() {
+        Intent intent = new Intent();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+            intent.putExtra(Settings.EXTRA_APP_PACKAGE, requireContext().getPackageName());
+        } else {
+            // برای اندرویدهای پایین‌تر
+            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.setData(Uri.parse("package:" + requireContext().getPackageName()));
+        }
+        startActivity(intent);
+    }
+    private final ActivityResultLauncher<String> notificationPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                app.session.setAsked_notification_permission(true);
+
+                if (isGranted) {
+                    Toast.makeText(requireContext(), "دسترسی اعلان فعال شد ✅", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(requireContext(), "اعلان‌ها غیرفعال ماندند ⚠️", Toast.LENGTH_SHORT).show();
+                    showGoToSettingsDialog();
+                }
+            });
+
 
     private void fillForm() {
         setMyClubNameAndIcon();
@@ -133,7 +211,7 @@ public class Home extends HFragment {
     boolean askForHelpAfterLoading = false;
     @Override
     public void onFragmentShown(){
-        Log.e("نمایش فرگمنت", "Home is Shown");
+        Log.e(Tag, "Home is Shown");
         boolean homeHelpSeen = app.session.getHomeHelpSeen();
         askForHelpAfterLoading = !homeHelpSeen;
 
@@ -211,10 +289,10 @@ public class Home extends HFragment {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (!isAdded()) return;
                 try {
-                    Log.e("اد کش", "شروع " + response.code());
+                    Log.e("Add_Cache", "شروع " + response.code());
                     if (response.isSuccessful()) {
                         NbAdvList result = NbAdvList.fromBytes(response.body().bytes());
-                        Log.e("اد کش", "نتیجه سرور " + result.resList.size() + " RES:" + result.isOk);
+                        Log.e("Add_Cache", "نتیجه سرور " + result.resList.size() + " RES:" + result.isOk);
 
                         if (result.isOk) {
                             //int size =result.resList.size();
@@ -224,7 +302,7 @@ public class Home extends HFragment {
                         offlineLoadAdv();
                     }
                 } catch (Exception ex) {
-                    Log.e("اد کش", "خخخخ " + ex.getMessage() + " " + ex.getStackTrace());
+                    Log.e("Add_Cache", "خخخخ " + ex.getMessage() + " " + ex.getStackTrace());
                     TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmHome, 101);
                     offlineLoadAdv();
                     ex.printStackTrace();
@@ -269,10 +347,10 @@ public class Home extends HFragment {
                     long oMils = old.getRecUpdateDate().getTimeInMillis();
                     if (nMils > oMils
                             || !ImageTools.fileExists(context.getFilesDir() + "/" + PrjConfig.AdvFolder +"/" +rec.PhotoAddress.substring(rec.PhotoAddress.lastIndexOf("/") + 1))) {
-                        Log.e("اد کش", "نیاز به به روز رسانی " + rec.NbAdvId + "- " + nMils + "-" + oMils);
+                        Log.e("Add_Cache", "نیاز به به روز رسانی " + rec.NbAdvId + "- " + nMils + "-" + oMils);
                         SaveAndShowNewAdv(rec, r);
                     } else {
-                        Log.e("اد کش", "بدون تغییر " + rec.NbAdvId);
+                        Log.e("Add_Cache", "بدون تغییر " + rec.NbAdvId);
                         oldItemsToDelete[j] = false;
                         showOldAdv(rec, r);
                     }
@@ -281,7 +359,7 @@ public class Home extends HFragment {
                 }
             }
             if (!find) {
-                Log.e("اد کش", "جدید است " + rec.NbAdvId);
+                Log.e("Add_Cache", "جدید است " + rec.NbAdvId);
                 SaveAndShowNewAdv(rec, r);
             }
         }
@@ -292,7 +370,7 @@ public class Home extends HFragment {
                 String path = getContext().getFilesDir().getAbsolutePath() + "/" + PrjConfig.AdvFolder + "/" + oldItem.PhotoAddress.substring(oldItem.PhotoAddress.lastIndexOf("/") + 1);
                 File file = new File(path);
                 boolean isDeleted = file.delete();
-                Log.e("اد کش", "حذف شد " + oldItem.NbAdvId + " RES:" + isDeleted);
+                Log.e("Add_Cache", "حذف شد " + oldItem.NbAdvId + " RES:" + isDeleted);
             }
         }
     }
@@ -306,7 +384,7 @@ public class Home extends HFragment {
         else if (rec.AdvBoxNo == 3)
             advBoxToShow = advBox3;
         ImageView imageView = getAdvBoxImageView(advBoxToShow, rec, r);
-        Log.e("اد کش", "Try Load " + rec.PhotoAddress + " With file name : " + filename);
+        Log.e("Add_Cache", "Try Load " + rec.PhotoAddress + " With file name : " + filename);
 
         final Target target = ImageTools.picassoImageTarget(context, context.getFilesDir() + "/" + PrjConfig.AdvFolder, filename, imageView);
         imageView.setTag(target);
@@ -381,7 +459,7 @@ public class Home extends HFragment {
         hutilities.forceRTLIfSupported((AppCompatActivity) context);
         pageView = v;
         //For Tab:
-        Log.d("تب", "vp شد");
+        Log.d("Home_Tab", "vp شد");
         viewPager = v.findViewById(R.id.viewpagerForHomeTours);
         viewPager.setAdapter(new HomeCurrentTourTabManager(getFragmentManager(), context));
         TabLayout tabLayout = (TabLayout) v.findViewById(R.id.tabForHomeTours);
@@ -543,7 +621,7 @@ public class Home extends HFragment {
         } else {
             lblMyClubName.setText(context.getString(R.string.MyClub));
         }
-        Log.e("خواندن عکس", logo);
+        Log.e(Tag, " خواندن عکس"+ logo);
         if (id > 0 && logo.length() > 0) {
             imgMyClubLogo_Empty.setVisibility(View.GONE);
             imgMyClubLogo.setVisibility(View.VISIBLE);
@@ -557,10 +635,10 @@ public class Home extends HFragment {
             File myImageFile = new File(directory, logo.substring(index + 1));
             if (!myImageFile.exists()) {
                 showDefaultClubLogo();
-                Log.e("111خواندن عکس", myImageFile.getName() + " پیدا نشد ");
+                Log.e(Tag, " خواندن عکس" + myImageFile.getName() + " پیدا نشد ");
             } else {
                 Picasso.get().load(myImageFile).into(imgMyClubLogo);//#PicassoUpdate140303 with(context)
-                Log.e("222خواندن عکس", myImageFile.getName());
+                Log.e(Tag, "A  خواندن عکس : " + myImageFile.getName());
             }
 
         } else {
@@ -603,7 +681,7 @@ public class Home extends HFragment {
 
         @Override
         public Fragment getItem(int position) {
-            Log.d("تب", "فراخوانی شد");
+            Log.d("Home_Tab", "فراخوانی شد");
             switch (position) {
                 default:
                 case 0: {
@@ -630,7 +708,34 @@ public class Home extends HFragment {
         }
     }
 
+
+    private boolean hasAskedThisSession = false; // تا توی همون سشن دوبار نیاد
+
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+
+        if (!hidden) {
+            if (!hasAskedThisSession) { // فقط بار اول در این سشن
+                hasAskedThisSession = true;
+                boolean askedBefore = app.session.getAsked_notification_permission();
+                if (!askedBefore) {
+                    askNotificationPermissionIfNeeded();
+                } else {
+                    // اگر قبلاً رد شده و هنوز دسترسی نداره
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+                            ContextCompat.checkSelfPermission(requireContext(),
+                                    Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                        showGoToSettingsDialog();
+                    }
+                }
+            }
+
+
+        }
+
+    }
+        @Override
     public void onResume() {
         super.onResume();
     }

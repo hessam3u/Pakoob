@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
@@ -18,8 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.Lifecycle;
+import androidx.core.content.ContextCompat;
 
 import com.github.eloyzone.jalalicalendar.JalaliDate;
 import com.google.android.gms.maps.model.JointType;
@@ -39,6 +39,8 @@ import bo.entity.NbPoi;
 import bo.sqlite.NbCurrentTrackSQLite;
 import bo.sqlite.TTExceptionLogSQLite;
 import maptools.GPXFile;
+import maptools.LocationRepository;
+import maptools.LocationTrackingService;
 import maptools.TrackData;
 import mojafarin.pakoob.MainActivity;
 import mojafarin.pakoob.MapPage;
@@ -47,7 +49,6 @@ import mojafarin.pakoob.TripComputer;
 import mojafarin.pakoob.app;
 import utils.MyDate;
 import utils.PrjConfig;
-import utils.hutilities;
 import utils.projectStatics;
 
 public class DialogRecordTrack {
@@ -55,12 +56,17 @@ public class DialogRecordTrack {
     List<NbCurrentTrack> currentTrack = new ArrayList<>();
     public List<Polyline> polylines = new ArrayList<>();
     MapPage mapPage;
+    LocationRepository repo;
+    Context context;
+    String Tag = "Dialog_Record_Track";
 
-    public DialogRecordTrack(MainActivity mainActivity, MapPage mapPage) {
+    public DialogRecordTrack(MainActivity mainActivity, MapPage mapPage, LocationRepository repository) {
         activity = mainActivity;
         this.mapPage = mapPage;
         pauseImg = projectStatics.textAsBitmapFontello(PauseChar, 80, Color.GRAY, activity);
         playImg = projectStatics.textAsBitmapFontello(PlayChar, 80, Color.GREEN, activity);
+        repo = repository;
+        context = mapPage.context.getApplicationContext();
     }
 
     final String PauseChar = "\uF00E";
@@ -91,8 +97,18 @@ public class DialogRecordTrack {
                 Toast.makeText(activity, R.string.MsgRecordingPaused, Toast.LENGTH_LONG);
                 setIsRecording(false);
                 setViewOfBtnPlay();
+
+                //توقف سرویس خوندن موقعیت
+                stopLocationService();
+
+
             } else {
+
+                //شروع سرویس خوندن موقعیت
+                startLocationService();
+
                 Toast.makeText(activity, R.string.MsgRecordingStartedAgain, Toast.LENGTH_LONG);
+
                 setIsRecording(true);
                 setViewOfBtnPlay();
             }
@@ -106,6 +122,37 @@ public class DialogRecordTrack {
         btnFinishRecording.setOnClickListener(view -> {
             btnFinishRecording_Click();
         });
+    }
+
+    public void stopLocationService() {
+        //app.mTrackInBackgroundService.stopFromOutside();
+        //context.stopService(app.mServiceIntent);
+        Log.e(Tag, "Stop Service Called...");
+
+        if (MainActivity.isTrackingServiceBound && app.mTrackInBackgroundService != null) {
+            //context.unbindService(MainActivity.connection);
+            app.mTrackInBackgroundService.stopFromOutside();
+            MainActivity.isTrackingServiceBound = false;
+            Log.e(Tag, "Stop Service and Unbind");
+        }
+    }
+
+    public void startLocationService() {
+        if (app.mServiceIntent == null){
+            app.mServiceIntent = new Intent(context, LocationTrackingService.class);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) { // Android 14+
+            // از ContextCompat استفاده کن تا رفتار ایمن‌تر و با permission چک انجام شه
+            ContextCompat.startForegroundService(context, app.mServiceIntent);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // Android 8 - 13
+            context.startForegroundService(app.mServiceIntent);
+        } else { // قدیمی‌تر از Android 8
+            context.startService(app.mServiceIntent);
+        }
+        if (!MainActivity.isTrackingServiceBound) {
+            context.bindService(app.mServiceIntent, MainActivity.connection, Context.BIND_AUTO_CREATE);
+            MainActivity.isTrackingServiceBound = true;
+        }
     }
 
     public void initializeComponents() {
@@ -132,6 +179,14 @@ public class DialogRecordTrack {
                         , activity.getResources().getString(R.string.ok), view1 -> {
                             try {
 
+                                try {
+                                    //توقف سرویس خوندن موقعیت
+                                    stopLocationService();
+                                } catch (Exception serviceEx) {
+                                    handleException(serviceEx, activity.getResources().getString(R.string.vali_SaveInFileError), activity.getResources().getString(R.string.vali_SaveInFileError_Desc)
+                                            , true, 113);
+                                }
+                                //شروع ذخیره سازی ترک
                                 List<NbCurrentTrack> trackPointsInDb = NbCurrentTrackSQLite.selectAll();
                                 int trkSize = trackPointsInDb.size();
                                 if (trkSize == 0) {
@@ -174,17 +229,7 @@ public class DialogRecordTrack {
                                     discardTrackPanel();
                                 }
                             } catch (Exception ex) {
-                                ex.printStackTrace();
-                                projectStatics.showDialog(activity
-                                        , activity.getResources().getString(R.string.vali_SaveInFileError)
-                                        , activity.getResources().getString(R.string.vali_SaveInFileError_Desc) + ex.getMessage()
-                                        , activity.getResources().getString(R.string.ok)
-                                        , null
-                                        , ""
-                                        , null);
-                                Log.e("خطا", ex.getMessage());
-                                ex.printStackTrace();
-                                TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmTrackRecording, 112);
+                                handleException(ex, activity.getResources().getString(R.string.vali_SaveInFileError), activity.getResources().getString(R.string.vali_SaveInFileError_Desc), true, 112);
                             }
                         }
                         , activity.getResources().getString(R.string.cancel), null);
@@ -192,25 +237,7 @@ public class DialogRecordTrack {
 
             } else {
                 Context context = mapPage.getContext();
-                //1402-03-21
-                //در راستای حذف دسترسی در پس زمینه کامنت شد
-//                    if (Build.VERSION.SDK_INT >= 29) {
-//                        if (ActivityCompat.checkSelfPermission((Activity) context, Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                            if (Build.VERSION.SDK_INT == 29) {
-//                                ActivityCompat.requestPermissions((Activity) context, new String[]{
-//                                        android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
-//                                }, PrjConfig.Location_BACKGROUND_PERMISSION_REQUEST_CODE);
-//                            } else {
-//                                projectStatics.showDialog((MainActivity) context
-//                                        , context.getResources().getString(R.string.RequestBackgroundLocationInAndroid29_Title)
-//                                        , context.getResources().getString(R.string.RequestBackgroundLocationInAndroid29_Title_Desc)
-//                                        , context.getResources().getString(R.string.ok), view1 -> {
-//                                            hutilities.showAppSettingToChangePermission(context);
-//                                        }
-//                                        , "", null);
-//                            }
-//                        }
-//                    }
+
                 try {
                     //hutilities.requestIgnoreBatteryOptimizations(context);
                 } catch (Exception e) {
@@ -220,18 +247,21 @@ public class DialogRecordTrack {
                 Toast.makeText(context.getApplicationContext(), "ذخیره مسیر آغاز شد...", Toast.LENGTH_LONG).show();
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
-            projectStatics.showDialog(activity
-                    , activity.getResources().getString(R.string.vali_SaveInFileError)
-                    , activity.getResources().getString(R.string.vali_SaveInFileError_Desc) + ex.getMessage()
-                    , activity.getResources().getString(R.string.ok)
-                    , null
-                    , ""
-                    , null);
-            Log.e("خطا", ex.getMessage());
-            ex.printStackTrace();
-            TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmTrackRecording, 111);
+            handleException(ex, activity.getResources().getString(R.string.vali_SaveInFileError), activity.getResources().getString(R.string.vali_SaveInFileError_Desc), true, 111);
         }
+    }
+
+    private void handleException(Exception ex, String title, String desc, Boolean showExToUser, int InternalCode) {
+        ex.printStackTrace();
+        projectStatics.showDialog(activity
+                , title
+                ,  desc  + " ("+InternalCode+") " + (showExToUser?" + " + ex.getMessage():"")
+                , activity.getResources().getString(R.string.ok)
+                , null
+                , ""
+                , null);
+        Log.e(Tag, "خطای اکسپشن : " + ex.getMessage());
+        TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmTrackRecording, InternalCode);
     }
 
     public static void checkPowerSavingMode(Activity activity) {
@@ -245,7 +275,7 @@ public class DialogRecordTrack {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
                 && powerManager.isPowerSaveMode()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (powerManager.isIgnoringBatteryOptimizations(packageName)){
+                if (powerManager.isIgnoringBatteryOptimizations(packageName)) {
                     return;
                 }
             }
@@ -310,6 +340,18 @@ public class DialogRecordTrack {
     public void startRecording() {
         try {
             checkPowerSavingMode(activity);
+            startLocationService();
+            setIsRecording(true);
+            //1404-08 added - اولین نقطه رو همین لحظه اضافه کنه - شاید باعث ایجاد نقطه الکی بشه
+            if (MainActivity.currentLatLon != null){
+                Location loc = new Location("");
+                loc.setLatitude(MainActivity.currentLatLon.latitude);
+                loc.setLongitude(MainActivity.currentLatLon.longitude);
+                loc.setTime(Calendar.getInstance().getTimeInMillis());
+                loc.setAltitude(MainActivity.currentElev);
+                app.mTrackInBackgroundService.savePointToDB_IfTracking(loc);
+                drawNextPoint(MainActivity.currentLatLon, (float) MainActivity.currentElev);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -319,7 +361,6 @@ public class DialogRecordTrack {
         lastLocation = null;
         //pnlRecordTrack.setVisibility(View.VISIBLE);
         setVisibilityAndEnvironment(true);
-        setIsRecording(true);
         setIsRecordPanelActive(true);
         Toast.makeText(activity, R.string.MsgRecordingStarted, Toast.LENGTH_LONG);
         setViewOfBtnPlay();
@@ -337,15 +378,12 @@ public class DialogRecordTrack {
 
     public void drawBackgroundPoints(List<NbCurrentTrack> backCurrentTrack) {
         if (!getIsRecordPanelActive()) {
-            Log.e("ترک زدن", "HHH");
             return;
         }
-        Log.e("ترک زدن", "III");
 
         currentTrack.clear();
         currentTrack.addAll(backCurrentTrack);
         int trkSize = backCurrentTrack.size();
-        Log.e("ترک زدن", "تعداد نقطه های بک گراند" + trkSize);
         veryCurrentRoutePoints.clear();
         for (int i = 0; i < trkSize; i++) {
             NbCurrentTrack currentTrack = backCurrentTrack.get(i);
@@ -360,7 +398,7 @@ public class DialogRecordTrack {
         polylines.clear();
 
         if (activity.map == null) {
-            Log.e("ترک زدن", "نقشه نال بود و بی خیال شدیم");
+            Log.e("Dialog_Track", "نقشه نال بود و بی خیال شدیم");
             return;
         }
         drawVeryCurrentRoute();
@@ -387,11 +425,9 @@ public class DialogRecordTrack {
 //    route.setPoints(veryCurrentRoutePoints);
         if (activity.map == null)
             return;
-        Log.e("ترک زدن", "پنل فعال است - 300");
 
         Polyline route = getCurrentTrackPolylineDrawer(veryCurrentRoutePoints);
         polylines.add(route);
-        Log.e("ترک زدن", "پلی لاین ترسیم شد" + "With Size: " + veryCurrentRoutePoints.size() + " and PolyLines Size:" + polylines.size());
         veryCurrentRoutePoints.clear();
     }
 
@@ -400,10 +436,8 @@ public class DialogRecordTrack {
     public void drawNextPoint(LatLng currentLatLon, float Elevation) {
         if (currentLatLon == null)
             return;
-        Log.e("ترک", "Start drawNextPoint()");
         if (!getIsRecordPanelActive() || !getIsRecording())
             return;
-        Log.e("ترک", "100- drawNextPoint()");
         NbCurrentTrack trkPt = new NbCurrentTrack();
         trkPt.Latitude = currentLatLon.latitude;
         trkPt.Longitude = currentLatLon.longitude;
@@ -413,7 +447,7 @@ public class DialogRecordTrack {
         if (trkPt.Time - lastTime < 1000)
             return;
         currentTrack.add(trkPt);
-        NbCurrentTrackSQLite.insert(trkPt);
+        //NbCurrentTrackSQLite.insert(trkPt);
 
 
         //veryCurrentRoutePoints = new ArrayList<>();
@@ -426,7 +460,6 @@ public class DialogRecordTrack {
 
         if (activity.map == null)
             return;
-        Log.e("ترک", "200- drawNextPoint()");
         drawVeryCurrentRoute();
     }
 
@@ -460,6 +493,7 @@ public class DialogRecordTrack {
     }
 
     public void setIsRecording(boolean active) {
+        repo.setTrackingActive(active);
         app.session.setIsTrackRecording(active ? 1 : 2);
         this.IsRecording = active ? 1 : 2;
     }

@@ -606,7 +606,6 @@ public class GPXFile {
         for (int j = 0; j < boundsSize; j++) {
             String latitude = DoubleToStringForLatLan(data.Points.get(j).latitude);
             String longitude = DoubleToStringForLatLan(data.Points.get(j).longitude);
-            Log.e("Saving", "COUNTER:" + j);
             fileContent.append(latitude + "," + longitude + "," + (elevSize > j ? ((int) data.Elev.get(j).floatValue()) : "") + "," + (timeSize > j ? data.Time.get(j).getTimeInMillis() : ""));
             fileContent.append('\n');
         }

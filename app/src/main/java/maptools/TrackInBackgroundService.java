@@ -27,11 +27,12 @@ import android.widget.RemoteViews;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
-import utils.PrjConfig;
+
 import bo.entity.NbCurrentTrack;
 import bo.sqlite.NbCurrentTrackSQLite;
 import mojafarin.pakoob.MainActivity;
 import mojafarin.pakoob.R;
+import utils.PrjConfig;
 import utils.hutilities;
 import utils.projectStatics;
 
@@ -119,7 +120,7 @@ public class TrackInBackgroundService extends Service {
         NotificationChannel chan = new NotificationChannel(RecordTrack_NotificationTitle, RecordTrack_NotificationTitle_Desc, NotificationManager.IMPORTANCE_NONE);
         chan.setLightColor(Color.BLUE);
         chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
-        
+
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         assert manager != null;
         manager.createNotificationChannel(chan);
@@ -183,7 +184,7 @@ public class TrackInBackgroundService extends Service {
         try {
             mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE, mLocationListener);
 
-        } catch (java.lang.SecurityException ex) {
+        } catch (SecurityException ex) {
             // Log.i(TAG, "fail to request location update, ignore", ex);
         } catch (IllegalArgumentException ex) {
             // Log.d(TAG, "gps provider does not exist " + ex.getMessage());
