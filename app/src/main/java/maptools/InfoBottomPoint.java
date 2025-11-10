@@ -1,22 +1,32 @@
 package maptools;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.shape.CornerFamily;
+import com.google.android.material.shape.MaterialShapeDrawable;
 
 import org.w3c.dom.Text;
 
@@ -49,6 +59,38 @@ public class InfoBottomPoint extends BottomSheetDialogFragment {
     Context context;
     ProgressBar progressFromServer;
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        BottomSheetDialog dialog = (BottomSheetDialog) getDialog();
+        if (dialog != null) {
+            FrameLayout bottomSheet = dialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            if (bottomSheet != null) {
+
+                // Height full برای حالت expanded
+                ViewGroup.LayoutParams lp = bottomSheet.getLayoutParams();
+                lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
+                bottomSheet.setLayoutParams(lp);
+
+                // Behavior
+                BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
+
+                // peekHeight = 200dp
+                int peekHeight = (int) (200 * getResources().getDisplayMetrics().density); // تبدیل dp به px
+                behavior.setPeekHeight(peekHeight, true);
+
+                // FitToContents = true برای اینکه peekHeight اعمال شود
+                behavior.setFitToContents(true);
+
+                // حالت اولیه Collapsed
+                behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+                // شفاف کردن background اصلی BottomSheet
+                bottomSheet.setBackgroundColor(Color.TRANSPARENT);
+            }
+        }
+    }
 
     public InfoBottomPoint() {
     }

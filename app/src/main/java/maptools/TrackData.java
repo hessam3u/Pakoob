@@ -13,8 +13,6 @@ import java.util.TimeZone;
 import bo.entity.TrackDataCompact;
 
 public class TrackData extends TrackDataCompact {
-//    public List<LatLng> Points= new ArrayList<>();
-//    public List<Float> Elev= new ArrayList<>();
     public List<Calendar> Time= new ArrayList<>();
     public List<Float> Temperator= new ArrayList<>();
     public String Name;

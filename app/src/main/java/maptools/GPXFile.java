@@ -62,6 +62,7 @@ public class GPXFile {
     public List<WaypointData> waypoints = new ArrayList<>();
     public long InnerDbId = 0;
     public String MainFileName = "";
+    public String ParentFolders;//format: rootExamplefoldername/childFolder123/parent
 
     public static GPXFile ParseFile(InputStream inputStream, Context context, String emptyObjectName) {
         GPXFile res = new GPXFile();
@@ -312,12 +313,12 @@ public class GPXFile {
 
     //این تابع هنوز تست نشده و کلا هم استفاده نشده و فقط در مهر 02 درستش کردم برای این که مشکل خطای دسترسی رو حل کنم
     // لینک راه حل : https://medium.com/@sriramaripirala/android-10-open-failed-eacces-permission-denied-da8b630a89df
-    public static GPXFile ImportGpxFileIntoMapbaz(Uri fileUri, String path, String preferedRootNameIfNeeded, Context context, long parentId, byte currentLevel, boolean addToMap, Handler handlerForAdd) {
+    public static GPXFile ImportGpxFileIntoMapbaz(Uri fileUri, String path, String parentFoldersIfNeeded, Context context, long parentId, byte currentLevel, boolean addToMap, Handler handlerForAdd) {
         try {
             ParcelFileDescriptor parcelFileDescriptor = context.getContentResolver().openFileDescriptor(fileUri, "r", null);
             FileInputStream inputStream = new FileInputStream(parcelFileDescriptor.getFileDescriptor());
             String inputFileNameWithExtention = path.substring(path.lastIndexOf(File.separator) + 1);
-            return ImportGpxFileIntoMapbaz(inputStream, inputFileNameWithExtention, preferedRootNameIfNeeded, context, parentId, currentLevel, addToMap, handlerForAdd);
+            return ImportGpxFileIntoMapbaz(inputStream, inputFileNameWithExtention, parentFoldersIfNeeded, context, parentId, currentLevel, addToMap, handlerForAdd);
         } catch (Exception ex) {
             if (ex.getMessage().contains("EACCES")){
                 projectStatics.showDialog(context, context.getResources().getString(R.string.dialog_invalidGpxFile_title)
@@ -338,12 +339,12 @@ public class GPXFile {
         return null;
     }
 
-    public static GPXFile ImportGpxFileIntoMapbaz(String path, String preferedRootNameIfNeeded, Context context, long parentId, byte currentLevel, boolean addToMap, Handler handlerForAdd) {
+    public static GPXFile ImportGpxFileIntoMapbaz(String path, String parentFoldersIfNeeded, Context context, long parentId, byte currentLevel, boolean addToMap, Handler handlerForAdd) {
         try {
             File file = new File(path);
             FileInputStream inputStream = new FileInputStream(file);
             String inputFileNameWithExtention = path.substring(path.lastIndexOf(File.separator) + 1);
-            return ImportGpxFileIntoMapbaz(inputStream, inputFileNameWithExtention, preferedRootNameIfNeeded, context, parentId, currentLevel, addToMap, handlerForAdd);
+            return ImportGpxFileIntoMapbaz(inputStream, inputFileNameWithExtention, parentFoldersIfNeeded, context, parentId, currentLevel, addToMap, handlerForAdd);
         } catch (Exception ex) {
             if (ex.getMessage().contains("EACCES")){
                 projectStatics.showDialog(context, context.getResources().getString(R.string.dialog_invalidGpxFile_title)
@@ -364,7 +365,7 @@ public class GPXFile {
         return null;
     }
 
-    public static GPXFile ImportGpxFileIntoMapbaz(InputStream inputStream, String inputFileNameWithExtention, String preferedRootNameIfNeeded, Context context, long parentId, byte currentLevel, boolean addToMap, Handler handlerForAdd) {
+    public static GPXFile ImportGpxFileIntoMapbaz(InputStream inputStream, String inputFileNameWithExtention, String parentFoldersIfNeeded, Context context, long parentId, byte currentLevel, boolean addToMap, Handler handlerForAdd) {
 
         Random rand = new Random();
         rand.nextInt();
@@ -413,7 +414,7 @@ public class GPXFile {
             res.InnerDbId = tmpInserted.get(0).NbPoiId;
         } else {
             //1401-05-19 added
-            res.MainFileName = preferedRootNameIfNeeded.length() > 0?preferedRootNameIfNeeded:inputFileName;
+            res.MainFileName = parentFoldersIfNeeded.length() > 0?parentFoldersIfNeeded:inputFileName;
             NbPoi folderObj = NbPoi.getInstance(res.MainFileName, ""/*AltName*/, currentLevel, parentId, "", 0d
                     , 0d, 0d, 0d, 0, ShowStatus_Show, PoiType_Folder
                     , 0, (byte) 1, (byte) 0, (byte) 0, (byte) 100, (byte) 0, (byte) 1

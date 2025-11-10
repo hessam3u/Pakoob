@@ -412,7 +412,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             Log.i(Tag, "Recording Changed to : " + active);
 
             if (Boolean.TRUE.equals(active)) {
-                stopOwnLocationUpdates();// انتقال پیدا کرد به LocationChanged
+                //stopOwnLocationUpdates();// انتقال پیدا کرد به LocationChanged
             } else {
                 checkLocation(true);
             }
@@ -589,15 +589,6 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             map.getUiSettings().setZoomGesturesEnabled(true);
             map.setBuildingsEnabled(true);
             map.setIndoorEnabled(true);
-            //Classic ones:
-//        map.getUiSettings().setMyLocationButtonEnabled(true);
-//        map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-//        map.getUiSettings().setCompassEnabled(true);
-//        map.getUiSettings().setAllGesturesEnabled(true);
-//        map.getUiSettings().setMapToolbarEnabled(true);
-//        map.getUiSettings().setZoomGesturesEnabled(true);
-//        map.setBuildingsEnabled(true);
-//        map.setIndoorEnabled(true);
 
             //end  from other mapReady
             step = 300;
@@ -1074,7 +1065,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         //added 1401-09-10Fused
         //AA1402-04-08 اضافه کردن شرط نسخه اندروید، برای این که فکر می کردم که برای اندرویدهای قدیمی ممکنه این قضیه مشکل ساز بشه
         if (hutilities.checkGooglePlayServiceAvailability(context)
-                //&& android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.O
+            //&& android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.O
         ) {
             if (fusedLocationClient == null)
                 fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
@@ -1102,7 +1093,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
 
         //AA1402-04-08 اضافه کردن شرط نسخه اندروید، برای این که فکر می کردم که برای اندرویدهای قدیمی ممکنه این قضیه مشکل ساز بشه
         if (hutilities.checkGooglePlayServiceAvailability(context)
-                //&& android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.O
+            //&& android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.O
         ) {
             if (locationCallback != null)
                 return;
@@ -1199,23 +1190,12 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
 
     //float mDeclination = 0;//Add for Autorotate and moved to app.declination
     int locationCounter = 0;
-    String lastLocationSource= "";
+    String lastLocationSource = "";
+
     public void locationHasChanged(Location location, String Source) {
         Log.i(Tag, "New_Location From " + Source);
+        MapPage.location = location;
         if (location != null) {
-            //در صورتی که سورس عوض شد
-            if (lastLocationSource != Source) {
-                //اگه موقعیت قبلی از همینجا بود و موقعیت جدید از سرویس میومد، خوندن موقعیت از اینجا متوقف شه
-                if ((lastLocationSource.equals("Fused") || lastLocationSource.equals("Native")) && Source.equals("Service")) {
-                    //stopOwnLocationUpdates();
-                }
-                else if (lastLocationSource.equals("Service") && (Source.equals("Fused") || Source.equals("Native"))){
-//                    if (app.mTrackInBackgroundService != null)
-//                        app.mTrackInBackgroundService.stopLocationUpdates();
-                }
-            }
-
-            lastLocationSource = Source;
 
             currentLatLon = new LatLng(location.getLatitude(), location.getLongitude());
             currentElev = location.getAltitude();
@@ -1243,15 +1223,14 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             }
 
             //Start Map Works ................
-            if (map == null)
-                return;
-            //for Center Screen myself
-            if (isLockOnMe) {
-                LatLng myLoc = new LatLng(location.getLatitude(), location.getLongitude());
-                float zoom = map.getCameraPosition().zoom;
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(myLoc, zoom));
+            if (map != null) {
+                //for Center Screen myself
+                if (isLockOnMe) {
+                    LatLng myLoc = new LatLng(location.getLatitude(), location.getLongitude());
+                    float zoom = map.getCameraPosition().zoom;
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(myLoc, zoom));
+                }
             }
-
             //Add for Autorotate
             // getDeclination returns degrees
             app.declination = hMapTools.RefreshSavedDelinationIfNeeded(
@@ -1276,6 +1255,20 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         if (GoToTargetMode.Navigating && currentLatLon != null) {
             goToTargetMode.showNavigation();
         }
+
+
+        //در صورتی که سورس عوض شد
+        if (lastLocationSource != Source) {
+            //اگه موقعیت قبلی از همینجا بود و موقعیت جدید از سرویس میومد، خوندن موقعیت از اینجا متوقف شه
+            if ((lastLocationSource.equals("Fused") || lastLocationSource.equals("Native")) && Source.equals("Service")) {
+                stopOwnLocationUpdates();
+            } else if (lastLocationSource.equals("Service") && (Source.equals("Fused") || Source.equals("Native"))) {
+//                    if (app.mTrackInBackgroundService != null)
+//                        app.mTrackInBackgroundService.stopLocationUpdates();
+            }
+        }
+
+        lastLocationSource = Source;
     }
 
     private void updateMyLocationIcon() {
@@ -2112,14 +2105,9 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
     public boolean OnMapReadyCompleted = false;
 
     public void trackingServiceResume() {
+        Log.e(Tag, "Tracking Service Resume MapPage - بازگشت به اپ تابع ترک زدن در مپ پیج");
         trackResumeIsDone = true;
 
-        //1404-08 commented - because checkLocation called from other places
-//        if ((hutilities.checkGooglePlayServiceAvailability(context) && fusedLocationClient == null)
-//                || (!hutilities.checkGooglePlayServiceAvailability(context) && (locationManager == null || myLocationListener == null))
-//        ) {
-//            checkLocation(false);
-//        }
         if (dialogRecordTrack.getIsRecording()) {
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 projectStatics.showDialog(context, getResources().getString(R.string.FineLocationDenied_Title), getResources().getString(R.string.FineLocationDenied_Desc), getResources().getString(R.string.ok), view -> {
@@ -2127,9 +2115,8 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                 return;
             }
 
-            //trackingService was running in background
-//                stopTrackRecordingServiceIfRunning();
         }
+
         Log.e(Tag, "ترک زدن" + "AAAA ");
         List<NbCurrentTrack> oldCurrentTracks = NbCurrentTrackSQLite.selectAll();
         int trkPts = oldCurrentTracks.size();
@@ -2526,8 +2513,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             if ((1 == 1) || app.isFirstTimeRunning_ForLocationReadingInMapPage) {
                 //اگر اولین بار بود که اپ باز میشد، پرمیشن گرفته بشه
                 MainActivity.saveAndSendInitLocation(context);
-            }
-            else{
+            } else {
                 boolean helpSeen = app.session.getMapHelpSeen();
                 if (!helpSeen) {
                     projectStatics.showDialog(context, getResources().getString(R.string.ShowHelpAtMap_Title), getResources().getString(R.string.ShowHelpAtMap_Desc), getResources().getString(R.string.Yes), view -> {

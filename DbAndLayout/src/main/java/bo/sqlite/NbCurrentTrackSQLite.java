@@ -9,14 +9,15 @@ import bo.entity.NbCurrentTrack;
 import bo.dbConstantsMap;
 
 public class NbCurrentTrackSQLite {
-    public static void insert(final NbCurrentTrack NbCurrentTrack) {
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                dbConstantsMap.appDB.NbCurrentTrackDao().insert(NbCurrentTrack);
-                return null;
-            }
-        }.execute();
+    public static long insert(final NbCurrentTrack NbCurrentTrack) {
+        return dbConstantsMap.appDB.NbCurrentTrackDao().insert(NbCurrentTrack);
+//        new AsyncTask<Void, Void, Void>() {
+//            @Override
+//            protected Void doInBackground(Void... voids) {
+//                dbConstantsMap.appDB.NbCurrentTrackDao().insert(NbCurrentTrack);
+//                return null;
+//            }
+//        }.execute();
     }
 
     public static void update(final NbCurrentTrack NbCurrentTrack) {

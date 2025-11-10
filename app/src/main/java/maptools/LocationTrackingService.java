@@ -105,11 +105,13 @@ public class LocationTrackingService extends Service {
         if (hutilities.checkGooglePlayServiceAvailability(this)
             //&& android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.O
         ) {
-            Log.e(Tag, "خط آخر استارت سرویس");
+            Log.e(Tag, "locationCallback 11");
             if (locationCallback != null) return;
+            Log.e(Tag, "locationCallback 12");
             locationCallback = new LocationCallback() {
                 @Override
                 public void onLocationResult(@NonNull LocationResult result) {
+                    Log.e(Tag, "locationCallback 13");
                     MainActivity.isTrackingServiceRunning = true;
                     Location loc = result.getLastLocation();
                     if (loc != null) {
@@ -120,12 +122,17 @@ public class LocationTrackingService extends Service {
                 }
             };
             fusedClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
-        } else {
+        }
+        else {
+            Log.e(Tag, "mLocationListener 11");
+
             if (mLocationListener != null) return;
+            Log.e(Tag, "mLocationListener 12");
             mLocationListener = new android.location.LocationListener() {
                 @SuppressLint("MissingPermission")
                 public void onLocationChanged(Location locationListener) {
                     //1400-01-03 I thinks it is faster than traditional way whick commented in next lines
+                    Log.e(Tag, "mLocationListener 13");
                     MainActivity.isTrackingServiceRunning = true;
                     Location loc = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                     app.repo.setCurrentLocation(loc);

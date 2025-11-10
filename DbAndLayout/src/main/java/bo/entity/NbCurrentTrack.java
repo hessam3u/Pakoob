@@ -26,7 +26,7 @@ import retrofit2.Response;
 @Entity
 public class NbCurrentTrack
 {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @SerializedName(value="NbCurrentTrackId", alternate = {"nbCurrentTrackId", "id"})
     public Integer NbCurrentTrackId;
     @SerializedName(value="Latitude", alternate = {"latitude", "la"})

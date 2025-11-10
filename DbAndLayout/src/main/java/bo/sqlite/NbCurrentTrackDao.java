@@ -14,7 +14,7 @@ import bo.entity.NbCurrentTrack;
 @Dao
 public interface NbCurrentTrackDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(NbCurrentTrack NbCurrentTrack);
+    long insert(NbCurrentTrack NbCurrentTrack);
 
     @Query("select * from NbCurrentTrack where :filter")
     public LiveData<List<NbCurrentTrack>> selectRowsLive(String filter);

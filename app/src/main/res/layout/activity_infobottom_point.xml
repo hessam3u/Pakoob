@@ -2,18 +2,21 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:background="@android:color/transparent"
     android:layout_height="match_parent">
 
     <!-- Bottom sheet
         style="?attr/bottomSheetStyle"-->
     <FrameLayout
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:background="@drawable/bg_bottom_sheet_rounded"
         android:id="@+id/standard_bottom_sheet"
         style="@style/BottomSheetDialog"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layoutDirection="rtl"
-        app:behavior_peekHeight="200dp"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+>
         <!-- Bottom sheet contents. -->
         <LinearLayout
             android:layout_width="match_parent"

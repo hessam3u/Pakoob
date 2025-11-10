@@ -54,7 +54,8 @@ import utils.projectStatics;
 public class DialogRecordTrack {
     MainActivity activity;
     List<NbCurrentTrack> currentTrack = new ArrayList<>();
-    public List<Polyline> polylines = new ArrayList<>();
+    long lastCurrentTrackId = 0;
+    public Polyline polyCurrentTrack = null;
     MapPage mapPage;
     LocationRepository repo;
     Context context;
@@ -92,7 +93,8 @@ public class DialogRecordTrack {
                 //1400-11-04 three lines added:
                 NbCurrentTrack pauseObject = NbCurrentTrack.getPauseObject();
                 currentTrack.add(pauseObject);
-                NbCurrentTrackSQLite.insert(pauseObject);
+                //ذخیره سازی اولین نقطه - بقیه نقطه ها در سرویس ذخیره میشه
+                lastCurrentTrackId = NbCurrentTrackSQLite.insert(pauseObject);
 
                 Toast.makeText(activity, R.string.MsgRecordingPaused, Toast.LENGTH_LONG);
                 setIsRecording(false);
@@ -301,11 +303,9 @@ public class DialogRecordTrack {
         setIsRecording(false);
         setIsRecordPanelActive(false);
         NbCurrentTrackSQLite.deleteAll();
-        int plSize = polylines.size();
-        for (int i = 0; i < plSize; i++) {
-            polylines.get(i).remove();
-        }
-        polylines.clear();
+        polyCurrentTrack.remove();
+        polyCurrentTrack = null;
+//        polylines.clear();
         currentTrack.clear();
         veryCurrentRoutePoints.clear();
         mapPage.stopTrackRecordingServiceIfRunning();
@@ -395,7 +395,7 @@ public class DialogRecordTrack {
             //    lastLocation = latLng;
             lastLocation = latLng;
         }
-        polylines.clear();
+        polyCurrentTrack.remove();
 
         if (activity.map == null) {
             Log.e("Dialog_Track", "نقشه نال بود و بی خیال شدیم");
@@ -416,18 +416,10 @@ public class DialogRecordTrack {
     }
 
     public void drawVeryCurrentRoute() {
-//    Polyline route = activity.map.addPolyline(new PolylineOptions()
-//            .width(8)
-//            .color(color_of_currentTrack)
-//            .geodesic(false)
-//            .jointType(JointType.ROUND)//1400-10-20
-//            .zIndex(3));
-//    route.setPoints(veryCurrentRoutePoints);
         if (activity.map == null)
             return;
 
-        Polyline route = getCurrentTrackPolylineDrawer(veryCurrentRoutePoints);
-        polylines.add(route);
+        polyCurrentTrack = getCurrentTrackPolylineDrawer(veryCurrentRoutePoints);
         veryCurrentRoutePoints.clear();
     }
 
@@ -447,10 +439,6 @@ public class DialogRecordTrack {
         if (trkPt.Time - lastTime < 1000)
             return;
         currentTrack.add(trkPt);
-        //NbCurrentTrackSQLite.insert(trkPt);
-
-
-        //veryCurrentRoutePoints = new ArrayList<>();
         if (lastLocation != null) {
             veryCurrentRoutePoints.add(lastLocation);
             veryCurrentRoutePoints.add(currentLatLon);
