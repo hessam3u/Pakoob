@@ -13,7 +13,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.github.eloyzone.jalalicalendar.JalaliDate;
-import com.google.android.gms.dynamic.IFragmentWrapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,27 +22,21 @@ import java.util.List;
 
 import bo.NewClasses.SimpleRequest;
 import bo.NewClasses.StringContentDTO;
-import bo.dbConstantsTara;
 import bo.entity.NbPoi;
 import bo.entity.NbWeather;
 import bo.entity.NbWthrDaily;
 import bo.entity.NbWthrHourly;
 import bo.entity.NbWthrLoc;
 import bo.entity.NbWthrNow;
-import bo.entity.TTClubNameDTOList;
 import bo.sqlite.TTExceptionLogSQLite;
 import okhttp3.ResponseBody;
-import pakoob.ClubSearch;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import utils.HFragment;
+import UI.HFragment;
 import utils.MainActivityManager;
 import utils.MyDate;
-import utils.PicassoCircleTransform;
-import utils.PicassoOnScrollListener;
 import utils.PrjConfig;
-import utils.RecyclerTouchListener;
 import utils.hutilities;
 import utils.projectStatics;
 
@@ -132,11 +125,11 @@ public class WeatherShow extends HFragment {
                         if (result.isOk){
                             currentObj = result;
                             readCompleted = true;
-                            Log.e(Tag, String.format("Daily and Hourly Size: %d, %d", result.Daily.size(), result.Hourly.size()));
+                            Log.e(tag(), String.format("Daily and Hourly Size: %d, %d", result.Daily.size(), result.Hourly.size()));
                         } else if (backgroundMessage.length() == 0){
                             backgroundMessage = getResources().getString(R.string.NothingToShow);
                         }
-                        Log.e(Tag, String.format("Result.Command=%s and initCompleted=%s", result.command != null?result.command:"NULL", initCompleted));
+                        Log.e(tag(), String.format("Result.Command=%s and initCompleted=%s", result.command != null?result.command:"NULL", initCompleted));
 
                         if (result.command.equals(WeatherCommand_Show)){
                             linAllContent.setVisibility(View.VISIBLE);
@@ -339,11 +332,6 @@ public class WeatherShow extends HFragment {
         super.initializeComponents(v);
     }
 
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
-        return inflater.inflate(R.layout.frm_weather_show, parent, false);
-    }
 
     public static class WeatherDayItemView extends LinearLayout{
         Context context;
@@ -782,6 +770,17 @@ public class WeatherShow extends HFragment {
         double blue  = (blueMax - blueMin)*fractBetween + blueMin;
 
         return Color.rgb((int)red, (int)green, (int)blue);
+    }
+
+    //تنظیمات مربوط به صفحه --------------
+    @Override
+    protected int getScreenId() {return PrjConfig.frmWeatherShow;}
+    @Override
+    protected String tag() {return SCREEN_TAG;}
+    public static final String SCREEN_TAG = "WatherShow";
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
+        return inflater.inflate(R.layout.frm_weather_show, parent, false);
     }
 
 }

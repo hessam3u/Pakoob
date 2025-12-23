@@ -236,15 +236,6 @@ public class hutilities {
         Log.i ("Service status", "Not running");
         return false;
     }
-    public static void startServiceIfNotRunning(Context context, Intent serviceIntent, Class<?> serviceClass){
-        if (!hutilities.isServiceRunning(serviceClass.getClass(), context)) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(new Intent(context, serviceClass));
-            } else {
-                context.startService(new Intent(context, serviceClass));
-            }
-        }
-    }
     public static int TYPE_WIFI = 1;
     public static int TYPE_MOBILE = 2;
     public static int TYPE_NOT_CONNECTED = 0;

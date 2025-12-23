@@ -1,12 +1,6 @@
 package user;
 
-import static utils.HFragment.stktrc2k;
-
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.ContextWrapper;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,22 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-
-import com.google.android.gms.maps.Projection;
-
-import java.io.File;
-
 import bo.sqlite.TTExceptionLogSQLite;
 import mojafarin.pakoob.app;
+import UI.HFragment;
 import utils.PrjConfig;
-import mojafarin.pakoob.Home;
 import mojafarin.pakoob.MainActivity;
 import mojafarin.pakoob.R;
-import utils.projectStatics;
 
-public class PleaseRegister extends Fragment {
+public class PleaseRegister extends HFragment {
     Button btnSkip, btnLogin;
 
     public PleaseRegister(){
@@ -43,7 +29,8 @@ public class PleaseRegister extends Fragment {
         initializeComponents(view);
     }
 
-    private void initializeComponents(View v) {
+    @Override
+    public void initializeComponents(View v) {
         btnSkip = v.findViewById(R.id.btnSkip);
         btnLogin = v.findViewById(R.id.btnLogin);
 
@@ -100,6 +87,13 @@ public class PleaseRegister extends Fragment {
     public void onCreate(Bundle savedInstanceState) {//2nd Event
         super.onCreate(savedInstanceState);
     }
+
+    //تنظیمات مربوط به صفحه --------------
+    @Override
+    protected int getScreenId() {return PrjConfig.frm_PleaseRegister;}
+    @Override
+    protected String tag() {return SCREEN_TAG;}
+    public static final String SCREEN_TAG = "PleaseRegister";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
         return inflater.inflate(R.layout.frm_user_pleaseregister, parent, false);

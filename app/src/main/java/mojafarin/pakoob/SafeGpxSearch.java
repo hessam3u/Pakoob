@@ -51,7 +51,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import maptools.GeoCalcs;
-import utils.HFragment;
+import UI.HFragment;
 import utils.MainActivityManager;
 import utils.PicassoTrustAll;
 import utils.PrjConfig;
@@ -72,8 +72,7 @@ public class SafeGpxSearch extends HFragment {
         }
         return res;
     }
-    public SafeGpxSearch(){
-    }
+    public SafeGpxSearch(){}
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {//4th Event
         super.onViewCreated(view, savedInstanceState);
@@ -228,7 +227,7 @@ public class SafeGpxSearch extends HFragment {
                                 , getResources().getString(R.string.ok)
                                 , null, "", null);
                         TTExceptionLogSQLite.insert("Server Connect: " + response.code(), response.message(), PrjConfig.frmSafeGpxSearch, 300);
-                        Log.d(Tag, "ERROR RESPONSE : " + response.code() + " msg: " + response.message());
+                        Log.d(tag(), "ERROR RESPONSE : " + response.code() + " msg: " + response.message());
                     }
 
                     //progressBar.setVisibility(View.GONE);
@@ -248,7 +247,7 @@ public class SafeGpxSearch extends HFragment {
                 TTExceptionLogSQLite.insert("Fail:"+t.getMessage(),stktrc2kt(t) , PrjConfig.frmSafeGpxView, 100);
                 if (!isAdded()) return;
                 morphToFailure(button, 500);
-                Log.e(Tag, "error" + " " + t.getMessage());
+                Log.e(tag(), "error" + " " + t.getMessage());
                 t.printStackTrace();
             }
         });
@@ -517,7 +516,7 @@ public class SafeGpxSearch extends HFragment {
                                 , getResources().getString(R.string.ok)
                                 , null, "", null);
                         TTExceptionLogSQLite.insert("Server Connect: " + response.code(), response.message(), PrjConfig.frmMapSelect, 300);
-                        Log.d(Tag, "ERROR RESPONSE : " + response.code() + " msg: " + response.message());
+                        Log.d(tag(), "ERROR RESPONSE : " + response.code() + " msg: " + response.message());
                     }
 
                     isDownloading = false;
@@ -536,7 +535,7 @@ public class SafeGpxSearch extends HFragment {
                 TTExceptionLogSQLite.insert("Fail:"+t.getMessage(), stktrc2kt(t), PrjConfig.frmSafeGpxSearch, 100);
                 if (!isAdded()) return;
                 progressBar.setVisibility(View.GONE);
-                Log.e(Tag, "error");
+                Log.e(tag(), "error");
                 isDownloading = false;
             }
         });
@@ -879,6 +878,12 @@ public static void ReformatBtnFollow(TextView btnFollow, byte FollowingByMe, byt
         return R.drawable.ac_walk;
     }
 
+    //تنظیمات مربوط به صفحه --------------
+    @Override
+    protected int getScreenId() {return PrjConfig.frmSafeGpxSearch;}
+    @Override
+    protected String tag() {return SCREEN_TAG;}
+    public static final String SCREEN_TAG = "SafeGPXSearch";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
         return inflater.inflate(R.layout.frm_safegpxsearch, parent, false);

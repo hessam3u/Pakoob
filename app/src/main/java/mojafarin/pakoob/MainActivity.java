@@ -1,7 +1,6 @@
 package mojafarin.pakoob;
 
-import static java.security.AccessController.getContext;
-import static utils.HFragment.stktrc2k;
+import static UI.HFragment.stktrc2k;
 
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -18,7 +17,7 @@ import bo.sqlite.TTExceptionLogSQLite;
 import maptools.LocationTrackingService;
 import pakoob.ClubView_Home;
 import pakoob.TourShowOne;
-import utils.HFragment;
+import UI.HFragment;
 import utils.MyDate;
 import utils.PrjConfig;
 import bo.entity.MobileInfoDTO;
@@ -239,6 +238,7 @@ public class MainActivity extends MainActivityManager {
         app.session.setVisitCounter(app.session.getVisitCounter() + 1);
 
         setContentView(R.layout.activity_main);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); //روشن نگه داشتن صفحه نمایش
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //            hutilities.setStatusBarColor(ContextCompat.getColor(this,pakoob.DbAndLayout.R.color.StatusBarColor), true, this);
 //        }
@@ -523,6 +523,7 @@ public class MainActivity extends MainActivityManager {
         showFragment(mFragment, false);
     }
 
+    //توجههههههههههههههههه - توابع onFragmentShowen در این تابع اعمال نشده
     public void hideMapFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -538,6 +539,7 @@ public class MainActivity extends MainActivityManager {
     }
 
     //برای نمایش مجدد فرگمنت هایی که حالت پاپ آپ دارن استفاده میشه
+    //توجههههههههههههههههه - توابع onFragmentShowen در این تابع اعمال نشده
     @Override
     public void ShowChidFragmentAgain(Fragment mFragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -546,6 +548,7 @@ public class MainActivity extends MainActivityManager {
         ft.commit();
     }
     //برای مخفی کردن فرگمنت هایی که حالت پاپ آپ دارن استفاده میشه
+    //توجههههههههههههههههه - توابع onFragmentShowen در این تابع اعمال نشده هنوز
     @Override
     public void HideChildFragment(Fragment mFragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -564,13 +567,11 @@ public class MainActivity extends MainActivityManager {
             doBackOnFragmentStacks(fragmentManager);
         }
         int count = myFragments.size();
-        Log.e( Tag, "count of myFragments : " + count + " تا ");
-        Log.e( Tag, "count of fragmentManager : " + fragmentManager.getFragments().size() + " تا ");
         //اگه صفحه دیگه ای باز بود، اون رو مخفی کنیم
         if (count > 0) {
             Fragment peak = myFragments.peek();
             ft.hide(peak);
-            if (peak.getClass() == HFragment.class) ((HFragment) peak).onFragmentHided();
+            if (peak instanceof HFragment) ((HFragment) peak).onFragmentHided();//1404-10-02
         } else if (count == 0) {
             if (!home.isHidden()) {
                 ft.hide(home);
@@ -583,22 +584,24 @@ public class MainActivity extends MainActivityManager {
         }
         ft.add(R.id.your_placeholder, mFragment);
         myFragments.push(mFragment);
+        if (mFragment instanceof HFragment) ((HFragment) mFragment).onFragmentShown();
 
         ft.commit();
         currentFragment = mFragment;
-        if (currentFragment.getClass() == HFragment.class)
-            ((HFragment) currentFragment).onFragmentHided();
+        //مشخص نیست این بهش نیاز هست یا قبلا فراخوانی شده؟
+        if (currentFragment instanceof HFragment) ((HFragment) currentFragment).onFragmentHided();//1404-10-02
     }
 
     void doBackOnFragmentStacks(FragmentManager fragmentManager) {
         int backStackCount = myFragments.size();
-        Log.e(Tag, "BackCount(A): " + Integer.toString(backStackCount));
+
         FragmentTransaction ft = fragmentManager.beginTransaction();
 
         if (backStackCount > 0) {
             if (currentFragment.getClass() == HFragment.class)
                 ((HFragment) currentFragment).onFragmentRemoved();
             ft.remove(currentFragment);
+            if (currentFragment instanceof HFragment) ((HFragment) currentFragment).onFragmentHided();//1404-10-02
             myFragments.pop();
         }
         if (backStackCount > 1) {
@@ -607,6 +610,7 @@ public class MainActivity extends MainActivityManager {
             if (currentFragment.isHidden()) {
                 ft.show(currentFragment);
             }
+            if (currentFragment instanceof HFragment) ((HFragment) currentFragment).onFragmentShown();//1404-10-02
         }
         if (backStackCount <= 1) {
             //اگر همین الان توی صفحه نقشه بودیم
@@ -614,10 +618,12 @@ public class MainActivity extends MainActivityManager {
                 mapIsShowingOnTop = false;
                 ft.hide(mapPage);
                 mapPage.onFragmentHided();
+                home.onFragmentShown();//1404-10-02
             }
             //Home and MapPage
             if (mapIsShowingOnTop) {
                 ft.show(mapPage);
+                mapPage.onFragmentShown();//1404-10-02
                 if (!home.isHidden()) {
                     ft.hide(home);
                     home.onFragmentHided();
@@ -625,6 +631,7 @@ public class MainActivity extends MainActivityManager {
                 currentFragment = mapPage;
             } else {
                 ft.show(home);
+                home.onFragmentShown();//1404-10-02
                 if (!mapPage.isHidden()) {
                     ft.hide(mapPage);
                     mapPage.onFragmentHided();
@@ -634,8 +641,9 @@ public class MainActivity extends MainActivityManager {
             currentFragment.onResume();
         }
         ft.commit();
-        if (currentFragment.getClass() == HFragment.class)
-            ((HFragment) currentFragment).onFragmentShown();
+
+        //خط زیر مشخص نیست نیازی بهش هست یا خیر؟
+        if (currentFragment instanceof HFragment) ((HFragment) currentFragment).onFragmentShown();
 
     }
 
@@ -677,12 +685,6 @@ public class MainActivity extends MainActivityManager {
                         doBackOnFragmentStacks(fragmentManager);
                     }
                 }
-//            projectStatics.showDialog(MainActivity.this, getResources().getString(R.string.AreYouSureToExit_Title)
-//                    , getResources().getString(R.string.AreYouSureToExit_Desc),
-//                    getResources().getString(R.string.ok), view -> {
-//                        this.finish();
-//                    }, getResources().getString(R.string.cancel)
-//                    , null);
             }
 
         } catch (Exception ex) {
@@ -732,25 +734,24 @@ public class MainActivity extends MainActivityManager {
     }
 
     public void openEditTrack(long NbPoiId, String Sender, int positionInParent, MyTracks.NbPoisAdapter _adapter) {
-        Fragment mFragment = new EditTrack(NbPoiId, Sender, positionInParent, _adapter);
+        EditTrack mFragment = EditTrack.getInstance(NbPoiId, Sender, positionInParent, _adapter);
         showFragment(mFragment);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-//        if (onCreateIsCalling){
-//            onCreateIsCalling = false;
-//            return;
-//        }
         try {
             if (mapPage != null)
                 mapPage.onResumeInChild();
 
-//            if (!MainActivity.isTrackingServiceBound) {
-//                Intent serviceIntent = new Intent(this, LocationTrackingService.class);
-//                this.bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE);
-//            }
+
+            if (app.session.getIsTrackRecording() == 1) {
+                if (!MainActivity.isTrackingServiceRunning) {
+                    Intent intent = new Intent(this, LocationTrackingService.class);
+                    app.startLocationService(getApplicationContext());
+                }
+            }
 
         } catch (Exception ex) {
             Log.e(Tag, "خطای اکسپشن : " + ex.getMessage());
@@ -782,7 +783,7 @@ public class MainActivity extends MainActivityManager {
     @Override
     protected void onPause() {
         try {
-            Log.d(Tag, "رفتن به بک" + "برنامه پاز شد");
+            Log.d(Tag, "رفتن به بک" + "برنامه pause شد - ");
 
             super.onPause();
             if (mapPage != null)
@@ -1228,9 +1229,10 @@ public class MainActivity extends MainActivityManager {
     //------ قسمت های مربوط به سرویس لوکیشن در 1404-08 ----------
 
     public static boolean isTrackingServiceBound = false;
+    //متغیری برای این که مشخص بکنه که سرویس شروع به کار کرده یا نه
     public static boolean isTrackingServiceRunning = false;
 
-    public static ServiceConnection connection = new ServiceConnection() {
+    public static ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
             LocationTrackingService.LocalBinder binder = (LocationTrackingService.LocalBinder) service;
@@ -1250,7 +1252,7 @@ public class MainActivity extends MainActivityManager {
         // سعی کن دوباره bind بشی در صورت وجود سرویس
         if (!MainActivity.isTrackingServiceBound) {
             Intent intent = new Intent(this, LocationTrackingService.class);
-            bindService(intent, connection, Context.BIND_AUTO_CREATE);
+            bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
             MainActivity.isTrackingServiceBound = true;
         }
     }
@@ -1259,7 +1261,8 @@ public class MainActivity extends MainActivityManager {
     protected void onStop() {
         super.onStop();
         if (isTrackingServiceBound && !isTrackingServiceRunning) {
-            unbindService(connection);//این خط منجر به بسته شدن کامل سرویس میشه
+            Log.e(Tag, "Unbound Service in onStop اجراشد");
+            unbindService(serviceConnection);//این خط منجر به بسته شدن کامل سرویس میشه
             isTrackingServiceBound = false;
         }
     }

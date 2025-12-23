@@ -58,6 +58,7 @@
     <style name="labelB" parent="label"><item name="android:textStyle">bold</item></style>
     <style name="label_s" parent="label"><item name="android:textSize">12dp</item></style>
     <style name="label_xs" parent="label"><item name="android:textSize">10dp</item></style>
+    <style name="label_xsb" parent="label"><item name="android:textSize">10dp</item><item name="android:textStyle">bold</item></style>
     <style name="label_xxs" parent="label"><item name="android:textSize">8dp</item></style>
     <style name="label_l" parent="label"><item name="android:textSize">16dp</item></style>
     <style name="label_xl" parent="label"><item name="android:textSize">18dp</item></style>

@@ -1,7 +1,5 @@
 package user;
 
-import static android.content.Context.RECEIVER_NOT_EXPORTED;
-
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
@@ -33,9 +31,7 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.auth.api.phone.SmsRetriever;
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -58,7 +54,7 @@ import pakoob.SelectClubDialogForMyClub;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import utils.HFragment;
+import UI.HFragment;
 import utils.MainActivityManager;
 import utils.PrjConfig;
 import utils.hutilities;
@@ -595,10 +591,6 @@ public class Register extends HFragment {
         super.onCreate(savedInstanceState);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
-        return inflater.inflate(R.layout.frm_user_register, parent, false);
-    }
 
     @Override
     public void onPause() {
@@ -612,5 +604,18 @@ public class Register extends HFragment {
         if (!app.session.isLoggedIn() && mode.equals("start"))
             return false;
         return true;
+    }
+
+
+
+    //تنظیمات مربوط به صفحه --------------
+    @Override
+    protected int getScreenId() {return PrjConfig.frmRegister;}
+    @Override
+    protected String tag() {return SCREEN_TAG;}
+    public static final String SCREEN_TAG = "Register";
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
+        return inflater.inflate(R.layout.frm_user_register, parent, false);
     }
 }

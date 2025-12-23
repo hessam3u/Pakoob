@@ -1,8 +1,5 @@
 package FmMessage;
 
-import static utils.HFragment.stktrc2k;
-import static utils.HFragment.stktrc2kt;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -29,7 +26,6 @@ import java.util.List;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -45,10 +41,10 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import UI.HFragment;
 import utils.MainActivityManager;
 import utils.MyDate;
 import utils.PicassoCircleTransform;
-import utils.PicassoOnScrollListener;
 import utils.PicassoTrustAll;
 import utils.PrjConfig;
 import utils.PrjEnums;
@@ -56,7 +52,7 @@ import utils.RecyclerTouchListener;
 import utils.hutilities;
 import utils.projectStatics;
 
-public class SideList extends Fragment {
+public class SideList extends HFragment {
     int currentSelectedClubIndex = -1;
 
     @Override
@@ -97,7 +93,8 @@ public class SideList extends Fragment {
     final Integer readPageSize = 100;
     TextView txtSearchResult;
 
-    void initializeComponents(View v) {
+    @Override
+    public void initializeComponents(View v) {
 
 //        btnSearch = v.findViewById(R.id.btnSearch);
 //        btnSearch.setOnClickListener(view -> {
@@ -482,6 +479,13 @@ public class SideList extends Fragment {
         this.context = _context;
     }
 
+
+    //تنظیمات مربوط به صفحه --------------
+    @Override
+    protected int getScreenId() {return PrjConfig.frmSideList;}
+    @Override
+    protected String tag() {return SCREEN_TAG;}
+    public static final String SCREEN_TAG = "SideList";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
         return inflater.inflate(R.layout.frm_fmsides, parent, false);

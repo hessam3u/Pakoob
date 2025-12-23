@@ -1,6 +1,6 @@
 package maptools;
 
-import static utils.HFragment.stktrc2k;
+import static UI.HFragment.stktrc2k;
 
 import android.content.Context;
 import android.content.DialogInterface;

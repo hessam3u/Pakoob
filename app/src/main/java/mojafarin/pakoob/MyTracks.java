@@ -3,7 +3,6 @@ package mojafarin.pakoob;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -12,8 +11,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.Settings;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,8 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,23 +28,14 @@ import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.TileOverlay;
-import com.google.android.gms.maps.model.TileOverlayOptions;
-import com.google.android.gms.maps.model.TileProvider;
-import com.google.android.gms.maps.model.UrlTileProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.obsez.android.lib.filechooser.ChooserDialog;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,14 +57,13 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import utils.HFragment;
+import UI.HFragment;
 import utils.MainActivityManager;
 import utils.PrjConfig;
 import bo.entity.NbPoi;
 import bo.sqlite.NbPoiSQLite;
 import bo.sqlite.TTExceptionLogSQLite;
 import maptools.GPXFile;
-import maptools.hMapTools;
 import mojafarin.pakoob.mainactivitymodes.DialogMapBuilder;
 import utils.CustomTypeFaceSpan;
 import utils.ImageTools;
@@ -101,13 +86,17 @@ public class MyTracks extends HFragment {
     RecyclerView rvSearchSafeGpx, rvReadyToDownload;
     TextView txtSafeGpxSearchReuslt, txtReadyToDownloadSearchReuslt;
     LinearLayout liSearchSafeGpxNoResult;
+    TextView btnCancel, btnMoveHere;
+    LinearLayout btnCut, linMoveHere;
+    ArrayList<NbPoi> cutItems = null;
+
 
     private ProgressBar pageProgressBar;
     boolean isLoadingMore = false;
     final Integer readPageSize = 100;
     TextView txtUp_Text, txtUp_Icon;
-    int lastFirstVisiblePosition =  -1;
-    int lastItemClicked= -1;
+    int lastFirstVisiblePosition = -1;
+    int lastItemClicked = -1;
     int currentLevel = 0;
     long currentId = 0;
     Stack parentStack = new Stack();
@@ -128,25 +117,28 @@ public class MyTracks extends HFragment {
     String inputFileName = "";
     String preferedRootNameIfNeeded = "";
     InputStream inputStream = null;
+
     //1401-05-19 added
-    public static MyTracks getInstance(String _mode, String _fileName, String _preferedRootNameIfNeeded, InputStream inputStream){
+    public static MyTracks getInstance(String _mode, String _fileName, String _preferedRootNameIfNeeded, InputStream inputStream) {
         MyTracks res = new MyTracks();
         res.inputFileName = _fileName;
         res.preferedRootNameIfNeeded = _preferedRootNameIfNeeded;
         res.mode = _mode;
         res.inputStream = inputStream;
 
-        if (inputStream != null){
+        if (inputStream != null) {
             //if inputStream not null, fileName is uri and must converted to Extention ONLY 1399-12-22
             int extentionIndex = _fileName.lastIndexOf('.');
-            res.inputFileName = extentionIndex >= 0?_fileName.substring(0, extentionIndex):_fileName;
-            if (res.inputFileName.length() > 4){
+            res.inputFileName = extentionIndex >= 0 ? _fileName.substring(0, extentionIndex) : _fileName;
+            if (res.inputFileName.length() > 4) {
                 res.inputFileName = "";
             }
         }
         return res;
     }
-    public MyTracks(){}
+
+    public MyTracks() {
+    }
     //1401-05-19 commented
 //    public MyTracks(String _mode, String _fileName, String _preferedRootNameIfNeeded, InputStream inputStream){
 //        inputFileName = _fileName;
@@ -169,13 +161,12 @@ public class MyTracks extends HFragment {
         super.onViewCreated(view, savedInstanceState);
         initializeComponents(view);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-        }
-        else{
+        } else {
             checkREAD_WRITE_PermissionForBefore_ANDROID_R(context);
         }
     }
 
-    public static void checkREAD_WRITE_PermissionForBefore_ANDROID_R(Context context){
+    public static void checkREAD_WRITE_PermissionForBefore_ANDROID_R(Context context) {
         //Checking Permission... NOTE: onRequestPermissionsResult is in PARENT Activity
         if (ContextCompat.checkSelfPermission(context,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -205,14 +196,14 @@ public class MyTracks extends HFragment {
 
             // Permission is not granted
             // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale((AppCompatActivity)context,
+            if (ActivityCompat.shouldShowRequestPermissionRationale((AppCompatActivity) context,
                     android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
             } else {
                 // No explanation needed; request the permission
-                ActivityCompat.requestPermissions((AppCompatActivity)context,
+                ActivityCompat.requestPermissions((AppCompatActivity) context,
                         new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         PrjConfig.MY_PERMISSIONS_WRITE_EXTERNAL_STORAGE);
 
@@ -233,9 +224,11 @@ public class MyTracks extends HFragment {
             @Override
             public void launch(Intent input, @Nullable ActivityOptionsCompat options) {
             }
+
             @Override
             public void unregister() {
             }
+
             @NonNull
             @Override
             public ActivityResultContract<Intent, ?> getContract() {
@@ -243,18 +236,19 @@ public class MyTracks extends HFragment {
             }
         };
     }
+
     TextView btnMoreSelected, btnMoreNormal;
 
     @Override
     public boolean onBackPressedInChild() {
-       if (selectedItemCount > 0) {
-           clearSelection();
-           return false;
-       }
-       if (currentLevel > 0){
-           btnUp_OnCLick();
-           return false;
-       }
+        if (selectedItemCount > 0) {
+            clearSelection();
+            return false;
+        }
+        if (currentLevel > 0) {
+            btnUp_OnCLick();
+            return false;
+        }
         return super.onBackPressedInChild(); //true
     }
 
@@ -276,8 +270,24 @@ public class MyTracks extends HFragment {
 
 
         btnBack = v.findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(view -> {((MainActivityManager) context).onBackPressed();});
+        btnBack.setOnClickListener(view -> {
+            ((MainActivityManager) context).onBackPressed();
+        });
 
+        btnMoveHere = v.findViewById(R.id.btnMoveHere);
+        btnMoveHere.setOnClickListener(view -> {
+            btnMoveHere_Click(view);
+        });
+        btnCancel = v.findViewById(R.id.btnCancel);
+        btnCancel.setOnClickListener(view -> {
+            btnCancel_Click(view);
+        });
+        btnCut = v.findViewById(R.id.btnCut);
+        btnCut.setOnClickListener(view -> {
+            btnCutAtToolbar_Click(view);
+        });
+        linMoveHere = v.findViewById(R.id.linMoveHere);
+        linMoveHere.setVisibility(View.GONE);
 
 //        ((MainActivity) context).reCreateDialogMapObj(getContext());
 //        this.dialogMapObj = MainActivity.dialogMapObj;
@@ -293,7 +303,9 @@ public class MyTracks extends HFragment {
 //        getSupportActionBar().setTitle("");
 
         btnUp = v.findViewById(R.id.btnUp);
-        btnUp.setOnClickListener(view -> {btnUp_OnCLick();});
+        btnUp.setOnClickListener(view -> {
+            btnUp_OnCLick();
+        });
         txtUp_Text = v.findViewById(R.id.txtUp_Text);
         txtUp_Icon = v.findViewById(R.id.txtUp_Icon);
         showHideBtnUp(View.GONE);
@@ -314,10 +326,14 @@ public class MyTracks extends HFragment {
         toolbarNormal = v.findViewById(R.id.toolbarNormal);
         toolbarSelected = v.findViewById(R.id.toolbarSelected);
         btnDeleteAtToolbar = v.findViewById(R.id.btnDeleteAtToolbar);
-        btnDeleteAtToolbar.setOnClickListener(view -> {btnDeleteAtToolbar_Click(view);});
+        btnDeleteAtToolbar.setOnClickListener(view -> {
+            btnDeleteAtToolbar_Click(view);
+        });
         btnCancelAtToolbar = v.findViewById(R.id.btnCancelAtToolbar);
         btnCancelAtToolbar.setOnClickListener(view -> {
-            clearSelection();changeToolbarStatus(false);});
+            clearSelection();
+            changeToolbarStatus(false);
+        });
         txtTitleToolbarSelected = v.findViewById(R.id.txtTitleToolbarSelected);
         txtPageTitle = v.findViewById(R.id.txtPageTitle);
 
@@ -331,7 +347,7 @@ public class MyTracks extends HFragment {
         });
 
         //init Adapter
-        List<NbPoi> tmpDataSource =  NbPoiSQLite.selectByLevel(currentLevel, currentId);
+        List<NbPoi> tmpDataSource = NbPoiSQLite.selectByLevel(currentLevel, currentId);
         adapter = new NbPoisAdapter(context, null);
         adapter.setData(tmpDataSource);
 
@@ -346,6 +362,7 @@ public class MyTracks extends HFragment {
 //                i.putExtra("ix", position);
 //                startActivity(i);
             }
+
             @Override
             public void onLongClick(View view, int position) {
             }
@@ -409,13 +426,14 @@ public class MyTracks extends HFragment {
 
 
     }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if ((inputFileName != null && inputFileName.length() > 0) || inputStream != null){
+        if ((inputFileName != null && inputFileName.length() > 0) || inputStream != null) {
             //Recieved File...
             String noNameWord = getString(R.string.New);
-            String inputFileNameForMessage = inputStream != null? noNameWord: (inputFileName != null? inputFileName.substring(inputFileName.lastIndexOf(File.separator)+1):noNameWord);
+            String inputFileNameForMessage = inputStream != null ? noNameWord : (inputFileName != null ? inputFileName.substring(inputFileName.lastIndexOf(File.separator) + 1) : noNameWord);
 
             projectStatics.showDialog(context
                     , getResources().getString(R.string.ImportFile)
@@ -428,19 +446,19 @@ public class MyTracks extends HFragment {
                         if (inputStream != null)
                             importRes = GPXFile.ImportGpxFileIntoMapbaz(inputStream, inputFileName, preferedRootNameIfNeeded, context, currentId, (byte) currentLevel, true, null);
                         else
-                            importRes = GPXFile.ImportGpxFileIntoMapbaz(inputFileName, preferedRootNameIfNeeded, context, currentId, (byte)currentLevel, true, null);
+                            importRes = GPXFile.ImportGpxFileIntoMapbaz(inputFileName, preferedRootNameIfNeeded, context, currentId, (byte) currentLevel, true, null);
 
-                        if (importRes != null ) {
+                        if (importRes != null) {
                             String msg = context.getResources().getString(R.string.dialog_fileImported);
                             if (importRes.MainFileName.length() > 0 && importRes.tracks.size() > 0)
-                                msg =  context.getResources().getString(R.string.dialog_fileImportedWithXXXName).replace("XXX", importRes.MainFileName);
+                                msg = context.getResources().getString(R.string.dialog_fileImportedWithXXXName).replace("XXX", importRes.MainFileName);
                             projectStatics.showDialog(context, context.getResources().getString(R.string.dialog_FileImported_title)
                                     , msg
                                     , context.getResources().getString(R.string.ok)
                                     , null, "", null);
 
                             NbPoi inserted = NbPoiSQLite.select(importRes.InnerDbId);
-                            inserted.isSelected=false;
+                            inserted.isSelected = false;
                             int oldSize = adapter.data.size();
                             if (inserted.PoiType == NbPoi.Enums.PoiType_Folder) {
                                 adapter.data.add(0, inserted);
@@ -449,8 +467,7 @@ public class MyTracks extends HFragment {
 //                                    adapter.notifyDataSetChanged();
 //                                else
 //                                    adapter.notifyItemInserted(0);
-                            }
-                            else {
+                            } else {
                                 adapter.data.add(inserted);
                                 adapter.notifyItemInserted(oldSize);
 //                                if (oldSize == 0)
@@ -465,20 +482,21 @@ public class MyTracks extends HFragment {
                     , getResources().getString(R.string.cancel), null);
         }
     }
+
     private void btnSelectLocationOnMap_Click() {
         dialogMap.dismiss();
     }
 
     private void btnAddFolderInToolbar_Click() {
         projectStatics.showEnterTextDialog(context, getResources().getString(R.string.EnterName_Title)
-                ,getResources().getString(R.string.EnterName_Message)
-                , "",getResources().getString(R.string.btnAccept)
+                , getResources().getString(R.string.EnterName_Message)
+                , "", getResources().getString(R.string.btnAccept)
                 , view -> {
-                    View parent = (View)view.getParent().getParent();
+                    View parent = (View) view.getParent().getParent();
 
                     EditText txtInput = parent.findViewById(projectStatics.showEnterTextDialog_EditTextId);
                     String text = txtInput.getText().toString();
-                    if (text.trim().length()== 0){
+                    if (text.trim().length() == 0) {
                         projectStatics.showDialog(context
                                 , getResources().getString(R.string.vali_GeneralError_Title)
                                 , getResources().getString(R.string.vali_PleaseEnterName)
@@ -488,16 +506,16 @@ public class MyTracks extends HFragment {
                                 , null);
                         return;
                     }
-                    NbPoi folderObj = NbPoi.getInstance(text, "", (byte)(currentLevel), currentId, "", 0d
+                    NbPoi folderObj = NbPoi.getInstance(text, "", (byte) (currentLevel), currentId, "", 0d
                             , 0d, 0d, 0d, 0, ShowStatus_Show, PoiType_Folder
-                            , 0, (byte)1, (byte)0, (byte)0, (byte)100, (byte)0, (byte)1, "", 1, 0d, 0d);
+                            , 0, (byte) 1, (byte) 0, (byte) 0, (byte) 100, (byte) 0, (byte) 1, "", 1, 0d, 0d);
                     folderObj.NbPoiId = NbPoiSQLite.insert(folderObj);
 
                     adapter.data.add(0, folderObj);
                     adapter.notifyItemInserted(0);
                 }
                 , getResources().getString(R.string.btnCancel), null, 0
-        , true);
+                , true);
 
     }
 
@@ -508,10 +526,10 @@ public class MyTracks extends HFragment {
         int size = adapter.data.size();
         for (int i = 0; i < size; i++) {
             NbPoi item = adapter.data.get(i);
-            if (item.isSelected){
+            if (item.isSelected) {
                 RecyclerView.ViewHolder vh = rvItems.findViewHolderForAdapterPosition(i);
-                if (vh != null){
-                    NbPoisAdapter.NbPoiViewHolder innerHolder = (NbPoisAdapter.NbPoiViewHolder)vh;
+                if (vh != null) {
+                    NbPoisAdapter.NbPoiViewHolder innerHolder = (NbPoisAdapter.NbPoiViewHolder) vh;
                     innerHolder.imgSelected.setVisibility(View.GONE);
                 }
                 item.isSelected = false;
@@ -532,8 +550,8 @@ public class MyTracks extends HFragment {
             NbPoi item = adapter.data.get(i);
 
             RecyclerView.ViewHolder vh = rvItems.findViewHolderForAdapterPosition(i);
-            if (vh != null){
-                NbPoisAdapter.NbPoiViewHolder innerHolder = (NbPoisAdapter.NbPoiViewHolder)vh;
+            if (vh != null) {
+                NbPoisAdapter.NbPoiViewHolder innerHolder = (NbPoisAdapter.NbPoiViewHolder) vh;
                 innerHolder.imgSelected.setVisibility(View.VISIBLE);
             }
             item.isSelected = true;
@@ -549,9 +567,10 @@ public class MyTracks extends HFragment {
                 , view1 -> {
 //                    progressTiles.setVisibility(View.VISIBLE);
                     int size = adapter.data.size();
-                    for (int i = size-1; i >= 0; i--) {
+                    for (int i = size - 1; i >= 0; i--) {
                         NbPoi item = adapter.data.get(i);
                         if (item.isSelected) {
+                            //با فراخوانی زیر، همزمان هم حذف کن از دیتابیس هم حذف کن از ظاهر هم حذف کن از visiblePois
                             GPXFile.DeleteNbPoiRec(item);
                             adapter.data.remove(i);
                             adapter.notifyItemRemoved(i);
@@ -564,6 +583,52 @@ public class MyTracks extends HFragment {
                 , getResources().getString(R.string.cancel), null);
     }
 
+    public void btnCutAtToolbar_Click(View view) {
+        int size = adapter.data.size();
+        cutItems = new ArrayList<>();
+        for (int i = size - 1; i >= 0; i--) {
+            NbPoi item = adapter.data.get(i);
+            if (item.isSelected) {
+                cutItems.add(item);
+            }
+        }
+        clearSelection();
+        if (cutItems.size() > 0) {
+            String textOfBtnMove = getResources().getString(R.string.btnMoveHere).replace("...", String.valueOf(cutItems.size()));
+            btnMoveHere.setText(textOfBtnMove);
+            linMoveHere.setVisibility(View.VISIBLE);
+        }
+    }
+    public void btnMoveHere_Click(View view){
+        int size = cutItems.size();
+        for (int i = 0; i < size; i++) {
+            NbPoi item = cutItems.get(i);
+            if (item.ParentId == currentId){
+                projectStatics.showDialog(context, getString(R.string.sourceAndDestDirectoryIsSame_Title)
+                        , getString(R.string.sourceAndDestDirectoryIsSame_Desc)
+                        , getResources().getString(R.string.btnAccept)
+                        , null
+                        , ""
+                        , null);
+                return;
+            }
+            item.ParentId = currentId;
+            item.Level = (byte)currentLevel;
+
+            NbPoiSQLite.update(item);
+            adapter.data.add(item);
+        }
+        adapter.notifyDataSetChanged();
+
+        cutItems = null;
+        linMoveHere.setVisibility(View.GONE);
+    }
+
+    public void btnCancel_Click(View view){
+        cutItems = null;
+        linMoveHere.setVisibility(View.GONE);
+    }
+
     private void btnUp_OnCLick() {
         if (currentLevel == 0)
             return;
@@ -572,28 +637,26 @@ public class MyTracks extends HFragment {
         currentLevel--;
         adapter.data = NbPoiSQLite.selectByLevel(currentLevel, currentId);
         adapter.notifyDataSetChanged();
-        showHideBtnUp(currentLevel > 0?View.VISIBLE:View.GONE);
+        showHideBtnUp(currentLevel > 0 ? View.VISIBLE : View.GONE);
     }
 
-    void changeToolbarStatus(boolean isSelectionMode){
-        if (isSelectionMode){
+    void changeToolbarStatus(boolean isSelectionMode) {
+        if (isSelectionMode) {
             toolbarSelected.setVisibility(View.VISIBLE);
             toolbarNormal.setVisibility(View.GONE);
-        }
-        else{
+        } else {
             toolbarSelected.setVisibility(View.GONE);
             toolbarNormal.setVisibility(View.VISIBLE);
         }
         txtTitleToolbarSelected.setText(selectedItemCount + " " + context.getResources().getString(R.string.CountItemsSelected));
     }
 
-    void showHideBtnUp(int visibility){
-        if (visibility == View.VISIBLE){
+    void showHideBtnUp(int visibility) {
+        if (visibility == View.VISIBLE) {
             btnUp.setVisibility(View.VISIBLE);
             txtUp_Icon.setVisibility(View.VISIBLE);
             txtUp_Text.setText(context.getResources().getString(R.string.Up_Text));
-        }
-        else{
+        } else {
             btnUp.setVisibility(View.GONE);
             //txtUp_Icon.setVisibility(View.INVISIBLE);
             //txtUp_Text.setText(context.getResources().getString(R.string.Up_Text_EmptyForMyTracks));
@@ -605,11 +668,10 @@ public class MyTracks extends HFragment {
         if (dialogMap != null && dialogMap.isShowing()) {
             dialogMap.dismiss();
             return false;
-        } else if (currentLevel != 0){
+        } else if (currentLevel != 0) {
             btnUp_OnCLick();
             return false;
-        }
-        else {
+        } else {
 //            Intent intent = new Intent();
 //            setResult(1100, intent);
 //
@@ -617,6 +679,7 @@ public class MyTracks extends HFragment {
             return true;
         }
     }
+
     private void btnMoreSelected_Click() {
         //Creating the instance of PopupMenu
         PopupMenu popup = new PopupMenu(context, btnMoreSelected);
@@ -625,11 +688,11 @@ public class MyTracks extends HFragment {
                 .inflate(R.menu.mytrack_rightclickonselect, popup.getMenu());
 
         Menu menu = popup.getMenu();
-        for (int i = 0; i < menu.size() ; i++) {
+        for (int i = 0; i < menu.size(); i++) {
             MenuItem item = menu.getItem(i);
             CustomTypeFaceSpan.applyFontToMenuItem(item, context, Color.BLACK);
 
-            if (selectedItemCount != 1){
+            if (selectedItemCount != 1) {
                 if (item.getItemId() == R.id.btnRename)
                     item.setVisible(false);
             }
@@ -637,7 +700,7 @@ public class MyTracks extends HFragment {
         //registering popup with OnMenuItemClickListener
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.btnExportGPX:
                         btnExportGPX_Click();
                         break;
@@ -662,14 +725,14 @@ public class MyTracks extends HFragment {
         popup.getMenuInflater().inflate(R.menu.mytrack_rightclick, popup.getMenu());
 
         Menu menu = popup.getMenu();
-        for (int i = 0; i < menu.size() ; i++) {
+        for (int i = 0; i < menu.size(); i++) {
             MenuItem item = menu.getItem(i);
             CustomTypeFaceSpan.applyFontToMenuItem(item, context, Color.BLACK);
         }
         //registering popup with OnMenuItemClickListener
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.btnAddFolderInToolbar:
                         btnAddFolderInToolbar_Click();
                         break;
@@ -688,21 +751,20 @@ public class MyTracks extends HFragment {
     }
 
     //انتقال به شاخه
-    public void btnMoveToFolder_Click(){
+    public void btnMoveToFolder_Click() {
         int size = adapter.data.size();
         List<NbPoi> folders = new ArrayList<>();
         List<NbPoi> selectedItems = new ArrayList<>();
 
-        for (int i = size-1; i >= 0; i--) {
+        for (int i = size - 1; i >= 0; i--) {
             NbPoi item = adapter.data.get(i);
             if (item.isSelected) {
                 selectedItems.add(item);
-            }
-            else if(item.PoiType == PoiType_Folder){
+            } else if (item.PoiType == PoiType_Folder) {
                 folders.add(item);
             }
         }
-        if (folders.size() == 0){
+        if (folders.size() == 0) {
             projectStatics.showDialog(context, getString(R.string.NoFolderExistsForTransfer_Title)
                     , getString(R.string.NoFolderExistsForTransfer)
                     , getResources().getString(R.string.btnAccept)
@@ -711,7 +773,6 @@ public class MyTracks extends HFragment {
                     , null);
             return;
         }
-
 
 
 //        int size = adapter.data.size();
@@ -727,19 +788,19 @@ public class MyTracks extends HFragment {
 
     private void btnRename_Click() {
         int size = adapter.data.size();
-        for (int i = size-1; i >= 0; i--) {
+        for (int i = size - 1; i >= 0; i--) {
             NbPoi item = adapter.data.get(i);
             if (item.isSelected) {
                 int finalI = i;
                 projectStatics.showEnterTextDialog(context, getResources().getString(R.string.EnterName_Title)
-                        ,getResources().getString(R.string.EnterNewName_Message)
-                        , item.Name,getResources().getString(R.string.btnAccept)
+                        , getResources().getString(R.string.EnterNewName_Message)
+                        , item.Name, getResources().getString(R.string.btnAccept)
                         , view -> {
-                            View parent = (View)view.getParent().getParent();
+                            View parent = (View) view.getParent().getParent();
 
-                            EditText txtInput  = parent.findViewById(projectStatics.showEnterTextDialog_EditTextId);
+                            EditText txtInput = parent.findViewById(projectStatics.showEnterTextDialog_EditTextId);
                             String text = txtInput.getText().toString();
-                            if (text.trim().length()== 0){
+                            if (text.trim().length() == 0) {
                                 projectStatics.showDialog(context
                                         , getResources().getString(R.string.vali_GeneralError_Title)
                                         , getResources().getString(R.string.vali_PleaseEnterName)
@@ -759,7 +820,7 @@ public class MyTracks extends HFragment {
                             clearSelection();
                         }
                         , getResources().getString(R.string.btnCancel), null, 0
-                , true);
+                        , true);
                 break;
             }
         }
@@ -772,11 +833,10 @@ public class MyTracks extends HFragment {
         if (false && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
             launcher.launch(intent);
-        }
-        else{
+        } else {
             //Old androids
             File ff = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-            String path =ff.getPath();
+            String path = ff.getPath();
             saveSelectedData(path);
 
         }
@@ -801,17 +861,18 @@ public class MyTracks extends HFragment {
 //                .show();
 
     }
-    void saveSelectedData(String path){
+
+    void saveSelectedData(String path) {
         int size = adapter.data.size();
         List<NbPoi> toConvert = new ArrayList<>();
 
         String fileNameToSave = "";
-        if (currentId != 0){
+        if (currentId != 0) {
             NbPoi current = NbPoiSQLite.select(currentId);
             fileNameToSave = current.Name;
         }
         String folderStructure = "";
-        for (int i = size-1; i >= 0; i--) {
+        for (int i = size - 1; i >= 0; i--) {
             NbPoi item = adapter.data.get(i);
             if (item.isSelected) {
                 if (item.PoiType == NbPoi.Enums.PoiType_Folder) {
@@ -825,24 +886,24 @@ public class MyTracks extends HFragment {
                 }
             }
         }
-        if (fileNameToSave.length() == 0){
+        if (fileNameToSave.length() == 0) {
             fileNameToSave = toConvert.get(0).Name;
         }
         //NbPoi lastItem = NbPoiSQLite.selectLastInserted();
         String content = GPXFile.ExportGPXToString(toConvert);
         File file = new File(path + File.separator + fileNameToSave + ".gpx");
-        if (file.exists()){
+        if (file.exists()) {
             Random random = new Random();
             fileNameToSave = fileNameToSave + "-" + random.nextInt(10000);
-            file = new File(path + File.separator + fileNameToSave + ".gpx" );
+            file = new File(path + File.separator + fileNameToSave + ".gpx");
         }
         try {
             OutputStreamWriter writer =
                     new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
             writer.write(content, 0, content.length());
             writer.close();
-            String message =getResources().getString(R.string.SaveCompleted_Desc).replace("000",
-                    getString(R.string.DownloadFolder)).replace("111", fileNameToSave+ ".gpx");
+            String message = getResources().getString(R.string.SaveCompleted_Desc).replace("000",
+                    getString(R.string.DownloadFolder)).replace("111", fileNameToSave + ".gpx");
             projectStatics.showDialog(context, getResources().getString(R.string.SaveCompleted)
                     , message
                     , getResources().getString(R.string.btnAccept)
@@ -854,12 +915,12 @@ public class MyTracks extends HFragment {
         } catch (Exception e) {
             String friendlyMsg = getResources().getString(R.string.ErrorInSave_Desc);
             boolean isUnknownEx = true;
-            if (e.getMessage().contains("EPERM")){
+            if (e.getMessage().contains("EPERM")) {
                 friendlyMsg = getResources().getString(R.string.ErrorInSaveMimeType_Desc);
                 isUnknownEx = false;
             }
             projectStatics.showDialog(context, getResources().getString(R.string.ErrorInSave)
-                    ,friendlyMsg
+                    , friendlyMsg
                     , getResources().getString(R.string.btnAccept)
                     , null
                     , ""
@@ -900,16 +961,16 @@ public class MyTracks extends HFragment {
 //                .show();
     }
 
-    boolean importGPXFromPath(String path){
-        GPXFile importRes = GPXFile.ImportGpxFileIntoMapbaz(path, preferedRootNameIfNeeded, context, currentId, (byte)currentLevel, true, null);
-        if (importRes != null ) {
+    boolean importGPXFromPath(String path) {
+        GPXFile importRes = GPXFile.ImportGpxFileIntoMapbaz(path, preferedRootNameIfNeeded, context, currentId, (byte) currentLevel, true, null);
+        if (importRes != null) {
             projectStatics.showDialog(context, context.getResources().getString(R.string.dialog_FileImported_title)
                     , context.getResources().getString(R.string.dialog_fileImported)
                     , context.getResources().getString(R.string.ok)
                     , null, "", null);
 
             NbPoi inserted = NbPoiSQLite.select(importRes.InnerDbId);
-            inserted.isSelected=false;
+            inserted.isSelected = false;
             int oldSize = adapter.data.size();
             if (inserted.PoiType == NbPoi.Enums.PoiType_Folder) {
                 adapter.data.add(0, inserted);
@@ -918,8 +979,7 @@ public class MyTracks extends HFragment {
 //                                    adapter.notifyDataSetChanged();
 //                                else
 //                                    adapter.notifyItemInserted(0);
-            }
-            else {
+            } else {
                 adapter.data.add(inserted);
                 adapter.notifyItemInserted(oldSize);
 //                                if (oldSize == 0)
@@ -955,7 +1015,7 @@ public class MyTracks extends HFragment {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
             if (viewHolder instanceof NbPoiViewHolder) {
-                ((NbPoiViewHolder)viewHolder).bind(data.get(position), position);
+                ((NbPoiViewHolder) viewHolder).bind(data.get(position), position);
             }
         }
 
@@ -981,11 +1041,13 @@ public class MyTracks extends HFragment {
         public abstract class OnDeleteButtonClickListener {
             public abstract void onDeleteButtonClicked(NbPoi post);
         }
+
         public class NbPoiViewHolder extends RecyclerView.ViewHolder {
             View itemView;
             TextView txtIcon, txtName;
             TextView btnShowHide, btnViewOnMap;
             public ImageView imgSelected;
+
             NbPoiViewHolder(View itemView) {
                 super(itemView);
                 this.itemView = itemView;
@@ -1007,27 +1069,24 @@ public class MyTracks extends HFragment {
                 btnShowHide.setTypeface(projectStatics.getFontello_FONT(context));
                 btnViewOnMap.setTypeface(projectStatics.getFontello_FONT(context));
                 if (currentObj != null) {
-                    if (currentObj.PoiType == NbPoi.Enums.PoiType_Folder){
+                    if (currentObj.PoiType == NbPoi.Enums.PoiType_Folder) {
                         txtIcon.setTextColor(Color.parseColor("#ffb703"));
                         txtIcon.setText("\uF114");
-                    }
-                    else if (currentObj.PoiType == NbPoi.Enums.PoiType_Track || currentObj.PoiType == NbPoi.Enums.PoiType_Route){
+                    } else if (currentObj.PoiType == NbPoi.Enums.PoiType_Track || currentObj.PoiType == NbPoi.Enums.PoiType_Route) {
                         int color = currentObj.Color;//Color.parseColor("#FB8500");
 //                        if (currentObj.Color > 0)
 //                            color = currentObj.Color;
                         txtIcon.setTextColor(color);
                         txtIcon.setText("\uE823");
-                    }
-                    else if(currentObj.PoiType >= NbPoi.Enums.PoiType_Danger_Avalanche && currentObj.PoiType < 11000){
+                    } else if (currentObj.PoiType >= NbPoi.Enums.PoiType_Danger_Avalanche && currentObj.PoiType < 11000) {
                         txtIcon.setTextColor(Color.parseColor("#d00000"));
                         txtIcon.setText("\uE809");
-                    }
-                    else if(currentObj.PoiType >= NbPoi.Enums.PoiType_Waypoint && currentObj.PoiType < 10000){
+                    } else if (currentObj.PoiType >= NbPoi.Enums.PoiType_Waypoint && currentObj.PoiType < 10000) {
                         txtIcon.setTextColor(Color.parseColor("#219ebc"));
                         txtIcon.setText("\uE810");
                     }
                     txtName.setText(currentObj.Name);
-                    btnShowHide.setText(currentObj.ShowStatus == NbPoi.Enums.ShowStatus_Hide?HideIcon:ShowIcon);
+                    btnShowHide.setText(currentObj.ShowStatus == NbPoi.Enums.ShowStatus_Hide ? HideIcon : ShowIcon);
                     btnShowHide.setTextColor(Color.parseColor("#4d0089"));
                     btnShowHide.setOnClickListener(v -> {
                         btnShowHide_Click(currentObj, btnShowHide);
@@ -1037,51 +1096,68 @@ public class MyTracks extends HFragment {
                     btnViewOnMap.setOnClickListener(v -> {
                         showOnMap_Click(currentObj);
                     });
-                    txtName.setOnClickListener(view -> {onRvItemClick(view, false, currentObj, imgSelected, position);});
-                    txtIcon.setOnClickListener(view -> {onRvItemClick(view, false, currentObj, imgSelected, position);});
-                    txtName.setOnLongClickListener(view ->{onRvItemClick(view, true, currentObj, imgSelected, position);return false;});
+                    txtName.setOnClickListener(view -> {
+                        onRvItemClick(view, false, currentObj, imgSelected, position);
+                    });
+                    txtIcon.setOnClickListener(view -> {
+                        onRvItemClick(view, false, currentObj, imgSelected, position);
+                    });
+                    txtIcon.setOnLongClickListener(view -> {
+                        //مشابه با رویداد روی txtName - txtIcon
+                        onRvItemClick(view, true, currentObj, imgSelected, position);
+                        return false;
+                    });
+                    txtName.setOnLongClickListener(view -> {
+                        //مشابه با رویداد روی txtName - txtIcon
+                        onRvItemClick(view, true, currentObj, imgSelected, position);
+                        return false;
+                    });
                 }
             }
 
         }
 
         boolean longClickEventFired = false;
-        void onRvItemClick(View view, boolean isLongClick, NbPoi item, ImageView imgSelected, int position){
-            if (longClickEventFired){
+
+        void onRvItemClick(View view, boolean isLongClick, NbPoi item, ImageView imgSelected, int position) {
+            if (longClickEventFired) {
                 longClickEventFired = false;
                 return;
             }
             if (isLongClick)
                 longClickEventFired = true;
+            if (isLongClick){
+                //اگه طرف در حالی که داشت عملیات انتقال رو انجام میداد، کلیک طولانی نگه داشت، عملیات انتقال کنسل بشه
+                btnCancel_Click(null);
+            }
 
             boolean isSelectionMode = checkMakingSelection(isLongClick, view, item, imgSelected);
-            if (isSelectionMode){
+            if (isSelectionMode) {
                 return;
             }
 
-            if (item.PoiType == NbPoi.Enums.PoiType_Folder){
+            if (item.PoiType == NbPoi.Enums.PoiType_Folder) {
                 clearSelection();
                 currentLevel++;
                 parentStack.push(currentId);
                 currentId = item.NbPoiId;
                 adapter.data = NbPoiSQLite.selectByLevel(currentLevel, currentId);
                 adapter.notifyDataSetChanged();
-            }
-            else if(item.PoiType == NbPoi.Enums.PoiType_Track || item.PoiType == NbPoi.Enums.PoiType_Route){
-                ((MainActivity)context).openEditTrack(item.NbPoiId, "MyTracks", position, adapter);
-            }
-            else{
+            } else if (item.PoiType == NbPoi.Enums.PoiType_Track || item.PoiType == NbPoi.Enums.PoiType_Route) {
+                ((MainActivity) context).openEditTrack(item.NbPoiId, "MyTracks", position, adapter);
+            } else {
                 ((MainActivity) context).showNbPoiOnMapForEdit(item.NbPoiId, item.Name);
                 ((MainActivity) context).backToMapPage();
             }
-            showHideBtnUp(currentLevel > 0?View.VISIBLE:View.GONE);
+            showHideBtnUp(currentLevel > 0 ? View.VISIBLE : View.GONE);
         }
-        public boolean checkMakingSelection(boolean isLongClick, View view, NbPoi selected, ImageView imgSelected){
-            if (selectedItemCount > 0 || isLongClick){
-                if (selected.isSelected){
+
+        public boolean checkMakingSelection(boolean isLongClick, View view, NbPoi selected, ImageView imgSelected) {
+            if (selectedItemCount > 0 || isLongClick) {
+                if (selected.isSelected) {
                     selectedItemCount--;
                     imgSelected.setVisibility(View.GONE);
-                }else{
+                } else {
                     selectedItemCount++;
                     imgSelected.setVisibility(View.VISIBLE);
                 }
@@ -1092,13 +1168,12 @@ public class MyTracks extends HFragment {
             return false;
         }
 
-        void btnShowHide_Click(NbPoi selectedItem, TextView btnShowHide){
+        void btnShowHide_Click(NbPoi selectedItem, TextView btnShowHide) {
             byte ShowStatus = NbPoi.Enums.ShowStatus_Show;
-            if (btnShowHide.getText().equals(ShowIcon)){
+            if (btnShowHide.getText().equals(ShowIcon)) {
                 ShowStatus = NbPoi.Enums.ShowStatus_Hide;
                 btnShowHide.setText(HideIcon);
-            }
-            else{
+            } else {
                 btnShowHide.setText(ShowIcon);
             }
             List<NbPoi> res = app.SetShowHide(selectedItem, ShowStatus, true, context);
@@ -1141,6 +1216,7 @@ public class MyTracks extends HFragment {
     ShowMapDialog showMapDialog = null;
     public AlertDialog dialogMap = null;
     DialogMapBuilder dialogMapObj = null;
+
     private void showOnMap_Click(NbPoi poi) {
         int step = 0;
         try {
@@ -1154,7 +1230,7 @@ public class MyTracks extends HFragment {
             });
             if (true || !showMapDialog.isAdded())
                 context.showFragment(showMapDialog);
-            else{
+            else {
 //                context.changeFragmentVisibility(showMapDialog, true);
 //                showMapDialog.fillForm();
             }
@@ -1179,18 +1255,17 @@ public class MyTracks extends HFragment {
 //            dialogMap.show();
 //            step = 700;
 //            return true;
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             projectStatics.showDialog(context, getResources().getString(R.string.dialog_UnknownError)
-                    , getResources().getString(R.string.dialog_UnknownErrorDesc)
+                    , getResources().getString(R.string.dialog_UnknownErrorDesc)+ " - کد "  + getScreenId() + "P" + 5423
                     , getResources().getString(R.string.ok), null, "", null);
 
-            TTExceptionLogSQLite.insert("Step: " + step + "-ex:" +ex.getMessage(),  stktrc2k(ex), PrjConfig.frmMapSelect, 120);
+            TTExceptionLogSQLite.insert("Step: " + step + "-ex:" + ex.getMessage(), stktrc2k(ex), PrjConfig.frmMapSelect, 120);
             Log.d("جستجو_روی_نقشه", "Step: " + step + "-ex:" + ex.getMessage() + ex.getStackTrace());
             ex.printStackTrace();
-            return ;
+            return;
         }
-   //1402-04 برای مشکل نقشه کامنت شد
+        //1402-04 برای مشکل نقشه کامنت شد
 //        try {
 //            if (dialogMap == null || MainActivity.appExistsBeforeAndShouldReloadAll_ReReadDialogMap) {
 //                AlertDialog.Builder alertDialogBuilder = dialogMapObj.GetBuilder();
@@ -1206,12 +1281,18 @@ public class MyTracks extends HFragment {
 //            dialogMap.show();
 //        }
 //        catch (Exception ex){
-//            Log.e(Tag, "Exception: " + ex.getMessage());
+//            Log.e(tag(), "Exception: " + ex.getMessage());
 //            ex.printStackTrace();
 //            TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmMyTracks, 109);
 //        }
     }
 
+    //تنظیمات مربوط به صفحه --------------
+    @Override
+    protected int getScreenId() {return PrjConfig.frmMyTracks;}
+    @Override
+    protected String tag() {return SCREEN_TAG;}
+    public static final String SCREEN_TAG = "MyTracks";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
         return inflater.inflate(R.layout.mytracks, parent, false);

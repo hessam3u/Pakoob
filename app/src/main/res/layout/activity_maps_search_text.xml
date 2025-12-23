@@ -33,7 +33,7 @@
                         style="@style/TextboxNormal_Child"
                         android:id="@+id/txtSearch"
                         android:layout_height="50dp"
-                        android:hint="@string/SearchOnTopOfSelectMap"/>
+                        android:hint="@string/SearchOnTopOfMapPage"/>
                 </com.google.android.material.textfield.TextInputLayout>
                 <!--                <com.google.android.material.textfield.TextInputLayout-->
                 <!--                    style="@style/TextboxNormal_Container_s"-->

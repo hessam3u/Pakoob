@@ -17,8 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -65,9 +63,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509ExtendedTrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import bo.entity.NbLogSearch;
-import bo.sqlite.NbLogSearchSQLite;
-import utils.HFragment;
+import UI.HFragment;
 import utils.MainActivityManager;
 import utils.PrjConfig;
 import bo.entity.BuyMapRequestDTO;
@@ -827,7 +823,6 @@ public class MapSelect extends HFragment {
 
             popup.show(); //showing popup menu
         }
-        String TAG = "DDDDD";
         void deleteMapAsync(NbMap currentObj, boolean doDeleteDownloadedFile, ProgressBar progressBarIndet){
             currentObj.Extracted = 2; //Mohemmmmmmm
             NbMapSQLite.update(currentObj);
@@ -855,11 +850,12 @@ public class MapSelect extends HFragment {
                     }
                     catch (Exception ex){
                         projectStatics.showDialog(context, getResources().getString(R.string.dialog_UnknownError)
-                                , getResources().getString(R.string.dialog_UnknownErrorDesc)
+                                , getResources().getString(R.string.dialog_UnknownErrorDesc) + " - کد "  + getScreenId() + "P" + 5323
                                 , getResources().getString(R.string.ok)
                                 , null, "", null);
 
                         ex.printStackTrace();
+                        TTExceptionLogSQLite.insert(ex.getMessage(), "P5323: " + "deleteMap" + "-ex:" + stktrc2k(ex), PrjConfig.frmMapPage, 1201);
                     }
                 }
             });
@@ -930,7 +926,7 @@ public class MapSelect extends HFragment {
                 dialog_getdiscount = alertDialogBuilder.create();
                 dialog_getdiscount.show();
                 projectStatics.SetDialogButtonStylesAndBack(dialog_getdiscount, this.context, projectStatics.getIranSans_FONT(context), 18);
-
+                isDownloading = false;
             } else if (text.equals(getString(R.string.view))) {
                 intent = new Intent();
                 intent.putExtra("latn", currentObj.LatN);
@@ -959,6 +955,7 @@ public class MapSelect extends HFragment {
                     index = localFileAddress.lastIndexOf(File.separator);
                     if (!file.exists() || index == -1) {
                         Toast.makeText(context, getString(R.string.CantExtractTheMap), Toast.LENGTH_LONG);
+                        isDownloading = false;
                         return false;
                     }
                 }
@@ -966,6 +963,7 @@ public class MapSelect extends HFragment {
                 String mapsDirectoryName = localFileAddress.substring(0, index);
                 String fileName = localFileAddress.substring(index + 1);
                 DecryptAndGenerateMapAndDbUpdate(hMapTools.CustomMapMinZoom, hMapTools.CustomMapMaxZoomNormal, mapsDirectoryName, fileName, currentObj, holder);
+                isDownloading = false;
             }
 
             return true;
@@ -1055,7 +1053,7 @@ public class MapSelect extends HFragment {
                                     , getResources().getString(R.string.ok)
                                     , null, "", null);
                             TTExceptionLogSQLite.insert("Server Connect: " + response.code(), response.message(), PrjConfig.frmMapSelect, 300);
-                            Log.d(TAG, "ERROR RESPONSE : " + response.code() + " msg: " + response.message());
+                            Log.d(tag(), "ERROR RESPONSE : " + response.code() + " msg: " + response.message());
                         }
 
                         isDownloading = false;
@@ -1074,7 +1072,7 @@ public class MapSelect extends HFragment {
                     TTExceptionLogSQLite.insert("Fail", t.getMessage(), PrjConfig.frmMapSelect, 100);
                     if (!isAdded()) return;
                     progressBar.setVisibility(View.INVISIBLE);
-                    Log.e(TAG, "error");
+                    Log.e(tag(), "error");
                     isDownloading = false;
                 }
             });
@@ -1109,20 +1107,10 @@ public class MapSelect extends HFragment {
                                 return;
                             }
                             doDownloadInBackground2(res.command,  tempDownloadFolder, fileName, mapsFolder, currentObj, holder, context);
-//                            boolean writtenToDisk = writeResponseBodyToDisk(response.body(), downloadDirectoryName, fileName);
-//                            Log.d(TAG, "file download was a success? " + writtenToDisk);
-//
-//                            if (writtenToDisk) {
-//                                Toast.makeText(context, "دانلود کامل شد ... در حال ساخت نقشه", Toast.LENGTH_LONG).show();
-//
-//                                //  آغاز عملیات دیکریپت کردن
-//                                DecryptAndGenerateMapAndDbUpdate(downloadDirectoryName, fileName, currentObj, null, progressBar);
-//                            }
-
-
                         } else {
                             TTExceptionLogSQLite.insert("Server Contact Failed", "Code:" + response.code(), PrjConfig.frmMapSelect, 60);
-                            Log.d(TAG, "server contact failed");
+                            Log.d(tag(), "server contact failed");
+                            isDownloading = false;
                         }
                     } catch (IOException e) {
                         TTExceptionLogSQLite.insert("IOException", e.getMessage(), PrjConfig.frmMapSelect, 50);
@@ -1144,7 +1132,7 @@ public class MapSelect extends HFragment {
                     }
                     holder.progressBarIndet.setVisibility(View.INVISIBLE);
                     isDownloading = false;;
-                    Log.e(TAG, "error");
+                    Log.e(tag(), "error");
                 }
             });
         }
@@ -1212,20 +1200,6 @@ public class MapSelect extends HFragment {
                         int responseCode = httpConn.getResponseCode();
                         // Check if the connection is successful
                         if (responseCode == HttpURLConnection.HTTP_OK) {
-
-//                            InputStream inputStream = httpConn.getInputStream();
-//
-//                            FileOutputStream outputStream = new FileOutputStream(saveFilePath);
-//
-//                            int bytesRead;
-//                            byte[] buffer = new byte[4096];
-//                            while ((bytesRead = inputStream.read(buffer)) != -1) {
-//                                outputStream.write(buffer, 0, bytesRead);
-//                            }
-//
-//                            outputStream.close();
-//                            inputStream.close();
-//                            System.out.println("File downloaded successfully!");
 
                             int lenghtOfFile = httpConn.getContentLength();//c.getContentLength();
                             step = 30;
@@ -1322,6 +1296,7 @@ public class MapSelect extends HFragment {
                                     holder.progressBarDet.setVisibility(View.GONE);
                                 }
                             });
+                            isDownloading = false;
                         }
                         httpConn.disconnect();
                         //END of gpt
@@ -1601,7 +1576,7 @@ public class MapSelect extends HFragment {
 
                         fileSizeDownloaded += read;
 
-                        Log.d(TAG, "file download: " + fileSizeDownloaded + " of " + fileSize);
+                        Log.d(tag(), "file download: " + fileSizeDownloaded + " of " + fileSize);
                     }
 
                     outputStream.flush();
@@ -1660,6 +1635,12 @@ public class MapSelect extends HFragment {
     public interface OnMapDbSyncCompleted {
         void onMapDbSyncCompleted(boolean isSuccessful);
     }
+    //تنظیمات مربوط به صفحه --------------
+    @Override
+    protected int getScreenId() {return PrjConfig.frmMapSelect;}
+    @Override
+    protected String tag() {return SCREEN_TAG;}
+    public static final String SCREEN_TAG = "MapSelect";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
         return inflater.inflate(R.layout.mapselect, parent, false);

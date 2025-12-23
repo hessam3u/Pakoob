@@ -18,6 +18,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -41,7 +42,7 @@ import bo.sqlite.TTExceptionLogSQLite;
 import maptools.GeoCalcs;
 import maptools.PersianMapIndex25000;
 import maptools.hMapTools;
-import utils.HFragment;
+import UI.HFragment;
 import utils.MainActivityManager;
 import utils.PrjConfig;
 import utils.projectStatics;
@@ -58,9 +59,7 @@ public class ShowMapDialog extends HFragment {
         return res;
     }
 
-    public ShowMapDialog() {
-        Tag = "نقشه نگاه";
-    }
+    public ShowMapDialog() {}
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {//4th Event
@@ -78,7 +77,7 @@ public class ShowMapDialog extends HFragment {
         try {
             if (mode.equals("select")) {
                 LatLng sydney = new LatLng(lastLocation.latitude, lastLocation.longitude);
-                mapSelectLocation.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, lastLocationZoom));
+                MoveCameraTo(sydney, lastLocationZoom);
 
                 if (locationMarker != null)
                     locationMarker.remove();
@@ -91,11 +90,22 @@ public class ShowMapDialog extends HFragment {
                 showMapBounds(latN, latS, lonE, lonW, zoom);
             }
         } catch (Exception ex) {
-            Log.e(Tag, "بازکردن" + "fillForm_on_safeGpxView: " + ex.getMessage() + ex.getStackTrace());
+            Log.e(tag(), "بازکردن" + "fillForm_on_safeGpxView: " + ex.getMessage() + ex.getStackTrace());
             //Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             ex.printStackTrace();
             TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmTripComputer, 150);
         }
+    }
+
+    private void MoveCameraTo(LatLng sydney, float zoom) {
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(sydney)            // نقطه مقصد
+                .zoom(zoom)    // زوم دلخواه
+                .tilt(1)                  // زاویه دوربین (0 = عمود بالا، 90 = افقی)
+                .bearing(0)                // جهت نگاه (0 = شمال)
+                .build();
+
+        mapSelectLocation.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
     public void fillForm() {
@@ -113,7 +123,7 @@ public class ShowMapDialog extends HFragment {
                 this.txtPageTitle.setText(getString(R.string.title_ShowMapDialog_ShowBound));
             }
         } catch (Exception ex) {
-            Log.e(Tag, "بازکردن" + "fillForm: " + ex.getMessage() + ex.getStackTrace());
+            Log.e(tag(), "بازکردن" + "fillForm: " + ex.getMessage() + ex.getStackTrace());
             ex.printStackTrace();
             TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmTripComputer, 150);
         }
@@ -186,14 +196,16 @@ public class ShowMapDialog extends HFragment {
 
                 LatLng mid = new LatLng(poi.LatS + (poi.LatN - poi.LatS) / 2, poi.LonW + (poi.LonE - poi.LonW) / 2);
                 debugStep = 50;
-                mapSelectLocation.moveCamera(CameraUpdateFactory.newLatLngZoom(mid, zoom));
+                MoveCameraTo(mid, zoom);
+                //mapSelectLocation.moveCamera(CameraUpdateFactory.newLatLngZoom(mid, zoom));
 
             } else {
                 debugStep = 60;
                 LatLng sydney = new LatLng(poi.LatS, poi.LonW);
 //            map.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
                 debugStep = 70;
-                mapSelectLocation.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 14));
+                MoveCameraTo(sydney, 14);
+                //mapSelectLocation.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 14));
             }
         } catch (Exception ex) {
             TTExceptionLogSQLite.insert("debugStep:" + debugStep+"-"+ex.getMessage(), stktrc2k(ex), PrjConfig.frmDialogMapBuilder, 100);
@@ -349,7 +361,7 @@ public class ShowMapDialog extends HFragment {
     void moveMapButtonTo(String tag, int marginBot) {
         //based on : https://stackoverflow.com/questions/40371321/how-to-move-google-map-zoom-control-position-in-android
         //and https://stackoverflow.com/questions/36785542/how-to-change-the-position-of-my-location-button-in-google-maps-using-android-st
-        View btn = mapFragment.getView().findViewWithTag(tag);//GoogleMapMyLocationButton
+        View btn = mapFragment.getView().findViewWithTag(tag());//GoogleMapMyLocationButton
         moveMapButtonTo(btn, marginBot);
     }
 
@@ -366,7 +378,9 @@ public class ShowMapDialog extends HFragment {
             drawMapBound(latN, latS, lonE, lonW);
             LatLng sydney = new LatLng((double) ((latN - latS) / 2 + latS), ((lonE - lonW) / 2 + lonW));
 //            map.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            mapSelectLocation.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, zoom));
+
+            MoveCameraTo(sydney, zoom);
+            //mapSelectLocation.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, zoom));
         }
     }
 
@@ -414,6 +428,13 @@ public class ShowMapDialog extends HFragment {
         }
     }
 
+
+    //تنظیمات مربوط به صفحه --------------
+    @Override
+    protected int getScreenId() {return PrjConfig.frmShowMapDialog;}
+    @Override
+    protected String tag() {return SCREEN_TAG;}
+    public static final String SCREEN_TAG = "ShowMapDialog";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
         return inflater.inflate(R.layout.frm_showmapdialog, parent, false);

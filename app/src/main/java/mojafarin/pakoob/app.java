@@ -1,13 +1,8 @@
 package mojafarin.pakoob;
 
 
-import static maptools.GeoCalcs.DegreePrecision;
-import static maptools.GeoCalcs.DegreePrecisionTen;
-import static maptools.GeoCalcs.MinutePrecision;
-import static maptools.GeoCalcs.MinutePrecisionTen;
-import static maptools.GeoCalcs.UtmPrecision;
-import static utils.HFragment.stktrc2k;
-import static utils.HFragment.stktrc2kt;
+import static UI.HFragment.stktrc2k;
+import static UI.HFragment.stktrc2kt;
 
 import android.app.ActivityManager;
 import android.app.Application;
@@ -29,12 +24,15 @@ import java.util.Calendar;
 import java.util.List;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
+
 import bo.ApiClientMap;
 import bo.ApiInterfaceMap;
 import bo.dbConstantsTara;
 import bo.NewClasses.InsUpdRes;
 import bo.entity.MobileInfoDTO;
 import bo.entity.NbLogSearch;
+import bo.entity.NbScreenTime;
 import bo.entity.PakoobSync;
 import bo.entity.SearchForMapResult;
 import bo.NewClasses.SimpleRequest;
@@ -42,6 +40,7 @@ import bo.NewClasses.StringContentDTO;
 import bo.entity.TTExceptionLog;
 import bo.sqlite.NbLogSearchSQLite;
 import bo.sqlite.NbMapSQLite;
+import bo.sqlite.NbScreenTimeDao;
 import bo.sqlite.TTExceptionLogSQLite;
 import maptools.LocationRepository;
 import maptools.LocationTrackingService;
@@ -202,6 +201,20 @@ public class app extends Application {
         }
         return null;
     }
+    public static boolean removeInVisiblePois(long NbPoiId){
+        int visiSize =app.visiblePOIs.size();
+        for (int i = 0; i < visiSize ; i++) {
+            NbPoiCompact item =app.visiblePOIs.get(i);
+            if (item.NbPoiId == NbPoiId) {
+                app.visiblePOIs.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+//    public static boolean removeInVisiblePois(NbPoiCompact obj){
+//        return app.visiblePOIs.remove(obj);
+//    }
 
 
     public static List<NbPoi> SetShowHide(NbPoi current, byte ShowStatus, boolean addToVisibileItemsAndMap, Context context){
@@ -211,13 +224,6 @@ public class app extends Application {
         if (addToVisibileItemsAndMap) {
             //1- Find this in VisibleItems
             NbPoiCompact compactItem = app.findInVisiblePois(current.NbPoiId);
-//            int visiSize =app.visiblePOIs.size();
-//            for (int i = 0; i < visiSize && compactItem == null; i++) {
-//                NbPoiCompact item =app.visiblePOIs.get(i);
-//                if (item.NbPoiId == current.NbPoiId) {
-//                    compactItem = item;
-//                }
-//            }
             if (compactItem != null)
                 compactItem.ShowStatus = ShowStatus;
 
@@ -305,6 +311,7 @@ public class app extends Application {
                 return false;
 
             List<NbLogSearch> searchlog = NbLogSearchSQLite.selectAll();
+            List<NbScreenTime> screenTimes = dbConstantsMap.appDB.NbScreenTimeDao().selectAll();
             List<TTExceptionLog> exceptions = TTExceptionLogSQLite.selectAll();
             for (int i = 0; i < exceptions.size(); i++) {
                 TTExceptionLog exLog = exceptions.get(i);
@@ -345,7 +352,7 @@ public class app extends Application {
 
             Log.e("SYNCCC", "سینک شروع شد");
             LatLng lastLocation = app.session.getLastAproxLocation();
-            PakoobSync sync = PakoobSync.getInstance(lastLocation.latitude, lastLocation.longitude, app.session.getLastAproxLocationFixTime(), app.session.getLastAproxLocationFixType(), exceptions, searchlog);
+            PakoobSync sync = PakoobSync.getInstance(lastLocation.latitude, lastLocation.longitude, app.session.getLastAproxLocationFixTime(), app.session.getLastAproxLocationFixType(), exceptions, searchlog, screenTimes);
             SimpleRequest request = SimpleRequest.getInstance(sync);
 
             Call<ResponseBody> call = apiMap.SyncPakoob(request);
@@ -357,6 +364,7 @@ public class app extends Application {
                         if (response.isSuccessful()) {
                             NbLogSearchSQLite.deleteAll();
                             TTExceptionLogSQLite.deleteAll();
+                            dbConstantsMap.appDB.NbScreenTimeDao().deleteAll();
 
                             Log.e("SYNCCC", "همه چی سینک شد");
 //                            InsUpdRes result = InsUpdRes.fromBytes(response.body().bytes());
@@ -646,6 +654,24 @@ public class app extends Application {
         }
 
         return true;
+    }
+
+    public static void startLocationService(Context context ) {
+        if (app.mServiceIntent == null) {
+            app.mServiceIntent = new Intent(context, LocationTrackingService.class);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) { // Android 14+
+            // از ContextCompat استفاده کن تا رفتار ایمن‌تر و با permission چک انجام شه
+            ContextCompat.startForegroundService(context, app.mServiceIntent);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // Android 8 - 13
+            context.startForegroundService(app.mServiceIntent);
+        } else { // قدیمی‌تر از Android 8
+            context.startService(app.mServiceIntent);
+        }
+        if (!MainActivity.isTrackingServiceBound) {
+            context.bindService(app.mServiceIntent, MainActivity.serviceConnection, Context.BIND_AUTO_CREATE);
+            MainActivity.isTrackingServiceBound = true;
+        }
     }
 
     // Called by the system when the device configuration changes while your component is running.

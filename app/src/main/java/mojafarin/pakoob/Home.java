@@ -1,17 +1,14 @@
 package mojafarin.pakoob;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -20,14 +17,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.Projection;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
@@ -39,8 +34,6 @@ import com.takusemba.spotlight.Spotlight;
 
 import java.io.File;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import FmMessage.SideList;
 
@@ -48,7 +41,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -74,9 +66,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import user.CompleteRegister;
 import user.Register;
-import utils.HFragment;
+import UI.HFragment;
 import utils.ImageTools;
-import utils.MainActivityManager;
 import utils.PrjConfig;
 import utils.hutilities;
 import utils.projectStatics;
@@ -86,7 +77,6 @@ public class Home extends HFragment {
 
     public Home() {
         app.session.setOpenHomeAtStartup(1);
-        Tag = "Home";
     }
     public static Home getInstance(){
         Home res = new Home();
@@ -211,7 +201,7 @@ public class Home extends HFragment {
     boolean askForHelpAfterLoading = false;
     @Override
     public void onFragmentShown(){
-        Log.e(Tag, "Home is Shown");
+        Log.e(tag(), "Home is Shown");
         boolean homeHelpSeen = app.session.getHomeHelpSeen();
         askForHelpAfterLoading = !homeHelpSeen;
 
@@ -621,7 +611,7 @@ public class Home extends HFragment {
         } else {
             lblMyClubName.setText(context.getString(R.string.MyClub));
         }
-        Log.e(Tag, " خواندن عکس"+ logo);
+        Log.e(tag(), " خواندن عکس"+ logo);
         if (id > 0 && logo.length() > 0) {
             imgMyClubLogo_Empty.setVisibility(View.GONE);
             imgMyClubLogo.setVisibility(View.VISIBLE);
@@ -635,10 +625,10 @@ public class Home extends HFragment {
             File myImageFile = new File(directory, logo.substring(index + 1));
             if (!myImageFile.exists()) {
                 showDefaultClubLogo();
-                Log.e(Tag, " خواندن عکس" + myImageFile.getName() + " پیدا نشد ");
+                Log.e(tag(), " خواندن عکس" + myImageFile.getName() + " پیدا نشد ");
             } else {
                 Picasso.get().load(myImageFile).into(imgMyClubLogo);//#PicassoUpdate140303 with(context)
-                Log.e(Tag, "A  خواندن عکس : " + myImageFile.getName());
+                Log.e(tag(), "A  خواندن عکس : " + myImageFile.getName());
             }
 
         } else {
@@ -740,6 +730,12 @@ public class Home extends HFragment {
         super.onResume();
     }
 
+    //تنظیمات مربوط به صفحه --------------
+    @Override
+    protected int getScreenId() {return PrjConfig.frmHome;}
+    @Override
+    protected String tag() {return SCREEN_TAG;}
+    public static final String SCREEN_TAG = "Home";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
         return inflater.inflate(R.layout.frm_home, parent, false);

@@ -24,17 +24,19 @@ import java.util.TimeZone;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
+
 import bo.entity.NbPoi;
 import bo.entity.NbPoiCompact;
 import bo.sqlite.NbPoiSQLite;
 import maptools.TrackData;
 import maptools.hMapTools;
 import maptools.GeoCalcs;
+import UI.HFragment;
 import utils.MyDate;
+import utils.PrjConfig;
 import utils.projectStatics;
 
-public class ViewTrackPoints extends Fragment {
+public class ViewTrackPoints extends HFragment {
     Toolbar toolbar;
     TextView btnBack;
     TableLayout dgdData;
@@ -62,7 +64,8 @@ public class ViewTrackPoints extends Fragment {
         startLoadData();
     }
 
-    private void initializeComponents(View v) {
+    @Override
+    public void initializeComponents(View v) {
 
         btnBack =v.findViewById(R.id.btnBack);
         btnBack.setOnClickListener(view -> {((AppCompatActivity) context).onBackPressed();});
@@ -514,6 +517,13 @@ public class ViewTrackPoints extends Fragment {
     public void onCreate(Bundle savedInstanceState) {//2nd Event
         super.onCreate(savedInstanceState);
     }
+
+    //تنظیمات مربوط به صفحه --------------
+    @Override
+    protected int getScreenId() {return PrjConfig.frmViewTrackPoints;}
+    @Override
+    protected String tag() {return SCREEN_TAG;}
+    public static final String SCREEN_TAG = "ViewTrackPoints";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
         return inflater.inflate(R.layout.mytracks_viewtrackpoints, parent, false);

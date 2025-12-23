@@ -1,16 +1,14 @@
 package mojafarin.pakoob;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import bo.dbConstantsTara;
 import pakoob.TourListComponent;
 import pakoob.TourShowOne;
-import utils.HFragment;
+import UI.HFragment;
+import utils.PrjConfig;
 
 public class HomeCurrentTourFragment extends HFragment {
     TourListComponent rvNextTours;
@@ -60,6 +58,14 @@ public class HomeCurrentTourFragment extends HFragment {
 //    public void onCreate(Bundle savedInstanceState) {//2nd Event
 //        super.onCreate(savedInstanceState);
 //    }
+
+
+    //تنظیمات مربوط به صفحه --------------
+    @Override
+    protected int getScreenId() {return PrjConfig.frmHome_CurrentTours;}
+    @Override
+    protected String tag() {return SCREEN_TAG;}
+    public static final String SCREEN_TAG = "Home_CurrentTours";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
         return inflater.inflate(R.layout.frm_home_currenttours, parent, false);

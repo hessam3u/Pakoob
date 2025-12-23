@@ -1,11 +1,10 @@
 package bo.sqlite;
 
 import android.content.Context;
-import android.media.projection.MediaProjection;
 import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
@@ -18,7 +17,6 @@ import bo.entity.NbAdv;
 import bo.entity.TTClubNameDTO;
 import bo.entity.TTClubTour;
 import bo.entity.TTClubTourCategoryDTO;
-import bo.entity.TTExceptionLog;
 
 @Database(entities = {FmMessage.class, FmSides.class,TTClubTourCategoryDTO.class, CityDTO.class, TTClubNameDTO.class, TTClubTour.class, NbAdv.class}, version = 5, exportSchema = true)
 public abstract class AppDatabaseTara extends RoomDatabase {
@@ -58,12 +56,13 @@ public abstract class AppDatabaseTara extends RoomDatabase {
                         .allowMainThreadQueries()
                         //.addMigrations(MIGRATION_1_2)//1400-01-16 مجبور شدم اینم به فنا بد و همه چی رو از اول بسازم
                         //.addMigrations(MIGRATION_2_3)//1400-01-16 این که اصلا کار نکرد هی گیر داد
-                        .fallbackToDestructiveMigrationFrom(1) //1400-01-16 مجبور شدم
-                        .fallbackToDestructiveMigrationFrom(2) //1400-01-16 مجبور شدم
-                        .fallbackToDestructiveMigrationFrom(3) //1400-01-16 مجبور شدم
-                        .fallbackToDestructiveMigrationFrom(4) //1400-10-19 مجبور شدم
+//                        .fallbackToDestructiveMigrationFrom(1) //1400-01-16 مجبور شدم
+//                        .fallbackToDestructiveMigrationFrom(2) //1400-01-16 مجبور شدم
+//                        .fallbackToDestructiveMigrationFrom(3) //1400-01-16 مجبور شدم
+//                        .fallbackToDestructiveMigrationFrom(4) //1400-10-19 مجبور شدم
                         // recreate the database if necessary
                         //.fallbackToDestructiveMigration()
+                        //.addMigrations(MIGRATION_5_6,MIGRATION_6_7,MIGRATION_7_8)
                         .build();
     }
     static final Migration MIGRATION_1_2 = new Migration(1, 2) {
@@ -104,31 +103,45 @@ public abstract class AppDatabaseTara extends RoomDatabase {
                     ", 'ExtMessageId' INTEGER" +
                     ", PRIMARY KEY('FmMessageId'))");
             database.execSQL("CREATE INDEX index_FmMessage_FmMessageId ON  FmMessage(FmMessageId)");
+        }
+    };
+    static final Migration MIGRATION_5_6 = new Migration(5, 6) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase db) {
+        }
+    };
+    static final Migration MIGRATION_6_7 = new Migration(6, 7) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase db) {
+        }
+    };
+    static final Migration MIGRATION_7_8 = new Migration(7, 8) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase db) {
 
-//            try {
-//                database.execSQL("Drop TABLE 'FmSides'");
-//            }catch (Exception ex){
-//                Log.e("خطای میگ2", ex.getMessage());
-//                ex.printStackTrace();
-//            }
-//            database.execSQL("CREATE TABLE 'FmSides' ('IdLocal' INTEGER" +
-//                    ", 'Name' Text" +
-//                    ", 'Avatar' Text" +
-//                    ", 'Username' Text" +
-//                    ", 'UserType' INTEGER" +
-//                    ", 'FmSidesId' INTEGER" +
-//                    ", 'UserSide1' INTEGER" +
-//                    ", 'UserSide2' INTEGER" +
-//                    ", 'FmChanalId' INTEGER" +
-//                    ", 'AnonymosType' INTEGER" +
-//                    ", 'FmMessageIdLast' INTEGER" +
-//                    ", 'Text1' TEXT" +
-//                    ", 'LastDate' TEXT" +
-//                    ", 'LastSenderSide' INTEGER" +
-//                    ", 'UnreadCount' INTEGER" +
-//                    ", 'RepLastContentTypelyId' INTEGER" +
-//                    ", PRIMARY KEY('IdLocal'))");
-//            database.execSQL("CREATE INDEX index_FmSides_IdLocal ON  FmSides(IdLocal)");
+            // 1. ساخت جدول جدید با primary key autoincrement
+            db.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `NbCurrentTrack_new` (" +
+                            "`NbCurrentTrackId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                            "`Latitude` REAL NOT NULL, " +
+                            "`Longitude` REAL NOT NULL, " +
+                            "`Time` INTEGER NOT NULL, " +
+                            "`Elevation` REAL NOT NULL" +
+                            ")"
+            );
+
+            // 2. انتقال داده‌ها
+            db.execSQL(
+                    "INSERT INTO `NbCurrentTrack_new` " +
+                            "(`NbCurrentTrackId`, `Latitude`, `Longitude`, `Time`, `Elevation`) " +
+                            "SELECT `NbCurrentTrackId`, `Latitude`, `Longitude`, `Time`, `Elevation` FROM `NbCurrentTrack`"
+            );
+
+            // 3. حذف جدول قدیمی
+            db.execSQL("DROP TABLE `NbCurrentTrack`");
+
+            // 4. تغییر نام جدول جدید به نام اصلی
+            db.execSQL("ALTER TABLE `NbCurrentTrack_new` RENAME TO `NbCurrentTrack`");
         }
     };
 

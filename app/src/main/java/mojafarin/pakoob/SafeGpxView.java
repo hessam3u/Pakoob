@@ -71,7 +71,6 @@ import bo.entity.SearchRequestDTO;
 import bo.entity.TrackDataCompact;
 import bo.entity.TrackDataCompactRes;
 import bo.sqlite.TTExceptionLogSQLite;
-import kotlin.coroutines.Continuation;
 import maptools.GPXFile;
 import maptools.hMapTools;
 import okhttp3.ResponseBody;
@@ -80,7 +79,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import user.Register;
 import maptools.GeoCalcs;
-import utils.HFragment;
+import UI.HFragment;
 import utils.MainActivityManager;
 import utils.PicassoTrustAll;
 import utils.PrjConfig;
@@ -111,9 +110,7 @@ public class SafeGpxView extends HFragment {
         return res;
     }
 
-    public SafeGpxView() {
-        Tag = "نمایش_جی_پی_ایکس";
-    }
+    public SafeGpxView() {}
 
     void progressBarPage_SetVisibility(int Visibility) {
         if (progressBarPage == null)
@@ -183,7 +180,7 @@ public class SafeGpxView extends HFragment {
                         txtSearchResult_SetText(backgroundMessage);
                     }
                 } catch (Exception ex) {
-                    Log.e(Tag, "Exception22 On First Read: " + ex.getMessage());
+                    Log.e(tag(), "Exception22 On First Read: " + ex.getMessage());
                     ex.printStackTrace();
                 }
 
@@ -198,7 +195,7 @@ public class SafeGpxView extends HFragment {
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 projectStatics.ManageCallExceptions(true, PrjConfig.frmSafeGpxView, 100, t, context);
                 if (!isAdded()) return;
-                Log.e(Tag, "Exception On First Read: " + t.getMessage());
+                Log.e(tag(), "Exception On First Read: " + t.getMessage());
                 t.printStackTrace();
                 progressBarPage_SetVisibility(View.GONE);
                 backgroundMessage = getResources().getString(R.string.NothingToShow);
@@ -262,7 +259,7 @@ public class SafeGpxView extends HFragment {
                         txtSearchResult_SetText(backgroundMessage);
                     }
                 } catch (Exception ex) {
-                    Log.e(Tag, "Exception22 On First Read: " + ex.getMessage());
+                    Log.e(tag(), "Exception22 On First Read: " + ex.getMessage());
                     ex.printStackTrace();
                 }
 
@@ -277,7 +274,7 @@ public class SafeGpxView extends HFragment {
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 projectStatics.ManageCallExceptions(true, PrjConfig.frmSafeGpxView, 100, t, context);
                 if (!isAdded()) return;
-                Log.e(Tag, "Exception On First Read: " + t.getMessage());
+                Log.e(tag(), "Exception On First Read: " + t.getMessage());
                 t.printStackTrace();
                 progressBarPage_SetVisibility(View.GONE);
                 backgroundMessage = getResources().getString(R.string.NothingToShow);
@@ -320,7 +317,7 @@ public class SafeGpxView extends HFragment {
             lblElevLoss.setText(TextFormat.GetStringFromDecimalPrice(Double.parseDouble(Float.toString(currentObj.ElevLoss))) + "m");
             imgIcon.setImageResource(SafeGpxSearch.ActivityTypeToImageResource(currentObj.ActivityType));
 
-            Log.d(Tag, "currentObj.ScreenshotAddress: " + currentObj.ScreenshotAddress);
+            Log.d(tag(), "currentObj.ScreenshotAddress: " + currentObj.ScreenshotAddress);
 
             lblDesc.setText(currentObj.Desc);
             lblImportantNotes.setText(currentObj.ImportantNotes);
@@ -349,7 +346,7 @@ public class SafeGpxView extends HFragment {
 
 
         } catch (Exception ex) {
-            Log.d(Tag, "بازکردن" + "fillForm_on_safeGpxView: " + ex.getMessage() + ex.getStackTrace());
+            Log.d(tag(), "بازکردن" + "fillForm_on_safeGpxView: " + ex.getMessage() + ex.getStackTrace());
             //Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             ex.printStackTrace();
             TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmSafeGpxView, 150);
@@ -714,7 +711,7 @@ public class SafeGpxView extends HFragment {
 
             return false;
         }
-        Log.d(Tag, Integer.toString(isDownloading ? 1 : 0));
+        Log.d(tag(), Integer.toString(isDownloading ? 1 : 0));
         if (isDownloading) {
             projectStatics.showDialog(context, getResources().getString(R.string.isProcessing_Title)
                     , getResources().getString(R.string.isProcessing_Desc)
@@ -819,7 +816,7 @@ public class SafeGpxView extends HFragment {
                                 , getResources().getString(R.string.ok)
                                 , null, "", null);
                         TTExceptionLogSQLite.insert("Server Connect: " + response.code(), response.message(), PrjConfig.frmSafeGpxView, 300);
-                        Log.d(Tag, "ERROR RESPONSE : " + response.code() + " msg: " + response.message());
+                        Log.d(tag(), "ERROR RESPONSE : " + response.code() + " msg: " + response.message());
                     }
 
                     isDownloading = false;
@@ -838,7 +835,7 @@ public class SafeGpxView extends HFragment {
                 TTExceptionLogSQLite.insert("Fail", t.getMessage(), PrjConfig.frmSafeGpxView, 100);
                 if (!isAdded()) return;
                 progressBar.setVisibility(View.GONE);
-                Log.e(Tag, "error" + " " + t.getMessage());
+                Log.e(tag(), "error" + " " + t.getMessage());
                 t.printStackTrace();
                 isDownloading = false;
             }
@@ -877,7 +874,7 @@ public class SafeGpxView extends HFragment {
                         doDownloadInBackground(res.command, tempDownloadFolder, downloadedFileName, currentObj, context);
                     } else {
                         TTExceptionLogSQLite.insert("Server Contact Failed", "Code:" + response.code(), PrjConfig.frmSafeGpxView, 60);
-                        Log.d(Tag, "server contact failed");
+                        Log.d(tag(), "server contact failed");
                     }
                 } catch (IOException e) {
                     TTExceptionLogSQLite.insert("IOException»" + e.getMessage(), stktrc2k(e), PrjConfig.frmSafeGpxView, 50);
@@ -900,7 +897,7 @@ public class SafeGpxView extends HFragment {
                 progressBarIndet.setVisibility(View.GONE);
                 isDownloading = false;
                 ;
-                Log.e(Tag, "error");
+                Log.e(tag(), "error");
             }
         });
     }
@@ -1054,7 +1051,7 @@ public class SafeGpxView extends HFragment {
 
             } catch (Exception e) {
 
-                Log.e(Tag, "اکسپشن" + step + " _ " + remoteAddr + "\n" + e.getMessage());
+                Log.e(tag(), "اکسپشن" + step + " _ " + remoteAddr + "\n" + e.getMessage());
                 e.printStackTrace();
                 String msg = "یک خطای پیش بینی نشده در هنگام دانلود رخ داده است. لطفا دوباره تلاش کنید.";
                 if (e.getMessage().toLowerCase().contains("time"))
@@ -1201,7 +1198,7 @@ public class SafeGpxView extends HFragment {
                 });
             } catch (Exception e) {
 
-                Log.e(Tag, "اکسپشن" + step + " _ " + remoteAddr + "\n" + e.getMessage());
+                Log.e(tag(), "اکسپشن" + step + " _ " + remoteAddr + "\n" + e.getMessage());
                 e.printStackTrace();
                 String msg = "یک خطای پیش بینی نشده در هنگام دانلود رخ داده است. لطفا دوباره تلاش کنید.";
                 if (e.getMessage().toLowerCase().contains("time"))
@@ -1285,6 +1282,12 @@ public class SafeGpxView extends HFragment {
         thread.start();
     }
 
+    //تنظیمات مربوط به صفحه --------------
+    @Override
+    protected int getScreenId() {return PrjConfig.frmSafeGpxView;}
+    @Override
+    protected String tag() {return SCREEN_TAG;}
+    public static final String SCREEN_TAG = "SafeGpxView";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
         return inflater.inflate(R.layout.frm_safegpx_view, parent, false);

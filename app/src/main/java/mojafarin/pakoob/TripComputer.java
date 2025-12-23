@@ -28,7 +28,7 @@ import bo.sqlite.NbCurrentTrackSQLite;
 import bo.sqlite.TTExceptionLogSQLite;
 import maptools.TrackProperties;
 import maptools.GeoCalcs;
-import utils.HFragment;
+import UI.HFragment;
 import utils.MainActivityManager;
 import utils.PrjConfig;
 
@@ -43,9 +43,7 @@ public class TripComputer extends HFragment {
     Handler handler = new Handler(Looper.getMainLooper());
     TimerTask t;
 
-    public TripComputer(){
-        Tag = "محاسبه سفر";
-    }
+    public TripComputer(){}
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {//4th Event
@@ -73,7 +71,7 @@ public class TripComputer extends HFragment {
     private void fillForm() {
         try {
         } catch (Exception ex) {
-            Log.e(Tag, "بازکردن" + "fillForm_on_safeGpxView: " + ex.getMessage() + ex.getStackTrace());
+            Log.e(tag(), "بازکردن" + "fillForm_on_safeGpxView: " + ex.getMessage() + ex.getStackTrace());
             //Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             ex.printStackTrace();
             TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmTripComputer, 150);
@@ -221,7 +219,7 @@ public class TripComputer extends HFragment {
         }
         public void timerFunctionTick(){
             totalTrackSeconds += 1000;
-            //Log.e(Tag, "NEXT Fired" + ++counter);
+            //Log.e(tag(), "NEXT Fired" + ++counter);
             TrackProperties tp = setTrackProperties(false);
             setSpecialFields(false);
         }
@@ -263,6 +261,13 @@ public class TripComputer extends HFragment {
             return tp;
         }
 
+
+        //تنظیمات مربوط به صفحه --------------
+        @Override
+        protected int getScreenId() {return PrjConfig.frmTripComputer;}
+        @Override
+        protected String tag() {return SCREEN_TAG;}
+        public static final String SCREEN_TAG = "TripComputerP21";
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
             return inflater.inflate(R.layout.frm_tripcomputer_page1, parent, false);
@@ -359,12 +364,23 @@ public class TripComputer extends HFragment {
             super.onDetach();
         }
 
+        //تنظیمات مربوط به صفحه --------------
+        @Override
+        protected int getScreenId() {return PrjConfig.frmTripComputer;}
+        @Override
+        protected String tag() {return SCREEN_TAG;}
+        public static final String SCREEN_TAG = "TripComputerP2";
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
             return inflater.inflate(R.layout.frm_tripcomputer_page2, parent, false);
         }
     }
-
+    //تنظیمات مربوط به صفحه --------------
+    @Override
+    protected int getScreenId() {return PrjConfig.frmTripComputer;}
+    @Override
+    protected String tag() {return SCREEN_TAG;}
+    public static final String SCREEN_TAG = "TripComputer";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
         return inflater.inflate(R.layout.frm_tripcomputer, parent, false);

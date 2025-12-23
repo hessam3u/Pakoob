@@ -1,6 +1,6 @@
 package utils;
 
-import static utils.HFragment.stktrc2k;
+import static UI.HFragment.stktrc2k;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,10 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import bo.dbConstantsTara;
+
 import bo.entity.FmMessage;
-import bo.sqlite.FmMessageDao;
-import bo.sqlite.FmMessageSQLite;
 import bo.sqlite.TTExceptionLogSQLite;
 import mojafarin.pakoob.MainActivity;
 import mojafarin.pakoob.app;

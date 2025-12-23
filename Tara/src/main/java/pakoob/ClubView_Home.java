@@ -15,7 +15,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
 
-import androidx.appcompat.app.AppCompatActivity;
 import bo.dbConstantsTara;
 import bo.NewClasses.SimpleRequest;
 import bo.NewClasses.StringContentDTO;
@@ -26,10 +25,9 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import utils.HFragment;
+import UI.HFragment;
 import utils.MainActivityManager;
 import utils.PicassoCircleTransform;
-import utils.PicassoOnScrollListener;
 import utils.PicassoTrustAll;
 import utils.PrjConfig;
 import utils.hutilities;
@@ -289,7 +287,12 @@ public class ClubView_Home extends HFragment {
         super.initializeComponents(v);
     }
 
-
+    //تنظیمات مربوط به صفحه --------------
+    @Override
+    protected int getScreenId() {return PrjConfig.frmClubView_Home;}
+    @Override
+    protected String tag() {return SCREEN_TAG;}
+    public static final String SCREEN_TAG = "ClubView_Home";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
         return inflater.inflate(R.layout.frm_clubview_home, parent, false);

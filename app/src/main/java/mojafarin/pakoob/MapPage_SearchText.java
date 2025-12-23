@@ -1,6 +1,5 @@
 package mojafarin.pakoob;
 
-import static android.content.Context.CONTACT_KEYS_SERVICE;
 import static mojafarin.pakoob.MainActivity.currentLatLon;
 
 import android.app.Activity;
@@ -29,12 +28,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,18 +37,14 @@ import bo.NewClasses.SimpleRequest;
 import bo.entity.NbPoi;
 import bo.entity.NbPoiList;
 import bo.entity.SearchRequestDTO;
-import bo.sqlite.NbPoiSQLite;
 import bo.sqlite.TTExceptionLogSQLite;
 import maptools.GPXFile;
 import maptools.GeoCalcs;
-import maptools.InfoBottomPoint;
-import maptools.InfoBottomTrack;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import utils.HFragment;
-import utils.MainActivityManager;
+import UI.HFragment;
 import utils.PrjConfig;
 import utils.RecyclerTouchListener;
 import utils.TextFormat;
@@ -136,10 +126,6 @@ public class MapPage_SearchText extends HFragment {
         txtSearch.setOnFocusChangeListener((view1, hasFocus) -> {
         });
 
-        //فوکوس کردن روی تکست باکس و باز کردن کیبورد
-        txtSearch.requestFocus();
-        hutilities.showKeyboardInsideFragment(context, txtSearch);
-
         btnShowResultOnMap = v.findViewById(R.id.btnShowResultOnMap);
         btnShowResultOnMap.setOnClickListener(view1 -> {
             ResultList = adapterSearch.data;
@@ -190,12 +176,17 @@ public class MapPage_SearchText extends HFragment {
     @Override
     public void onResume() {
         super.onResume();
+        if (txtSearch.getText().length() == 0){
+            //فوکوس کردن روی تکست باکس و باز کردن کیبورد
+            txtSearch.requestFocus();
+            hutilities.showKeyboardInsideFragment(context, txtSearch);
+        }
     }
     public void onResumeInChild() {
         try {
 
         } catch (Exception ex) {
-            Log.e(Tag, "خطا" + ex.getMessage());
+            Log.e(tag(), "خطا" + ex.getMessage());
             ex.printStackTrace();
             TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmMapPage_SearchText, 1001);
         }
@@ -207,10 +198,6 @@ public class MapPage_SearchText extends HFragment {
         return super.onBackPressedInChild();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
-        return inflater.inflate(R.layout.activity_maps_search_text, parent, false);
-    }
 
     //---------------------- شروع قمست های اضافه جستجو کردن ---------------------
     private void btnSearch_Click() {
@@ -303,11 +290,11 @@ public class MapPage_SearchText extends HFragment {
                             txtSearchResult.setVisibility(View.VISIBLE);
                             divSearch.setVisibility(View.GONE);
                             txtSearchResult.setText("متاسفانه در برقراری ارتباط با سرور مشکلی به وجود آمده است. لطفا بعدا مجددا تلاش نمایید.");
-                            Log.e(Tag, "MY_ERROR" + "ResponseCODE: " + response.code());
+                            Log.e(tag(), "MY_ERROR" + "ResponseCODE: " + response.code());
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
-                        Log.e(Tag, "MY_ERROR" + ex.getMessage());
+                        Log.e(tag(), "MY_ERROR" + ex.getMessage());
                         TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frm_SearchOnMap, 100);
                     }
                 }
@@ -328,7 +315,7 @@ public class MapPage_SearchText extends HFragment {
         } catch (Exception ex) {
             projectStatics.showDialog(context, getString(R.string.ProblemInSearch), getString(R.string.ProblemInSearch_DESC)
                     , getString(R.string.accept), null, "", null);
-            Log.e(Tag, "خطا" + " text " + ex.getMessage());
+            Log.e(tag(), "خطا" + " text " + ex.getMessage());
             TTExceptionLogSQLite.insert(ex.getMessage(), "Searched: " + text + " - " + stktrc2k(ex), PrjConfig.frmMapPage_SearchText, 1006);
             ex.printStackTrace();
         }
@@ -541,4 +528,14 @@ public class MapPage_SearchText extends HFragment {
 
     //---------------------- پایان قمست های اضافه جستجو کردن ---------------------
 
+    //تنظیمات مربوط به صفحه --------------
+    @Override
+    protected int getScreenId() {return PrjConfig.frmMapPage_SearchText;}
+    @Override
+    protected String tag() {return SCREEN_TAG;}
+    public static final String SCREEN_TAG = "SearchTextMP";
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
+        return inflater.inflate(R.layout.activity_maps_search_text, parent, false);
+    }
 }

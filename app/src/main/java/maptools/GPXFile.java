@@ -3,14 +3,11 @@ package maptools;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ReceiverCallNotAllowedException;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
-import android.view.animation.BounceInterpolator;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -24,7 +21,6 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.channels.spi.AbstractSelectionKey;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -54,7 +50,7 @@ import static bo.entity.NbPoi.Enums.PoiType_Route;
 import static bo.entity.NbPoi.Enums.PoiType_Track;
 import static bo.entity.NbPoi.Enums.PoiType_Waypoint;
 import static bo.entity.NbPoi.Enums.ShowStatus_Show;
-import static utils.HFragment.stktrc2k;
+import static UI.HFragment.stktrc2k;
 import static utils.TextFormat.ReplacePersianNumbersWithEnglishOne;
 
 public class GPXFile {
@@ -721,6 +717,7 @@ public class GPXFile {
         }
     }
 
+    //همزمان هم حذف کن از دیتابیس هم حذف کن از ظاهر هم حذف کن از visiblePois
     public static void DeleteNbPoiRec(NbPoi obj) {
         if (obj.PoiType == (NbPoi.Enums.PoiType_Folder)) {
             List<NbPoi> allPois = NbPoiSQLite.selectByLevel(obj.Level + 1, obj.NbPoiId);
@@ -730,6 +727,7 @@ public class GPXFile {
         }
         NbPoiSQLite.delete(obj);
         NbPoiCompact compact = app.findInVisiblePois(obj.NbPoiId);
+        app.removeInVisiblePois(obj.NbPoiId);
         if (compact != null) {
             if (compact.marker != null)
                 compact.marker.remove();

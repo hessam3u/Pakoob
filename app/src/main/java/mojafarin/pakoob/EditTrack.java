@@ -1,7 +1,6 @@
 package mojafarin.pakoob;
 
 import static mojafarin.pakoob.SafeGpxView.setupLineChartForElevation;
-import static utils.HFragment.stktrc2k;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,7 +20,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -48,7 +46,6 @@ import java.util.TimeZone;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 
 import bo.NewClasses.SimpleRequest;
 import bo.entity.SearchRequestDTO;
@@ -59,6 +56,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import UI.HFragment;
 import utils.MainActivityManager;
 import utils.PrjConfig;
 import bo.entity.NbPoi;
@@ -72,7 +70,7 @@ import utils.MyDate;
 import utils.hutilities;
 import utils.projectStatics;
 
-public class EditTrack extends Fragment {
+public class EditTrack extends HFragment {
     long NbPoiId = 0;
     NbPoi currentObj = null;
     int CurrentColor = 0;
@@ -82,16 +80,19 @@ public class EditTrack extends Fragment {
     int PositionInParent = -1;
     MyTracks.NbPoisAdapter adapter = null;
 
-    public EditTrack(long _NbPoiId, String _Sender, int positionInParent, MyTracks.NbPoisAdapter _adapter) {
-        //Intent intent = getIntent();
-        NbPoiId = _NbPoiId;//intent.getLongExtra("NbPoiId", 0);
-        Sender = _Sender;//intent.getStringExtra("Sender");
-        currentObj = NbPoiSQLite.select(NbPoiId);
-        data = TrackData.readTrackData(currentObj.Address, null);
-        dataSize = data.Points.size();
-        adapter = _adapter;
-        PositionInParent = positionInParent;
+    public EditTrack() {}
 
+    public static EditTrack getInstance(long _NbPoiId, String _Sender, int positionInParent, MyTracks.NbPoisAdapter _adapter){
+        EditTrack res = new EditTrack();
+        res.NbPoiId = _NbPoiId;//intent.getLongExtra("NbPoiId", 0);
+        res.Sender = _Sender;//intent.getStringExtra("Sender");
+        res.currentObj = NbPoiSQLite.select(res.NbPoiId);
+        res.data = TrackData.readTrackData(res.currentObj.Address, null);
+        res.dataSize = res.data.Points.size();
+        res.adapter = _adapter;
+        res.PositionInParent = positionInParent;
+
+        return res;
     }
 
     @Override
@@ -274,8 +275,8 @@ public class EditTrack extends Fragment {
     TextInputEditText txtTitle;
     ImageView btnSelectColor;
 
-    private void initializeComponents(View v) {
-
+    @Override
+    public void initializeComponents(View v) {
         btnBack = v.findViewById(R.id.btnBack);
         btnBack.setOnClickListener(view -> {
             ((AppCompatActivity) context).onBackPressed();
@@ -305,7 +306,7 @@ public class EditTrack extends Fragment {
         btnTrackInfo = v.findViewById(R.id.btnTrackInfo);
         btnTrackInfo.setVisibility(View.GONE);
         btnEditOnMap = v.findViewById(R.id.btnEditOnMap);
-        if (dataSize > 500){
+        if (dataSize > 800){
             btnEditOnMap.setVisibility(View.GONE);
         }
         btnViewPoints = v.findViewById(R.id.btnViewPoints);
@@ -383,26 +384,17 @@ public class EditTrack extends Fragment {
     }
 
     private void btnEditOnMap_Click() {
-        if (dataSize > 500) {
+        if (dataSize > 800) {
             projectStatics.showDialog(context, getResources().getString(R.string.Warning), getResources().getString(R.string.TooManyPointsToEditOnMap), getResources().getString(R.string.btnAccept), null, "", null);
             return;
         } else {
             ((MainActivity) context).showNbPoiOnMapForEdit(currentObj.NbPoiId, currentObj.Name);
             ((MainActivity) context).backToMapPage();
-            //not work after fragmenting
-//            Intent intent = new Intent();
-//            intent.putExtra("NbPoiId", currentObj.NbPoiId);
-//            setResult(MainActivity.ResultCode_ForMyTracks, intent);
-//            finish();//finishing activity
         }
     }
 
     private void btnViewPoints_Click() {
         ((MainActivity) context).showFragment(new ViewTrackPoints(currentObj.NbPoiId, "EditTrack"));
-//        Intent it = new Intent(context, ViewTrackPoints.class);
-//        it.putExtra("NbPoiId", currentObj.NbPoiId);
-//        it.putExtra("Sender", "MyTracks");
-//        startActivity(it);
     }
 
     private void btnSave_Click() {
@@ -426,6 +418,9 @@ public class EditTrack extends Fragment {
             debugStep = 20;
 //        ColorDrawable cd = (ColorDrawable)btnSelectColor.getBackground();
 //        cd.getColor();
+            boolean colorChanged = false;
+            if (poi.Color != CurrentColor)
+                colorChanged = true;
             poi.Color = CurrentColor;
             NbPoiSQLite.update(poi);
             debugStep = 30;
@@ -604,6 +599,10 @@ public class EditTrack extends Fragment {
                 , getResources().getString(R.string.ok)
                 , view1 -> {
                     GPXFile.DeleteNbPoiRec(currentObj);
+
+                    boolean removeFromVisibleRes = app.removeInVisiblePois(currentObj.NbPoiId);
+                    Log.e(tag(), "Remove result from VisiblePOI : " + removeFromVisibleRes);
+
                     if (adapter != null) {
                         adapter.data.remove(PositionInParent);
                         adapter.notifyItemRemoved(PositionInParent);
@@ -790,12 +789,18 @@ boolean isInBackgroundLoading = false;
         this.context = _context;
     }
 
+    public void onCreate(Bundle savedInstanceState) {//2nd Event
+        super.onCreate(savedInstanceState);
+    }
+
+    //تنظیمات مربوط به صفحه --------------
+    @Override
+    protected int getScreenId() {return PrjConfig.frmEditTrack;}
+    @Override
+    protected String tag() {return SCREEN_TAG;}
+    public static final String SCREEN_TAG = "EditTrack";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
         return inflater.inflate(R.layout.mytracks_edittrack, parent, false);
-    }
-
-    public void onCreate(Bundle savedInstanceState) {//2nd Event
-        super.onCreate(savedInstanceState);
     }
 }

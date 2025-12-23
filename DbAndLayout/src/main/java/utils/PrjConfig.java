@@ -37,6 +37,14 @@ public class PrjConfig {
     public static final int frmInfoBottomOfMapPage = 118;
     public static final int frm_PleaseRegister = 119;
     public static final int frmMapPage_SearchText = 120;
+    public static final int frmHome_CurrentTours = 121;
+    public static final int frmInfoPage = 122;
+    public static final int frmSettings = 123;
+    public static final int frmShowMapDialog = 124;
+    public static final int frmTrackInfo = 125;
+    public static final int frmViewTrackPoints = 126;
+    public static final int frmCompleteRegister = 127;
+    public static final int frmRegister = 128;
 
 
     public static final String MessageSplitor = "*?*/*?/";

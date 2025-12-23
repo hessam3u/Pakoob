@@ -1,6 +1,7 @@
 package bo.sqlite;
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.room.AutoMigration;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -12,9 +13,11 @@ import bo.entity.NbCurrentTrack;
 import bo.entity.NbLogSearch;
 import bo.entity.NbMap;
 import bo.entity.NbPoi;
+import bo.entity.NbScreenTime;
 import bo.entity.TTExceptionLog;
 
-@Database(entities = {TTExceptionLog.class, NbMap.class, NbPoi.class, NbCurrentTrack.class, NbLogSearch.class}, version = 5
+@Database(entities = {TTExceptionLog.class, NbMap.class, NbPoi.class, NbCurrentTrack.class, NbLogSearch.class, NbScreenTime.class}
+        , version = 6
         ,  exportSchema = true)
 public abstract class AppDatabaseMap extends RoomDatabase {
     public static String DATABASE_NAME = "NaghsheBazDB";
@@ -25,6 +28,7 @@ public abstract class AppDatabaseMap extends RoomDatabase {
     public abstract NbPoiDao NbPoiDao();
     public abstract NbCurrentTrackDao NbCurrentTrackDao();
     public abstract NbLogSearchDao NbLogSearchDao();
+    public abstract NbScreenTimeDao NbScreenTimeDao();
 
     static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
@@ -71,6 +75,36 @@ public abstract class AppDatabaseMap extends RoomDatabase {
                     ")");
         }
     };
+    static final Migration MIGRATION_5_6 = new Migration(5, 6) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase db) {
+
+            db.execSQL(
+                    "CREATE TABLE IF NOT EXISTS nb_screen_time (" +
+                            "NbScreenTimeId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                            "screenId INTEGER NOT NULL, " +
+                            "command TEXT NOT NULL, " +
+                            "startTime INTEGER NOT NULL, " +
+                            "endTime INTEGER NOT NULL" +
+                            ")"
+            );
+
+            db.execSQL(
+                    "CREATE INDEX IF NOT EXISTS index_nb_screen_time_screenId " +
+                            "ON nb_screen_time(screenId)"
+            );
+
+            db.execSQL(
+                    "CREATE INDEX IF NOT EXISTS index_nb_screen_time_startTime " +
+                            "ON nb_screen_time(startTime)"
+            );
+
+            db.execSQL(
+                    "CREATE INDEX IF NOT EXISTS index_nb_screen_time_endTime " +
+                            "ON nb_screen_time(endTime)"
+            );
+        }
+    };
 
     public static AppDatabaseMap getDatabase(Context context) {
         if (INSTANCE == null) {
@@ -85,7 +119,8 @@ public abstract class AppDatabaseMap extends RoomDatabase {
                             .addMigrations(MIGRATION_3_4)
                             .addMigrations(MIGRATION_4_5)
                             // recreate the database if necessary
-                            .fallbackToDestructiveMigration()
+                            //.fallbackToDestructiveMigration() //کامنت شد به خاطر چت جی پی تس در 1404-10-02
+                            .addMigrations(MIGRATION_5_6) //1404-10-02
                             .build();
         }
         return INSTANCE;

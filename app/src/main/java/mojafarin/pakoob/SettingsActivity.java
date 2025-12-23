@@ -21,7 +21,8 @@ import androidx.appcompat.widget.SwitchCompat;
 import bo.entity.NbMap;
 import bo.sqlite.NbMapSQLite;
 import maptools.hMapTools;
-import utils.HFragment;
+import UI.HFragment;
+import utils.PrjConfig;
 import utils.hutilities;
 import utils.projectStatics;
 
@@ -216,6 +217,12 @@ public class SettingsActivity extends HFragment {
         txtDeleteHighZoom.setText(getResources().getString(R.string.deleteHighZoom) + " (" + highzoomsSize + ")");
     }
 
+    //تنظیمات مربوط به صفحه --------------
+    @Override
+    protected int getScreenId() {return PrjConfig.frmSettings;}
+    @Override
+    protected String tag() {return SCREEN_TAG;}
+    public static final String SCREEN_TAG = "frmSettings";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
         return inflater.inflate(R.layout.frm_setting, parent, false);

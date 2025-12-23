@@ -1,6 +1,6 @@
 package mojafarin.pakoob.mainactivitymodes;
 
-import static utils.HFragment.stktrc2k;
+import static UI.HFragment.stktrc2k;
 
 import android.app.AlertDialog;
 import android.content.Context;

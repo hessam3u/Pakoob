@@ -8,11 +8,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import utils.hutilities;
-import utils.projectStatics;
 
-public class InfoPage extends Fragment {
+import UI.HFragment;
+import utils.PrjConfig;
+import utils.hutilities;
+
+public class InfoPage extends HFragment {
     String pageKey = "";
     public InfoPage(){
 
@@ -35,7 +36,8 @@ public class InfoPage extends Fragment {
     }
 
     TextView txtPageTitle, btnBack;
-    void initializeComponents(View v) {
+    @Override
+    public void initializeComponents(View v) {
 
         btnBack =v.findViewById(R.id.btnBack);
         btnBack.setOnClickListener(view -> {((AppCompatActivity) context).onBackPressed();});
@@ -64,6 +66,14 @@ public class InfoPage extends Fragment {
         super.onAttach(context);
         this.context = _context;
     }
+
+
+    //تنظیمات مربوط به صفحه --------------
+    @Override
+    protected int getScreenId() {return PrjConfig.frmInfoPage;}
+    @Override
+    protected String tag() {return SCREEN_TAG;}
+    public static final String SCREEN_TAG = "InfoPage";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
         if (pageKey.equals("help") || pageKey.equals("")){
@@ -80,6 +90,5 @@ public class InfoPage extends Fragment {
             return inflater.inflate(R.layout.frm_privacypolicy, parent, false);
         }
         return null;
-
     }
 }

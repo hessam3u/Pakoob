@@ -11,32 +11,27 @@
           {
             "fieldPath": "TTExceptionLogId",
             "columnName": "TTExceptionLogId",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "CCustomerId",
             "columnName": "CCustomerId",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "ExDate",
             "columnName": "ExDate",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "AppId",
             "columnName": "AppId",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "Platform",
             "columnName": "Platform",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "OsVersion",
@@ -47,63 +42,54 @@
           {
             "fieldPath": "PhoneSerial",
             "columnName": "PhoneSerial",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "DeviceModel",
             "columnName": "DeviceModel",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "ManuIdiom",
             "columnName": "ManuIdiom",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "IP",
             "columnName": "IP",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "VersionNumber",
             "columnName": "VersionNumber",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "ExMessage",
             "columnName": "ExMessage",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "ExText",
             "columnName": "ExText",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "InternalPage",
             "columnName": "InternalPage",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "InternalCode",
             "columnName": "InternalCode",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           }
         ],
         "primaryKey": {
+          "autoGenerate": true,
           "columnNames": [
             "TTExceptionLogId"
-          ],
-          "autoGenerate": true
+          ]
         },
         "indices": [
           {
@@ -115,8 +101,7 @@
             "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_TTExceptionLog_TTExceptionLogId` ON `${TABLE_NAME}` (`TTExceptionLogId`)"
           }
-        ],
-        "foreignKeys": []
+        ]
       },
       {
         "tableName": "NbMap",
@@ -125,152 +110,127 @@
           {
             "fieldPath": "NbMapId",
             "columnName": "NbMapId",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "Name",
             "columnName": "Name",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "OrginalName",
             "columnName": "OrginalName",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "NCCIndex",
             "columnName": "NCCIndex",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "BlockName",
             "columnName": "BlockName",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "LatS",
             "columnName": "LatS",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "LatN",
             "columnName": "LatN",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "LonE",
             "columnName": "LonE",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "LonW",
             "columnName": "LonW",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "Desc",
             "columnName": "Desc",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "Price",
             "columnName": "Price",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "AcServiceId",
             "columnName": "AcServiceId",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "AvailablityType",
             "columnName": "AvailablityType",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "EncType",
             "columnName": "EncType",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "FileType",
             "columnName": "FileType",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "NCCBlock",
             "columnName": "NCCBlock",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "Scale",
             "columnName": "Scale",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "Version",
             "columnName": "Version",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "Year",
             "columnName": "Year",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "NbPublisherTypeId",
             "columnName": "NbPublisherTypeId",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "DemoLatS",
             "columnName": "DemoLatS",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "DemoLatN",
             "columnName": "DemoLatN",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "DemoLonE",
             "columnName": "DemoLonE",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "DemoLonW",
             "columnName": "DemoLonW",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "DemoFileAddress",
             "columnName": "DemoFileAddress",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "DemoStatus",
@@ -299,26 +259,22 @@
           {
             "fieldPath": "RequestStatus",
             "columnName": "RequestStatus",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "BuyStatus",
             "columnName": "BuyStatus",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "BuyDesc",
             "columnName": "BuyDesc",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "LocalFileAddress",
             "columnName": "LocalFileAddress",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "Extracted",
@@ -334,13 +290,11 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": false,
           "columnNames": [
             "NbMapId"
-          ],
-          "autoGenerate": false
-        },
-        "indices": [],
-        "foreignKeys": []
+          ]
+        }
       },
       {
         "tableName": "NbPoi",
@@ -349,8 +303,7 @@
           {
             "fieldPath": "NbPoiId",
             "columnName": "NbPoiId",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "Name",
@@ -504,13 +457,11 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": true,
           "columnNames": [
             "NbPoiId"
-          ],
-          "autoGenerate": true
-        },
-        "indices": [],
-        "foreignKeys": []
+          ]
+        }
       },
       {
         "tableName": "NbCurrentTrack",
@@ -519,8 +470,7 @@
           {
             "fieldPath": "NbCurrentTrackId",
             "columnName": "NbCurrentTrackId",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "Latitude",
@@ -548,13 +498,11 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": false,
           "columnNames": [
             "NbCurrentTrackId"
-          ],
-          "autoGenerate": false
-        },
-        "indices": [],
-        "foreignKeys": []
+          ]
+        }
       },
       {
         "tableName": "NbLogSearch",
@@ -604,16 +552,13 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": true,
           "columnNames": [
             "NbLogSearchId"
-          ],
-          "autoGenerate": true
-        },
-        "indices": [],
-        "foreignKeys": []
+          ]
+        }
       }
     ],
-    "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
       "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fd9535d69dad71cac30331c7245de27a')"

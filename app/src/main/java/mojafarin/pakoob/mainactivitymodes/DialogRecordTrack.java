@@ -1,7 +1,7 @@
 package mojafarin.pakoob.mainactivitymodes;
 
 import static android.content.Context.POWER_SERVICE;
-import static utils.HFragment.stktrc2k;
+import static UI.HFragment.stktrc2k;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,8 +18,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.core.content.ContextCompat;
 
 import com.github.eloyzone.jalalicalendar.JalaliDate;
 import com.google.android.gms.maps.model.JointType;
@@ -40,7 +38,6 @@ import bo.sqlite.NbCurrentTrackSQLite;
 import bo.sqlite.TTExceptionLogSQLite;
 import maptools.GPXFile;
 import maptools.LocationRepository;
-import maptools.LocationTrackingService;
 import maptools.TrackData;
 import mojafarin.pakoob.MainActivity;
 import mojafarin.pakoob.MapPage;
@@ -53,7 +50,6 @@ import utils.projectStatics;
 
 public class DialogRecordTrack {
     MainActivity activity;
-    List<NbCurrentTrack> currentTrack = new ArrayList<>();
     long lastCurrentTrackId = 0;
     public Polyline polyCurrentTrack = null;
     MapPage mapPage;
@@ -92,7 +88,6 @@ public class DialogRecordTrack {
             if (getIsRecording()) {
                 //1400-11-04 three lines added:
                 NbCurrentTrack pauseObject = NbCurrentTrack.getPauseObject();
-                currentTrack.add(pauseObject);
                 //ذخیره سازی اولین نقطه - بقیه نقطه ها در سرویس ذخیره میشه
                 lastCurrentTrackId = NbCurrentTrackSQLite.insert(pauseObject);
 
@@ -107,7 +102,7 @@ public class DialogRecordTrack {
             } else {
 
                 //شروع سرویس خوندن موقعیت
-                startLocationService();
+                app.startLocationService(context);
 
                 Toast.makeText(activity, R.string.MsgRecordingStartedAgain, Toast.LENGTH_LONG);
 
@@ -139,23 +134,6 @@ public class DialogRecordTrack {
         }
     }
 
-    public void startLocationService() {
-        if (app.mServiceIntent == null){
-            app.mServiceIntent = new Intent(context, LocationTrackingService.class);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) { // Android 14+
-            // از ContextCompat استفاده کن تا رفتار ایمن‌تر و با permission چک انجام شه
-            ContextCompat.startForegroundService(context, app.mServiceIntent);
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // Android 8 - 13
-            context.startForegroundService(app.mServiceIntent);
-        } else { // قدیمی‌تر از Android 8
-            context.startService(app.mServiceIntent);
-        }
-        if (!MainActivity.isTrackingServiceBound) {
-            context.bindService(app.mServiceIntent, MainActivity.connection, Context.BIND_AUTO_CREATE);
-            MainActivity.isTrackingServiceBound = true;
-        }
-    }
 
     public void initializeComponents() {
         color_of_currentTrack = Color.CYAN;//Color.parseColor();
@@ -257,7 +235,7 @@ public class DialogRecordTrack {
         ex.printStackTrace();
         projectStatics.showDialog(activity
                 , title
-                ,  desc  + " ("+InternalCode+") " + (showExToUser?" + " + ex.getMessage():"")
+                , desc + " (" + InternalCode + ") " + (showExToUser ? " + " + ex.getMessage() : "")
                 , activity.getResources().getString(R.string.ok)
                 , null
                 , ""
@@ -290,6 +268,7 @@ public class DialogRecordTrack {
                         Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
                         intent.setData(uri);
                         activity.startActivity(intent);
+
                         //activity.getApplicationContext().startActivity(new Intent("com.android.settings.widget.SettingsAppWidgetProvider"));
                     }
                     , "", null);
@@ -306,8 +285,7 @@ public class DialogRecordTrack {
         polyCurrentTrack.remove();
         polyCurrentTrack = null;
 //        polylines.clear();
-        currentTrack.clear();
-        veryCurrentRoutePoints.clear();
+        clearPolyline();
         mapPage.stopTrackRecordingServiceIfRunning();
     }
 
@@ -340,17 +318,17 @@ public class DialogRecordTrack {
     public void startRecording() {
         try {
             checkPowerSavingMode(activity);
-            startLocationService();
+            app.startLocationService(context);
             setIsRecording(true);
             //1404-08 added - اولین نقطه رو همین لحظه اضافه کنه - شاید باعث ایجاد نقطه الکی بشه
-            if (MainActivity.currentLatLon != null){
+            if (MainActivity.currentLatLon != null) {
                 Location loc = new Location("");
                 loc.setLatitude(MainActivity.currentLatLon.latitude);
                 loc.setLongitude(MainActivity.currentLatLon.longitude);
                 loc.setTime(Calendar.getInstance().getTimeInMillis());
                 loc.setAltitude(MainActivity.currentElev);
                 app.mTrackInBackgroundService.savePointToDB_IfTracking(loc);
-                drawNextPoint(MainActivity.currentLatLon, (float) MainActivity.currentElev);
+                drawNewPoint(MainActivity.currentLatLon, (float) MainActivity.currentElev);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -376,34 +354,6 @@ public class DialogRecordTrack {
         setViewOfBtnPlay();
     }
 
-    public void drawBackgroundPoints(List<NbCurrentTrack> backCurrentTrack) {
-        if (!getIsRecordPanelActive()) {
-            return;
-        }
-
-        currentTrack.clear();
-        currentTrack.addAll(backCurrentTrack);
-        int trkSize = backCurrentTrack.size();
-        veryCurrentRoutePoints.clear();
-        for (int i = 0; i < trkSize; i++) {
-            NbCurrentTrack currentTrack = backCurrentTrack.get(i);
-            if (currentTrack.IsPause()) //1400-11-04
-                continue;
-            LatLng latLng = currentTrack.getLatLon();
-            veryCurrentRoutePoints.add(latLng);
-            //if (i == trkSize - 1) //1400-11-04 Commented
-            //    lastLocation = latLng;
-            lastLocation = latLng;
-        }
-        polyCurrentTrack.remove();
-
-        if (activity.map == null) {
-            Log.e("Dialog_Track", "نقشه نال بود و بی خیال شدیم");
-            return;
-        }
-        drawVeryCurrentRoute();
-    }
-
     public Polyline getCurrentTrackPolylineDrawer(List<LatLng> points) {
         Polyline route = activity.map.addPolyline(new PolylineOptions()
                 .width(8)
@@ -415,40 +365,72 @@ public class DialogRecordTrack {
         return route;
     }
 
-    public void drawVeryCurrentRoute() {
-        if (activity.map == null)
-            return;
 
-        polyCurrentTrack = getCurrentTrackPolylineDrawer(veryCurrentRoutePoints);
-        veryCurrentRoutePoints.clear();
+    //1404-08 new
+    public void drawNewPoint(LatLng point, float Elevation) {
+        if (polyCurrentTrack == null) {
+            createCurrentTrackPolyline();
+        }
+        List<LatLng> points = polyCurrentTrack.getPoints();
+        points.add(point);
+        polyCurrentTrack.setPoints(points);
     }
 
-    public List<LatLng> veryCurrentRoutePoints = new ArrayList<>();
+    //1404-08 new
+//    public void drawBackgroundPoints(List<NbCurrentTrack> currentTrackFromDB) {
+//        drawCurrentTrack(currentTrackFromDB);
+//    }
 
-    public void drawNextPoint(LatLng currentLatLon, float Elevation) {
-        if (currentLatLon == null)
-            return;
-        if (!getIsRecordPanelActive() || !getIsRecording())
-            return;
-        NbCurrentTrack trkPt = new NbCurrentTrack();
-        trkPt.Latitude = currentLatLon.latitude;
-        trkPt.Longitude = currentLatLon.longitude;
-        trkPt.Time = System.currentTimeMillis();
-        trkPt.Elevation = Elevation;
-
-        if (trkPt.Time - lastTime < 1000)
-            return;
-        currentTrack.add(trkPt);
-        if (lastLocation != null) {
-            veryCurrentRoutePoints.add(lastLocation);
-            veryCurrentRoutePoints.add(currentLatLon);
+    //1404-08 new
+    public void drawCurrentTrack(List<NbCurrentTrack> currentTrackFromDB) {
+        if (polyCurrentTrack == null) {
+            createCurrentTrackPolyline();
         }
-        lastLocation = currentLatLon;
-        lastTime = trkPt.Time;
+        else {
+            clearPolyline();
+        }
 
-        if (activity.map == null)
+        int trkPts = currentTrackFromDB.size();
+        Log.e(Tag, "Poly has " +  trkPts + " Points!");
+        List<LatLng> points = new ArrayList<>();
+        for (int i = 0; i < trkPts; i++) {
+            NbCurrentTrack lastCurrentTrack = currentTrackFromDB.get(i);
+            if (lastCurrentTrack.IsPause()) {
+                continue;
+            }
+            points.add(lastCurrentTrack.getLatLon());
+        }
+        Log.e(Tag, "Points has " +  points.size() + " Points!");
+
+        polyCurrentTrack.setPoints(points);
+    }
+
+    //1404-08 new
+    public void clearPolyline() {
+        if (polyCurrentTrack != null) {
+            Log.e(Tag, "Poly Cleeeeeaaaaaaarrrrred!!!!!!!!!!");
+            polyCurrentTrack.setPoints(new ArrayList<LatLng>());
+        }
+    }
+
+    //1404-08 new
+    public void createCurrentTrackPolyline() {
+        if (polyCurrentTrack != null) {
+            Log.e(Tag, "Poly is Not NULL!!!!!!!!");
+            clearPolyline();
+        }
+        if (!mapPage.OnMapReadyCompleted){
+            Log.e(Tag, "Poly NOT Created because Map Is Not Ready!");
             return;
-        drawVeryCurrentRoute();
+        }
+        Log.e(Tag, "Poly Created!");
+
+        polyCurrentTrack = activity.map.addPolyline(new PolylineOptions()
+                .width(8)
+                .color(color_of_currentTrack)
+                .geodesic(false)
+                .jointType(JointType.ROUND)//1400-10-20
+                .zIndex(3));
     }
 
     LatLng lastLocation = null;

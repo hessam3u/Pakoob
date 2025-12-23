@@ -32,7 +32,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import bo.PageIds_PA;
+
 import bo.dbConstantsTara;
 import bo.entity.GetTourListDTO;
 import bo.entity.MobileInfoDTO;
@@ -45,7 +45,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import utils.HFragment;
+import UI.HFragment;
 import utils.MainActivityManager;
 import utils.PrjConfig;
 import utils.PrjEnums;
@@ -641,5 +641,10 @@ public class TourList extends HFragment {
     }
 
 
-
+    //تنظیمات مربوط به صفحه --------------
+    @Override
+    protected int getScreenId() {return PrjConfig.frmTourList;}
+    @Override
+    protected String tag() {return SCREEN_TAG;}
+    public static final String SCREEN_TAG = "TourList";
 }

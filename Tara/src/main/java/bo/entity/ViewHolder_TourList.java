@@ -1,15 +1,13 @@
 package bo.entity;
 
-import static utils.HFragment.stktrc2k;
+import static UI.HFragment.stktrc2k;
 
 import android.content.Context;
-import android.media.projection.MediaProjection;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pakoob.tara.R;
 import com.squareup.picasso.Picasso;
@@ -17,7 +15,6 @@ import com.squareup.picasso.Picasso;
 import androidx.recyclerview.widget.RecyclerView;
 
 import bo.sqlite.TTExceptionLogSQLite;
-import utils.PicassoOnScrollListener;
 import utils.PicassoTrustAll;
 import utils.PrjConfig;
 

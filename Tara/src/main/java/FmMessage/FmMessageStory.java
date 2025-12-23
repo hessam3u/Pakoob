@@ -40,11 +40,10 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import utils.HFragment;
+import UI.HFragment;
 import utils.MainActivityManager;
 import utils.MyDate;
 import utils.PicassoCircleTransform;
-import utils.PicassoOnScrollListener;
 import utils.PicassoTrustAll;
 import utils.PrjConfig;
 import utils.PrjEnums;
@@ -529,6 +528,12 @@ public class FmMessageStory extends HFragment {
         }
     }
 
+    //تنظیمات مربوط به صفحه --------------
+    @Override
+    protected int getScreenId() {return PrjConfig.frmFmMessageStory;}
+    @Override
+    protected String tag() {return SCREEN_TAG;}
+    public static final String SCREEN_TAG = "MessageStory";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
         return inflater.inflate(R.layout.frm_fmmessagestory, parent, false);

@@ -1,12 +1,10 @@
 package pakoob;
 
-import static utils.HFragment.stktrc2k;
-import static utils.HFragment.stktrc2kt;
+import static UI.HFragment.stktrc2k;
+import static UI.HFragment.stktrc2kt;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.service.quickaccesswallet.GetWalletCardsResponse;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +16,6 @@ import com.pakoob.tara.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.LinkedBlockingDeque;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DiffUtil;

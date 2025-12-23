@@ -179,7 +179,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-
             <LinearLayout
                 android:id="@+id/liMoreInfo"
                 android:layout_width="match_parent"
@@ -270,19 +269,78 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight=".5"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:text="@string/usernameEngish"
+                        style="@style/label_s"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/textbox_filled_mat_container"
+                        app:boxBackgroundColor="@color/colorTextboxBack"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:helperText="@string/usernameEngish_DescDown"
+                        >
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txtUsername"
+                            style="@style/textbox_filled_mat"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="0dp"
+                            android:textSize="@dimen/login_textSizeNormal"
+                            android:imeOptions="actionNext"
+                            android:singleLine="true"
+                            android:maxLength="25"
+                            android:inputType="text"
+                            android:gravity="left"
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+                <View android:layout_width="10dp" android:layout_height="1dp"/>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight=".5"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
+                    <TextView
+                        android:text="@string/publicOrPrivateNameFamily"
+                        style="@style/label_s"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+                    <RadioGroup
+                        android:orientation="horizontal"
+                        android:checkedButton="@+id/rbPublicNameFamily"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <RadioButton
+                            android:id="@+id/rbPublicNameFamily"
+                            style="@style/label"
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/Yes"/>
+                        <RadioButton
+                            android:id="@+id/rbPrivateNameFamily"
+                            style="@style/label"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/No"/>
+                    </RadioGroup>
+                </LinearLayout>
+            </LinearLayout>
 
-<!--            <EditText-->
-<!--                android:id="@+id/txtInput"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:textSize="@dimen/login_textSizeNormal"-->
-<!--                android:hint="اختیاری - مورد استفاده در هنگام ثبت نام برنامه ها"-->
-<!--                android:singleLine="true"-->
-<!--                android:maxLength="10"-->
-<!--                android:inputType="phone"-->
-<!--                android:gravity="right"-->
-<!--                />-->
         </LinearLayout>
 
         <RelativeLayout

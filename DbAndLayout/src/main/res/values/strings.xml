@@ -256,6 +256,7 @@
     <string name="lblGetDiscount_Title">وارد کردن کپن تخفیف</string>
     <string name="lblGetDiscount_Desc">در صورتی که کپن تخفیف دارید، آن را در کادر زیر وارد نمایید، در غیر این صورت این کادر را خالی بگذارید و دکمه ادامه را بفشارید</string>
 
+    <string name="btnMoveHere">انتقال ... آیتم به اینجا</string>
 
     <string name="YouAreAddingWaypoint">ثبت نقطه (روی نقشه کلیک کنید یا در کادر زیر وارد نمایید)</string>
     <string name="nameOfWaypoint">نام نقطه</string>
@@ -414,6 +415,10 @@
     <string name="notifPermission_Desc_After">مایلی که پیام ها و اعلان های مرتبط به مسیرهای بهینه و اعلام برنامه ها بهت برسه؟ لطفا در قسمت بالای صفحه بعد، مجوز دسترسی به اعلان ها رو به اپ پاکوب بده و تیک کنار اعلان ها (Notifications) رو بزن.</string>
     <string name="notifPermission_Desc_Before">مایلی که پیام ها و اعلان های مرتبط به مسیرهای بهینه و اعلام برنامه ها بهت برسه؟ لطفا در صفحه بعد، مجوز دسترسی به اعلان ها رو به اپ پاکوب بده </string>
 
+
+    <string name="sourceAndDestDirectoryIsSame_Title">انتخاب شاخه</string>
+    <string name="sourceAndDestDirectoryIsSame_Desc">شاخه مبدا و مقصد یکسان است. لطفا شاخه دیگری را انتخاب نمایید</string>
+
     <string name="shareViaText">اشتراک گذاری از طریق</string>
     <string name="share_YourLocation">مکان فعلی</string>
     <string name="share_SendTime">زمان ارسال</string>
@@ -524,6 +529,7 @@
     <string name="Home_WeatherAndTracks_Desc">در ادامه به صفحه نقشه هدایت خواهید شد و در آن جا با جستجوی نقطه مورد نظر خود، یا نگه داشتن انگشت روی نقشه، به هواشناسی یا ترک های مطمئن مربوط به آن نقطه دست خواهید یافت</string>
 
     <string name="Yes">بله</string>
+    <string name="No">خیر</string>
     <string name="Later">بعدا</string>
 
     <string name="title_all_tours">برنامه های آتی</string>
@@ -573,6 +579,11 @@
     <string name="cancel">انصراف</string>
     <string name="accept">تایید</string>
 
+
+    <string name="usernameEngish">شناسه کاربری (انگلیسی)</string>
+    <string name="usernameEngish_DescDown">حروف انگلیسی، نقطه و _</string>
+    <string name="publicOrPrivateNameFamily">نمایش عمومی نام و نام خانوادگی</string>
+
     <string name="NOTIF_CHANAL_SYSTEM">پیام های مهم پاکوب</string>
     <string name="NOTIF_CHANAL_SYSTEM_Desc">پیام های مهم اپلیکیشن پاکوب</string>
     <string name="NOTIF_CHANAL_SYSTEM_Desc_ForSettings">اعلان برای پیام های مهم اپلیکیشن پاکوب</string>
@@ -597,6 +608,7 @@
     <string name="SearchHearOrPressMap">جستجو کنید یا روی نقشه نگه دارید</string>
     <string name="SearchHearForMapPage">قله، شهر، نقشه، جاذبه و...</string>
     <string name="SearchOnTopOfSelectMap">نام یا شماره نقشه را جستجو کنید</string>
+    <string name="SearchOnTopOfMapPage">عنوان مورد نظر، مختصر و بدون پسوند و پیشوند</string>
     <string name="showResultOnMap">نمایش نتایج روی نقشه</string>
     <string name="OpenForecast">پیش بینی هوا</string>
     <string name="btnSaveOrEdit_Save">ذخیره نقطه</string>

@@ -22,6 +22,7 @@ import bo.entity.NbPoiCompact;
 import maptools.GPXFile;
 import maptools.TrackData;
 import mojafarin.pakoob.MainActivity;
+import mojafarin.pakoob.MapPage;
 import mojafarin.pakoob.R;
 import mojafarin.pakoob.app;
 import maptools.GeoCalcs;
@@ -228,15 +229,16 @@ public class RouteDesignMode {
             return;
         }
         try {
+            //ذخیره و اضافه کردن به نقشه در تابع زیر
             NbPoi saved = GPXFile.SaveDesignedRouteToDb(editingRouteId, poiType,data, activity);
             if (saved.NbPoiId != 0){
                 //Not working after fragmenting...
                 activity.openEditTrack(saved.NbPoiId, "MainActivity", 0, null);
 
-//            Intent it = new Intent(activity, EditTrack.class);
-//            it.putExtra("NbPoiId", saved.NbPoiId);
-//            it.putExtra("Sender", "MainActivity");
-//            activity.startActivity(it);
+                //حذف نسخه قبلی هم از ظاهر هم از حافظه
+                if (editingRoute != null) {
+                    app.removeInVisiblePois(editingRoute.NbPoiId);//1404-09-03
+                }
 
                 discardRoute(true);
             }
@@ -257,8 +259,11 @@ public class RouteDesignMode {
             return;
         if (!firedAfterSave && editingRouteId != 0 && editingRouteIsVisible){
             NbPoiCompact compact = app.findInVisiblePois(editingRouteId);
-            if (compact != null)
+            if (compact != null) {
                 compact.polyLine.setVisible(true);
+                //MapPage.addPOIToMap(compact, map, true, activity);//1404-09-03
+                //
+            }
         }
         for (int i = 0; i < routeMarkers.size(); i++) {
             routeMarkers.get(i).remove();

@@ -18,13 +18,11 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.eloyzone.jalalicalendar.JalaliDate;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -33,7 +31,6 @@ import bo.NewClasses.InsUpdRes;
 import bo.entity.CityDTO;
 import bo.entity.PersonalInfoDTO;
 import bo.NewClasses.SimpleRequest;
-import mojafarin.pakoob.MainActivity;
 import mojafarin.pakoob.R;
 import mojafarin.pakoob.app;
 import okhttp3.ResponseBody;
@@ -41,10 +38,11 @@ import pakoob.SelectCityDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import utils.HFragment;
+import UI.HFragment;
 import utils.MainActivityManager;
 import utils.MyDate;
 import utils.PersianDateDialog;
+import utils.PrjConfig;
 import utils.hutilities;
 import utils.projectStatics;
 
@@ -471,6 +469,13 @@ public class CompleteRegister extends HFragment {
         }
     }
 
+
+    //تنظیمات مربوط به صفحه --------------
+    @Override
+    protected int getScreenId() {return PrjConfig.frmCompleteRegister;}
+    @Override
+    protected String tag() {return SCREEN_TAG;}
+    public static final String SCREEN_TAG = "CompRegister";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
         return inflater.inflate(R.layout.frm_user_completeregister, parent, false);

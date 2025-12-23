@@ -1,21 +1,15 @@
 package utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 
-import bo.dbConstantsMap;
 import bo.entity.PersonalInfoDTO;
 
 public class sessionManager {
@@ -344,6 +338,20 @@ public class sessionManager {
     }
     public void setAsked_notification_permission(Boolean value){
         editor.putBoolean("asked_notification_permission", value);
+        editor.commit();
+    }
+
+
+    public String getNextNbPoiName(){
+        int res = pref.getInt("NbPoiName", 1);
+        if (res == 10000)
+            res = 1;
+
+        setLastNbPoiName(res + 1);
+        return String.format("%04d", res);
+    }
+    public void setLastNbPoiName(int value){
+        editor.putInt("NbPoiName", value);
         editor.commit();
     }
 

@@ -55,8 +55,8 @@ public class AddWaypointMode {
             name = txtNameOfWaypoint.getText().toString();
         }
         else if (editingWaypoint == null ){
-            Random rand = new Random();
-            name = context.getResources().getString(R.string.Waypoint) + " " + rand.nextInt(10000);
+
+            name = context.getResources().getString(R.string.Waypoint) + " " + app.session.getNextNbPoiName();
         }
         else{
             name = editingWaypoint.Name;

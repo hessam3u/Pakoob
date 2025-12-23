@@ -18,8 +18,10 @@ public class PakoobSync {
     public List<TTExceptionLog> exceptions;
     @SerializedName(value="sl")
     public List<NbLogSearch> searchlog;
+    @SerializedName(value="st")
+    public List<NbScreenTime> screenTimes;
 
-    public static PakoobSync getInstance(double LastLat, double LastLon, String LastAproxLocationFixTime, byte LastAproxLocationFixType, List<TTExceptionLog> exceptions, List<NbLogSearch> searchlog) {
+    public static PakoobSync getInstance(double LastLat, double LastLon, String LastAproxLocationFixTime, byte LastAproxLocationFixType, List<TTExceptionLog> exceptions, List<NbLogSearch> searchlog, List<NbScreenTime> screenTimes) {
         PakoobSync res = new PakoobSync();
         res.LastLat = LastLat;
         res.LastLon = LastLon;
@@ -27,6 +29,7 @@ public class PakoobSync {
         res.LastAproxLocationFixTime = LastAproxLocationFixTime;
         res.exceptions = exceptions;
         res.searchlog = searchlog;
+        res.screenTimes = screenTimes;
         return res;
     }
 }

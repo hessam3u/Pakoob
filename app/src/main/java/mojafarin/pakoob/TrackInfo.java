@@ -8,14 +8,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+
 import bo.entity.NbPoi;
 import bo.sqlite.NbPoiSQLite;
 import maptools.TrackData;
 import maptools.TrackProperties;
 import maptools.GeoCalcs;
+import UI.HFragment;
+import utils.PrjConfig;
 
-public class TrackInfo extends Fragment {
+public class TrackInfo extends HFragment {
     long NbPoiId = 0;
     NbPoi currentObj = null;
     TrackData data = null;
@@ -96,7 +98,8 @@ public class TrackInfo extends Fragment {
             , txtDescentTotal, txtAscentTotal, txtMaxElevation, txtMinElevation, txtAvgPace, txtMaxPace;
     TextView txtAscentTotal1, txtDescentTotal1, txtDurationAscent, txtDistanceAscent, txtAvgSpeedAscent, txtSlopeAscent
             , txtDistanceDescent, txtDurationDescent, txtAvgSpeedDescent, txtSlopeDescent;
-    private void initializeComponents(View v) {
+    @Override
+    public void initializeComponents(View v) {
 
         btnBack =v.findViewById(R.id.btnBack);
         btnBack.setOnClickListener(view -> {((AppCompatActivity) context).onBackPressed();});
@@ -142,9 +145,15 @@ public class TrackInfo extends Fragment {
     public void onCreate(Bundle savedInstanceState) {//2nd Event
         super.onCreate(savedInstanceState);
     }
+
+    //تنظیمات مربوط به صفحه --------------
+    @Override
+    protected int getScreenId() {return PrjConfig.frmTrackInfo;}
+    @Override
+    protected String tag() {return SCREEN_TAG;}
+    public static final String SCREEN_TAG = "TrackInfo";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
         return inflater.inflate(R.layout.mytracks_trackinfo, parent, false);
     }
-
 }

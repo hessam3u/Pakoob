@@ -47,10 +47,9 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import utils.HFragment;
+import UI.HFragment;
 import utils.MainActivityManager;
 import utils.PicassoCircleTransform;
-import utils.PicassoOnScrollListener;
 import utils.PicassoTrustAll;
 import utils.PrjConfig;
 import utils.PrjEnums;
@@ -643,7 +642,7 @@ Picasso picassoInstance;
                                 txtFollowerCount.setText(Integer.toString(currentObj.FollowerCount));
                             }
                         } else {
-                            projectStatics.showDialog(context, context.getResources().getString(R.string.dialog_UnknownError), res.message, context.getResources().getString(R.string.ok)
+                            projectStatics.showDialog(context, context.getResources().getString(R.string.dialog_UnknownError)+ " - کد "  +"P" + 5223, res.message, context.getResources().getString(R.string.ok)
                                     , null, "", null);
                         }
                     } else {
@@ -712,7 +711,7 @@ Picasso picassoInstance;
                                 txtFanCount.setText(Integer.toString(currentObj.FanCount));
                             }
                         } else {
-                            projectStatics.showDialog(context, context.getResources().getString(R.string.dialog_UnknownError), res.message, context.getResources().getString(R.string.ok)
+                            projectStatics.showDialog(context, context.getResources().getString(R.string.dialog_UnknownError)+ " - کد "  + "ClS-P" + 5623, res.message, context.getResources().getString(R.string.ok)
                                     , null, "", null);
                         }
                     } else {
@@ -772,7 +771,7 @@ Picasso picassoInstance;
                                 btnBell.setText(dbConstantsTara.BellOff);
 
                         } else {
-                            projectStatics.showDialog(context, context.getResources().getString(R.string.dialog_UnknownError), res.message, context.getResources().getString(R.string.ok)
+                            projectStatics.showDialog(context, context.getResources().getString(R.string.dialog_UnknownError)+ " - کد "  + "ClS-P" + 5523, res.message, context.getResources().getString(R.string.ok)
                                     , null, "", null);
                         }
                     } else {
@@ -795,6 +794,12 @@ Picasso picassoInstance;
         return true;
     }
 
+    //تنظیمات مربوط به صفحه --------------
+    @Override
+    protected int getScreenId() {return PrjConfig.frmClubSearch;}
+    @Override
+    protected String tag() {return SCREEN_TAG;}
+    public static final String SCREEN_TAG = "ClubSearch";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
         return inflater.inflate(R.layout.frm_clubsearch, parent, false);

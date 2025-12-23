@@ -1,7 +1,7 @@
 package pakoob;
 
-import static utils.HFragment.stktrc2k;
-import static utils.HFragment.stktrc2kt;
+import static UI.HFragment.stktrc2k;
+import static UI.HFragment.stktrc2kt;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,7 +16,6 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.io.File;
-import java.io.PushbackInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -210,7 +209,7 @@ public class SelectClubDialogForMyClub extends SelectAnythingDialog {
 
                             }, "", null);
                         } else {
-                            projectStatics.showDialog(context, context.getResources().getString(R.string.dialog_UnknownError), res.message, context.getResources().getString(R.string.ok)
+                            projectStatics.showDialog(context, context.getResources().getString(R.string.dialog_UnknownError) + " - کد SC200", res.message, context.getResources().getString(R.string.ok)
                                     , null, "", null);
                         }
                     } else {

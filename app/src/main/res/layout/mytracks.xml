@@ -1,7 +1,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/app_background"
     android:layoutDirection="rtl">
 
@@ -55,11 +55,38 @@
                     style="@style/ToolbarPageTitle"
                     android:text="1 آیتم انتخاب شده" />
 
+
+                <LinearLayout
+                    android:id="@+id/btnCut"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:paddingLeft="10dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:clickable="false"
+                        android:focusable="false"
+                        style="@style/ToolbarTextButtons"
+                        android:layout_gravity="center"
+                        android:layout_width="40dp"
+                        android:layout_height="25dp"
+                        android:text="&#xE842;"
+                        android:textSize="20dp" />
+                    <TextView
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:layout_gravity="center"
+                        style="@style/label_xsb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="انتقال" />
+                </LinearLayout>
+
                 <TextView
                     android:id="@+id/btnDeleteAtToolbar"
                     style="@style/ToolbarTextButtons"
                     android:text="&#xE801;"
                     android:textSize="25dp" />
+
 
                 <TextView
                     android:id="@+id/btnMoreSelected"
@@ -75,176 +102,113 @@
         <View style="@style/ToolbarBottomShadow" />
     </LinearLayout>
 
-<!--    <FrameLayout-->
-<!--        android:id="@+id/mapFrameLayout"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:elevation="50dp"-->
-<!--        android:visibility="gone">-->
-
-<!--        <Button-->
-<!--            android:id="@+id/btnSelectLocationOnMap"-->
-<!--            style="@style/button"-->
-<!--            android:layout_width="200dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center_horizontal"-->
-<!--            android:layout_marginTop="40dp"-->
-<!--            android:elevation="100dp"-->
-<!--            android:text="بستن">-->
-
-<!--        </Button>-->
-
-<!--        <fragment-->
-<!--            android:id="@+id/map"-->
-<!--            android:name="com.google.android.gms.maps.SupportMapFragment"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/txtSelectedNCCIndex"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="end|bottom" />-->
-
-<!--        <hmapscaleview.MapScaleView-->
-<!--            android:id="@+id/scaleView"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="250dp"-->
-<!--            android:layout_gravity="center_vertical|left"-->
-<!--            android:layout_marginLeft="40dp" />-->
-
-<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--            android:id="@+id/btnSelectLayer"-->
-<!--            android:layout_width="50dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="bottom|start"-->
-<!--            android:layout_marginRight="9dp"-->
-<!--            android:layout_marginBottom="285dp"-->
-<!--            app:backgroundTint="#33000000"-->
-<!--            app:elevation="16dp"-->
-<!--            app:fabCustomSize="50dp" />-->
-
-<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--            android:id="@+id/btnShowCustomMaps"-->
-<!--            android:layout_width="50dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="bottom|start"-->
-<!--            android:layout_marginRight="9dp"-->
-<!--            android:layout_marginBottom="345dp"-->
-<!--            app:backgroundTint="#33000000"-->
-<!--            app:elevation="16dp"-->
-<!--            app:fabCustomSize="50dp" />-->
-
-<!--    </FrameLayout>-->
-
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/myMinActionBarSize"
-        android:fillViewport="true">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <ProgressBar
+            android:id="@+id/progressBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="60dp"
+            android:visibility="gone" />
 
-            <ProgressBar
-                android:id="@+id/progressBar"
+        <LinearLayout
+            android:id="@+id/linSearchNewTracks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/liTitleOfSearchSafeGpx"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="@dimen/leftrightMargin"
+                android:background="@color/colorGreyVeryLight"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    style="@style/labelB"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center|center_vertical"
+                    android:text="@string/title_SearchSafeGpx_MyTracks"></TextView>
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/TextboxNormal_Container_s"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="60dp"
-                android:visibility="gone" />
+                android:layout_marginLeft="@dimen/leftrightMargin"
+                android:layout_marginRight="@dimen/leftrightMargin">
 
-<LinearLayout
-    android:id="@+id/linSearchNewTracks"
-    android:visibility="gone"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+                <EditText
+                    android:id="@+id/txtSearch"
+                    style="@style/TextboxNormal_Child"
+                    android:layout_height="50dp"
+                    android:hint="@string/SearchHearForTracks"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:padding="0dp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
-        android:id="@+id/liTitleOfSearchSafeGpx"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginBottom="@dimen/leftrightMargin"
-        android:background="@color/colorGreyVeryLight"
-        android:orientation="horizontal"
-        android:visibility="visible">
-        <TextView
-            style="@style/labelB"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center|center_vertical"
-            android:text="@string/title_SearchSafeGpx_MyTracks"></TextView>
+            <LinearLayout
+                android:id="@+id/liSearchSafeGpxNoResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/leftrightMargin"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/leftrightMarginHalf"
+                android:paddingRight="@dimen/leftrightMarginHalf">
 
-    </LinearLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/TextboxNormal_Container_s"
-        android:layout_width="match_parent"
-        android:layout_marginLeft="@dimen/leftrightMargin"
-        android:layout_marginRight="@dimen/leftrightMargin"
-        android:layout_height="wrap_content"
-        >
-        <EditText
-            android:imeOptions="actionSearch"
-            android:padding="0dp"
-            android:inputType="text"
-            style="@style/TextboxNormal_Child"
-            android:id="@+id/txtSearch"
-            android:layout_height="50dp"
-            android:hint="@string/SearchHearForTracks"/>
-    </com.google.android.material.textfield.TextInputLayout>
-    <LinearLayout
-        android:id="@+id/liSearchSafeGpxNoResult"
-        android:layout_marginTop="@dimen/leftrightMargin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/leftrightMarginHalf"
-        android:paddingRight="@dimen/leftrightMarginHalf">
+                <TextView
+                    android:id="@+id/txtSafeGpxSearchReuslt"
+                    style="@style/label_s"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right|center_vertical"
+                    android:text="@string/title_NoSafeGpxToDownload"></TextView>
 
-        <TextView
-            android:id="@+id/txtSafeGpxSearchReuslt"
-            style="@style/label_s"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="right|center_vertical"
-            android:text="@string/title_NoSafeGpxToDownload"></TextView>
+                <TextView
+                    android:id="@+id/btnRequestTrackToPakoob"
+                    style="@style/label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/leftrightMargin"
+                    android:background="@drawable/bg_roundcorner_greenborder"
+                    android:gravity="right|center_vertical"
+                    android:paddingLeft="@dimen/leftrightMarginHalf"
+                    android:paddingRight="@dimen/leftrightMarginHalf"
+                    android:text="@string/btnRequestTrackToPakoob"
+                    android:textColor="@color/green"></TextView>
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/btnRequestTrackToPakoob"
-            style="@style/label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/leftrightMargin"
-            android:textColor="@color/green"
-            android:background="@drawable/bg_roundcorner_greenborder"
-            android:gravity="right|center_vertical"
-            android:paddingLeft="@dimen/leftrightMarginHalf"
-            android:paddingRight="@dimen/leftrightMarginHalf"
-            android:text="@string/btnRequestTrackToPakoob"></TextView>
-    </LinearLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvSearchSafeGpx"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        android:background="@drawable/rv_item_background"
-        android:padding="4dp" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSearchSafeGpx"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/rv_item_background"
+                android:padding="4dp" />
 
-</LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linToDownlaodTracks"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-        <LinearLayout
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
                 android:id="@+id/liTitleOfMyReadyToDownload"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
@@ -252,18 +216,19 @@
                 android:background="@color/colorGreyVeryLight"
                 android:orientation="horizontal"
                 android:visibility="visible">
+
                 <TextView
                     android:id="@+id/dummyRefresh"
-                    android:layout_height="30dp"
                     android:layout_width="30dp"
-                    android:fontFamily="@font/fontello"
-                    android:textColor="@color/green"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="@dimen/leftrightMargin"
                     android:background="@drawable/bg_roundcorner_greenborder"
+                    android:fontFamily="@font/fontello"
                     android:gravity="center"
                     android:text="&#xE812;"
-                    android:visibility="invisible">
-                </TextView>
+                    android:textColor="@color/green"
+                    android:visibility="invisible"></TextView>
+
                 <TextView
                     style="@style/labelB"
                     android:layout_width="0dp"
@@ -274,16 +239,16 @@
 
                 <TextView
                     android:id="@+id/btnRefreshReadyToDownload"
-                    android:layout_height="30dp"
                     android:layout_width="30dp"
-                    android:fontFamily="@font/fontello"
-                    android:textColor="@color/green"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="@dimen/leftrightMargin"
                     android:background="@drawable/bg_roundcorner_greenborder"
+                    android:fontFamily="@font/fontello"
                     android:gravity="center"
-                    android:text="&#xE812;">
-                </TextView>
+                    android:text="&#xE812;"
+                    android:textColor="@color/green"></TextView>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -301,6 +266,7 @@
                     android:text="@string/title_NoTrackToDownload"></TextView>
 
             </LinearLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvReadyToDownload"
                 android:layout_width="match_parent"
@@ -309,60 +275,95 @@
                 android:background="@drawable/rv_item_background"
                 android:padding="4dp" />
         </LinearLayout>
-            <LinearLayout
-                android:id="@+id/liTitleOfMyTracks"
+
+        <LinearLayout
+            android:id="@+id/liTitleOfMyTracks"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/colorGreyVeryLight"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/txtTitleOfMyTracks"
+                style="@style/labelB"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:background="@color/colorGreyVeryLight"
-                android:orientation="horizontal"
-                android:visibility="visible">
-
-                <TextView
-                    android:id="@+id/txtTitleOfMyTracks"
-                    style="@style/labelB"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center|center_vertical"
-                    android:text="@string/Up_Text_EmptyForMyTracks"></TextView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/btnUp"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:background="@color/colorWhite"
-                android:orientation="horizontal"
-                android:paddingRight="10dp"
-                android:visibility="visible">
-
-                <TextView
-                    android:id="@+id/txtUp_Icon"
-                    style="@style/label"
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorWhite"
-                    android:fontFamily="@font/fontello"
-                    android:gravity="right|center_vertical"
-                    android:text="&#xF148;"
-                    android:textSize="25dp"></TextView>
-
-                <TextView
-                    android:id="@+id/txtUp_Text"
-                    style="@style/label"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorWhite"
-                    android:gravity="right|center_vertical"
-                    android:text="@string/Up_Text"></TextView>
-            </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvItems"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                android:background="@drawable/rv_item_background"
-                android:padding="4dp" />
+                android:layout_height="match_parent"
+                android:gravity="center|center_vertical"
+                android:text="@string/Up_Text_EmptyForMyTracks"></TextView>
         </LinearLayout>
-    </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/btnUp"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/colorWhite"
+            android:orientation="horizontal"
+            android:paddingRight="10dp"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/txtUp_Icon"
+                style="@style/label"
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorWhite"
+                android:fontFamily="@font/fontello"
+                android:gravity="right|center_vertical"
+                android:text="&#xF148;"
+                android:textSize="25dp"></TextView>
+
+            <TextView
+                android:id="@+id/txtUp_Text"
+                style="@style/label"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorWhite"
+                android:gravity="right|center_vertical"
+                android:text="@string/Up_Text"></TextView>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvItems"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/rv_item_background"
+            android:padding="4dp" />
+
+        <LinearLayout
+            android:id="@+id/linMoveHere"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#eeeeee"
+            android:layoutDirection="rtl"
+            android:padding="@dimen/leftrightMargin"
+            android:textDirection="rtl">
+
+            <TextView
+                android:id="@+id/btnMoveHere"
+                style="@style/label"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="@dimen/leftrightMargin"
+                android:layout_marginEnd="@dimen/leftrightMargin"
+                android:layout_weight="1"
+                android:background="@drawable/bg_roundcorner_greenfill"
+                android:gravity="center"
+                android:text="@string/btnMoveHere"
+                android:textColor="@color/colorWhite"></TextView>
+
+            <TextView
+                android:id="@+id/btnCancel"
+                style="@style/label"
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="@dimen/leftrightMargin"
+                android:gravity="center"
+                android:text="@string/btnCancel"
+                android:textColor="@color/colorGrey"></TextView>
+        </LinearLayout>
+    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

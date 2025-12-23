@@ -2,95 +2,41 @@ package utils;
 
 import static android.text.InputType.TYPE_CLASS_NUMBER;
 
-import static utils.HFragment.stktrc2kt;
+import static UI.HFragment.stktrc2kt;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.ActivityManager;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Build;
-import android.provider.MediaStore;
-import android.provider.Settings;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.material.tabs.TabLayout;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Method;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.security.MessageDigest;
-import java.security.SecureRandom;
-import java.security.cert.X509Certificate;
-import java.text.DecimalFormat;
 import java.util.List;
-import java.util.concurrent.ConcurrentNavigableMap;
-import java.util.concurrent.atomic.AtomicLong;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-
-import androidx.annotation.DrawableRes;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 //import mojafarin.naghshebaz.BuildConfig; //1400-01-13 commented
 //import mojafarin.naghshebaz.R;
 //import mojafarin.naghshebaz.app;
 import bo.entity.CityDTO;
 import bo.sqlite.TTExceptionLogSQLite;
-import okhttp3.Response;
 import pakoob.DbAndLayout.R;
 
 //1399-10-10 add parseFloat and copyFile
@@ -533,7 +479,7 @@ public class projectStatics {
             msg = "مدت زمان انتظار برای دریافت پاسخ از سرور طولانی شده است. لطفا دوباره تلاش کنید.";
         } else {
             //Failure rokh dade
-            msg = "متاسفانه خطایی ناشناخته در ارتباط با سرور رخ داده است. لطفا بعدا دوباره تلاش کنید";
+            msg = "متاسفانه خطایی ناشناخته در ارتباط با سرور رخ داده است. لطفا بعدا دوباره تلاش کنید" + " - کد "  + Page_Id + "P" + OperationCode;
         }
         if (showMsg) {
             projectStatics.showDialog(context, title

@@ -14,6 +14,8 @@ import android.location.LocationManager;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
@@ -31,6 +33,8 @@ import utils.hutilities;
 
 import com.google.android.gms.location.*;
 
+import java.util.Locale;
+
 public class LocationTrackingService extends Service {
     private static final int NOTIF_ID = 1001;
     private static final String CHANNEL_ID = "location_channel_v1";
@@ -43,8 +47,12 @@ public class LocationTrackingService extends Service {
     private android.location.LocationListener mLocationListener;
 
 
-    private final long LOCATION_INTERVAL = 2;
-    private final float LOCATION_DISTANCE = 10f;
+    private final long LOCATION_INTERVAL = 2000;
+    private final float LOCATION_DISTANCE = 5f;
+
+    private HandlerThread handlerThread;
+    private Handler handler;
+    private final long INTERVAL_MS = 2000; // هر 2 ثانیه
 
     @Override
     public void onCreate() {
@@ -58,6 +66,20 @@ public class LocationTrackingService extends Service {
 
 
         createNotificationChannel();
+
+    }
+
+    private void startLogging() {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                long currentTime = System.currentTimeMillis();
+                Log.e("TrackService", "Service alive, time: " + currentTime);
+
+                // دوباره صدا زده شود
+                handler.postDelayed(this, INTERVAL_MS);
+            }
+        }, INTERVAL_MS);
     }
 
     public void stopFromOutside() {
@@ -94,10 +116,10 @@ public class LocationTrackingService extends Service {
 
     private void setupLocationRequest() {
         locationRequest = LocationRequest.create();
-        locationRequest.setInterval(LOCATION_INTERVAL); // 2s
+        locationRequest.setInterval(LOCATION_INTERVAL);
         locationRequest.setFastestInterval(LOCATION_INTERVAL);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setSmallestDisplacement(10f);
+        locationRequest.setSmallestDisplacement(LOCATION_DISTANCE);
     }
 
     @SuppressLint("MissingPermission")
@@ -111,7 +133,7 @@ public class LocationTrackingService extends Service {
             locationCallback = new LocationCallback() {
                 @Override
                 public void onLocationResult(@NonNull LocationResult result) {
-                    Log.e(Tag, "locationCallback 13");
+                    Log.e(Tag, "locationCallback 13 In Service New Loc");
                     MainActivity.isTrackingServiceRunning = true;
                     Location loc = result.getLastLocation();
                     if (loc != null) {
@@ -132,7 +154,7 @@ public class LocationTrackingService extends Service {
                 @SuppressLint("MissingPermission")
                 public void onLocationChanged(Location locationListener) {
                     //1400-01-03 I thinks it is faster than traditional way whick commented in next lines
-                    Log.e(Tag, "mLocationListener 13");
+                    Log.e(Tag, "mLocationListener 13 In Service New Loc");
                     MainActivity.isTrackingServiceRunning = true;
                     Location loc = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                     app.repo.setCurrentLocation(loc);
@@ -160,6 +182,11 @@ public class LocationTrackingService extends Service {
         stopLocationUpdates();
         stopForeground(true);
         MainActivity.isTrackingServiceRunning = false;
+
+        if (handlerThread != null) {
+            handlerThread.quitSafely();
+        }
+        Log.e("TrackService", "Service destroyed");
     }
 
     public void stopLocationUpdates() {
@@ -191,6 +218,13 @@ public class LocationTrackingService extends Service {
         Log.e(Tag, "خط آخر استارت سرویس");
 
 
+        handlerThread = new HandlerThread("ServiceAliveThread");
+        handlerThread.start();
+        handler = new Handler(handlerThread.getLooper());
+
+        startLogging();
+
+
         // START_STICKY تا سیستم در صورت نیاز سرویس را دوباره ری‌استارت کند
         return START_STICKY;
     }
@@ -206,6 +240,7 @@ public class LocationTrackingService extends Service {
         if (app.session.getIsTrackRecording() != 1){
             return;
         }
+
         NbCurrentTrack trkPt = new NbCurrentTrack();
         trkPt.Latitude = currentLatLon.getLatitude();
         trkPt.Longitude = currentLatLon.getLongitude();
@@ -215,6 +250,7 @@ public class LocationTrackingService extends Service {
         if (trkPt.Time - lastTime < 1000)
             return;
         NbCurrentTrackSQLite.insert(trkPt);
+        Log.e(Tag, "New Point Saved to DB : " + String.format(Locale.US, "%.5f", trkPt.Latitude) + ", " + String.format(Locale.US, "%.5f", trkPt.Longitude));
         lastTime = trkPt.Time;
     }
 

@@ -8,10 +8,8 @@ import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -27,7 +25,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -107,8 +104,6 @@ import hmapscaleview.MapScaleView;
 import maptools.GPXFile;
 import maptools.InfoBottomPoint;
 import maptools.InfoBottomTrack;
-import maptools.LocationRepository;
-import maptools.LocationTrackingService;
 import maptools.MapCenterPointer;
 import maptools.MapMyLocationIcon;
 import maptools.TrackData;
@@ -122,7 +117,7 @@ import mojafarin.pakoob.mainactivitymodes.SightNGoMode;
 import user.CompleteRegister;
 import user.Register;
 import maptools.GeoCalcs;
-import utils.HFragment;
+import UI.HFragment;
 import utils.MainActivityManager;
 import utils.MyDate;
 import utils.PrjConfig;
@@ -170,7 +165,6 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
     FrameLayout searchFragmentContainer;
 
     public MapPage() {
-        Tag = "MapPage";
     }
 
     public static MapPage getInstance(MainActivityManager context) {
@@ -409,7 +403,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                 locationHasChanged(location, "Service");
         });
         app.repo.getIsTrackingActive().observe(getViewLifecycleOwner(), active -> {
-            Log.i(Tag, "Recording Changed to : " + active);
+            Log.i(tag(), "Recording Changed to : " + active);
 
             if (Boolean.TRUE.equals(active)) {
                 //stopOwnLocationUpdates();// انتقال پیدا کرد به LocationChanged
@@ -475,7 +469,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
 
     @Override
     public void onFragmentShown() {
-
+        super.onFragmentShown();
         //1400-11-16 added, for be sure to update Location Access after resume
         if ((hutilities.checkGooglePlayServiceAvailability(context) && fusedLocationClient == null)
                 || (!hutilities.checkGooglePlayServiceAvailability(context) && (locationManager == null || myLocationListener == null))) {
@@ -572,6 +566,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         try {
 
             map = googleMap;
+            Log.i(tag(), "Map Created!!!!!");
             //1399-09-09 Commented:
             //lockRotate = app.session.getLastLockRotate();
 
@@ -625,7 +620,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                 public void onPolylineClick(Polyline polyline) {
                     try {
                         Object tag = polyline.getTag();
-                        String strVal = String.valueOf(tag);
+                        String strVal = String.valueOf(tag());
                         long value = Long.parseLong((strVal));
                         poiClicked_track(value);
                     } catch (Exception ex) {
@@ -719,6 +714,9 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
 
 //        add25000Overlay("m64614NE_s2");
 
+            OnMapReadyCompleted = true;
+
+
             //Set visible POIS
             int poiSizes = app.visiblePOIs.size();
             for (int i = 0; i < poiSizes; i++) {
@@ -736,11 +734,11 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             step = 1000;
             MainActivity.appExistsBeforeAndShouldReloadAll_ReReadPois = false;
 
-            Log.e(Tag, "ترک زدن" + "100 - getIsRecordPanelActive: " + dialogRecordTrack.getIsRecordPanelActive());
+            Log.e(tag(), " ترک زدن" + "100 - getIsRecordPanelActive: " + dialogRecordTrack.getIsRecordPanelActive());
             if (dialogRecordTrack.getIsRecordPanelActive()) {
-                Log.e(Tag, "ترک زدن" + "پنل فعال است - 100");
+                Log.e(tag(), " ترک زدن" + "پنل فعال است - 100");
                 if (!trackResumeIsDone) {
-                    Log.e(Tag, "ترک زدن" + "پنل فعال است - 200");
+                    Log.e(tag(), " ترک زدن" + "پنل فعال است - 200");
                     trackingServiceResume();
                 }
 //            if (dialogRecordTrack.veryCurrentRoutePoints.size() > 0) { //1400-10-21 commented
@@ -749,19 +747,10 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             }
             step = 1100;
 
-            OnMapReadyCompleted = true;
-
-
-//        mapOnClick_Route(new LatLng(36.2910, 59.5025));
-//        mapOnClick_Route(new LatLng(36.2920, 59.5026));
-//        mapOnClick_Route(new LatLng(36.2930, 59.5027));
-//        mapOnClick_Route(new LatLng(36.2940, 59.5028));
-//        mapOnClick_Route(new LatLng(36.2950, 59.5029));
-//        mapOnClick_Route(new LatLng(36.2960, 59.5020));
 
         } catch (Exception ex) {
             projectStatics.showDialog(context, getResources().getString(R.string.dialog_UnknownError)
-                    , getResources().getString(R.string.dialog_UnknownErrorDesc)
+                    , getResources().getString(R.string.dialog_UnknownErrorDesc) + " - کد "  + getScreenId() + "P" + 1202
                     , getResources().getString(R.string.ok), null, "", null);
 
             TTExceptionLogSQLite.insert(ex.getMessage(), "Step: " + step + "-ex:" + stktrc2k(ex), PrjConfig.frmMapPage, 1200);
@@ -880,7 +869,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
     void moveMapButtonTo(String tag, int marginBot) {
         //based on : https://stackoverflow.com/questions/40371321/how-to-move-google-map-zoom-control-position-in-android
         //and https://stackoverflow.com/questions/36785542/how-to-change-the-position-of-my-location-button-in-google-maps-using-android-st
-        View btn = mapFragment.getView().findViewWithTag(tag);//GoogleMapMyLocationButton
+        View btn = mapFragment.getView().findViewWithTag(tag());//GoogleMapMyLocationButton
         RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
         rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
@@ -889,7 +878,9 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
     }
 
     void moveMapButtonToMargin(String tag, int marginTop, int marginBot, int marginLeft, int marginRight) {
-        View btn = mapFragment.getView().findViewWithTag(tag);//GoogleMapMyLocationButton
+        View btn = mapFragment.getView().findViewWithTag(tag());//GoogleMapMyLocationButton
+        if (btn == null)
+            return;
         RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         if (marginTop > 0)
             rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
@@ -1030,7 +1021,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                 @Override
                 public void onStarted() {
                     super.onStarted();
-                    Log.e(Tag, "GGGGGGGGGGG - GPS STARTED: ");
+                    Log.e(tag(), "GGGGGGGGGGG - GPS STARTED: ");
                     setBtnGotoCurrentLocation();
                 }
 
@@ -1041,7 +1032,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                     location = null;
                     currentSpeed = 0;
 
-                    Log.e(Tag, "GGGGGGGGGGG - GPS STOPPED: ");
+                    Log.e(tag(), "GGGGGGGGGGG - GPS STOPPED: ");
                     locationHasChanged(location, "Stopped in GNSS Callback");
                     mainActivity.locationChangedFromMapPage(location);
 //                    setBtnGotoCurrentLocation();
@@ -1050,13 +1041,13 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                 @Override
                 public void onFirstFix(int ttffMillis) {
                     super.onFirstFix(ttffMillis);
-                    Log.e(Tag, "GGGGGGGGGGG - GPS onFirstFix: ");
+                    Log.e(tag(), "GGGGGGGGGGG - GPS onFirstFix: ");
                 }
 
                 @Override
                 public void onSatelliteStatusChanged(@NonNull GnssStatus status) {
                     super.onSatelliteStatusChanged(status);
-                    //Log.e(Tag,"GGGGGGGGGGG - GPS onSatelliteStatusChanged: ");
+                    //Log.e(Tag(),"GGGGGGGGGGG - GPS onSatelliteStatusChanged: ");
                 }
             };
             locationManager.registerGnssStatusCallback(gnssCallback);
@@ -1137,17 +1128,17 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                     if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.N) {
                         switch (status) {
                             case GpsStatus.GPS_EVENT_STARTED:
-                                Log.e(Tag, "GGGGGGGGGGG - GPS searching11111: ");
+                                Log.e(tag(), "GGGGGGGGGGG - GPS searching11111: ");
                                 break;
                             case GpsStatus.GPS_EVENT_STOPPED:
-                                Log.e(Tag, "GGGGGGGGGGG - GPS Stopped111111: ");
+                                Log.e(tag(), "GGGGGGGGGGG - GPS Stopped111111: ");
                                 break;
                             case GpsStatus.GPS_EVENT_FIRST_FIX:
                                 /* * GPS_EVENT_FIRST_FIX Event is called when GPS is locked */
-                                Log.e(Tag, "GGGGGGGGGGG - GPS GPS_LOCKED11111: ");
+                                Log.e(tag(), "GGGGGGGGGGG - GPS GPS_LOCKED11111: ");
                                 break;
                             case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
-                                Log.e(Tag, "GGGGGGGGGGG - GPS GPS_EVENT_SATELLITE_STATUS11111: ");
+                                Log.e(tag(), "GGGGGGGGGGG - GPS GPS_EVENT_SATELLITE_STATUS11111: ");
                                 //                 System.out.println("TAG - GPS_EVENT_SATELLITE_STATUS");
                                 break;
                         }
@@ -1171,7 +1162,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
 //    //added 1401-09-10Fused
 //    public void LocationChangedEvent_HUB(Location location) {
 //        //All Moved From Traditional Event
-//        Log.e(Tag, "لوک" + "onLocationChangedCalled: " + (location == null ? "LOCATION IS NULL" : location.getLatitude()));
+//        Log.e(Tag(), "لوک" + "onLocationChangedCalled: " + (location == null ? "LOCATION IS NULL" : location.getLatitude()));
 //        if (location != null) {
 //            currentLatLon = new LatLng(location.getLatitude(), location.getLongitude());
 //            currentElev = location.getAltitude();
@@ -1193,7 +1184,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
     String lastLocationSource = "";
 
     public void locationHasChanged(Location location, String Source) {
-        Log.i(Tag, "New_Location From " + Source);
+        Log.i(tag(), "New_Location From " + Source);
         MapPage.location = location;
         if (location != null) {
 
@@ -1218,12 +1209,11 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                 app.session.setLastAproxLocationFixType((byte) 1);
             }
 
-            if (dialogRecordTrack.getIsRecording()) {
-                dialogRecordTrack.drawNextPoint(currentLatLon, (float) location.getAltitude());
-            }
-
             //Start Map Works ................
-            if (map != null) {
+            if (map != null && OnMapReadyCompleted) {
+                if (dialogRecordTrack.getIsRecording()) {
+                    dialogRecordTrack.drawNewPoint(currentLatLon, (float) location.getAltitude());
+                }
                 //for Center Screen myself
                 if (isLockOnMe) {
                     LatLng myLoc = new LatLng(location.getLatitude(), location.getLongitude());
@@ -1261,6 +1251,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         if (lastLocationSource != Source) {
             //اگه موقعیت قبلی از همینجا بود و موقعیت جدید از سرویس میومد، خوندن موقعیت از اینجا متوقف شه
             if ((lastLocationSource.equals("Fused") || lastLocationSource.equals("Native")) && Source.equals("Service")) {
+                Log.e(tag(), "Location Updates in MapPage Stopped and Service is running!");
                 stopOwnLocationUpdates();
             } else if (lastLocationSource.equals("Service") && (Source.equals("Fused") || Source.equals("Native"))) {
 //                    if (app.mTrackInBackgroundService != null)
@@ -1363,7 +1354,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         //Add for Autorotate part 3
 //if(1== 1)return;
         if (event.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR) {
-            //Log.e(Tag, "onSensorChanged Called");
+            //Log.e(Tag(), "onSensorChanged Called");
             if (true) {
                 SensorManager.getRotationMatrixFromVector(
                         mRotationMatrix, event.values);
@@ -1939,6 +1930,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                     if (compact != null && compact.ShowStatus == NbPoi.Enums.ShowStatus_Show) {
                         routeDesignMode.editingRouteIsVisible = true;
                         compact.polyLine.setVisible(false);
+                        Log.e(tag(), "Route Removed Temporary...");
                     }
                     debugStep = 60;
                     List<LatLng> track = TrackData.readTrackData_LatLng(poi.Address);
@@ -1997,7 +1989,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         } catch (Exception ex) {
             projectStatics.showDialog(context, getString(R.string.CantLoadTrackToEdit), getString(R.string.CantLoadTrackToEdit_Desc)
                     , getString(R.string.accept), null, "", null);
-            Log.e(Tag, "خطا" + ex.getMessage());
+            Log.e(tag(), "خطا" + ex.getMessage());
             TTExceptionLogSQLite.insert(ex.getMessage(), "DEBUGSTEP:" + debugStep + "--" + stktrc2k(ex), PrjConfig.frmMapPage, 1003);
             ex.printStackTrace();
         }
@@ -2030,13 +2022,13 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                 MainActivity.appExistsBeforeAndShouldReloadAll_ReReadDialogMap = true;
                 MainActivity.appExistsBeforeAndShouldReloadAll_ReReadPois = true;
                 MainActivity.appExistsBeforeAndShouldReloadAll_OpenMapFirst = true;
-                Log.e(Tag, "Service status" + "STOPPED");
+                Log.e(tag(), "Service status" + "STOPPED");
             } else {
-                Log.e(Tag, "Service status" + "Not Running");
+                Log.e(tag(), "Service status" + "Not Running");
             }
         } catch (Exception exception) {
             String st = exception.getStackTrace().toString();
-            Log.e(Tag, "Service status" + st);
+            Log.e(tag(), "Service status" + st);
             exception.printStackTrace();
         }
 
@@ -2047,11 +2039,11 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(service.service.getClassName())) {
-                Log.e(Tag, "Service status" + "Running");
+                Log.e(tag(), "Service status" + "Running");
                 return true;
             }
         }
-        Log.e(Tag, "Service status" + "Not running");
+        Log.e(tag(), "Service status" + "Not running");
         return false;
     }
 
@@ -2064,15 +2056,10 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
 
     public void onResumeInChild() {
         try {
-            Log.e(Tag, "بازگشت" + "OnResume Fired at MapPage" + " LOCATION MANAGER:" + (locationManager != null ? "NOT NULL" : "NULL") + " myLocationListener:" + (myLocationListener != null ? "NOT NULL" : "NULL"));
+            Log.e(tag(), "OnResume Fired at MapPage" + " - LOCATION MANAGER:" + (locationManager != null ? "NOT NULL" : "NULL")+ " - Fused:" +(fusedLocationClient != null ? "NOT NULL" : "NULL") + " - myLocationListener:" + (myLocationListener != null ? "NOT NULL" : "NULL"));
             //Add for Autorotate part 6
             mSensorManager.registerListener(this, mRotVectSensor, SensorManager.SENSOR_STATUS_ACCURACY_LOW);
             //End Add for Autorotate part 6
-
-            //1399-12-09
-            //stopTrackRecordingServiceIfRunning();
-
-            //1400-11-16 added, for be sure to update Location Access after resume
             checkLocation(false);
 
             //1402-04 در اصل فقط بیرینگ به این ارسال میشه. بقیه پارامترها به خاطر دستگاه های بدون قطب نما اجرا شده
@@ -2087,15 +2074,15 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             //1400-11-04 برای تست اضافه کردم که شاید درست کار کنه
 //            if (map != null)
 //                OnMapReadyCompleted = true;
-            Log.e(Tag, "ترک زدن" + "OnMapReadyCompleted: " + OnMapReadyCompleted + " and trackResumeIsDone: " + trackResumeIsDone);
+            Log.e(tag(), " ترک زدن" + "OnMapReadyCompleted: " + OnMapReadyCompleted + " and trackResumeIsDone: " + trackResumeIsDone);
             //در صورتی که نقشه نال نبود، بازگشت اینجا انجام شه. وگرنه به آماده سازی نقشه سپرده بشه
             if (OnMapReadyCompleted && dialogRecordTrack != null && dialogRecordTrack.getIsRecordPanelActive() && !trackResumeIsDone) {
-                Log.e(Tag, "ترک زدن" + "پنل فعال است - 250");
+                Log.e(tag(), " ترک زدن" + "پنل فعال است - 250");
 
                 trackingServiceResume();
             }
         } catch (Exception ex) {
-            Log.e(Tag, "خطا" + ex.getMessage());
+            Log.e(tag(), "خطا" + ex.getMessage());
             ex.printStackTrace();
             TTExceptionLogSQLite.insert(ex.getMessage(), stktrc2k(ex), PrjConfig.frmMapPage, 1001);
         }
@@ -2105,7 +2092,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
     public boolean OnMapReadyCompleted = false;
 
     public void trackingServiceResume() {
-        Log.e(Tag, "Tracking Service Resume MapPage - بازگشت به اپ تابع ترک زدن در مپ پیج");
+        Log.e(tag(), "Tracking Service Resume MapPage - بازگشت به اپ تابع ترک زدن در مپ پیج");
         trackResumeIsDone = true;
 
         if (dialogRecordTrack.getIsRecording()) {
@@ -2114,16 +2101,14 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                 }, "", null);
                 return;
             }
-
         }
 
-        Log.e(Tag, "ترک زدن" + "AAAA ");
+        Log.e(tag(), "ترک زدن" + "AAAA ");
         List<NbCurrentTrack> oldCurrentTracks = NbCurrentTrackSQLite.selectAll();
         int trkPts = oldCurrentTracks.size();
         LatLng lastLatLon = null;
         NbCurrentTrack lastCurrentTrack = null;
-        Log.e(Tag, "ترک زدن" + "بازگشت به ترک زدن - تعداد نقاط فعلی: " + trkPts);
-        Log.e(Tag, "ترک زدن" + "AAAA66 ");
+        Log.e(tag(), "ترک زدن" + "AAAA66 =>" + trkPts);
         if (trkPts > 0) {
             //1400-11-04 Find Last Point and Skip Paused Points
             for (int i = trkPts - 1; i >= 0; i--) {
@@ -2133,19 +2118,18 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
                 }
             }
         }
-        Log.e(Tag, "ترک زدن" + "BBB");
+        Log.e(tag(), "ترک زدن" + "BBB");
 
         if (lastCurrentTrack != null)
             lastLatLon = new LatLng(lastCurrentTrack.Latitude, lastCurrentTrack.Longitude);
-        Log.e(Tag, "ترک زدن" + "CCC");
+
         trackProperties = new TrackProperties();
         trackProperties.initFromNbCurrentTrack(oldCurrentTracks);
-        Log.e(Tag, "ترک زدن" + "EEE");
 
         dialogRecordTrack.onResumeRecordingPanel(lastLatLon);
-        Log.e(Tag, "ترک زدن" + "FFF");
-        dialogRecordTrack.drawBackgroundPoints(oldCurrentTracks);
-        Log.e(Tag, "ترک زدن" + "GGG");
+        Log.e(tag(), "ترک زدن" + "FFF");
+        dialogRecordTrack.drawCurrentTrack(oldCurrentTracks);
+        Log.e(tag(), "ترک زدن" + "GGG");
         DialogRecordTrack.checkPowerSavingMode(context);
     }
 
@@ -2175,15 +2159,10 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
         return super.onBackPressedInChild(); //true
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
-        return inflater.inflate(R.layout.activity_maps, parent, false);
-    }
-
-
     public void onPauseInChild() {
         if (dialogRecordTrack.getIsRecording()) {
             //چه کار باید بشه؟ mTrackInBackgroundService
+            trackResumeIsDone = false;
         }
 
         //Add for Autorotate part 7
@@ -2460,7 +2439,7 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             isLockOnMe = false;
         } catch (Exception ex) {
             ex.printStackTrace();
-            Log.e(Tag, "HH_ERRORR_CAMERA" + ex.getMessage());
+            Log.e(tag(), "HH_ERRORR_CAMERA" + ex.getMessage());
         }
     }
 
@@ -2523,10 +2502,17 @@ public class MapPage extends HFragment implements SensorEventListener, Navigatio
             }
         }
     }
-    //------ قسمت های مربوط به سرویس لوکیشن در 1404-08 ----------
 
 
-    //------ اتمام قسمت های مربوط به سرویس لوکیشن در 1404-08 ----------
-
+    //تنظیمات مربوط به صفحه --------------
+    @Override
+    protected int getScreenId() {return PrjConfig.frmMapPage;}
+    @Override
+    protected String tag() {return SCREEN_TAG;}
+    public static final String SCREEN_TAG = "MapPage";
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {//3nd Event
+        return inflater.inflate(R.layout.activity_maps, parent, false);
+    }
 
 }

@@ -1,4 +1,4 @@
-package utils;
+package UI;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,17 +12,23 @@ import androidx.fragment.app.Fragment;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
+import bo.dbConstantsMap;
+import bo.entity.NbScreenTime;
+import bo.sqlite.NbScreenTimeDao;
+import utils.MainActivityManager;
 
-public class HFragment extends Fragment {
+public abstract class HFragment extends Fragment {
 
     public MainActivityManager context;
     public boolean initCompleted = false;
-    public String Tag = "تگ_تست";
+
+    //دو تا متغیر مربوط به شمارنده
+    private long visibleStartTime = 0;
+    private boolean isVisibleToUser = false;
+
+    protected abstract int getScreenId();
+    protected abstract String tag();
 
     public void initializeComponents(View v){
         initCompleted = true;
@@ -39,8 +45,18 @@ public class HFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
     //Call it after Fragment Commit
-    public void onFragmentShown(){}
-    public void onFragmentHided(){}
+    public void onFragmentShown(){
+        if (!isVisibleToUser) {
+            visibleStartTime = System.currentTimeMillis();
+            isVisibleToUser = true;
+        }
+    }
+    public void onFragmentHided(){
+        if (isVisibleToUser) {
+            isVisibleToUser = false;
+            onScreenTimbeCalculated();
+        }
+    }
     public void onFragmentRemoved(){}
 
 
@@ -67,5 +83,16 @@ public class HFragment extends Fragment {
         ex.printStackTrace(new PrintWriter(sw));
         String exceptionAsString = sw.toString();
         return exceptionAsString.length() < 2000?exceptionAsString:exceptionAsString.substring(0, 2000);
+    }
+
+    protected void onScreenTimbeCalculated() {
+        long cTime =System.currentTimeMillis();
+        long durationMillis =  cTime - visibleStartTime;
+
+        Log.d("ScreenTime",
+                getScreenId() + " -> " + (durationMillis / 1000) + " sec");
+
+        NbScreenTime scr = NbScreenTime.getInstance(getScreenId(), "", visibleStartTime, cTime);
+        dbConstantsMap.appDB.NbScreenTimeDao().insert(scr);
     }
 }
